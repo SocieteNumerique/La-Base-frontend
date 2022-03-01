@@ -4,7 +4,7 @@ import { useMainStore } from "~/stores/mainStore";
 
 const userStore = useUserStore()
 if (!userStore.email) {
-  // if profile is already got from SSR for example
+  // if profile is already got from SSR, do not fetch again
   userStore.refreshProfile()
 }
 
@@ -20,30 +20,13 @@ const baseNavItems = [
     to: "/",
     text: "Accueil",
   },
-  {
-    to: "test-store",
-    text: "Autre page",
-  },
-  {
-    title: "Menu déroulant",
-    links: [
-      {
-        text: "Lien 1",
-        to: "#",
-      },
-      {
-        text: "Lien 2",
-        to: "#",
-      },
-    ],
-  },
 ]
 
 const navItems = computed(() => {
   userStore.email
   let newItem
   if (userStore.email) {
-    newItem = { text: `Mon compte (${userStore.email})`, to: "/profile" }
+    newItem = { text: userStore.email, to: "/profile" }
   } else {
     newItem = { text: "Connexion", to: "/login" }
   }

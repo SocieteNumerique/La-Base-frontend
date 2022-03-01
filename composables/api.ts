@@ -81,7 +81,7 @@ export async function useApiGet<Type>(path: string) {
     return { data, error }
 }
 
-export async function useApiPost<Type>(path: string, payload: any) {
+export async function useApiPost<Type>(path: string, payload: any = {}) {
     const loadingStore = useLoadingStore()
 
     const key = makeLoadingKey(path)

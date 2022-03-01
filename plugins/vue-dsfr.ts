@@ -1,6 +1,6 @@
 import { defineNuxtPlugin } from '#app'
 
-import VueDsfr from '@laruiss/vue-dsfr'
+import VueDsfr from '@laruiss/vue-dsfr/'
 import '../icons'
 
 export default defineNuxtPlugin((nuxtApp) => {
