@@ -1,41 +1,3 @@
-<script setup lang="ts">
-import { useUserStore } from "~/stores/userStore"
-import { useMainStore } from "~/stores/mainStore";
-
-const userStore = useUserStore()
-if (!userStore.email) {
-  // if profile is already got from SSR, do not fetch again
-  userStore.refreshProfile()
-}
-
-const mainStore = useMainStore()
-if (!mainStore.version) {
-  mainStore.refreshVersion()
-}
-
-const query = ref("")
-
-const baseNavItems = [
-  {
-    to: "/",
-    text: "Accueil",
-  },
-]
-
-const navItems = computed(() => {
-  userStore.email
-  let newItem
-  if (userStore.email) {
-    newItem = { text: userStore.email, to: "/profile" }
-  } else {
-    newItem = { text: "Connexion", to: "/login" }
-  }
-  console.log("navitems", newItem)
-  return baseNavItems.concat(newItem)
-})
-
-</script>
-
 <template>
   <div>
     <DsfrHeader
@@ -89,3 +51,40 @@ const navItems = computed(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useUserStore } from "~/stores/userStore"
+import { useMainStore } from "~/stores/mainStore";
+
+const userStore = useUserStore()
+if (!userStore.email) {
+  // if profile is already got from SSR, do not fetch again
+  userStore.refreshProfile()
+}
+
+const mainStore = useMainStore()
+if (!mainStore.version) {
+  mainStore.refreshVersion()
+}
+
+const query = ref("")
+
+const baseNavItems = [
+  {
+    to: "/",
+    text: "Accueil",
+  },
+]
+
+const navItems = computed(() => {
+  userStore.email
+  let newItem
+  if (userStore.email) {
+    newItem = { text: userStore.email, to: "/profile" }
+  } else {
+    newItem = { text: "Connexion", to: "/login" }
+  }
+  return baseNavItems.concat(newItem)
+})
+
+</script>

@@ -25,5 +25,12 @@ export const useBaseStore = defineStore('base', {
                 this.basesById[base.id] = base
             }
         },
+        async getRessource(ressourceId: number) {
+            const { data, error } = await useApiGet<Ressource>(`ressources/${ressourceId}`)
+            if (!error.value) {
+                const ressource = data.value
+                this.ressourcesById[ressource.id] = ressource
+            }
+        },
     },
 })
