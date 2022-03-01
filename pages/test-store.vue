@@ -9,6 +9,8 @@
       <br />
     </p>
 
+    <button @click="goToTest" class="fr-btn">Go to home</button>
+
     <ol>
       <li>Use the different increment actions</li>
       <li>Change the counter directly from the devtools</li>
@@ -64,6 +66,11 @@ import { useCounter } from "~/stores/counter";
 import PiniaLogo from "~/components/PiniaLogo.vue";
 
 const counter = useCounter()
+
+const router = useRouter()
+const goToTest = () => {
+  router.push("/")
+}
 
 // if (process.server) {
 //   counter.n = 20

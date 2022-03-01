@@ -12,9 +12,9 @@ export default defineNuxtConfig({
   ],
   build: {
     transpile: [
-      'oh-vue-icons/dist/v3/icon.es',
-      'oh-vue-icons/icons/ri/index',
-      '@laruiss/vue-dsfr',
+      // 'oh-vue-icons/dist/v3/icon.es',
+      // 'oh-vue-icons/icons/ri/index',
+      // '@laruiss/vue-dsfr',
     ],
   },
   vue: {

@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { useUserStore } from '~/stores/userStore';
+import { useLoadingStore } from '~~/stores/loadingStore';
+
 const email = ref("")
 const isEmailUntouched = ref(true)
 const isPasswordUntouched = ref(true)
-let emailErrorMessage = ref("")
-let passwordErrorMessage = ref("")
+const emailErrorMessage = ref("")
+const passwordErrorMessage = ref("")
 const password = ref("")
+const userStore = useUserStore()
+const loadingStore = useLoadingStore()
 
 const onEmailUpdate = (value: string) => {
     isEmailUntouched.value = false
@@ -51,7 +56,8 @@ const isPasswordValid = computed(() => {
     return true
 })
 const submit = () => {
-    console.log("### submit")
+    console.log("submit", email.value, password.value)
+    userStore.login(email.value, password.value)
 }
 </script>
 
@@ -78,7 +84,12 @@ const submit = () => {
                 type="password"
                 @update:modelValue="onPasswordUpdate"
             />
-            <DsfrButton @click="submit" label="Connexion" class="fr-my-2w" />
+            <DsfrButton
+                @click="submit"
+                :disabled="loadingStore.isLoading('authLogin')"
+                label="Connexion"
+                class="fr-my-2w"
+            />
         </div>
     </div>
 </template>

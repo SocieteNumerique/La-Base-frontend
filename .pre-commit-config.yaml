@@ -54,37 +54,36 @@ repos:
       - id: gitlab-ci-linter
     repo: https://gitlab.com/devopshq/gitlab-ci-linter
     rev: v1.0.1
+  # - hooks:
+  #     - additional_dependencies:
+  #         - eslint@latest
+  #         - vue-eslint-parser@latest
+  #         - eslint-plugin-vue@latest
+  #         - eslint-plugin-jquery@latest
+  #         - eslint-plugin-eslint-plugin@latest
+  #         - prettier@latest
+  #         - eslint-config-prettier@latest
+  #         - eslint-plugin-prettier@latest
+  #         - babel-eslint
+  #       args:
+  #         - -c=.eslintrc.js
+  #         - --fix
+  #       id: eslint
+  #       name: vue-eslint
+  #       types:
+  #         - vue
+  #   repo: https://github.com/pre-commit/mirrors-eslint
+  #   rev: v7.8.1
   - hooks:
       - additional_dependencies:
           - eslint@latest
-          - vue-eslint-parser@latest
-          - eslint-plugin-vue@latest
-          - eslint-plugin-jquery@latest
+          - "@nuxtjs/eslint-config-typescript"
           - eslint-plugin-eslint-plugin@latest
           - prettier@latest
           - eslint-config-prettier@latest
           - eslint-plugin-prettier@latest
           - babel-eslint
-        args:
-          - -c=.eslintrc.js
-          - --fix
-        id: eslint
-        name: vue-eslint
-        types:
-          - vue
-    repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.8.1
-  - hooks:
-      - additional_dependencies:
-          - eslint@latest
-          - vue-eslint-parser@latest
-          - eslint-plugin-vue@latest
-          - eslint-plugin-jquery@latest
-          - eslint-plugin-eslint-plugin@latest
-          - prettier@latest
-          - eslint-config-prettier@latest
-          - eslint-plugin-prettier@latest
-          - babel-eslint
+          - typescript
         args:
           - -c=.eslintrc.js
           - --fix
@@ -92,7 +91,7 @@ repos:
         id: eslint
         name: js-eslint
     repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v7.8.1
+    rev: v8.10.0
   - hooks:
       - id: commitizen
         stages:
