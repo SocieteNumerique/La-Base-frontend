@@ -1,6 +1,5 @@
 import { NuxtApp } from "nuxt3/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
-import { User } from "./types"
 
 let base_url = ""
 type MyHeaders = { [key: string]: string }
@@ -43,19 +42,19 @@ const getCsrfCookie = (ctx: NuxtApp) => {
     if (!cookie) {
         return null
     }
-    const csfrRow = cookie.split('; ').find(row => row.startsWith('csrftoken='))
-    if (!csfrRow) {
+    const csrfRow = cookie.split('; ').find(row => row.startsWith('csrftoken='))
+    if (!csrfRow) {
         return null
     }
-    return csfrRow.split('=')[1]
+    return csrfRow.split('=')[1]
 }
 
 const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
     const headers: MyHeaders = useRequestHeaders(['cookie'])
     if (includeCsrf) {
-        const csfrToken = getCsrfCookie(ctx)
-        if (csfrToken) {
-            headers["X-CSRFTOKEN"] = csfrToken
+        const csrfToken = getCsrfCookie(ctx)
+        if (csrfToken) {
+            headers["X-CSRFTOKEN"] = csrfToken
         }
     }
     return headers
