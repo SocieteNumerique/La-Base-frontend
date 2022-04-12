@@ -17,12 +17,7 @@
       </div>
     </div>
 
-    <DsfrFooter
-      :logo-text="['La plateforme de l\'ANCT']"
-      a11y-compliance="partiellement conforme"
-      desc-text="référencer, découvrir, partager des outils pour l'inclusion numérique"
-      home-link="/"
-    />
+  <LayoutFooter />
   </div>
 </template>
 
