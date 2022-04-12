@@ -2,8 +2,7 @@ import { defineNuxtConfig } from 'nuxt3'
 
 export default defineNuxtConfig({
   css: [
-    '@laruiss/vue-dsfr/dist/vue-dsfr-fonts.css',
-    '@laruiss/vue-dsfr/dist/vue-dsfr.css',
+    '~/assets/dsfr-imports.css',
     '~/assets/app.css',
   ],
 
