@@ -6,6 +6,7 @@ import {
   RiFlagLine,
   RiHome2Line,
   RiRefreshLine,
+  RiInformationLine,
 } from 'oh-vue-icons/icons/ri'
 
 VIcon.add(
@@ -13,4 +14,5 @@ VIcon.add(
   RiFlagLine,
   RiHome2Line,
   RiRefreshLine,
+  RiInformationLine,
 )
