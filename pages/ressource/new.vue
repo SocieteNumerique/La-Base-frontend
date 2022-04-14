@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <h1>Nouvelle ressource</h1>
+      <h1>Nouvelle resource</h1>
       <div class="fr-mb-14w"/>
     </template>
 
@@ -21,8 +21,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Resource } from "~/composables/types"
+
 definePageMeta({
   layout: false,
-  title: "Nouvelle ressource",
+  title: "Nouvelle resource",
 })
 </script>

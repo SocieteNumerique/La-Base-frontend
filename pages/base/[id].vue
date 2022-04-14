@@ -3,10 +3,10 @@
         <h1>{{ base?.title }}</h1>
         <div v-for="category of base?.categories" :key="category.id">
             <h2>{{ category.title }}</h2>
-            <RessourceCard
-                v-for="ressource of category.ressources"
-                :key="ressource.id"
-                :ressource="ressource"
+            <ResourceCard
+                v-for="resource of category.resources"
+                :key="resource.id"
+                :resource="resource"
             />
         </div>
     </div>
@@ -15,7 +15,6 @@
 <script setup lang="ts">
 import { useBaseStore } from '~/stores/baseStore';
 import { Base } from '~/composables/types'
-import RessourceCard from '~/components/ressourceCard.vue';
 
 const route = useRoute()
 const baseStore = useBaseStore()

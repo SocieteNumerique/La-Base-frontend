@@ -3,7 +3,7 @@
         <NuxtLink :to="link">
             <div class="fr-card__body">
                 <h4 class="fr-card__title">
-                    <p class="fr-card__link">{{ props.ressource.title }}</p>
+                    <p class="fr-card__link">{{ props.resource.title }}</p>
                 </h4>
                 <p class="fr-card__desc">Plus d'infos !!</p>
                 <p class="fr-card__detail">{{ detail }}</p>
@@ -29,10 +29,10 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
-import { Ressource } from "../composables/types"
+import { Resource } from "../composables/types"
 
-const props = defineProps({ ressource: { type: Object as PropType<Ressource>, required: true } })
+const props = defineProps({ resource: { type: Object as PropType<Resource>, required: true } })
 
-const detail = computed(() => props.ressource.author.email)
-const link = computed(() => `/ressource/${props.ressource.id}`)
+const detail = computed(() => props.resource.author.email)
+const link = computed(() => `/resource/${props.resource.id}`)
 </script>

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { useBaseStore } from '~/stores/baseStore';
-import { Ressource } from '~/composables/types'
+import { Resource } from '~/composables/types'
 
 definePageMeta({
   title: "Nouvelle ressource",
@@ -35,13 +35,11 @@ const resourceId = route.params.id as unknown as number
 const menu = ref<string[]>(["Informations", "Contenus(2)", "Label(s)"])
 
 
-if (!baseStore.ressourcesById[resourceId]) {
-    baseStore.getRessource(resourceId)
+if (!baseStore.resourcesById[resourceId]) {
+    baseStore.getResource(resourceId)
 }
 
-
-
-const ressource = computed(() => baseStore.ressourcesById[resourceId])
+const resource = computed(() => baseStore.resourcesById[resourceId])
 // if (base.value?.isShort) {
 //     console.log("is short")
 //     baseStore.getBase(base.value.id)
