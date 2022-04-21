@@ -8,13 +8,14 @@
   </div>
 
   <div class="fr-col-6 fr-col-offset-1 fr-mt-12w">
-    <h6>Informations générales</h6>
+<!--    <h6>Informations générales</h6>
     <div class="fr-tags-group">
       <Tag :selected="true" :tag-count="34" label="Sélectionné" />
       <Tag :tag-count="34" label="Gratuit" />
     </div>
 
-    <h6>Contenu</h6>
+    <h6>Contenu</h6>-->
+    <ContentsListEdit resource-id="resourceId" />
   </div>
 
   <div class="fr-col-3 fr-mt-12w">Vérification des doublons</div>
@@ -32,7 +33,7 @@ const route = useRoute()
 const baseStore = useBaseStore()
 
 const resourceId = route.params.id as unknown as number
-const menu = ref<string[]>(["Informations", "Contenus(2)", "Label(s)"])
+const menu = ref<string[]>(["Informations", "Contenus (2)", "Label(s)"])
 
 
 if (!baseStore.resourcesById[resourceId]) {
