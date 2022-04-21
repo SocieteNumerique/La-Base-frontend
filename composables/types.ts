@@ -29,10 +29,11 @@ export type Base = {
 
 
 export type Content = {
-  id: number
-  title: string,
-  annotation: string,
-  type: string
+  id?: number
+  title?: string,
+  annotation?: string,
+  type: string,
+  licence?: string
 }
 
 export interface LinkContent extends Content {
