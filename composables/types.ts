@@ -33,7 +33,8 @@ export type Content = {
   title?: string,
   annotation?: string,
   type: string,
-  licence?: string
+  licence?: string,
+  nbCol: number
 }
 
 export interface LinkContent extends Content {

@@ -1,7 +1,8 @@
 <template>
   <div class="fr-col-2 fr-mt-5v">
-    <div v-for="(item, index) of menu" :key="index" class="fr-text-title--blue-france fr-text--lg fr-text--bold fr-pt-3v fr-pb-3v menu-item fr-pl-2w">
-      <div >
+    <div v-for="(item, index) of menu" :key="index"
+         class="fr-text-title--blue-france fr-text--lg fr-text--bold fr-pt-3v fr-pb-3v menu-item fr-pl-2w">
+      <div>
         {{ item }}
       </div>
     </div>
@@ -12,16 +13,18 @@
 
     <h6>Contenu</h6>
     <button @click="isGridView = !isGridView">toggle grid view</button>
-    <ContentListEdit v-show="!isGridView" v-model="contents" />
-    <ContentGridEdit v-if="isGridViewEnabled" v-show="isGridView" v-model="contents" />
+    <ContentListEdit v-show="!isGridView" v-model="contents"/>
+    <client-only>
+      <ContentGridEdit v-show="isGridView" v-model="contents" v-model:enabled="isGridViewEnabled"/>
+    </client-only>
   </div>
 
   <div class="fr-col-3 fr-mt-12w">Vérification des doublons</div>
 </template>
 
 <script setup lang="ts">
-import { useBaseStore } from '~/stores/baseStore';
-import {Content, Resource } from '~/composables/types'
+import {useBaseStore} from '~/stores/baseStore';
+import {Content, Resource} from '~/composables/types'
 
 definePageMeta({
   title: "Nouvelle ressource",
@@ -33,14 +36,18 @@ const baseStore = useBaseStore()
 const resourceId = route.params.id as unknown as number
 const menu = ref<string[]>(["Informations", "Contenus (2)", "Label(s)"])
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
-const isGridView = ref<boolean>(false)
+const isGridView = ref<boolean>(true) // TODO
 
 if (!baseStore.resourcesById[resourceId]) {
-    baseStore.getResource(resourceId)
+  baseStore.getResource(resourceId)
 }
 const resource = computed(() => baseStore.resourcesById[resourceId])
 const contents = ref<Content[]>((await baseStore.getResourceContents(resourceId)) as unknown as Content[])
 
+contents.value.forEach((content) => {
+  if ("nbCol" in content) return
+  content.nbCol = 4
+})
 // if (base.value?.isShort) {
 //     console.log("is short")
 //     baseStore.getBase(base.value.id)
@@ -59,8 +66,9 @@ const contents = ref<Content[]>((await baseStore.getResourceContents(resourceId)
 .menu-item
   border-top: var(--grey-925-125) 1px solid
   margin: 0
+
   &:last-child
-      border-bottom: var(--grey-925-125) 1px solid
+    border-bottom: var(--grey-925-125) 1px solid
 
 
 </style>
