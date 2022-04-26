@@ -1,5 +1,5 @@
 // @ts-ignore
-import { VIcon } from '@laruiss/vue-dsfr'
+import { VIcon } from "@laruiss/vue-dsfr"
 
 import {
   RiCloseLine,
@@ -7,12 +7,12 @@ import {
   RiHome2Line,
   RiRefreshLine,
   RiInformationLine,
-} from 'oh-vue-icons/icons/ri'
+} from "oh-vue-icons/icons/ri"
 
 VIcon.add(
   RiCloseLine,
   RiFlagLine,
   RiHome2Line,
   RiRefreshLine,
-  RiInformationLine,
+  RiInformationLine
 )

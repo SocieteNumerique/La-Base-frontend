@@ -18,10 +18,10 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   rules: {
     // sometimes necessary to cast types
-    '@typescript-eslint/no-explicit-any': 'off',
+    "@typescript-eslint/no-explicit-any": "off",
     // this is sometimes necessary when using
     // non-typescript external modules
-    '@typescript-eslint/ban-ts-comment': 'warn',
-    semi: [2, 'never'],
+    "@typescript-eslint/ban-ts-comment": "warn",
+    semi: [2, "never"],
   },
 }

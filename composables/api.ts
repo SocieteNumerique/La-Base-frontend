@@ -33,7 +33,7 @@ const makeLoadingKey = (path: string) => {
 }
 
 const getCsrfCookie = (ctx: NuxtApp) => {
-  let cookie: string = ""
+  let cookie = ""
   if (ctx?.ssrContext?.req.headers.cookie) {
     cookie = ctx?.ssrContext.req.headers.cookie
   } else if (process.client) {
