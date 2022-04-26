@@ -10,6 +10,5 @@
 <script setup lang="ts">
 import {useResourceStore} from "~/stores/resourceStore";
 
-
 const resourceStore = useResourceStore()
 </script>
