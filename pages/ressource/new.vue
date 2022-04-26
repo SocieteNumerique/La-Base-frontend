@@ -5,11 +5,11 @@
       <div class="fr-mb-14w"/>
     </template>
 
-    <div class="fr-col-2">
+    <div class="fr-col-3 fr-pr-3w">
       <ResourceCreationLeftMenu/>
     </div>
 
-    <div class="fr-col-6 fr-col-offset-1">
+    <div class="fr-col-6 fr-pr-3w">
       <ResourceCreationMain/>
     </div>
 

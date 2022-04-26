@@ -1,17 +1,18 @@
 import { defineStore } from "pinia"
-import { Resource } from "~/composables/types"
+import { Content, Resource } from "~/composables/types"
 
 type NewResourceParams = {
   id?: number
+  description: string
   rootBaseId?: number
   title: string
-  content: string
+  contents: Content[]
 }
 
 type ResourceState = {
   creationStepIndex: number
   current: Resource
-  newParams: Resource
+  newParams: NewResourceParams
 }
 
 const CREATION_STEPS = ["publish_as", "init_general_info", "general_info"]
@@ -28,9 +29,10 @@ export const useResourceStore = defineStore("resource", {
       },
       newParams: {
         id: undefined,
+        description: "",
         rootBaseId: undefined,
         title: "",
-        content: "",
+        contents: [],
       },
     },
   actions: {

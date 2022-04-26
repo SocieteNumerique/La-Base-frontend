@@ -8,7 +8,7 @@ export type Resource = {
   rootBaseId?: number
   isDraft?: boolean
   description?: string
-  zip_code?: number
+  zipCode?: number
   url?: string
   linkedResourceIds?: number[]
   internalProducerIds?: number[]
