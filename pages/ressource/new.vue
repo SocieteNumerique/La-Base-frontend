@@ -10,13 +10,20 @@
       <div class="fr-text--xs">Nous avons besoin de quelques informations essentielles pour créer la ressource.</div>
     </div>
 
-    <div class="fr-col-6 fr-col-offset-1">
-      <h6>Informations générales</h6>
+    <template v-if="step === 0">
+      <ChooseBase @base-chosen="(base) => resource.base = base" />
 
-      <h6>Contenu</h6>
-    </div>
+    </template>
+    <template v-else-if="step === 1">
+      <div class="fr-col-6 fr-col-offset-1">
+        <h6>Informations générales</h6>
 
-    <div class="fr-col-3">Vérification des doublons</div>
+        <h6>Contenu</h6>
+      </div>
+
+      <div class="fr-col-3">Vérification des doublons</div>
+    </template>
+
   </NuxtLayout>
 </template>
 
@@ -27,4 +34,7 @@ definePageMeta({
   layout: false,
   title: "Nouvelle resource",
 })
+
+const step = ref<number>(0)
+const resource = ref<Resource>({})
 </script>
