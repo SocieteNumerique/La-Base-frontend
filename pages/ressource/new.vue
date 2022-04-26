@@ -21,18 +21,9 @@
 
 <script lang="ts" setup>
 
-import {useBaseStore} from "~/stores/baseStore";
-
 definePageMeta({
   layout: false,
   title: "Nouvelle fiche ressource",
 })
-
-const baseStore = useBaseStore()
-// console.log('### new 1', baseStore.basesOrder.length)
-// if (!baseStore.basesOrder.length) {
-//   baseStore.refreshBases()
-// }
-// console.log('### new 2')
 
 </script>

@@ -1,13 +1,9 @@
 <template>
   <div data-fr-theme>
     <LayoutHeader/>
-    <!--    <div class="fr-container">
-          <DsfrNavigation :nav-items="navItems"></DsfrNavigation>
-        </div>-->
-
     <div class="fr-container fr-mt-4w">
       <slot name="header">
-        <div class="fr-grid-row">
+        <div v-if="route.meta.title" class="fr-grid-row">
           <h1>{{ route.meta.title }}</h1>
         </div>
       </slot>
@@ -16,22 +12,16 @@
         <slot/>
       </div>
     </div>
-
     <LayoutFooter/>
   </div>
 </template>
 
 <script setup lang="ts">
 import {useUserStore} from "~/stores/userStore"
-import {useMainStore} from "~/stores/mainStore";
 
 const route = useRoute()
 
 const userStore = useUserStore()
-
-const mainStore = useMainStore()
-
-const query = ref("")
 
 const baseNavItems = [
   {
