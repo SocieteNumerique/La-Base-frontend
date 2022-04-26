@@ -17,7 +17,7 @@
       </div>
     </div>
 
-  <LayoutFooter />
+    <LayoutFooter/>
   </div>
 </template>
 
@@ -28,15 +28,8 @@ import {useMainStore} from "~/stores/mainStore";
 const route = useRoute()
 
 const userStore = useUserStore()
-if (!userStore.email) {
-  // if profile is already got from SSR, do not fetch again
-  userStore.refreshProfile()
-}
 
 const mainStore = useMainStore()
-if (!mainStore.version) {
-  mainStore.refreshVersion()
-}
 
 const query = ref("")
 

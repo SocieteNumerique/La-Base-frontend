@@ -1,14 +1,9 @@
 import { defineNuxtConfig } from 'nuxt3'
 
 export default defineNuxtConfig({
-  css: [
-    '~/assets/dsfr-imports.css',
-    '~/assets/app.css',
-  ],
+  css: ['~/assets/dsfr-imports.css', '~/assets/app.css'],
 
-  buildModules: [
-    '@pinia/nuxt',
-  ],
+  buildModules: ['@pinia/nuxt'],
   build: {
     transpile: [
       'oh-vue-icons/dist/v3/icon.es',
@@ -19,7 +14,7 @@ export default defineNuxtConfig({
   vue: {
     config: {
       productionTip: false,
-      devtools: true
-    }
+      devtools: true,
+    },
   },
 })
