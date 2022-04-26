@@ -1,10 +1,10 @@
-import { defineNuxtPlugin } from '#app'
-import { useBaseStore } from '~/stores/baseStore'
-import { useUserStore } from '~/stores/userStore'
-import { useMainStore } from '~/stores/mainStore'
+import { defineNuxtPlugin } from "#app"
+import { useBaseStore } from "~/stores/baseStore"
+import { useUserStore } from "~/stores/userStore"
+import { useMainStore } from "~/stores/mainStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.hook('app:mounted', () => {
+  nuxtApp.hook("app:mounted", () => {
     // the data should already be fetched from SSR
     // but if it's missing, we try again from the client
 

@@ -1,24 +1,24 @@
 export type User = { id: number; email: string; username: string }
 
 export type Resource = {
-  id: number
+  id?: number
   title: string
   content: string
-  creator: User
-  root_base_id: number
-  is_draft: boolean
-  description: string
+  creator?: User
+  rootBaseId?: number
+  isDraft?: boolean
+  description?: string
   zip_code?: number
   url?: string
-  linked_resource_ids?: number[]
-  internal_producer_ids?: number[]
+  linkedResourceIds?: number[]
+  internalProducerIds?: number[]
   tags?: TagCategory[]
 }
 
 export type TagCategory = {
   id: number
   name: string
-  base_id?: number
+  baseId?: number
 }
 export type Base = {
   id: number
