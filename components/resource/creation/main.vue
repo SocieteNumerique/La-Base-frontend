@@ -64,7 +64,7 @@
           :key="contentIx"
           :value="content"/>
 
-      <DsfrButton icon="ri-add-circle-line">Ajouter un contenu</DsfrButton>
+      <DsfrButton @click="addContent" icon="ri-add-circle-line">Ajouter un contenu</DsfrButton>
 
       <div style="text-align: right">
         <DsfrButton :disabled="isCreateResourceDisabled">Créer la fiche ressource</DsfrButton>
@@ -99,6 +99,10 @@ const onTitleUpdate = (value: string) => {
 
 const onDescriptionUpdate = (value: string) => {
   resourceStore.newParams.description = value
+}
+
+const addContent = () => {
+  resourceStore.newParams.contents.push({type: "text", title: "blalba", nbCol: 3})
 }
 
 const isCreateResourceDisabled = computed(() => {
