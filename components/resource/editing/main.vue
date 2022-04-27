@@ -55,7 +55,6 @@
 import { useResourceStore } from "~/stores/resourceStore"
 import { useBaseStore } from "~/stores/baseStore"
 import { computed, ref } from "vue"
-import BaseSelector from "~/components/baseSelector.vue"
 import { Content } from "~/composables/types"
 
 const resourceStore = useResourceStore()
