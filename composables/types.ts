@@ -44,4 +44,4 @@ export interface TextContent extends Content {
   text: string
 }
 
-export interface FileContent extends Content {}
+export type FileContent = Content
