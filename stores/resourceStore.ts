@@ -29,7 +29,7 @@ type ResourceState = {
   resourcesById: ResourcesById
 }
 
-const CREATION_STEPS = ["publish_as", "init_general_info", "general_info"]
+const CREATION_STEPS = ["select_base", "init_general_info", "general_info"]
 
 export const useResourceStore = defineStore("resource", {
   state: () =>

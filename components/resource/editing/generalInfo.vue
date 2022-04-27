@@ -77,7 +77,6 @@ const addContent = () => {
   })
 }
 
-// TODO: create in backend
 const createResource = async () => {
   const resource = await resourceStore.createResource({
     title: resourceStore.newParams.title,
@@ -114,7 +113,6 @@ const isCreateResourceDisabled = computed(() => {
     return true
   }
 
-  console.log("### can create resource")
   return false
 })
 </script>

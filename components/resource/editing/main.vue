@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="
-        resourceStore.isCreating && resourceStore.creationStep == 'publish_as'
+        resourceStore.isCreating && resourceStore.creationStep == 'select_base'
       "
     >
       <template v-if="baseStore.hasBases">
@@ -70,7 +70,6 @@ const selectBase = () => {
 const route = useRoute()
 
 const resourceId = route.params.id as unknown as number
-const menu = ref<string[]>(["Informations", "Contenus (2)", "Label(s)"])
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
 
@@ -81,18 +80,6 @@ const resource = computed(() => baseStore.resourcesById[resourceId])
 const contents = ref<Content[]>(
   (await baseStore.getResourceContents(resourceId)) as unknown as Content[]
 )
-
-// if (base.value?.isShort) {
-//     console.log("is short")
-//     baseStore.getBase(base.value.id)
-// }
-
-// watch(base, async (newBase: Base) => {
-//     console.log("### newBase", newBase)
-//     if (newBase.isShort) {
-//         baseStore.getBase(newBase.id)
-//     }
-// })
 </script>
 
 <style scoped></style>
