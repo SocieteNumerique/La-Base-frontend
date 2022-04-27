@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { Content, Resource } from "~/composables/types"
 import { string } from "postcss-selector-parser"
+import { useApiPost } from "~/composables/api"
 
 type NewResourceParams = {
   contents: Content[]
@@ -15,12 +16,17 @@ type ResourceNavigation = {
   activeSubMenu: string
 }
 
+type ResourcesById = {
+  [id: number]: Resource
+}
+
 type ResourceState = {
   creationStepIndex: number
   current: Resource
   isCreating: boolean
   navigation: ResourceNavigation
   newParams: NewResourceParams
+  resourcesById: ResourcesById
 }
 
 const CREATION_STEPS = ["publish_as", "init_general_info", "general_info"]
@@ -33,7 +39,6 @@ export const useResourceStore = defineStore("resource", {
         id: undefined,
         rootBaseId: undefined,
         title: "",
-        content: "",
       },
       isCreating: false,
       navigation: {
@@ -47,16 +52,24 @@ export const useResourceStore = defineStore("resource", {
         title: "",
         contents: [],
       },
+      resourcesById: {},
     },
   actions: {
-    async incrementCreationStep() {
+    async createResource(resource: Resource) {
+      const { data, error } = await useApiPost<Resource>("resources/", resource)
+      if (!error.value) {
+        this.resourcesById[data.value.id!] = data.value
+        return data.value
+      }
+    },
+    decrementCreationStep() {
+      this.creationStepIndex = Math.max(0, this.creationStepIndex - 1)
+    },
+    incrementCreationStep() {
       this.creationStepIndex = Math.min(
         CREATION_STEPS.length - 1,
         this.creationStepIndex + 1
       )
-    },
-    async decrementCreationStep() {
-      this.creationStepIndex = Math.max(0, this.creationStepIndex - 1)
     },
   },
   getters: {

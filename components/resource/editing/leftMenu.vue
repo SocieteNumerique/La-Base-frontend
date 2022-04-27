@@ -1,6 +1,10 @@
 <template>
   <div class="fr-pr-2w">
-    <div v-if="false && resourceStore.creationStepIndex < 2">
+    <div
+      v-if="
+        false && resourceStore.isCreating && resourceStore.creationStepIndex < 2
+      "
+    >
       <h2 class="fr-h4 fr-text-title--blue-france">Initialisation</h2>
       <div class="fr-text--xs">
         Nous avons besoin de quelques informations essentielles pour créer la

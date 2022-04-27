@@ -1,18 +1,18 @@
 export type User = { id: number; email: string; username: string }
 
 export type Resource = {
-  id?: number
-  title: string
-  content: string
   creator?: User
-  rootBaseId?: number
+  id?: number
+  internalProducerIds?: number[]
   isDraft?: boolean
   description?: string
-  zipCode?: number
-  url?: string
   linkedResourceIds?: number[]
-  internalProducerIds?: number[]
+  rootBaseId?: number
+  rootBase?: number
   tags?: TagCategory[]
+  title: string
+  url?: string
+  zipCode?: number
 }
 
 export type TagCategory = {

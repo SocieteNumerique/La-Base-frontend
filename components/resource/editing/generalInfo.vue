@@ -24,38 +24,42 @@
     :is-textarea="true"
     @update:modelValue="onDescriptionUpdate"
   />
+  <template v-if="resourceStore.isCreating">
+    <div class="fr-mt-3w" style="display: flex; align-items: baseline">
+      <h2 class="fr-h6 fr-mb-1w">Contenu</h2>
+      <p class="fr-text--xs fr-ml-2w fr-mb-1w">Requis, 1 minimum</p>
+    </div>
+    <p class="fr-text--bold fr-mb-1w">ajout rapide</p>
+    <p class="fr-text--xs">
+      Ces contenus peuvent être ajoutés maintenant ou plus tard.
+    </p>
 
-  <div class="fr-mt-3w" style="display: flex; align-items: baseline">
-    <h2 class="fr-h6 fr-mb-1w">Contenu</h2>
-    <p class="fr-text--xs fr-ml-2w fr-mb-1w">Requis, 1 minimum</p>
-  </div>
-  <p class="fr-text--bold fr-mb-1w">ajout rapide</p>
-  <p class="fr-text--xs">
-    Ces contenus peuvent être ajoutés maintenant ou plus tard.
-  </p>
+    <ContentGridItemEdit
+      v-for="(content, contentIx) in resourceStore.newParams.contents"
+      :key="contentIx"
+      :value="content"
+    />
 
-  <ContentGridItemEdit
-    v-for="(content, contentIx) in resourceStore.newParams.contents"
-    :key="contentIx"
-    :value="content"
-  />
-
-  <DsfrButton icon="ri-add-circle-line" @click="addContent"
-    >Ajouter un contenu</DsfrButton
-  >
-
-  <div style="text-align: right">
-    <DsfrButton :disabled="isCreateResourceDisabled" @click="createResource"
-      >Créer la fiche ressource</DsfrButton
+    <DsfrButton icon="ri-add-circle-line" @click="addContent"
+      >Ajouter un contenu</DsfrButton
     >
-  </div>
+
+    <div style="text-align: right">
+      <DsfrButton :disabled="isCreateResourceDisabled" @click="createResource"
+        >Créer la fiche ressource</DsfrButton
+      >
+    </div>
+  </template>
+  <template v-else> </template>
 </template>
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { computed } from "vue"
+import { useRouter } from "vue-router"
 
 const resourceStore = useResourceStore()
+const router = useRouter()
 
 const onTitleUpdate = (value: string) => {
   resourceStore.newParams.title = value
@@ -74,8 +78,17 @@ const addContent = () => {
 }
 
 // TODO: create in backend
-const createResource = () => {
-  resourceStore.incrementCreationStep()
+const createResource = async () => {
+  const resource = await resourceStore.createResource({
+    title: resourceStore.newParams.title,
+    description: resourceStore.newParams.description,
+    rootBase: resourceStore.newParams.rootBaseId,
+  })
+
+  console.log("### new resource created", resource)
+  if (resource) {
+    router.push(`/ressource/${resource.id}`)
+  }
 }
 
 const isCreateResourceDisabled = computed(() => {

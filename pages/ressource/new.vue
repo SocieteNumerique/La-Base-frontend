@@ -1,15 +1,13 @@
 <template>
-  <NuxtLayout name="resource">
-    <ResourceEditingMain />
-  </NuxtLayout>
+  <ResourceEditingMain />
 </template>
 
 <script lang="ts" setup>
 import { useResourceStore } from "~/stores/resourceStore"
-import {onBeforeUnmount } from "vue"
+import { onBeforeUnmount } from "vue"
 
 definePageMeta({
-  layout: false,
+  layout: "resource",
   title: "Nouvelle fiche ressource",
 })
 
