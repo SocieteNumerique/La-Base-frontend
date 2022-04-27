@@ -1,7 +1,7 @@
 import { defineNuxtConfig } from "nuxt3"
 
 export default defineNuxtConfig({
-  css: ["~/assets/dsfr-imports.css", "~/assets/app.css"],
+  css: ["~/assets/dsfr-imports.css", "~/assets/app.css", "@/css/moine.sass"],
 
   buildModules: ["@pinia/nuxt"],
   build: {

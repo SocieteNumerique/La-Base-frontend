@@ -1,6 +1,6 @@
 <template>
   <div data-fr-theme>
-    <LayoutHeader/>
+    <LayoutHeader />
     <div class="fr-container fr-mt-4w">
       <slot name="header">
         <div v-if="route.meta.title" class="fr-grid-row">
@@ -9,15 +9,15 @@
       </slot>
 
       <div class="fr-grid-row fr-mb-11v">
-        <slot/>
+        <slot />
       </div>
     </div>
-    <LayoutFooter/>
+    <LayoutFooter />
   </div>
 </template>
 
 <script setup lang="ts">
-import {useUserStore} from "~/stores/userStore"
+import { useUserStore } from "~/stores/userStore"
 
 const route = useRoute()
 
@@ -34,11 +34,10 @@ const navItems = computed(() => {
   userStore.email
   let newItem
   if (userStore.email) {
-    newItem = {text: userStore.email, to: "/profile"}
+    newItem = { text: userStore.email, to: "/profile" }
   } else {
-    newItem = {text: "Connexion", to: "/login"}
+    newItem = { text: "Connexion", to: "/login" }
   }
   return baseNavItems.concat(newItem)
 })
-
 </script>

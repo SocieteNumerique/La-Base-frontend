@@ -1,17 +1,25 @@
 import { defineStore } from "pinia"
 import { Content, Resource } from "~/composables/types"
+import { string } from "postcss-selector-parser"
 
 type NewResourceParams = {
-  id?: number
+  contents: Content[]
   description: string
+  id?: number
   rootBaseId?: number
   title: string
-  contents: Content[]
+}
+
+type ResourceNavigation = {
+  activeMenu: string
+  activeSubMenu: string
 }
 
 type ResourceState = {
   creationStepIndex: number
   current: Resource
+  isCreating: boolean
+  navigation: ResourceNavigation
   newParams: NewResourceParams
 }
 
@@ -26,6 +34,11 @@ export const useResourceStore = defineStore("resource", {
         rootBaseId: undefined,
         title: "",
         content: "",
+      },
+      isCreating: false,
+      navigation: {
+        activeMenu: "informations",
+        activeSubMenu: "general",
       },
       newParams: {
         id: undefined,
@@ -49,6 +62,12 @@ export const useResourceStore = defineStore("resource", {
   getters: {
     creationStep: (state) => {
       return CREATION_STEPS[state.creationStepIndex]
+    },
+    isMenuActive: (state) => (name: string) => {
+      return state.navigation.activeMenu === name
+    },
+    isSubMenuActive: (state) => (name: string) => {
+      return state.navigation.activeSubMenu === name
     },
   },
 })

@@ -4,20 +4,16 @@
     <h2 class="fr-mt-5w">Mes bases</h2>
     <div class="is-flex fr-mb-4w">
       <BaseCard
-          v-for="baseId of baseStore.basesOrder"
-          :key="baseId"
-          :base="baseStore.basesById[baseId]"
+        v-for="baseId of baseStore.basesOrder"
+        :key="baseId"
+        :base="baseStore.basesById[baseId]"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {useBaseStore} from '~/stores/baseStore';
-import {useMainStore} from '~/stores/mainStore';
+import { useBaseStore } from "~/stores/baseStore"
 
-const router = useRouter()
-const mainStore = useMainStore()
 const baseStore = useBaseStore()
-
 </script>
