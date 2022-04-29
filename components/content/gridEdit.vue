@@ -39,7 +39,7 @@ import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
 
 const props = defineProps({
-  modelValue: { type: Object as PropType<Content[]>, default: () => [] },
+  modelValue: { type: Array as PropType<Content[]>, default: () => [] },
   enabled: { type: Boolean, default: false },
 })
 
@@ -131,7 +131,6 @@ function onDrag(event: DragEvent) {
 }
 
 function onDrop(event: DragEvent, content: Content) {
-  console.log({ event })
   if (!gridUnderlayRef.value) throw "Layout not setup yet"
   for (let colElement of gridUnderlayRef.value.children) {
     colElement.classList.toggle("targeted", false)

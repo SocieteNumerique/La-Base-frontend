@@ -29,7 +29,7 @@ export type Base = {
   isShort?: boolean
 }
 
-export type Content = {
+export type BaseContent = {
   id?: number
   title?: string
   annotation?: string
@@ -38,12 +38,14 @@ export type Content = {
   nbCol: number
 }
 
-export interface LinkContent extends Content {
+export interface LinkContent extends BaseContent {
   link: string
 }
 
-export interface TextContent extends Content {
+export interface TextContent extends BaseContent {
   text: string
 }
 
-export type FileContent = Content
+export type FileContent = BaseContent
+
+export type Content = LinkContent | TextContent | FileContent

@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts" setup>
-import {Content} from "~/composables/types"
-import {PropType} from "vue"
-import {useModel} from "~/composables/modelWrapper"
+import { Content } from "~/composables/types"
+import { PropType } from "vue"
+import { useModel } from "~/composables/modelWrapper"
 
 const props = defineProps({
-  modelValue: {type: Object as PropType<Content[]>, default: () => []},
+  modelValue: { type: Array as PropType<Content[]>, default: () => [] },
 })
 
 const contents = useModel<Content[]>("modelValue", {type: "array"})
@@ -36,5 +36,4 @@ function addTextContent(): void {
 }
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>
