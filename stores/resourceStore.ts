@@ -1,6 +1,5 @@
 import { defineStore } from "pinia"
 import { Content, Resource } from "~/composables/types"
-import { string } from "postcss-selector-parser"
 import { useApiPost } from "~/composables/api"
 
 type NewResourceParams = {
@@ -70,6 +69,23 @@ export const useResourceStore = defineStore("resource", {
         CREATION_STEPS.length - 1,
         this.creationStepIndex + 1
       )
+    },
+    async getResource(resourceId: number) {
+      const { data, error } = await useApiGet<Resource>(
+        `resources/${resourceId}`
+      )
+      if (!error.value) {
+        const resource = data.value
+        this.resourcesById[resource.id!] = resource
+      }
+    },
+    async getResourceContents(resourceId: number) {
+      const { data, error } = await useApiGet<Resource>(
+        `resources/${resourceId}/contents/`
+      )
+      if (!error.value) {
+        return data.value
+      }
     },
   },
   getters: {
