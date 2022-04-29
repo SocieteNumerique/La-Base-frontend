@@ -36,6 +36,7 @@ export type BaseContent = {
   type: string
   licence?: string
   nbCol: number
+  index?: number
 }
 
 export interface LinkContent extends BaseContent {

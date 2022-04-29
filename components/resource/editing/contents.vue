@@ -32,7 +32,7 @@ const contents = ref<Content[]>(
 )
 
 async function addContent(type: string) {
-  const content: Content = await resourceStore.addContent(type)
+  const content = await resourceStore.addContent(type, contents.value.length)
   contents.value.push(content)
 }
 </script>

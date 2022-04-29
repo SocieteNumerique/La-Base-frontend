@@ -74,8 +74,9 @@ export const useResourceStore = defineStore("resource", {
         return data.value
       }
     },
-    async addContent(type: string): Promise<Content> {
+    async addContent(type: string, index: number): Promise<Content> {
       const content = this.getDefaultContent(type)
+      content.index = index
       const createdContent = await this.createContent(
         this.current!.id!,
         content
