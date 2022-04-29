@@ -68,11 +68,12 @@ export const useResourceStore = defineStore("resource", {
     },
     async getResource(resourceId: number) {
       const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}`
+        `resources/${resourceId}/`
       )
       if (!error.value) {
         const resource = data.value
         this.resourcesById[resource.id!] = resource
+        console.log("### got resource", resourceId, resource.id)
       }
     },
     async getResourceContents(resourceId: number) {
@@ -82,6 +83,9 @@ export const useResourceStore = defineStore("resource", {
       if (!error.value) {
         return data.value
       }
+    },
+    async setCurrentId(resourceId: number) {
+      this.currentId = resourceId
     },
   },
   getters: {
