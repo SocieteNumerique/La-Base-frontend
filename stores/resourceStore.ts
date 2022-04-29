@@ -21,7 +21,7 @@ type ResourcesById = {
 
 type ResourceState = {
   creationStepIndex: number
-  current: Resource
+  currentId?: number
   isCreating: boolean
   navigation: ResourceNavigation
   newParams: NewResourceParams
@@ -34,11 +34,7 @@ export const useResourceStore = defineStore("resource", {
   state: () =>
     <ResourceState>{
       creationStepIndex: 0,
-      current: {
-        id: undefined,
-        rootBaseId: undefined,
-        title: "",
-      },
+      currentId: undefined,
       isCreating: false,
       navigation: {
         activeMenu: "informations",
@@ -72,11 +68,12 @@ export const useResourceStore = defineStore("resource", {
     },
     async getResource(resourceId: number) {
       const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}`
+        `resources/${resourceId}/`
       )
       if (!error.value) {
         const resource = data.value
         this.resourcesById[resource.id!] = resource
+        console.log("### got resource", resourceId, resource.id)
       }
     },
     async getResourceContents(resourceId: number) {
@@ -87,10 +84,23 @@ export const useResourceStore = defineStore("resource", {
         return data.value
       }
     },
+    async setCurrentId(resourceId: number) {
+      this.currentId = resourceId
+    },
   },
   getters: {
     creationStep: (state) => {
       return CREATION_STEPS[state.creationStepIndex]
+    },
+    contents: {
+      get() {},
+      set() {},
+    },
+    current: (state): Resource | undefined => {
+      if (state.currentId == null) {
+        return undefined
+      }
+      return state.resourcesById[state.currentId]
     },
     isMenuActive: (state) => (name: string) => {
       return state.navigation.activeMenu === name

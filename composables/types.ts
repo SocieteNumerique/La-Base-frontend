@@ -1,10 +1,12 @@
 export type User = { id: number; email: string; username: string }
 
 export type Resource = {
+  contents: Content[]
   creator?: User
   id?: number
   internalProducerIds?: number[]
   isDraft?: boolean
+  isShort?: boolean
   description?: string
   linkedResourceIds?: number[]
   rootBaseId?: number

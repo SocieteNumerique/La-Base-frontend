@@ -11,7 +11,9 @@
           {{ resourceStore.newParams.title }}
         </template>
         <template v-else>
-          {{ resourceStore.current.title }}
+          <template v-if="resourceStore.current?.title">
+            {{ resourceStore.current?.title }}
+          </template>
         </template>
       </h1>
       <div class="fr-mb-14w" />

@@ -36,7 +36,7 @@
     <div v-else-if="resourceStore.creationStep == 'init_general_info'">
       <ResourceEditingGeneralInfo />
     </div>
-    <div v-else-if="false">
+    <div v-else>
       <h6>Contenu</h6>
       <button @click="isGridView = !isGridView">toggle grid view</button>
       <ContentListEdit v-show="!isGridView" v-model="contents" />
@@ -67,19 +67,12 @@ const selectBase = () => {
   resourceStore.incrementCreationStep()
 }
 
-const route = useRoute()
-
-const resourceId = route.params.id as unknown as number
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
 
-if (!resourceStore.resourcesById[resourceId]) {
-  resourceStore.getResource(resourceId)
-}
-const resource = computed(() => resourceStore.resourcesById[resourceId])
-const contents = ref<Content[]>(
-  (await resourceStore.getResourceContents(resourceId)) as unknown as Content[]
-)
+const contents = computed((): Content[] => {
+  return resourceStore.current?.contents || []
+})
 </script>
 
 <style scoped></style>

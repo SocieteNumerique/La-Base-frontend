@@ -50,7 +50,9 @@
       >
     </div>
   </template>
-  <template v-else> </template>
+  <template v-else>
+    <h2>Ressource déjà existante</h2>
+  </template>
 </template>
 
 <script setup lang="ts">
