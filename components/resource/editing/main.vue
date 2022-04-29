@@ -73,12 +73,12 @@ const resourceId = route.params.id as unknown as number
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
 
-if (!baseStore.resourcesById[resourceId]) {
-  baseStore.getResource(resourceId)
+if (!resourceStore.resourcesById[resourceId]) {
+  resourceStore.getResource(resourceId)
 }
-const resource = computed(() => baseStore.resourcesById[resourceId])
+const resource = computed(() => resourceStore.resourcesById[resourceId])
 const contents = ref<Content[]>(
-  (await baseStore.getResourceContents(resourceId)) as unknown as Content[]
+  (await resourceStore.getResourceContents(resourceId)) as unknown as Content[]
 )
 </script>
 
