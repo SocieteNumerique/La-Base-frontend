@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { Content, Resource } from "~/composables/types"
-import { useApiPost } from "~/composables/api"
+import { useApiPost, useApiGet } from "~/composables/api"
 
 type ResourceNavigation = {
   activeMenu: string
@@ -76,7 +76,10 @@ export const useResourceStore = defineStore("resource", {
     },
     async addContent(type: string): Promise<Content> {
       const content = this.getDefaultContent(type)
-      const createdContent = await this.createContent(this.current.id!, content)
+      const createdContent = await this.createContent(
+        this.current!.id!,
+        content
+      )
       if (createdContent) return createdContent
       throw "error at creating Content"
     },
