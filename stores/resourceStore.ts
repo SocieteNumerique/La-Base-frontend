@@ -92,6 +92,10 @@ export const useResourceStore = defineStore("resource", {
     creationStep: (state) => {
       return CREATION_STEPS[state.creationStepIndex]
     },
+    contents: {
+      get() {},
+      set() {},
+    },
     current: (state): Resource | undefined => {
       if (state.currentId == null) {
         return undefined
