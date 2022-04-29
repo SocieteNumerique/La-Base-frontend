@@ -1,17 +1,17 @@
 <template>
   <div>
-  <h2 class="title is-2">Liste</h2>
-  Ajouter :
-  <div class="fr-grid-row">
-    <button>Un lien</button>
-    <button>Un fichier</button>
-    <button @click="addTextContent">Un texte</button>
-  </div>
-  <ul>
-    <li v-for="(content, index) of contents" :key="index" >
-      <ContentListItem v-model="contents[index]" />
-    </li>
-  </ul>
+    <h2 class="title is-2">Liste</h2>
+    Ajouter :
+    <div class="fr-grid-row">
+      <button @click="$emit('newContent', 'text')">Un lien</button>
+      <button @click="$emit('newContent', 'text')">Un fichier</button>
+      <button @click="$emit('newContent', 'text')">Un texte</button>
+    </div>
+    <ul>
+      <li v-for="(content, index) of contents" :key="index">
+        <ContentListItem v-model="contents[index]" />
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -23,17 +23,13 @@ import { useModel } from "~/composables/modelWrapper"
 const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
 })
+const emit = defineEmits({
+  newContent(type: string) {
+    return type in ["text", "file", "link", "linkedResource"]
+  },
+})
 
-const contents = useModel<Content[]>("modelValue", {type: "array"})
-
-function addContent(content: Content): void {
-  contents.value.push(content)
-}
-
-function addTextContent(): void {
-  const textContent = {type: "text", text: ""}
-  addContent(textContent)
-}
+const contents = useModel<Content[]>("modelValue", { type: "array" })
 </script>
 
 <style lang="sass" scoped></style>

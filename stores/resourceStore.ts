@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { Resource } from "~/composables/types"
+import { Content, Resource } from "~/composables/types"
 import { useApiPost } from "~/composables/api"
 
 type ResourceNavigation = {
@@ -48,12 +48,37 @@ export const useResourceStore = defineStore("resource", {
       }
     },
     async getResourceContents(resourceId: number) {
-      const { data, error } = await useApiGet<Resource>(
+      const { data, error } = await useApiGet<Content[]>(
         `resources/${resourceId}/contents/`
       )
       if (!error.value) {
         return data.value
       }
+    },
+    getDefaultContent(type: string): Content {
+      if (type === "text") return { type: "text", text: "", nbCol: 3 }
+      if (type === "file") return { type: "file", nbCol: 1 }
+      if (type === "link") return { type: "link", link: "", nbCol: 1 }
+      throw "unknown type"
+    },
+    async createContent(resourceId: number, content: Content) {
+      const { data, error } = await useApiPost<Content>(`contents/`, {
+        ...content,
+        resource: resourceId,
+      })
+      console.log({
+        ...content,
+        resource: resourceId,
+      })
+      if (!error.value) {
+        return data.value
+      }
+    },
+    async addContent(type: string): Promise<Content> {
+      const content = this.getDefaultContent(type)
+      const createdContent = await this.createContent(this.current.id!, content)
+      if (createdContent) return createdContent
+      throw "error at creating Content"
     },
     setCurrentId(resourceId: number) {
       this.currentId = resourceId
@@ -68,6 +93,7 @@ export const useResourceStore = defineStore("resource", {
         id: undefined,
         rootBaseId: undefined,
         title: "",
+        contents: [],
       }
     },
     isMenuActive:

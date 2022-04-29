@@ -3,9 +3,9 @@
     <h2 class="title is-2">Grille</h2>
     Ajouter :
     <div class="fr-grid-row">
-      <button>Un lien</button>
-      <button>Un fichier</button>
-      <button @click="addTextContent">Un texte</button>
+      <button @click="$emit('newContent', 'text')">Un lien</button>
+      <button @click="$emit('newContent', 'text')">Un fichier</button>
+      <button @click="$emit('newContent', 'text')">Un texte</button>
     </div>
     <DsfrCheckbox
       v-model="isGridEnabled"
@@ -27,7 +27,7 @@
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
         />
-        <li><button @click="addTextContent">+</button></li>
+        <li><button @click="$emit('newContent', 'text')">+</button></li>
       </ul>
     </div>
   </div>
@@ -42,18 +42,14 @@ const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
   enabled: { type: Boolean, default: false },
 })
+const emit = defineEmits({
+  newContent(type: string) {
+    return type in ["text", "file", "link", "linkedResource"]
+  },
+})
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })
 const isGridEnabled = useModel("enabled")
-
-function addContent(content: Content): void {
-  contents.value.push(content)
-}
-
-function addTextContent(): void {
-  const textContent = { type: "text", text: "", nbCol: 3 }
-  addContent(textContent)
-}
 
 // Drag and drop resize
 const gridUnderlayRef = ref<HTMLElement>()
