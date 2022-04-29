@@ -66,6 +66,23 @@ export const useResourceStore = defineStore("resource", {
         this.creationStepIndex + 1
       )
     },
+    async getResource(resourceId: number) {
+      const { data, error } = await useApiGet<Resource>(
+        `resources/${resourceId}`
+      )
+      if (!error.value) {
+        const resource = data.value
+        this.resourcesById[resource.id!] = resource
+      }
+    },
+    async getResourceContents(resourceId: number) {
+      const { data, error } = await useApiGet<Resource>(
+        `resources/${resourceId}/contents/`
+      )
+      if (!error.value) {
+        return data.value
+      }
+    },
   },
   getters: {
     creationStep: (state) => {

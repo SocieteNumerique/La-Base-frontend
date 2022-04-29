@@ -1,11 +1,10 @@
 import { defineStore } from "pinia"
-import { Base, Resource } from "~/composables/types"
+import { Base } from "~/composables/types"
 
 export const useBaseStore = defineStore("base", {
   state: () => ({
     basesOrder: <number[]>[],
     basesById: <{ [key: number]: Base }>{},
-    resourcesById: <{ [key: number]: Resource }>{},
   }),
   actions: {
     async refreshBases() {
@@ -24,23 +23,6 @@ export const useBaseStore = defineStore("base", {
       if (!error.value) {
         const base = data.value
         this.basesById[base.id] = base
-      }
-    },
-    async getResource(resourceId: number) {
-      const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}`
-      )
-      if (!error.value) {
-        const resource = data.value
-        this.resourcesById[resource.id!] = resource
-      }
-    },
-    async getResourceContents(resourceId: number) {
-      const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}/contents/`
-      )
-      if (!error.value) {
-        return data.value
       }
     },
   },
