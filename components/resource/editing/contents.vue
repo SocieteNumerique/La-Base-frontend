@@ -5,14 +5,14 @@
     <ContentListEdit
       v-show="!isGridView"
       v-model="contents"
-      @add-content="addContent"
+      @new-content="addContent"
     />
     <client-only>
       <ContentGridEdit
         v-show="isGridView"
         v-model="contents"
         v-model:enabled="isGridViewEnabled"
-        @add-content="addContent"
+        @new-content="addContent"
       />
     </client-only>
   </div>
@@ -26,11 +26,10 @@ const resourceStore = useResourceStore()
 
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
-const contents = ref<Content[]>([])
 
-contents.value = (await resourceStore.getResourceContents(
-  resourceStore.currentId!
-))!
+const contents = ref<Content[]>(
+  (await resourceStore.getResourceContents(resourceStore!.currentId!))!
+)
 
 async function addContent(type: string) {
   const content: Content = await resourceStore.addContent(type)

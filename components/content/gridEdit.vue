@@ -44,8 +44,9 @@ const props = defineProps({
 })
 const emit = defineEmits({
   newContent(type: string) {
-    return type in ["text", "file", "link", "linkedResource"]
+    return ["text", "file", "link", "linkedResource"].includes(type)
   },
+  "update:enabled": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })
