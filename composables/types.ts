@@ -5,6 +5,7 @@ export type Resource = {
   id?: number
   internalProducerIds?: number[]
   isDraft?: boolean
+  isShort?: boolean
   description?: string
   linkedResourceIds?: number[]
   rootBaseId?: number

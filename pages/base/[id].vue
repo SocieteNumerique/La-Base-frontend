@@ -4,17 +4,17 @@
     <div v-for="category of base?.categories" :key="category.id">
       <h2>{{ category.title }}</h2>
       <ResourceCard
-          v-for="resource of category.resources"
-          :key="resource.id"
-          :resource="resource"
+        v-for="resource of category.resources"
+        :key="resource.id"
+        :resource="resource"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {useBaseStore} from '~/stores/baseStore';
-import {Base} from '~/composables/types'
+import { useBaseStore } from "~/stores/baseStore"
+import { Base } from "~/composables/types"
 
 const route = useRoute()
 const baseStore = useBaseStore()
@@ -34,5 +34,4 @@ watch(base, async (newBase: Base) => {
     baseStore.getBase(newBase.id)
   }
 })
-
 </script>
