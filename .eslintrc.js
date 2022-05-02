@@ -22,6 +22,7 @@ module.exports = {
     // this is sometimes necessary when using
     // non-typescript external modules
     "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
     // we already have long component names due to nuxt
     "vue/multi-word-component-names": "off",
     semi: [2, "never"],
