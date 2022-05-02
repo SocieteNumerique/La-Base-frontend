@@ -37,11 +37,13 @@
 import { Content } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
+import { useResourceStore } from "~/stores/resourceStore"
 
 const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
   enabled: { type: Boolean, default: false },
 })
+const resourceStore = useResourceStore()
 const emit = defineEmits({
   newContent(type: string) {
     return ["text", "file", "link", "linkedResource"].includes(type)
@@ -136,6 +138,7 @@ function onDrop(event: DragEvent, content: Content) {
   const nbCol = targetColumnIndex.value - initColumnIndex.value + 1
   if (nbCol <= 0) return // TODO message
   content.nbCol = nbCol
+  resourceStore.updateContent(content)
 }
 
 window.addEventListener("dragover", onDrag)

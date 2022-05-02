@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { Content, Resource } from "~/composables/types"
-import { useApiPost, useApiGet } from "~/composables/api"
+import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
 
 type ResourceNavigation = {
   activeMenu: string
@@ -66,10 +66,15 @@ export const useResourceStore = defineStore("resource", {
         ...content,
         resource: resourceId,
       })
-      console.log({
-        ...content,
-        resource: resourceId,
-      })
+      if (!error.value) {
+        return data.value
+      }
+    },
+    async updateContent(content: Content) {
+      const { data, error } = await useApiPatch<Content>(
+        `contents/${content.id}/`,
+        content
+      )
       if (!error.value) {
         return data.value
       }
