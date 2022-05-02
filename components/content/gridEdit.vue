@@ -63,9 +63,12 @@ const gridColumnWidth = computed<number | undefined>(
 const message = ref("")
 const targetColumnIndex = ref<number>(-1)
 const initColumnIndex = ref<number>(-1)
-const onGrid = computed<boolean>(
-  () => targetColumnIndex.value < 6 && targetColumnIndex.value >= 0
-)
+
+function nextNbCol(prevNbCol: number): number {
+  if (targetColumnIndex.value >= 6)
+    return Math.min(6, 6 - initColumnIndex.value + 1)
+  return Math.max(1, targetColumnIndex.value - initColumnIndex.value + 1)
+}
 
 function columnIndexFromX(xPosition: number): number {
   if (!gridColumnWidth.value || !gridUnderlayRef.value)
@@ -134,9 +137,8 @@ function onDrop(event: DragEvent, content: Content) {
   for (let colElement of gridUnderlayRef.value.children) {
     colElement.classList.toggle("targeted", false)
   }
-  // TODO resize content
-  const nbCol = targetColumnIndex.value - initColumnIndex.value + 1
-  if (nbCol <= 0) return // TODO message
+  const nbCol = nextNbCol(content.nbCol)
+  if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
   resourceStore.updateContent(content)
 }
