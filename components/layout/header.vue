@@ -1,16 +1,13 @@
 <template>
-<header class="fr-header" role="banner">
+  <header class="fr-header" role="banner">
     <div class="fr-header__body">
-        <div class="fr-container">
-            <div class="fr-header__body-row">
-              <DsfrLogo
-                :logoText="logoTitle"
-              />
-            </div>
+      <div class="fr-container">
+        <div class="fr-header__body-row">
+          <DsfrLogo :logo-text="logoTitle" />
         </div>
+      </div>
     </div>
-</header>
-
+  </header>
 </template>
 
 <script lang="ts" setup>

@@ -2,7 +2,7 @@
   <component :is="props.tagName" :style="{ 'grid-column': `span ${nbCol}` }">
     <div class="fr-grid-row space-between">
       <div>
-        <div class="type-icon"/>
+        <div class="type-icon" />
         <button>edit title</button>
         <span>
           {{ content.title }}
@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts" setup>
-import {PropType} from "vue";
-import {Content} from "~/composables/types";
-import {useModel} from "~/composables/modelWrapper";
+import { PropType } from "vue"
+import { Content } from "~/composables/types"
+import { useModel } from "~/composables/modelWrapper"
 
 const props = defineProps({
-  modelValue: {type: Object as PropType<Content>, required: true},
-  tagName: {type: String, default: "div"}
+  modelValue: { type: Object as PropType<Content>, required: true },
+  tagName: { type: String, default: "div" },
 })
-const content = useModel<Content>("modelValue", {type: "object"})
+const content = useModel<Content>("modelValue", { type: "object" })
 const resizeGhostImage = ref<HTMLElement>()
 // drag and dropo resize
 
@@ -49,14 +49,13 @@ function beginDrag(event: DragEvent) {
 }
 
 function resizeOverlay() {
-//  TODO
+  //  TODO
 }
 
 function endDrag() {
   dragging.value = false
   // TODO hide preview size overlay
 }
-
 </script>
 
 <style lang="sass">
@@ -66,4 +65,5 @@ function endDrag() {
 .vue
   background-color: blue
   height: 100px
+  position: relative
 </style>

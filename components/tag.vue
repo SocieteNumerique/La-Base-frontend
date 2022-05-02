@@ -9,22 +9,22 @@
       <div v-if="props.tagCount != null" class="fr-text--xs fr-ml-1w fr-mr-1w">
         {{ props.tagCount }}
       </div>
-      <VIcon :scale="0.9" name="ri-information-line"/>
-      <slot/>
+      <VIcon :scale="0.9" name="ri-information-line" />
+      <slot />
     </button>
 
-    <GlossaryPreview :word="props.label" class="glossary-preview"/>
+    <GlossaryPreview :word="props.label" class="glossary-preview" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import GlossaryPreview from "~/components/glossaryPreview.vue";
+import GlossaryPreview from "~/components/glossaryPreview.vue"
 
 const props = defineProps({
-  label: {type: String, default: ""},
-  selected: {type: Boolean, default: false},
-  disabled: {type: Boolean, default: false},
-  tagCount: {type: Number, default: null},
+  label: { type: String, default: "" },
+  selected: { type: Boolean, default: false },
+  disabled: { type: Boolean, default: false },
+  tagCount: { type: Number, default: null },
 })
 </script>
 
@@ -48,5 +48,4 @@ button.fr-tag
 
   &:hover + .glossary-preview
     @include display-glossary
-
 </style>
