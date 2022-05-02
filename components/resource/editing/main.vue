@@ -8,6 +8,9 @@
     >
       <ResourceEditingGeneralInfo />
     </div>
+    <ResourceEditingContents
+      v-else-if="resourceStore.isMenuActive('contents')"
+    />
   </div>
 </template>
 
