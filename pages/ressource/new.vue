@@ -1,20 +1,19 @@
 <template>
-  <ResourceEditingMain />
+  <div>
+    <ResourceCreationModal v-if="showModal" @close="showModal = false" />
+    <DsfrButton label="Ajouter une ressource" @click="onButtonClick" />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { useResourceStore } from "~/stores/resourceStore"
-import { onBeforeUnmount } from "vue"
-
 definePageMeta({
   layout: "resource",
   title: "Nouvelle fiche ressource",
 })
 
-const resourceStore = useResourceStore()
-resourceStore.isCreating = true
-
-onBeforeUnmount(() => {
-  resourceStore.isCreating = false
-})
+let showModal = ref(false)
+const onButtonClick = () => {
+  console.log("### show modal")
+  showModal.value = true
+}
 </script>

@@ -3,22 +3,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue"
-
 import { useResourceStore } from "~/stores/resourceStore"
-import { Resource } from "~/composables/types"
+import { useRoute } from "vue-router"
+import { onMounted } from "vue"
 
 definePageMeta({
   layout: "resource",
   title: "Ressource",
 })
-
 const route = useRoute()
 const resourceStore = useResourceStore()
 
-let resourceId: number
-
-const getResourceIfNotExists = (resourceId: number): void => {
+const getResourceIfNotExists = (): void => {
+  const resourceId = parseInt(route.params.id)
   resourceStore.setCurrentId(resourceId)
   if (
     !resourceStore.resourcesById[resourceId] ||
@@ -30,25 +27,9 @@ const getResourceIfNotExists = (resourceId: number): void => {
 }
 
 if (process.server) {
-  resourceId = parseInt(route.params.id)
-  console.log(
-    "### this is on the server !!",
-    route.params.id,
-    !resourceStore.resourcesById[resourceId] ||
-      resourceStore.resourcesById[resourceId].isShort
-  )
-  getResourceIfNotExists(resourceId)
+  getResourceIfNotExists()
 }
 onMounted(() => {
-  resourceId = parseInt(route.params.id)
-  console.log("### in client", resourceId, resourceStore.resourcesById)
-  getResourceIfNotExists(resourceId)
-})
-
-const resource = computed((): Resource | undefined => {
-  if (!resourceId) {
-    return undefined
-  }
-  return resourceStore.resourcesById[resourceId]
+  getResourceIfNotExists()
 })
 </script>

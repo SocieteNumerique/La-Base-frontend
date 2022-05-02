@@ -340,6 +340,11 @@
   resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.4.1.tgz#71289a18a36f775d5dff46eefb9fc59cb19d6954"
   integrity sha512-vYWqWall1p+UcyhFr/U/c6Xq4R/vh3Jk+9OEnRufUDiXi18G/mtshweJQLVpPaVMGDIK0EUEAUpd3kdD0D/x9w==
 
+"@gouvfr/dsfr@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.5.1.tgz#c5f85f6bfddd9169cfc4a27319a152d872dadcd8"
+  integrity sha512-z0o1zD3zAzF3CTGWev2tSLHPv8yk52xq6QOuEuGulGfIze5N/Y3W+ScT+dKyZG8y/aOyX9T+O9wYnNH5XIGb0g==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
@@ -372,15 +377,18 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@laruiss/vue-dsfr@^1.0.0-beta.37":
-  version "1.0.0-beta.39"
-  resolved "https://registry.yarnpkg.com/@laruiss/vue-dsfr/-/vue-dsfr-1.0.0-beta.39.tgz#b86295952cf8e6c247401f6a2c2ba617cd137964"
-  integrity sha512-uGsvUZZ97Jl35p4nMw3SqQ1Mqs/GhTZc1QXNLgZIfonnEeOkZDc2ifHKY9G0mKhNs/Ic8IsJMqlDrZBteLapjA==
+"@laruiss/vue-dsfr@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@laruiss/vue-dsfr/-/vue-dsfr-1.0.0.tgz#b88551024932e407d47e280008cfbe7b441b1956"
+  integrity sha512-5wzNF9T1uTzb0KblhBVv3cBqmRsPHyvEN0mtl7a/mlNjuJLAdVoBPsjAsezvxdc3MBiorv4kEXiSWrKsbeno9g==
   dependencies:
-    focus-trap "^6.7.1"
+    "@gouvfr/dsfr" "^1.4.1"
+    focus-trap "^6.7.3"
     focus-trap-vue "^3.2.1"
-    oh-vue-icons "^0.4.7"
-    vue "^3.2.0"
+    oh-vue-icons "^1.0.0-rc2"
+    vue "^3.2.31"
+  optionalDependencies:
+    esbuild-linux-64 "^0.14.34"
 
 "@mapbox/node-pre-gyp@^1.0.5":
   version "1.0.8"
@@ -2774,6 +2782,11 @@ esbuild-linux-64@0.14.23:
   resolved "https://registry.yarnpkg.com/esbuild-linux-64/-/esbuild-linux-64-0.14.23.tgz#c04c438514f1359ecb1529205d0c836d4165f198"
   integrity sha512-H0gztDP60qqr8zoFhAO64waoN5yBXkmYCElFklpd6LPoobtNGNnDe99xOQm28+fuD75YJ7GKHzp/MLCLhw2+vQ==
 
+esbuild-linux-64@^0.14.34:
+  version "0.14.38"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-64/-/esbuild-linux-64-0.14.38.tgz#4893d07b229d9cfe34a2b3ce586399e73c3ac519"
+  integrity sha512-uuZHNmqcs+Bj1qiW9k/HZU3FtIHmYiuxZ/6Aa+/KHb/pFKr7R3aVqvxlAudYI9Fw3St0VCPfv7QBpUITSmBR1Q==
+
 esbuild-linux-arm64@0.14.23:
   version "0.14.23"
   resolved "https://registry.yarnpkg.com/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.23.tgz#d1b3ab2988ab0734886eb9e811726f7db099ab96"
@@ -3461,12 +3474,12 @@ focus-trap-vue@^3.2.1:
   resolved "https://registry.yarnpkg.com/focus-trap-vue/-/focus-trap-vue-3.2.1.tgz#630023bb96bfe45ebcf2e817eee6eb28d4edf52b"
   integrity sha512-nThbiBo4F9ilwEc3kOYTW63RDbOsWNdz7jWFk9CmA9/LmZ7EJgEszV2MBXaQQMceEsB7h0WuIkkfzQznU5yj+A==
 
-focus-trap@^6.7.1:
-  version "6.7.3"
-  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-6.7.3.tgz#b5dc195b49c90001f08a63134471d1e6dd381ddd"
-  integrity sha512-8xCEKndV4KrseGhFKKKmczVA14yx1/hnmFICPOjcFjToxCJYj/NHH43tPc3YE/PLnLRNZoFug0EcWkGQde/miQ==
+focus-trap@^6.7.3:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-6.9.0.tgz#d72a1ba17ac1b500bd857c6b01f072b8cfd97f6e"
+  integrity sha512-Yv3ieSeAPbfjzjU6xIuF1yAGw0kIKO5EkEJL9o/8MYfBcr99cV7dE6rJM4slk1itDHHeEhoNorQVzvEIT1rNsw==
   dependencies:
-    tabbable "^5.2.1"
+    tabbable "^5.3.1"
 
 follow-redirects@^1.0.0:
   version "1.14.9"
@@ -5164,10 +5177,12 @@ object.values@^1.1.5:
     define-properties "^1.1.3"
     es-abstract "^1.19.1"
 
-oh-vue-icons@^0.4.7:
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/oh-vue-icons/-/oh-vue-icons-0.4.7.tgz#ead3f6527db084e30cc9acfebbcf3c7bb31ad69e"
-  integrity sha512-gNyXi/ztl6wYykPbdcBfvVCyE6yU9nkafzXmt1DAsEhE2C7CupxSr/BIFZOIcjml9yUwG6OQjkcjfQASZH1sKg==
+oh-vue-icons@^1.0.0-rc2:
+  version "1.0.0-rc3"
+  resolved "https://registry.yarnpkg.com/oh-vue-icons/-/oh-vue-icons-1.0.0-rc3.tgz#63be64dd0da11a1b278d612a4f2a25ba692628f6"
+  integrity sha512-+k2YC6piK7sEZnwbkQF3UokFPMmgqpiLP6f/H0ovQFLl20QA5V4U8EcI6EclD2Lt5NMQ3k6ilLGo8XyXqdVSvg==
+  dependencies:
+    vue-demi "^0.12.5"
 
 ohmyfetch@^0.4.15, ohmyfetch@^0.4.5:
   version "0.4.15"
@@ -6558,10 +6573,10 @@ svgo@^2.7.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
-tabbable@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-5.2.1.tgz#e3fda7367ddbb172dcda9f871c0fdb36d1c4cd9c"
-  integrity sha512-40pEZ2mhjaZzK0BnI+QGNjJO8UYx9pP5v7BGe17SORTO0OEuuaAwQTkAp8whcZvqon44wKFOikD+Al11K3JICQ==
+tabbable@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-5.3.1.tgz#059f2a19b829efce2a0ec05785a47dd3bcd0a25b"
+  integrity sha512-NtO7I7eoAHR+JwwcNsi/PipamtAEebYDnur/k9wM6n238HHy/+1O4+7Zx7e/JaDAbKJPlIFYsfsV/6tPqTOQvg==
 
 table@^6.8.0:
   version "6.8.0"
@@ -6966,6 +6981,11 @@ vue-demi@*:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
   integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
 
+vue-demi@^0.12.5:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
+  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
+
 vue-eslint-parser@^8.0.1, vue-eslint-parser@^8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-8.3.0.tgz#5d31129a1b3dd89c0069ca0a1c88f970c360bd0d"
@@ -7017,7 +7037,7 @@ vue-style-loader@^4.1.3:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue@^3.2.0, vue@^3.2.31:
+vue@^3.2.31:
   version "3.2.31"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.31.tgz#e0c49924335e9f188352816788a4cca10f817ce6"
   integrity sha512-odT3W2tcffTiQCy57nOT93INw1auq5lYLLYtWpPYQQYQOOdHiqFct9Xhna6GJ+pJQaF67yZABraH47oywkJgFw==
