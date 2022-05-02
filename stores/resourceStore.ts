@@ -1,14 +1,6 @@
 import { defineStore } from "pinia"
-import { Content, Resource } from "~/composables/types"
+import { Resource } from "~/composables/types"
 import { useApiPost } from "~/composables/api"
-
-type NewResourceParams = {
-  contents: Content[]
-  description: string
-  id?: number
-  rootBaseId?: number
-  title: string
-}
 
 type ResourceNavigation = {
   activeMenu: string
@@ -24,28 +16,16 @@ type ResourceState = {
   currentId?: number
   isCreating: boolean
   navigation: ResourceNavigation
-  newParams: NewResourceParams
   resourcesById: ResourcesById
 }
-
-const CREATION_STEPS = ["select_base", "init_general_info", "general_info"]
 
 export const useResourceStore = defineStore("resource", {
   state: () =>
     <ResourceState>{
-      creationStepIndex: 0,
       currentId: undefined,
-      isCreating: false,
       navigation: {
         activeMenu: "informations",
         activeSubMenu: "general",
-      },
-      newParams: {
-        id: undefined,
-        description: "",
-        rootBaseId: undefined,
-        title: "",
-        contents: [],
       },
       resourcesById: {},
     },
@@ -56,15 +36,6 @@ export const useResourceStore = defineStore("resource", {
         this.resourcesById[data.value.id!] = data.value
         return data.value
       }
-    },
-    decrementCreationStep() {
-      this.creationStepIndex = Math.max(0, this.creationStepIndex - 1)
-    },
-    incrementCreationStep() {
-      this.creationStepIndex = Math.min(
-        CREATION_STEPS.length - 1,
-        this.creationStepIndex + 1
-      )
     },
     async getResource(resourceId: number) {
       const { data, error } = await useApiGet<Resource>(
@@ -84,29 +55,30 @@ export const useResourceStore = defineStore("resource", {
         return data.value
       }
     },
-    async setCurrentId(resourceId: number) {
+    setCurrentId(resourceId: number) {
       this.currentId = resourceId
     },
   },
   getters: {
-    creationStep: (state) => {
-      return CREATION_STEPS[state.creationStepIndex]
-    },
-    contents: {
-      get() {},
-      set() {},
-    },
-    current: (state): Resource | undefined => {
-      if (state.currentId == null) {
-        return undefined
+    current: (state): Resource => {
+      if (state.currentId) {
+        return state.resourcesById[state.currentId]
       }
-      return state.resourcesById[state.currentId]
+      return {
+        id: undefined,
+        rootBaseId: undefined,
+        title: "",
+      }
     },
-    isMenuActive: (state) => (name: string) => {
-      return state.navigation.activeMenu === name
-    },
-    isSubMenuActive: (state) => (name: string) => {
-      return state.navigation.activeSubMenu === name
-    },
+    isMenuActive:
+      (state) =>
+      (name: string): boolean => {
+        return state.navigation.activeMenu === name
+      },
+    isSubMenuActive:
+      (state) =>
+      (name: string): boolean => {
+        return state.navigation.activeSubMenu === name
+      },
   },
 })

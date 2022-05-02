@@ -1,6 +1,3 @@
-// @ts-ignore
-import { VIcon } from "@laruiss/vue-dsfr"
-
 import {
   RiCloseLine,
   RiFlagLine,
@@ -14,7 +11,7 @@ import {
   RiArrowRightLine,
 } from "oh-vue-icons/icons/ri"
 
-VIcon.add(
+export const icons = [
   RiCloseLine,
   RiFlagLine,
   RiHome2Line,
@@ -24,5 +21,5 @@ VIcon.add(
   RiEyeLine,
   RiLink,
   RiDeleteBinLine,
-  RiArrowRightLine
-)
+  RiArrowRightLine,
+]
