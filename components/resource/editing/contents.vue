@@ -29,13 +29,18 @@ const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
 
 const contents = ref<Content[]>(
-  (await getResourceContents(resourceStore.currentId!))!
+  (await getResourceContents(resourceStore.currentId!)) || []
 )
+
+const nextOrder = computed<number>(() => {
+  if (contents.value.length === 0) return 0
+  return contents.value.slice(-1)[0].order! + 1
+})
 
 async function newContent(type: string) {
   const content = await addContent(
     type,
-    contents.value.length,
+    nextOrder.value,
     resourceStore.currentId!
   )
   contents.value.push(content)
