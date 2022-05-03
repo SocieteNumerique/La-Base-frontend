@@ -7,7 +7,7 @@
     :model-value="resourceStore.current.title"
     label="Nom de la ressource"
     :label-visible="true"
-    @update:modelValue="onTitleUpdate"
+    @update:model-value="onTitleUpdate"
   />
   <div class="fr-mt-3w"></div>
   <DsfrInput
@@ -16,7 +16,7 @@
     :hint="'Super long texte explicatif'"
     :label-visible="true"
     :is-textarea="true"
-    @update:modelValue="onDescriptionUpdate"
+    @update:model-value="onDescriptionUpdate"
   />
 </template>
 

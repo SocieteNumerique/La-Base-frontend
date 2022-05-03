@@ -16,7 +16,7 @@
         label="Nom de la ressource"
         placeholder="Nom de la ressource"
         :label-visible="true"
-        @update:modelValue="onTitleUpdate"
+        @update:model-value="onTitleUpdate"
       />
     </template>
     <template v-else>

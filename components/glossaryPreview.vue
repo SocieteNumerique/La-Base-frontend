@@ -5,7 +5,7 @@
 
 <script lang="ts" setup>
 const props = defineProps({
-  word: String
+  word: String,
 })
 </script>
 
