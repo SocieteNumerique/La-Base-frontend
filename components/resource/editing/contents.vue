@@ -5,14 +5,14 @@
     <ContentListEdit
       v-show="!isGridView"
       v-model="contents"
-      @new-content="addContent"
+      @new-content="newContent"
     />
     <client-only>
       <ContentGridEdit
         v-show="isGridView"
         v-model="contents"
         v-model:enabled="isGridViewEnabled"
-        @new-content="addContent"
+        @new-content="newContent"
       />
     </client-only>
   </div>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { Content } from "~/composables/types"
+import { getResourceContents, addContent } from "~/composables/contentsHelper"
 
 const resourceStore = useResourceStore()
 
@@ -28,11 +29,15 @@ const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
 const isGridView = ref<boolean>(true) // TODO
 
 const contents = ref<Content[]>(
-  (await resourceStore.getResourceContents(resourceStore!.currentId!))!
+  (await getResourceContents(resourceStore.currentId!))!
 )
 
-async function addContent(type: string) {
-  const content = await resourceStore.addContent(type, contents.value.length)
+async function newContent(type: string) {
+  const content = await addContent(
+    type,
+    contents.value.length,
+    resourceStore.currentId!
+  )
   contents.value.push(content)
 }
 </script>

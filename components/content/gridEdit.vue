@@ -38,6 +38,7 @@ import { Content } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
 import { useResourceStore } from "~/stores/resourceStore"
+import { updateContent } from "~/composables/contentsHelper"
 
 const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
@@ -64,9 +65,14 @@ const message = ref("")
 const targetColumnIndex = ref<number>(-1)
 const initColumnIndex = ref<number>(-1)
 
+// computes the size of the block at drop
+// making sure it is between 1 and 6
 function nextNbCol(prevNbCol: number): number {
   if (targetColumnIndex.value >= 6)
+    // if we drop with the mouse on the right of the grid
+    // make the element one column bigger than the space left on the line
     return Math.min(6, 6 - initColumnIndex.value + 1)
+  // normal situation
   return Math.max(1, targetColumnIndex.value - initColumnIndex.value + 1)
 }
 
@@ -109,8 +115,8 @@ function applyOnUnderlayColumns(
 }
 
 function onDragBegin(event: DragEventInit, index: number) {
-  const xPosition = blockGridRef.value.children
-    .item(index)
+  const xPosition = blockGridRef!
+    .value!.children!.item(index)!
     .getBoundingClientRect().x
   initColumnIndex.value = columnIndexFromX(xPosition)
 }
@@ -140,7 +146,7 @@ function onDrop(event: DragEvent, content: Content) {
   const nbCol = nextNbCol(content.nbCol)
   if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
-  resourceStore.updateContent(content)
+  updateContent(content)
 }
 
 window.addEventListener("dragover", onDrag)
