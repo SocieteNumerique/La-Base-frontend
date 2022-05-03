@@ -6,6 +6,7 @@
       v-show="!isGridView"
       v-model="contents"
       @new-content="newContent"
+      @delete-content="onDelete"
     />
     <client-only>
       <ContentGridEdit
@@ -13,6 +14,7 @@
         v-model="contents"
         v-model:enabled="isGridViewEnabled"
         @new-content="newContent"
+        @delete-content="onDelete"
       />
     </client-only>
   </div>
@@ -44,6 +46,10 @@ async function newContent(type: string) {
     resourceStore.currentId!
   )
   contents.value.push(content)
+}
+
+async function onDelete(contentId: number) {
+  console.log(`delete ${contentId}`)
 }
 </script>
 

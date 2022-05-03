@@ -26,6 +26,7 @@
           tag-name="li"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
+          @delete="$emit('delete-content', contents[index].id)"
         />
         <li><button @click="$emit('newContent', 'text')">+</button></li>
       </ul>
@@ -50,6 +51,7 @@ const emit = defineEmits({
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
   "update:enabled": null,
+  "delete-content": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })

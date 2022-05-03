@@ -9,7 +9,10 @@
     </div>
     <ul>
       <li v-for="(content, index) of contents" :key="index">
-        <ContentListItem v-model="contents[index]" />
+        <ContentListItem
+          v-model="contents[index]"
+          @delete="$emit('delete-content', content.id)"
+        />
       </li>
     </ul>
   </div>
@@ -23,10 +26,11 @@ import { useModel } from "~/composables/modelWrapper"
 const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
 })
-const emit = defineEmits({
+defineEmits({
   newContent(type: string) {
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
+  "delete-content": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })

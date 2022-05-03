@@ -4,12 +4,12 @@
       <div class="type-icon" />
       {{ content.title }}
       <DsfrTag v-if="content.licence" :label="content.licence" :small="true" />
-      <button>Légender</button>
+      <button disabled>Légender</button>
     </div>
     <div>
       <button v-if="isToSave">save</button>
-      <button>delete</button>
-      <button>params</button>
+      <button @click="$emit('delete')">delete</button>
+      <button disabled>params</button>
     </div>
   </div>
 </template>
@@ -22,6 +22,8 @@ import { useModel } from "~/composables/modelWrapper"
 const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
+defineEmits(["delete"])
+
 const content = useModel<Content>("modelValue", { type: "object" })
 
 const isToSave = computed<boolean>(() => !("id" in content.value))

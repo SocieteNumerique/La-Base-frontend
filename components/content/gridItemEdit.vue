@@ -3,20 +3,21 @@
     <div class="fr-grid-row space-between">
       <div>
         <div class="type-icon" />
-        <button>edit title</button>
+        <button disabled>edit title</button>
         <span>
           {{ content.title }}
         </span>
       </div>
-
       <div>
-        <button>delete</button>
-        <button>params</button>
+        <button @click="$emit('delete')">delete</button>
+        <button disabled>params</button>
       </div>
     </div>
+
     <div class="vue"></div>
+
     <div class="fr-grid-row space-between">
-      <button>légender</button>
+      <button disabled>légender</button>
       <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">
         resize
         <div ref="resizeGhostImage" />
@@ -34,6 +35,8 @@ const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
   tagName: { type: String, default: "div" },
 })
+defineEmits(["delete"])
+
 const content = useModel<Content>("modelValue", { type: "object" })
 const resizeGhostImage = ref<HTMLElement>()
 // drag and dropo resize
