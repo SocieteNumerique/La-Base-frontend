@@ -26,7 +26,7 @@
           tag-name="li"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
-          @delete="$emit('delete-content', contents[index].id)"
+          @delete="$emit('delete-content', { id: contents[index].id, index })"
         />
         <li><button @click="$emit('new-content', 'text')">+</button></li>
       </ul>

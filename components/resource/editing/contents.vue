@@ -23,7 +23,11 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { Content } from "~/composables/types"
-import { getResourceContents, addContent } from "~/composables/contentsHelper"
+import {
+  getResourceContents,
+  addContent,
+  deleteContent,
+} from "~/composables/contentsHelper"
 
 const resourceStore = useResourceStore()
 
@@ -48,8 +52,9 @@ async function newContent(type: string) {
   contents.value.push(content)
 }
 
-async function onDelete(contentId: number) {
-  console.log(`delete ${contentId}`)
+async function onDelete({ id, index }: { id: number; index: number }) {
+  if (await deleteContent(id)) contents.value.splice(index, 1)
+  // TODO display error
 }
 </script>
 

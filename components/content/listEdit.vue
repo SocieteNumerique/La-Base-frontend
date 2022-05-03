@@ -11,7 +11,7 @@
       <li v-for="(content, index) of contents" :key="index">
         <ContentListItem
           v-model="contents[index]"
-          @delete="$emit('delete-content', content.id)"
+          @delete="$emit('delete-content', { id: contents[index].id, index })"
         />
       </li>
     </ul>

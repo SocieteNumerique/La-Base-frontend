@@ -1,3 +1,6 @@
+import { Content } from "~/composables/types"
+import { useApiGet, useApiPatch, useApiPost, useApiDelete } from "~/composables/api"
+
 export async function getResourceContents(resourceId: number) {
   const { data, error } = await useApiGet<Content[]>(
     `resources/${resourceId}/contents/`
@@ -44,4 +47,11 @@ export async function addContent(
   const createdContent = await createContent(resourceId, content)
   if (createdContent) return createdContent
   throw "error at creating Content"
+}
+
+export async function deleteContent(id: number) {
+  const { data, error } = await useApiDelete<Content>(`contents/${id}/`)
+  if (!error.value) {
+    return data.value
+  }
 }
