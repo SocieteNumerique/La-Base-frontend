@@ -39,13 +39,13 @@ defineEmits(["delete"])
 
 const content = useModel<Content>("modelValue", { type: "object" })
 const resizeGhostImage = ref<HTMLElement>()
-// drag and dropo resize
+// drag and drop resize
 
 const nbCol = computed<number>(() => content.value.nbCol) // TODO computed
 const dragging = ref<boolean>(false)
 
 function beginDrag(event: DragEvent) {
-  event.dataTransfer.setDragImage(resizeGhostImage.value, 0, 0)
+  event.dataTransfer!.setDragImage(resizeGhostImage.value!, 0, 0)
   dragging.value = true
   return false
   // TODO show preview size overlay

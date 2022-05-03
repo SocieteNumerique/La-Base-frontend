@@ -28,7 +28,7 @@
           @dragstart="onDragBegin($event, index)"
           @delete="$emit('delete-content', contents[index].id)"
         />
-        <li><button @click="$emit('newContent', 'text')">+</button></li>
+        <li><button @click="$emit('new-content', 'text')">+</button></li>
       </ul>
     </div>
   </div>
@@ -47,7 +47,7 @@ const props = defineProps({
 })
 const resourceStore = useResourceStore()
 const emit = defineEmits({
-  newContent(type: string) {
+  "new-content": (type: string) => {
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
   "update:enabled": null,
@@ -61,7 +61,7 @@ const isGridEnabled = useModel("enabled")
 const gridUnderlayRef = ref<HTMLElement>()
 const blockGridRef = ref<HTMLElement>()
 const gridColumnWidth = computed<number | undefined>(
-  () => gridUnderlayRef?.value?.getBoundingClientRect().width / 6 || undefined
+  () => gridUnderlayRef.value!.getBoundingClientRect().width / 6 || undefined
 ) // TODO watch window resize
 const message = ref("")
 const targetColumnIndex = ref<number>(-1)
