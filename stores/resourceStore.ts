@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
-import { Resource } from "~/composables/types"
-import { useApiPost } from "~/composables/api"
+import { Content, Resource } from "~/composables/types"
+import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
 
 type ResourceNavigation = {
   activeMenu: string
@@ -47,14 +47,6 @@ export const useResourceStore = defineStore("resource", {
         console.log("### got resource", resourceId, resource.id)
       }
     },
-    async getResourceContents(resourceId: number) {
-      const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}/contents/`
-      )
-      if (!error.value) {
-        return data.value
-      }
-    },
     setCurrentId(resourceId: number) {
       this.currentId = resourceId
     },
@@ -68,6 +60,7 @@ export const useResourceStore = defineStore("resource", {
         id: undefined,
         rootBaseId: undefined,
         title: "",
+        contents: [],
       }
     },
     isMenuActive:

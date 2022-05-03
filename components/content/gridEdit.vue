@@ -3,9 +3,9 @@
     <h2 class="title is-2">Grille</h2>
     Ajouter :
     <div class="fr-grid-row">
-      <button>Un lien</button>
-      <button>Un fichier</button>
-      <button @click="addTextContent">Un texte</button>
+      <button @click="$emit('newContent', 'text')">Un lien</button>
+      <button @click="$emit('newContent', 'text')">Un fichier</button>
+      <button @click="$emit('newContent', 'text')">Un texte</button>
     </div>
     <DsfrCheckbox
       v-model="isGridEnabled"
@@ -27,7 +27,7 @@
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
         />
-        <li><button @click="addTextContent">+</button></li>
+        <li><button @click="$emit('newContent', 'text')">+</button></li>
       </ul>
     </div>
   </div>
@@ -37,23 +37,23 @@
 import { Content } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
+import { useResourceStore } from "~/stores/resourceStore"
+import { updateContent } from "~/composables/contentsHelper"
 
 const props = defineProps({
-  modelValue: { type: Object as PropType<Content[]>, default: () => [] },
+  modelValue: { type: Array as PropType<Content[]>, default: () => [] },
   enabled: { type: Boolean, default: false },
+})
+const resourceStore = useResourceStore()
+const emit = defineEmits({
+  newContent(type: string) {
+    return ["text", "file", "link", "linkedResource"].includes(type)
+  },
+  "update:enabled": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })
 const isGridEnabled = useModel("enabled")
-
-function addContent(content: Content): void {
-  contents.value.push(content)
-}
-
-function addTextContent(): void {
-  const textContent = { type: "text", text: "", nbCol: 3 }
-  addContent(textContent)
-}
 
 // Drag and drop resize
 const gridUnderlayRef = ref<HTMLElement>()
@@ -64,9 +64,17 @@ const gridColumnWidth = computed<number | undefined>(
 const message = ref("")
 const targetColumnIndex = ref<number>(-1)
 const initColumnIndex = ref<number>(-1)
-const onGrid = computed<boolean>(
-  () => targetColumnIndex.value < 6 && targetColumnIndex.value >= 0
-)
+
+// computes the size of the block at drop
+// making sure it is between 1 and 6
+function nextNbCol(prevNbCol: number): number {
+  if (targetColumnIndex.value >= 6)
+    // if we drop with the mouse on the right of the grid
+    // make the element one column bigger than the space left on the line
+    return Math.min(6, 6 - initColumnIndex.value + 1)
+  // normal situation
+  return Math.max(1, targetColumnIndex.value - initColumnIndex.value + 1)
+}
 
 function columnIndexFromX(xPosition: number): number {
   if (!gridColumnWidth.value || !gridUnderlayRef.value)
@@ -107,8 +115,8 @@ function applyOnUnderlayColumns(
 }
 
 function onDragBegin(event: DragEventInit, index: number) {
-  const xPosition = blockGridRef.value.children
-    .item(index)
+  const xPosition = blockGridRef!
+    .value!.children!.item(index)!
     .getBoundingClientRect().x
   initColumnIndex.value = columnIndexFromX(xPosition)
 }
@@ -131,15 +139,14 @@ function onDrag(event: DragEvent) {
 }
 
 function onDrop(event: DragEvent, content: Content) {
-  console.log({ event })
   if (!gridUnderlayRef.value) throw "Layout not setup yet"
   for (let colElement of gridUnderlayRef.value.children) {
     colElement.classList.toggle("targeted", false)
   }
-  // TODO resize content
-  const nbCol = targetColumnIndex.value - initColumnIndex.value + 1
-  if (nbCol <= 0) return // TODO message
+  const nbCol = nextNbCol(content.nbCol)
+  if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
+  updateContent(content)
 }
 
 window.addEventListener("dragover", onDrag)

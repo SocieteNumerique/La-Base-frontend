@@ -17,7 +17,10 @@
     <div class="vue"></div>
     <div class="fr-grid-row space-between">
       <button>légender</button>
-      <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">resize</button>
+      <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">
+        resize
+        <div ref="resizeGhostImage" />
+      </button>
     </div>
   </component>
 </template>
@@ -32,14 +35,16 @@ const props = defineProps({
   tagName: {type: String, default: "div"}
 })
 const content = useModel<Content>("modelValue", {type: "object"})
-
+const resizeGhostImage = ref<HTMLElement>()
 // drag and dropo resize
 
 const nbCol = computed<number>(() => content.value.nbCol) // TODO computed
 const dragging = ref<boolean>(false)
 
-function beginDrag() {
+function beginDrag(event: DragEvent) {
+  event.dataTransfer.setDragImage(resizeGhostImage.value, 0, 0)
   dragging.value = true
+  return false
   // TODO show preview size overlay
 }
 
