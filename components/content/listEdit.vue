@@ -3,8 +3,8 @@
     <h2 class="title is-2">Liste</h2>
     Ajouter :
     <div class="fr-grid-row">
-      <button @click="$emit('newContent', 'text')">Un lien</button>
-      <button @click="$emit('newContent', 'text')">Un fichier</button>
+      <button @click="$emit('newContent', 'link')">Un lien</button>
+      <button @click="$emit('newContent', 'file')">Un fichier</button>
       <button @click="$emit('newContent', 'text')">Un texte</button>
     </div>
     <ul>
