@@ -50,8 +50,8 @@ export async function addContent(
 }
 
 export async function deleteContent(id: number) {
-  const { data, error } = await useApiDelete<Content>(`contents/${id}/`)
+  const { error } = await useApiDelete<Content>(`contents/${id}/`)
   if (!error.value) {
-    return data.value
+    return true
   }
 }
