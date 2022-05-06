@@ -77,7 +77,7 @@ export async function useApiRequest<Type>(
       method: method,
       body: payload,
       credentials: "include",
-      headers: getHeaders(ctx!, true),
+      headers: getHeaders(ctx!, method != "GET"),
       params: params,
     })
   )
