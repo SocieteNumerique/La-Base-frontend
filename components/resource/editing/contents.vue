@@ -6,6 +6,7 @@
       v-show="!isGridView"
       v-model="contents"
       @new-content="newContent"
+      @delete-content="onDelete"
     />
     <client-only>
       <ContentGridEdit
@@ -13,6 +14,7 @@
         v-model="contents"
         v-model:enabled="isGridViewEnabled"
         @new-content="newContent"
+        @delete-content="onDelete"
       />
     </client-only>
   </div>
@@ -21,7 +23,11 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { Content } from "~/composables/types"
-import { getResourceContents, addContent } from "~/composables/contentsHelper"
+import {
+  getResourceContents,
+  addContent,
+  deleteContent,
+} from "~/composables/contentsHelper"
 
 const resourceStore = useResourceStore()
 
@@ -44,6 +50,11 @@ async function newContent(type: string) {
     resourceStore.currentId!
   )
   contents.value.push(content)
+}
+
+async function onDelete({ id, index }: { id: number; index: number }) {
+  if (await deleteContent(id)) contents.value.splice(index, 1)
+  // TODO display error
 }
 </script>
 

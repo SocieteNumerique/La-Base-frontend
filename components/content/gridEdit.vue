@@ -3,8 +3,8 @@
     <h2 class="title is-2">Grille</h2>
     Ajouter :
     <div class="fr-grid-row">
-      <button @click="$emit('newContent', 'text')">Un lien</button>
-      <button @click="$emit('newContent', 'text')">Un fichier</button>
+      <button @click="$emit('newContent', 'link')">Un lien</button>
+      <button @click="$emit('newContent', 'file')">Un fichier</button>
       <button @click="$emit('newContent', 'text')">Un texte</button>
     </div>
     <DsfrCheckbox
@@ -26,8 +26,9 @@
           tag-name="li"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
+          @delete="$emit('delete-content', { id: contents[index].id, index })"
         />
-        <li><button @click="$emit('newContent', 'text')">+</button></li>
+        <li><button @click="$emit('new-content', 'text')">+</button></li>
       </ul>
     </div>
   </div>
@@ -46,10 +47,11 @@ const props = defineProps({
 })
 const resourceStore = useResourceStore()
 const emit = defineEmits({
-  newContent(type: string) {
+  "new-content": (type: string) => {
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
   "update:enabled": null,
+  "delete-content": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })
@@ -59,7 +61,7 @@ const isGridEnabled = useModel("enabled")
 const gridUnderlayRef = ref<HTMLElement>()
 const blockGridRef = ref<HTMLElement>()
 const gridColumnWidth = computed<number | undefined>(
-  () => gridUnderlayRef?.value?.getBoundingClientRect().width / 6 || undefined
+  () => gridUnderlayRef.value!.getBoundingClientRect().width / 6 || undefined
 ) // TODO watch window resize
 const message = ref("")
 const targetColumnIndex = ref<number>(-1)

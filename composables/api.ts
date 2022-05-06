@@ -62,19 +62,26 @@ const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
 
 export const BASE_URL = base_url
 
-export async function useApiGet<Type>(path: string) {
+export async function useApiRequest<Type>(
+  method: string,
+  path: string,
+  payload: any,
+  params = {}
+) {
   const loadingStore = useLoadingStore()
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
   const { data, error } = await useAsyncData<Type>(key, (ctx) =>
     $fetch(BASE_URL + "/api/" + path, {
-      method: "GET",
+      method: method,
+      body: payload,
       credentials: "include",
-      headers: getHeaders(ctx!),
+      headers: getHeaders(ctx!, method != "GET"),
+      params: params,
     })
   )
-  console.log("### apiGet results", key, data.value, error.value)
+  console.log(`### api ${method} results`, key, data.value, error.value)
   if (error.value) {
     loadingStore.markError(key)
   } else {
@@ -83,46 +90,26 @@ export async function useApiGet<Type>(path: string) {
   return { data, error }
 }
 
-export async function useApiPost<Type>(path: string, payload: any = {}) {
-  const loadingStore = useLoadingStore()
-
-  const key = makeLoadingKey(path)
-  loadingStore.markLoading(key)
-  const { data, error } = await useAsyncData<Type>(key, (ctx) =>
-    $fetch(BASE_URL + "/api/" + path, {
-      method: "POST",
-      body: payload,
-      credentials: "include",
-      headers: getHeaders(ctx!, true),
-    })
-  )
-  console.log("### apiPost results", key, data.value, error.value)
-  if (error.value) {
-    loadingStore.markError(key)
-  } else {
-    loadingStore.markDone(key)
-  }
-  return { data, error }
+export async function useApiGet<Type>(path: string, params = {}) {
+  return useApiRequest<Type>("GET", path, undefined, params)
 }
 
-export async function useApiPatch<Type>(path: string, payload: any = {}) {
-  const loadingStore = useLoadingStore()
+export async function useApiPost<Type>(
+  path: string,
+  payload = {},
+  params = {}
+) {
+  return useApiRequest<Type>("POST", path, payload, params)
+}
 
-  const key = makeLoadingKey(path)
-  loadingStore.markLoading(key)
-  const { data, error } = await useAsyncData<Type>(key, (ctx) =>
-    $fetch(BASE_URL + "/api/" + path, {
-      method: "PATCH",
-      body: payload,
-      credentials: "include",
-      headers: getHeaders(ctx!, true),
-    })
-  )
-  console.log("### apiPatch results", key, data.value, error.value)
-  if (error.value) {
-    loadingStore.markError(key)
-  } else {
-    loadingStore.markDone(key)
-  }
-  return { data, error }
+export async function useApiPatch<Type>(
+  path: string,
+  payload = {},
+  params = {}
+) {
+  return useApiRequest<Type>("PATCH", path, payload, params)
+}
+
+export async function useApiDelete<Type>(path: string, params = {}) {
+  return useApiRequest<Type>("DELETE", path, undefined, params)
 }
