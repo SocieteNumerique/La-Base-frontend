@@ -5,11 +5,7 @@ export default defineNuxtConfig({
 
   buildModules: ["@pinia/nuxt"],
   build: {
-    transpile: [
-      // "oh-vue-icons/dist/v3/icon.es",
-      // "oh-vue-icons/icons/ri/index",
-      "@laruiss/vue-dsfr",
-    ],
+    transpile: ["@laruiss/vue-dsfr"],
   },
   vue: {
     config: {

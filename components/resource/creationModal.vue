@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import BaseSelector from "~/components/baseSelector.vue"
-import { ref, defineEmits } from "vue"
+import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useBaseStore } from "~/stores/baseStore"
