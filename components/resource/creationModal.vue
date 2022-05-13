@@ -7,10 +7,7 @@
     @close="onClose()"
   >
     <template v-if="baseStore.hasBases">
-      <BaseSelector
-        v-model="selectedBase"
-        description="La ressource créée sera rattachée à cette base"
-      />
+      <BaseSelector v-model="selectedBase" description="Publier dans" />
       <DsfrInput
         :model-value="title"
         label="Nom de la ressource"

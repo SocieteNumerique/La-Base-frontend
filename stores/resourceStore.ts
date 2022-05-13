@@ -25,11 +25,20 @@ export const useResourceStore = defineStore("resource", {
       currentId: undefined,
       navigation: {
         activeMenu: "informations",
-        activeSubMenu: "general",
+        activeSubMenu: "indexation",
       },
       resourcesById: {},
     },
   actions: {
+    addTagToResource(tagId: number, resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      if (resource.tags == null) {
+        resource.tags = []
+      }
+      if (resource.tags.indexOf(tagId) === -1) {
+        resource.tags.push(tagId)
+      }
+    },
     async createResource(resource: Resource) {
       const { data, error } = await useApiPost<Resource>("resources/", resource)
       if (!error.value) {
@@ -49,6 +58,13 @@ export const useResourceStore = defineStore("resource", {
     },
     setCurrentId(resourceId: number) {
       this.currentId = resourceId
+    },
+    removeTagFromResource(tagId: number, resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      if (resource.tags == null) {
+        resource.tags = []
+      }
+      resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
     },
   },
   getters: {

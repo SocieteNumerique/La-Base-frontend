@@ -2,6 +2,7 @@ import { defineNuxtPlugin } from "#app"
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useMainStore } from "~/stores/mainStore"
+import { useTagStore } from "~/stores/tagStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("app:mounted", () => {
@@ -12,14 +13,23 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (!baseStore.basesOrder.length) {
       baseStore.refreshBases()
     }
-    const userStore = useUserStore()
-    if (!userStore.email) {
-      userStore.refreshProfile()
-    }
 
     const mainStore = useMainStore()
     if (!mainStore.version) {
       mainStore.refreshVersion()
+    }
+
+    const tagStore = useTagStore()
+    if (!Object.keys(tagStore.tagsById).length) {
+      tagStore.refreshTags()
+    }
+    if (!Object.keys(tagStore.tagCategoriesById).length) {
+      tagStore.refreshTagCategories()
+    }
+
+    const userStore = useUserStore()
+    if (!userStore.email) {
+      userStore.refreshProfile()
     }
   })
 })
