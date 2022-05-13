@@ -12,6 +12,8 @@ import {
   RiSearchLine,
   RiSaveLine,
   RiShieldCheckLine,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
 } from "oh-vue-icons/icons/ri"
 
 export const icons = [
@@ -28,4 +30,6 @@ export const icons = [
   RiSearchLine,
   RiSaveLine,
   RiShieldCheckLine,
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
 ]

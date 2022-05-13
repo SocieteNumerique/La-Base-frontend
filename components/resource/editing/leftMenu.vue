@@ -28,7 +28,7 @@
           <div id="fr-sidemenu-wrapper" class="fr-collapse">
             <ul class="fr-sidemenu__list">
               <li
-                v-for="menu in menus"
+                v-for="menu in navigationMenus"
                 :key="menu.key"
                 class="fr-sidemenu__item"
                 :class="
@@ -116,44 +116,8 @@
 </template>
 
 <script setup lang="ts">
-import { useResourceStore } from "~/stores/resourceStore"
+import { useResourceStore, navigationMenus } from "~/stores/resourceStore"
 import { computed } from "vue"
-
-type SubMenu = {
-  key: string
-  name: string
-}
-
-type Menu = {
-  key: string
-  name: string
-  subMenus: SubMenu[]
-}
-
-const menus: Menu[] = [
-  {
-    key: "informations",
-    name: "Informations",
-    subMenus: [
-      { key: "general", name: "Général" },
-      { key: "indexation", name: "Indexation" },
-      { key: "credits", name: "Crédits" },
-      { key: "territory", name: "Territoire" },
-      { key: "licence", name: "Licence" },
-      { key: "label", name: "Label" },
-    ],
-  },
-  {
-    key: "contents",
-    name: "Contenus",
-    subMenus: [],
-  },
-  {
-    key: "parameters",
-    name: "Paramètres",
-    subMenus: [],
-  },
-]
 
 const resourceStore = useResourceStore()
 

@@ -2,6 +2,42 @@ import { defineStore } from "pinia"
 import { Resource } from "~/composables/types"
 import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
 
+type SubMenu = {
+  key: string
+  name: string
+}
+
+type Menu = {
+  key: string
+  name: string
+  subMenus: SubMenu[]
+}
+
+export const navigationMenus: Menu[] = [
+  {
+    key: "informations",
+    name: "Informations",
+    subMenus: [
+      { key: "general", name: "Général" },
+      { key: "indexation", name: "Indexation" },
+      { key: "credits", name: "Crédits" },
+      { key: "territory", name: "Territoire" },
+      { key: "licence", name: "Licence" },
+      { key: "label", name: "Label" },
+    ],
+  },
+  {
+    key: "contents",
+    name: "Contenus",
+    subMenus: [],
+  },
+  {
+    key: "parameters",
+    name: "Paramètres",
+    subMenus: [],
+  },
+]
+
 type ResourceNavigation = {
   activeMenu: string
   activeSubMenu: string
@@ -46,6 +82,29 @@ export const useResourceStore = defineStore("resource", {
         return data.value
       }
     },
+    getCurrentNavigationIndex() {
+      let currentMenuIx = -1
+      let currentSubMenuIx = -1
+
+      for (const [menuIx, menu] of Object.entries(navigationMenus)) {
+        if (menu.key !== this.navigation.activeMenu) {
+          continue
+        }
+        currentMenuIx = parseInt(menuIx)
+        if (!menu.subMenus.length) {
+          currentSubMenuIx = -1
+          break
+        }
+        for (const [subMenuIx, subMenu] of Object.entries(menu.subMenus)) {
+          if (subMenu.key !== this.navigation.activeSubMenu) {
+            continue
+          }
+          currentSubMenuIx = parseInt(subMenuIx)
+          break
+        }
+      }
+      return { currentMenuIx, currentSubMenuIx }
+    },
     async getResource(resourceId: number) {
       const { data, error } = await useApiGet<Resource>(
         `resources/${resourceId}/`
@@ -55,6 +114,45 @@ export const useResourceStore = defineStore("resource", {
         this.resourcesById[resource.id!] = resource
         console.log("### got resource", resourceId, resource.id)
       }
+    },
+    navigationNext() {
+      if (this.isNavigationNextDisabled) {
+        return
+      }
+      const { currentMenuIx, currentSubMenuIx } =
+        this.getCurrentNavigationIndex()
+      const currentMenu = navigationMenus[currentMenuIx]
+      const subMenus = currentMenu.subMenus
+
+      if (currentSubMenuIx === -1 || currentSubMenuIx === subMenus.length - 1) {
+        this.navigation.activeMenu = navigationMenus[currentMenuIx + 1].key
+        if (navigationMenus[currentMenuIx + 1].subMenus.length) {
+          this.navigation.activeSubMenu =
+            navigationMenus[currentMenuIx + 1].subMenus[0].key
+        }
+        return
+      }
+      this.navigation.activeSubMenu = subMenus[currentSubMenuIx + 1].key
+    },
+    navigationPrevious() {
+      if (this.isNavigationPreviousDisabled) {
+        return
+      }
+
+      const { currentMenuIx, currentSubMenuIx } =
+        this.getCurrentNavigationIndex()
+      const currentMenu = navigationMenus[currentMenuIx]
+      const subMenus = currentMenu.subMenus
+
+      if (currentSubMenuIx === -1 || currentSubMenuIx === 0) {
+        this.navigation.activeMenu = navigationMenus[currentMenuIx - 1].key
+        const subMenus = navigationMenus[currentMenuIx - 1].subMenus
+        if (subMenus.length) {
+          this.navigation.activeSubMenu = subMenus[subMenus.length - 1].key
+        }
+        return
+      }
+      this.navigation.activeSubMenu = subMenus[currentSubMenuIx - 1].key
     },
     removeTagFromResource(tagId: number, resourceId: number) {
       const resource = this.resourcesById[resourceId]
@@ -117,5 +215,28 @@ export const useResourceStore = defineStore("resource", {
       (name: string): boolean => {
         return state.navigation.activeSubMenu === name
       },
+    isNavigationNextDisabled: (state) => {
+      const lastMenu = navigationMenus[navigationMenus.length - 1]
+      if (state.navigation.activeMenu !== lastMenu.key) {
+        return false
+      }
+      if (!lastMenu.subMenus.length) {
+        return true
+      }
+      return (
+        state.navigation.activeSubMenu ===
+        lastMenu.subMenus[lastMenu.subMenus.length - 1].key
+      )
+    },
+    isNavigationPreviousDisabled: (state) => {
+      const firstMenu = navigationMenus[0]
+      if (state.navigation.activeMenu !== firstMenu.key) {
+        return false
+      }
+      if (!firstMenu.subMenus.length) {
+        return true
+      }
+      return state.navigation.activeSubMenu === firstMenu.subMenus[0].key
+    },
   },
 })
