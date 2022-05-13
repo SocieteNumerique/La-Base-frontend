@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { Content, Resource } from "~/composables/types"
+import { Resource } from "~/composables/types"
 import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
 
 type ResourceNavigation = {
@@ -56,15 +56,43 @@ export const useResourceStore = defineStore("resource", {
         console.log("### got resource", resourceId, resource.id)
       }
     },
-    setCurrentId(resourceId: number) {
-      this.currentId = resourceId
-    },
     removeTagFromResource(tagId: number, resourceId: number) {
       const resource = this.resourcesById[resourceId]
       if (resource.tags == null) {
         resource.tags = []
       }
       resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
+    },
+    async save(resourceId: number | undefined = undefined) {
+      if (resourceId == null) {
+        resourceId = this.currentId
+      }
+      const resource = this.resourcesById[resourceId!]
+      const payload: any = {}
+      const updateFields = [
+        "title",
+        "root_base",
+        "is_draft",
+        "description",
+        "zip_code",
+        "linked_resources",
+        "internal_producers",
+        "tags",
+      ]
+      for (const field of updateFields) {
+        payload[field] = resource[field]
+      }
+      const { data, error } = await useApiPatch<Resource>(
+        `resources/${resourceId}/`,
+        payload
+      )
+      if (!error.value) {
+        console.log("### save resource", resourceId)
+        this.resourcesById[data.value.id!] = data.value
+      }
+    },
+    setCurrentId(resourceId: number) {
+      this.currentId = resourceId
     },
   },
   getters: {
