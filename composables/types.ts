@@ -39,6 +39,21 @@ export type TagCategory = {
   requiredToBePublic: boolean
   tags: number[]
 }
+
+export type TagCategoryWithFullTags = {
+  acceptsFreeTags: boolean
+  baseId: number
+  description: string
+  id: number
+  isDraft: boolean
+  isMultiSelect: boolean
+  maximumTagCount: number
+  name: string
+  relatesTo: string
+  requiredToBePublic: boolean
+  tags: Tag[]
+}
+
 export type Base = {
   id: number
   title: string

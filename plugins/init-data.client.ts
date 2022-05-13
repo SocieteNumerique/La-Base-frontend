@@ -20,11 +20,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
 
     const tagStore = useTagStore()
-    if (!Object.keys(tagStore.tagsById).length) {
-      tagStore.refreshTags()
-    }
     if (!Object.keys(tagStore.tagCategoriesById).length) {
-      tagStore.refreshTagCategories()
+      tagStore.refreshIndex()
     }
 
     const userStore = useUserStore()

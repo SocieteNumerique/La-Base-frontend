@@ -83,11 +83,11 @@ onMounted(() => {
 })
 
 const selectedTags = computed((): Tag[] => {
-  resourceStore.current.tags
-  console.log("### selected tags", resourceStore.current.tags)
+  resourceStore.current?.tags
+  console.log("### selected tags", resourceStore.current?.tags)
   return props.category?.tags
     .filter(
-      (tagId: number) => resourceStore.current.tags?.indexOf(tagId) !== -1
+      (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) !== -1
     )
     .map((tagId: number): Tag => tagStore.tagsById[tagId])
 })
@@ -99,7 +99,7 @@ const possibleTags = computed(() => {
   console.log("### possible tags", props.category, tagStore.tagsById)
   return props.category?.tags
     .filter(
-      (tagId: number) => resourceStore.current.tags?.indexOf(tagId) === -1
+      (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) === -1
     )
     .map((tagId: number): Tag => tagStore.tagsById[tagId])
 })
