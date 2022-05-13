@@ -25,7 +25,6 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { useRouter } from "vue-router"
 
 const resourceStore = useResourceStore()
-const router = useRouter()
 
 const onTitleUpdate = (value: string) => {
   resourceStore.current.title = value

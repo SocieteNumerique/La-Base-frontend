@@ -11,16 +11,33 @@ export type Resource = {
   linkedResourceIds?: number[]
   rootBaseId?: number
   rootBase?: number
-  tags?: TagCategory[]
+  tags?: number[]
   title: string
   url?: string
   zipCode?: number
 }
 
-export type TagCategory = {
+export type Tag = {
+  category: number
+  definition?: string
   id: number
+  isDraft: boolean
+  isFree: boolean
   name: string
-  baseId?: number
+}
+
+export type TagCategory = {
+  acceptsFreeTags: boolean
+  baseId: number
+  description: string
+  id: number
+  isDraft: boolean
+  isMultiSelect: boolean
+  maximumTagCount: number
+  name: string
+  relatesTo: string
+  requiredToBePublic: boolean
+  tags: number[]
 }
 export type Base = {
   id: number

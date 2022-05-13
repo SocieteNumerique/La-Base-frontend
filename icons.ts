@@ -9,6 +9,9 @@ import {
   RiLink,
   RiDeleteBinLine,
   RiArrowRightLine,
+  RiSearchLine,
+  RiSaveLine,
+  RiShieldCheckLine,
 } from "oh-vue-icons/icons/ri"
 
 export const icons = [
@@ -22,4 +25,7 @@ export const icons = [
   RiLink,
   RiDeleteBinLine,
   RiArrowRightLine,
+  RiSearchLine,
+  RiSaveLine,
+  RiShieldCheckLine,
 ]

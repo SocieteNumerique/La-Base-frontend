@@ -12,80 +12,105 @@
       </div>
     </div>
     <div v-else>
-      <div class="fr-pb-3w" style="display: flex; flex-direction: column">
-        <DsfrButton
-          :secondary="true"
-          label="Prévisualiser"
-          icon="ri-eye-line"
-          class="fr-btn--no-border .fr-btn--no-y-padding"
-        />
-        <DsfrButton
-          :secondary="true"
-          label="Copier l'url de la fiche"
-          icon="ri-link"
-          class="fr-btn--no-border .fr-btn--no-y-padding"
-        />
-        <DsfrButton
-          :secondary="true"
-          label="Supprimer"
-          icon="ri-delete-bin-line"
-          class="fr-btn--no-border .fr-btn--no-y-padding"
-        />
-      </div>
-      <ResourceEditingMenuSeparator />
-      <h2
-        class="fr-text--lg cursor--pointer fr-text-title--blue-france fr-mb-1w fr-mt-2w"
-        :class="boldIfMenuActive('informations')"
-        @click="selectMenu('informations')"
+      <nav
+        class="fr-sidemenu fr-sidemenu--sticky"
+        role="navigation"
+        aria-label="Menu latéral"
       >
-        Informations
-      </h2>
-      <div style=" flex; flex-direction: column">
-        <DsfrButton
-          v-for="subMenu in infoSubMenus"
-          :key="subMenu"
-          :secondary="true"
-          :icon="iconIfSubMenuActive(subMenu)"
-          class="fr-btn--no-border"
-          :class="boldIfSubMenuActive(subMenu)"
-          :label="displayInforSubMenu[subMenu]"
-          :style="styleIfSubMenuActive(subMenu)"
-          @click="selectSubMenu(subMenu)"
-        />
-      </div>
-      <ResourceEditingMenuSeparator />
-      <h2
-        class="fr-text--lg cursor--pointer fr-text-title--blue-france fr-mb-1w"
-        :class="boldIfMenuActive('contents')"
-        @click="selectMenu('contents')"
-      >
-        Contenus (2)
-      </h2>
-      <ResourceEditingMenuSeparator />
-      <h2
-        class="fr-text--lg cursor--pointer fr-text-title--blue-france fr-mb-1w"
-        :class="boldIfMenuActive('labels')"
-        @click="selectMenu('labels')"
-      >
-        Labels
-      </h2>
-      <ResourceEditingMenuSeparator />
-      <h2
-        class="fr-text--lg cursor--pointer fr-text-title--blue-france fr-mb-1w"
-        :class="boldIfMenuActive('interactions')"
-        @click="selectMenu('interactions')"
-      >
-        Interactions
-      </h2>
-      <ResourceEditingMenuSeparator />
-      <h2
-        class="fr-text--lg cursor--pointer fr-text-title--blue-france fr-mb-1w"
-        :class="boldIfMenuActive('save')"
-        @click="selectMenu('save')"
-      >
-        Enregistrer
-      </h2>
-      <ResourceEditingMenuSeparator />
+        <div class="fr-sidemenu__inner">
+          <button
+            class="fr-sidemenu__btn"
+            aria-controls="fr-sidemenu-wrapper"
+            aria-expanded="false"
+          >
+            Menu
+          </button>
+          <div id="fr-sidemenu-wrapper" class="fr-collapse">
+            <ul class="fr-sidemenu__list">
+              <li
+                v-for="menu in menus"
+                :key="menu.key"
+                class="fr-sidemenu__item"
+                :class="
+                  resourceStore.isMenuActive(menu.key)
+                    ? 'fr-sidemenu__item--active'
+                    : ''
+                "
+              >
+                <template v-if="menu.subMenus.length">
+                  <button
+                    class="fr-sidemenu__btn"
+                    :aria-expanded="resourceStore.isMenuActive(menu.key)"
+                    aria-controls="fr-sidemenu-item-0"
+                    :aria-current="
+                      resourceStore.isMenuActive(menu.key) ? 'page' : null
+                    "
+                    @click="selectMenu(menu.key)"
+                  >
+                    {{ menu.name }}
+                  </button>
+                  <div
+                    v-if="menu.subMenus.length"
+                    id="fr-sidemenu-item-0"
+                    :class="
+                      resourceStore.isMenuActive(menu.key) ? '' : 'fr-collapse'
+                    "
+                  >
+                    <ul class="fr-sidemenu__list">
+                      <li
+                        v-for="subMenu in menu.subMenus"
+                        :key="subMenu.key"
+                        class="fr-sidemenu__item"
+                        :class="
+                          resourceStore.isSubMenuActive(subMenu.key)
+                            ? 'fr-sidemenu__item--active'
+                            : ''
+                        "
+                      >
+                        <button
+                          class="fr-sidemenu__link"
+                          :aria-current="
+                            resourceStore.isSubMenuActive(subMenu.key)
+                              ? 'page'
+                              : null
+                          "
+                          @click="selectSubMenu(subMenu.key)"
+                        >
+                          {{ subMenu.name }}
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </template>
+                <template v-else>
+                  <button
+                    :aria-current="
+                      resourceStore.isMenuActive(menu.key) ? 'page' : null
+                    "
+                    class="fr-sidemenu__link"
+                    @click="selectMenu(menu.key)"
+                  >
+                    {{ menu.name }}
+                  </button>
+                </template>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="fr-pb-3w" style="display: flex; flex-direction: column">
+          <DsfrButton
+            :secondary="true"
+            label="Prévisualiser"
+            icon="ri-eye-line"
+          />
+          <DsfrButton label="Sauvegarder" icon="ri-save-line" />
+          <DsfrButton
+            :secondary="true"
+            label="Supprimer"
+            icon="ri-delete-bin-line"
+          />
+        </div>
+      </nav>
     </div>
   </div>
 </template>
@@ -94,20 +119,41 @@
 import { useResourceStore } from "~/stores/resourceStore"
 import { computed } from "vue"
 
-const infoSubMenus = [
-  "general",
-  "indexation",
-  "credits",
-  "territory",
-  "license",
-]
-const displayInforSubMenu = {
-  general: "Géneral",
-  indexation: "Indexation",
-  credits: "Crédits",
-  territory: "Territoire",
-  license: "Licence",
+type SubMenu = {
+  key: string
+  name: string
 }
+
+type Menu = {
+  key: string
+  name: string
+  subMenus: SubMenu[]
+}
+
+const menus: Menu[] = [
+  {
+    key: "informations",
+    name: "Informations",
+    subMenus: [
+      { key: "general", name: "Général" },
+      { key: "indexation", name: "Indexation" },
+      { key: "credits", name: "Crédits" },
+      { key: "territory", name: "Territoire" },
+      { key: "licence", name: "Licence" },
+      { key: "label", name: "Label" },
+    ],
+  },
+  {
+    key: "contents",
+    name: "Contenus",
+    subMenus: [],
+  },
+  {
+    key: "parameters",
+    name: "Paramètres",
+    subMenus: [],
+  },
+]
 
 const resourceStore = useResourceStore()
 
