@@ -27,6 +27,28 @@ export const useTagStore = defineStore("tag", {
       tagCategoryIdsByName: {},
     },
   actions: {
+    async createTag(
+      name: string,
+      categoryId: number
+    ): Promise<number | undefined> {
+      const { data, error } = await useApiPost<Tag>("tags/", {
+        name,
+        category: categoryId,
+        isFree: true,
+      })
+      if (!error.value) {
+        const newId = data.value.id
+        this.tagsById[newId] = data.value
+
+        // the added tag id has to be also added to the category manually
+        const category = this.tagCategoriesById[data.value.category]
+        if (category.tags.indexOf(newId) === -1) {
+          category.tags.push(newId)
+        }
+        return data.value.id
+      }
+      return undefined
+    },
     async refreshIndex() {
       const { data, error } = await useApiGet<TagCategoryWithFullTags[]>(
         "index/"
@@ -57,8 +79,12 @@ export const useTagStore = defineStore("tag", {
   getters: {
     categoryByName:
       (state) =>
-      (name: string): TagCategory => {
-        return state.tagCategoriesById[state.tagCategoryIdsByName[name]]
+      (name: string): TagCategory | undefined => {
+        const categoryId = state.tagCategoryIdsByName[name]
+        if (categoryId == null) {
+          return undefined
+        }
+        return state.tagCategoriesById[categoryId]
       },
   },
 })

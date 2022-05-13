@@ -6,13 +6,18 @@
     <p>
       {{ descriptionFromSubMenu[subMenu] }}
     </p>
-    <TagSelector
+    <template
       v-for="categoryName in categoryNamesFromSubMenu[subMenu]"
       :key="categoryName"
-      :is-focused="focusedCategory === categoryName"
-      :category="tagStore.categoryByName(categoryName)"
-      @focus="focusCategory(categoryName)"
-    />
+    >
+      <TagSelector
+        v-if="tagStore.categoryByName(categoryName)"
+        :is-focused="focusedCategory === categoryName"
+        :category="tagStore.categoryByName(categoryName)"
+        @focus="focusCategory(categoryName)"
+        @blur="focusCategory('')"
+      />
+    </template>
   </div>
 </template>
 
