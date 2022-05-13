@@ -69,6 +69,7 @@ export type BaseContent = {
   licence?: string
   nbCol: number
   order?: number
+  section?: number
 }
 
 export interface LinkContent extends BaseContent {
@@ -82,3 +83,7 @@ export interface TextContent extends BaseContent {
 export type FileContent = BaseContent
 
 export type Content = LinkContent | TextContent | FileContent
+
+export type ContentOrder = {
+  [key: number]: { section?: number; order?: number }
+}

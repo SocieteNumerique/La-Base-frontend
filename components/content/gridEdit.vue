@@ -13,6 +13,9 @@
       name="grid-enabled"
     />
     {{ message }}
+    <button @click="$emit('new-section', 'default name')">
+      Ajouter une section
+    </button>
     <div class="grid-container fr-m-n2v">
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
@@ -27,6 +30,8 @@
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
           @delete="$emit('delete-content', { id: contents[index].id, index })"
+          @move-left="move(index, -1)"
+          @move-right="move(index, 1)"
         />
         <li><button @click="$emit('new-content', 'text')">+</button></li>
       </ul>
@@ -35,11 +40,11 @@
 </template>
 
 <script lang="ts" setup>
-import { Content } from "~/composables/types"
+import { Content, ContentOrder } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
 import { useResourceStore } from "~/stores/resourceStore"
-import { updateContent } from "~/composables/contentsHelper"
+import { updateContent, updateOrder } from "~/composables/contentsHelper"
 
 const props = defineProps({
   modelValue: { type: Array as PropType<Content[]>, default: () => [] },
@@ -52,12 +57,29 @@ const emit = defineEmits({
   },
   "update:enabled": null,
   "delete-content": null,
+  "new-section": null,
 })
 
 const contents = useModel<Content[]>("modelValue", { type: "array" })
 const isGridEnabled = useModel("enabled")
 
-// Drag and drop resize
+async function move(index: number, direction: number) {
+  const nextIndex = index + direction
+  console.log({ index, direction, nextIndex })
+  if (nextIndex < 0 || nextIndex >= contents.value.length) return
+
+  const tempContent = contents.value[index]
+  contents.value[index] = contents.value[nextIndex]!
+  contents.value[nextIndex] = tempContent!
+
+  const orderChange: ContentOrder = {}
+  orderChange[contents.value[index].id!] = { order: index }
+  orderChange[contents.value[nextIndex].id!] = { order: nextIndex }
+  return updateOrder(orderChange)
+}
+
+// Drag and drop resize -------------------------------
+
 const gridUnderlayRef = ref<HTMLElement>()
 const blockGridRef = ref<HTMLElement>()
 const gridColumnWidth = computed<number | undefined>(
@@ -66,6 +88,7 @@ const gridColumnWidth = computed<number | undefined>(
 const message = ref("")
 const targetColumnIndex = ref<number>(-1)
 const initColumnIndex = ref<number>(-1)
+const isDragging = ref<boolean>(false)
 
 // computes the size of the block at drop
 // making sure it is between 1 and 6
@@ -86,23 +109,6 @@ function columnIndexFromX(xPosition: number): number {
   return Math.floor(distFromBegin / gridColumnWidth.value)
 }
 
-function startColumnIndex(element: HTMLElement): number {
-  return columnIndexFromX(element.clientLeft)
-}
-
-function isInTheEnd(elementIndex: number): boolean {
-  if (!gridUnderlayRef.value) throw "Layout not setup yet"
-  if (!blockGridRef.value) throw "Layout not setup yet"
-  const element = blockGridRef.value.children.item(elementIndex)
-  if (!element) throw "Layout not setup yet"
-  const distFromBegin =
-    element.clientLeft +
-    element.clientWidth -
-    gridUnderlayRef.value.clientLeft -
-    gridUnderlayRef.value.clientWidth
-  return distFromBegin === 0
-}
-
 function applyOnUnderlayColumns(
   start: number,
   end: number,
@@ -117,6 +123,7 @@ function applyOnUnderlayColumns(
 }
 
 function onDragBegin(event: DragEventInit, index: number) {
+  isDragging.value = true
   const xPosition = blockGridRef!
     .value!.children!.item(index)!
     .getBoundingClientRect().x
@@ -124,6 +131,10 @@ function onDragBegin(event: DragEventInit, index: number) {
 }
 
 function onDrag(event: DragEvent) {
+  // onDrag will be called if anything is dragged
+  // this test ensures it is a resizing drag
+  if (!isDragging.value) return
+
   targetColumnIndex.value = columnIndexFromX(event.clientX)
   applyOnUnderlayColumns(
     initColumnIndex.value,
@@ -141,6 +152,7 @@ function onDrag(event: DragEvent) {
 }
 
 function onDrop(event: DragEvent, content: Content) {
+  isDragging.value = false
   if (!gridUnderlayRef.value) throw "Layout not setup yet"
   for (let colElement of gridUnderlayRef.value.children) {
     colElement.classList.toggle("targeted", false)

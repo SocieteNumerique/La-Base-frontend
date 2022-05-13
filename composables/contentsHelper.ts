@@ -1,5 +1,10 @@
-import { Content } from "~/composables/types"
-import { useApiGet, useApiPatch, useApiPost, useApiDelete } from "~/composables/api"
+import { Content, ContentOrder } from "~/composables/types"
+import {
+  useApiGet,
+  useApiPatch,
+  useApiPost,
+  useApiDelete,
+} from "~/composables/api"
 
 export async function getResourceContents(resourceId: number) {
   const { data, error } = await useApiGet<Content[]>(
@@ -54,4 +59,17 @@ export async function deleteContent(id: number) {
   if (!error.value) {
     return true
   }
+}
+
+export async function updateOrder(order: ContentOrder) {
+  const { data, error } = await useApiPatch("contents/order/", order)
+  if (!error) console.log(data)
+}
+
+export async function addSection(resourceId: number, sectionTitle: string) {
+  const { data, error } = await useApiPost("sections/", {
+    resource: resourceId,
+    title: sectionTitle,
+  })
+  if (!error) return data
 }
