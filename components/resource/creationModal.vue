@@ -49,7 +49,6 @@ const onClose = () => {
 
 const onTitleUpdate = (newTitle: string) => {
   title.value = newTitle
-  console.log("### new title", newTitle)
 }
 
 const selectedBase = ref<number | undefined>(undefined)
@@ -59,7 +58,6 @@ const createResource = async () => {
     rootBase: selectedBase.value!,
   })
 
-  console.log("### new resource created", resource)
   if (resource) {
     await router.push(`/ressource/${resource.id}`)
   }
@@ -69,12 +67,10 @@ const isCreateResourceDisabled = computed(() => {
   title.value
   selectedBase.value
   if (!title.value || title.value.length < 3) {
-    console.log("### disabled short title")
     return true
   }
 
   if (!selectedBase.value) {
-    console.log("### disabled no base")
     return true
   }
 
@@ -86,7 +82,6 @@ const actions = computed(() => {
   title.value
   selectedBase.value
 
-  console.log("### actions", title.value, isCreateResourceDisabled.value)
   return [
     {
       label: "Valider",

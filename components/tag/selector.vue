@@ -26,7 +26,7 @@
     <div style="transition: height ease-in-out 1s; height: 100%">
       <template v-if="isFocused">
         <TagLine
-          v-for="tag in possibleTags"
+          v-for="tag in filteredTags"
           :key="tag.id"
           :tag="tag"
           @select="selectTag(tag.id)"
@@ -37,27 +37,35 @@
         class="fr-px-2w fr-py-1w"
         style="border-bottom: 1px solid #e5e5e5"
       >
-        <button class="fr-m-0 fr-text--md fr-text-label--blue-france">
+        <button
+          class="fr-m-0 fr-text--md fr-text-label--blue-france"
+          @click="onSuggestAddingTag"
+        >
           <VIcon name="ri-add-circle-line" />
           Suggérer un nouveau tag
         </button>
       </div>
-      <div class="fr-px-2w fr-py-1w fr-tags-group">
+      <ul class="fr-px-2w fr-py-1w fr-tags-group">
         <li v-for="tag in selectedTags" :key="tag.id">
           <button class="fr-tag" @click="removeTag(tag.id)">
             {{ tag.name }}
             <VIcon name="ri-close-line" />
           </button>
         </li>
-      </div>
+      </ul>
     </div>
-    <h2 class="fr-h4">{{ inputValue }}</h2>
+    <TagAddModal
+      v-if="showAddModal"
+      :tag-category-id="props.category.id"
+      @close="showAddModal = false"
+      @created="onTagCreated"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { Tag, TagCategory } from "~/composables/types"
-import { computed, onMounted, PropType } from "vue"
+import { computed, PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useResourceStore } from "~/stores/resourceStore"
 
@@ -65,7 +73,7 @@ const tagStore = useTagStore()
 const resourceStore = useResourceStore()
 
 const inputValue = ref("")
-const emit = defineEmits(["focus"])
+const emit = defineEmits(["focus", "blur"])
 
 const props = defineProps({
   category: {
@@ -78,13 +86,10 @@ const props = defineProps({
   },
 })
 
-onMounted(() => {
-  console.log("### mounted, category", props.category, possibleTags.value)
-})
+const showAddModal = ref(false)
 
 const selectedTags = computed((): Tag[] => {
   resourceStore.current?.tags
-  console.log("### selected tags", resourceStore.current?.tags)
   return props.category?.tags
     .filter(
       (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) !== -1
@@ -96,7 +101,6 @@ const possibleTags = computed(() => {
   tagStore.tagsById
   props.category
   // possible tags are the one from the category that have not been selected yet
-  console.log("### possible tags", props.category, tagStore.tagsById)
   return props.category?.tags
     .filter(
       (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) === -1
@@ -104,12 +108,43 @@ const possibleTags = computed(() => {
     .map((tagId: number): Tag => tagStore.tagsById[tagId])
 })
 
+const filteredTags = computed(() => {
+  // filtered tags are the possible tags that match the search input
+  let tags = possibleTags.value
+  if (!inputValue.value) {
+    return tags
+  }
+  let keepTags = []
+  const searchInput = inputValue.value.toLowerCase()
+  for (const tag of tags) {
+    const words = tag.name.toLowerCase().split(" ")
+    if (
+      words.some(function (word) {
+        return word.startsWith(searchInput)
+      })
+    ) {
+      keepTags.push(tag)
+    }
+  }
+  return keepTags
+})
+
 const selectTag = (tagId: number) => {
-  console.log("### select tag", tagId)
   resourceStore.addTagToResource(tagId, resourceStore.currentId!)
 }
 const removeTag = (tagId: number) => {
-  console.log("### remove tag", tagId)
   resourceStore.removeTagFromResource(tagId, resourceStore.currentId!)
+}
+
+const onSuggestAddingTag = () => {
+  showAddModal.value = true
+}
+
+const onTagCreated = (tagId: number) => {
+  showAddModal.value = false
+  // the added tag is selected
+  selectTag(tagId)
+  // so we can blur input, as if we're done choosing tags
+  emit("blur")
 }
 </script>
