@@ -9,7 +9,7 @@
     <TagSelector
       v-for="categoryName in categoryNamesFromSubMenu[subMenu]"
       :key="categoryName"
-      :is-focused="focusedCategory == categoryName"
+      :is-focused="focusedCategory === categoryName"
       :category="tagStore.categoryByName(categoryName)"
       @focus="focusCategory(categoryName)"
     />

@@ -103,7 +103,7 @@
             label="Prévisualiser"
             icon="ri-eye-line"
           />
-          <DsfrButton label="Sauvegarder" icon="ri-save-line" />
+          <DsfrButton label="Sauvegarder" icon="ri-save-line" @click="save" />
           <DsfrButton
             :secondary="true"
             label="Supprimer"
@@ -156,6 +156,10 @@ const menus: Menu[] = [
 ]
 
 const resourceStore = useResourceStore()
+
+const save = () => {
+  resourceStore.save()
+}
 
 const boldIfMenuActive = computed(() => (menuName: string) => {
   return resourceStore.isMenuActive(menuName)
