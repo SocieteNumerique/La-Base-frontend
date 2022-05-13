@@ -1,6 +1,5 @@
 import { defineStore } from "pinia"
-import { Base, Resource, Tag, TagCategory } from "~/composables/types"
-import { useApiPost } from "~/composables/api"
+import { Tag, TagCategory, TagCategoryWithFullTags } from "~/composables/types"
 
 type TagsById = {
   [id: number]: Tag
@@ -28,23 +27,30 @@ export const useTagStore = defineStore("tag", {
       tagCategoryIdsByName: {},
     },
   actions: {
-    async refreshTags() {
-      const { data, error } = await useApiGet<Tag[]>("tags/")
+    async refreshIndex() {
+      const { data, error } = await useApiGet<TagCategoryWithFullTags[]>(
+        "index/"
+      )
       if (!error.value) {
-        const tags = data.value
-        for (const tag of tags) {
-          this.tagsById[tag.id] = tag
-        }
+        this.saveTagCategoriesToState(data.value)
       }
     },
-    async refreshTagCategories() {
-      const { data, error } = await useApiGet<TagCategory[]>("tag_categories/")
+    async refreshIndexForBase(baseId: number) {
+      const { data, error } = await useApiGet<TagCategoryWithFullTags[]>(
+        `base/${baseId}/index/`
+      )
       if (!error.value) {
-        const categories = data.value
-        for (const category of categories) {
-          this.tagCategoriesById[category.id] = category
-          this.tagCategoryIdsByName[category.name] = category.id
+        this.saveTagCategoriesToState(data.value)
+      }
+    },
+    saveTagCategoriesToState(categories: TagCategoryWithFullTags[]) {
+      for (const category of categories) {
+        const tagIds = category.tags!.map((tag) => tag.id)
+        for (const tag of category.tags!) {
+          this.tagsById[tag.id] = tag
         }
+        this.tagCategoriesById[category.id] = { ...category, tags: tagIds }
+        this.tagCategoryIdsByName[category.name] = category.id
       }
     },
   },

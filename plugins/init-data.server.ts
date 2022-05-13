@@ -13,8 +13,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     baseStore.refreshBases()
     mainStore.refreshVersion()
-    tagStore.refreshTagCategories()
-    tagStore.refreshTags()
+    tagStore.refreshIndex()
     userStore.refreshProfile()
   })
 })
