@@ -11,13 +11,15 @@
       :key="categoryName"
     >
       <TagSelector
-        v-if="tagStore.categoryByName(categoryName)"
+        v-if="tagStore.categoryBySlug(categoryName)"
         :is-focused="focusedCategory === categoryName"
-        :category="tagStore.categoryByName(categoryName)"
+        :category="tagStore.categoryBySlug(categoryName)"
         @focus="focusCategory(categoryName)"
         @blur="focusCategory('')"
       />
     </template>
+
+    <ResourceEditingCredits v-if="resourceStore.isSubMenuActive('credits')" />
   </div>
 </template>
 
@@ -42,7 +44,8 @@ const titleFromSubMenu = {
 const descriptionFromSubMenu = {
   indexation:
     "Cette indexation est générale, elle permettra, si votre ressource est publique, aux autres utilisateurs de la base de la trouver via le moteur de recherche.",
-  credits: "Crédits",
+  credits:
+    "Créditer la ressource, les producteurs seront visibles depuis la ressource",
   territories: "Territoires",
   licence: "Licence",
 }
@@ -52,7 +55,7 @@ type CategoryNamesFromSubMenu = {
 }
 
 const categoryNamesFromSubMenu: CategoryNamesFromSubMenu = {
-  indexation: ["Format", "Fonction"],
+  indexation: ["Format", "Function"],
   credits: [],
   territories: [],
   licence: [],

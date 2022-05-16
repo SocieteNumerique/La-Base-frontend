@@ -33,7 +33,7 @@
         />
       </template>
       <div
-        v-if="isFocused"
+        v-if="isFocused && props.category.acceptsFreeTags"
         class="fr-px-2w fr-py-1w"
         style="border-bottom: 1px solid #e5e5e5"
       >
@@ -73,7 +73,9 @@ const tagStore = useTagStore()
 const resourceStore = useResourceStore()
 
 const inputValue = ref("")
-const emit = defineEmits(["focus", "blur"])
+const emit = defineEmits(["focus", "blur", "select", "change"])
+
+const ownSelectedTags = ref<number[]>([])
 
 const props = defineProps({
   category: {
@@ -84,16 +86,28 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  source: {
+    type: String,
+    default: "CurrentResource",
+  },
 })
 
 const showAddModal = ref(false)
 
-const selectedTags = computed((): Tag[] => {
+const sourceTags = computed((): number[] | undefined => {
   resourceStore.current?.tags
+
+  if (props.source === "CurrentResource") {
+    return resourceStore.current?.tags
+  } else {
+    return ownSelectedTags.value
+  }
+})
+
+const selectedTags = computed((): Tag[] => {
+  sourceTags
   return props.category?.tags
-    .filter(
-      (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) !== -1
-    )
+    .filter((tagId: number) => sourceTags.value?.indexOf(tagId) !== -1)
     .map((tagId: number): Tag => tagStore.tagsById[tagId])
 })
 
@@ -102,9 +116,7 @@ const possibleTags = computed(() => {
   props.category
   // possible tags are the one from the category that have not been selected yet
   return props.category?.tags
-    .filter(
-      (tagId: number) => resourceStore.current?.tags?.indexOf(tagId) === -1
-    )
+    .filter((tagId: number) => sourceTags.value?.indexOf(tagId) === -1)
     .map((tagId: number): Tag => tagStore.tagsById[tagId])
 })
 
@@ -130,10 +142,32 @@ const filteredTags = computed(() => {
 })
 
 const selectTag = (tagId: number) => {
-  resourceStore.addTagToResource(tagId, resourceStore.currentId!)
+  if (
+    props.category.maximumTagCount &&
+    selectedTags.value.length >= props.category.maximumTagCount
+  ) {
+    console.log(
+      "### already selected the maximum number of tags",
+      selectedTags,
+      props.category.maximumTagCount
+    )
+    return
+  }
+
+  if (props.source === "CurrentResource") {
+    resourceStore.addTagToResource(tagId, resourceStore.currentId!)
+  } else {
+    ownSelectedTags.value.push(tagId)
+  }
+  emit("change", selectedTags.value)
 }
 const removeTag = (tagId: number) => {
-  resourceStore.removeTagFromResource(tagId, resourceStore.currentId!)
+  if (props.source === "CurrentResource") {
+    resourceStore.removeTagFromResource(tagId, resourceStore.currentId!)
+  } else {
+    ownSelectedTags.value = ownSelectedTags.value.filter((tag) => tag !== tagId)
+  }
+  emit("change", selectedTags.value)
 }
 
 const onSuggestAddingTag = () => {

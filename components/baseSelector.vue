@@ -11,6 +11,7 @@
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
 import { useModel } from "~/composables/modelWrapper"
+import { onMounted } from "vue"
 
 const props = defineProps({
   modelValue: { type: Number, default: () => undefined },
@@ -20,4 +21,8 @@ const props = defineProps({
 
 const selectedBase = useModel<number>("modelValue")
 const baseStore = useBaseStore()
+
+onMounted(() => {
+  selectedBase.value = baseStore.baseOptions[0].value
+})
 </script>

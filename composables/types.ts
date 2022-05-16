@@ -1,14 +1,24 @@
 export type User = { id: number; email: string; username: string }
 
+export type ExternalProducer = {
+  name: string
+  emailContact: string
+  validated?: boolean
+  resource?: number
+  occupation?: number
+}
+
 export type Resource = {
   contents?: Content[]
-  creator?: User
+  creator?: number
   id?: number
   internalProducerIds?: number[]
   isDraft?: boolean
   isShort?: boolean
   description?: string
+  externalProducers?: ExternalProducer[]
   linkedResourceIds?: number[]
+  producerState: string
   rootBaseId?: number
   rootBase?: number
   tags?: number[]
@@ -37,6 +47,7 @@ export type TagCategory = {
   name: string
   relatesTo: string
   requiredToBePublic: boolean
+  slug: string
   tags: number[]
 }
 
@@ -51,6 +62,7 @@ export type TagCategoryWithFullTags = {
   name: string
   relatesTo: string
   requiredToBePublic: boolean
+  slug: string
   tags: Tag[]
 }
 
