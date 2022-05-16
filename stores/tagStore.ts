@@ -9,14 +9,14 @@ type TagCategoriesById = {
   [id: number]: TagCategory
 }
 
-type TagCategoryIdsByName = {
-  [name: string]: number
+type TagCategoryIdsBySlug = {
+  [slug: string]: number
 }
 
 type TagState = {
   tagsById: TagsById
   tagCategoriesById: TagCategoriesById
-  tagCategoryIdsByName: TagCategoryIdsByName
+  tagCategoryIdsBySlug: TagCategoryIdsBySlug
 }
 
 export const useTagStore = defineStore("tag", {
@@ -24,7 +24,7 @@ export const useTagStore = defineStore("tag", {
     <TagState>{
       tagsById: {},
       tagCategoriesById: {},
-      tagCategoryIdsByName: {},
+      tagCategoryIdsBySlug: {},
     },
   actions: {
     async createTag(
@@ -72,15 +72,15 @@ export const useTagStore = defineStore("tag", {
           this.tagsById[tag.id] = tag
         }
         this.tagCategoriesById[category.id] = { ...category, tags: tagIds }
-        this.tagCategoryIdsByName[category.name] = category.id
+        this.tagCategoryIdsBySlug[category.slug] = category.id
       }
     },
   },
   getters: {
-    categoryByName:
+    categoryBySlug:
       (state) =>
       (name: string): TagCategory | undefined => {
-        const categoryId = state.tagCategoryIdsByName[name]
+        const categoryId = state.tagCategoryIdsBySlug[name]
         if (categoryId == null) {
           return undefined
         }

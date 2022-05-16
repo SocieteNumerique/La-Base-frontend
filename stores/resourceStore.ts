@@ -61,7 +61,7 @@ export const useResourceStore = defineStore("resource", {
       currentId: undefined,
       navigation: {
         activeMenu: "informations",
-        activeSubMenu: "indexation",
+        activeSubMenu: "credits",
       },
       resourcesById: {},
     },
@@ -169,15 +169,18 @@ export const useResourceStore = defineStore("resource", {
       const payload: any = {}
       const updateFields = [
         "title",
-        "root_base",
-        "is_draft",
+        "rootBase",
+        "isDraft",
         "description",
-        "zip_code",
-        "linked_resources",
-        "internal_producers",
+        "zipCode",
+        "linkedResources",
+        "internalProducers",
+        "externalProducers",
+        "producerState",
         "tags",
       ]
       for (const field of updateFields) {
+        // @ts-ignore
         payload[field] = resource[field]
       }
       const { data, error } = await useApiPatch<Resource>(
@@ -203,6 +206,7 @@ export const useResourceStore = defineStore("resource", {
         rootBaseId: undefined,
         title: "",
         contents: [],
+        producerState: "",
       }
     },
     isMenuActive:
