@@ -1,22 +1,29 @@
 <template>
   <div>
     <h6>Contenu</h6>
-    <button @click="isGridView = !isGridView">toggle grid view</button>
+    <ContentGridViewSwitcher
+      v-model="isGridView"
+      v-model:enabled="isGridViewEnabled"
+    />
     <ContentListEdit
-      v-show="!isGridView"
-      v-model="contents"
-      @new-content="newContent"
-      @delete-content="onDelete"
+      v-show="!(isGridView && isGridViewEnabled)"
+      v-model="contentsBySection"
+      @delete-content="onDeleteContent"
+      @delete-section="onDeleteSection"
+      @new-solo-content="newContentInNewSection"
       @new-section="newSection"
+      @new-content-in-section="newContentInSection"
     />
     <client-only>
       <ContentGridEdit
-        v-show="isGridView"
-        v-model="contents"
-        v-model:enabled="isGridViewEnabled"
-        @new-content="newContent"
-        @delete-content="onDelete"
+        v-if="isGridViewEnabled"
+        v-show="isGridView && isGridViewEnabled"
+        v-model="contentsBySection"
+        @delete-content="onDeleteContent"
+        @delete-section="onDeleteSection"
+        @new-solo-content="newContentInNewSection"
         @new-section="newSection"
+        @new-content-in-section="newContentInSection"
       />
     </client-only>
   </div>
@@ -24,44 +31,100 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { Content } from "~/composables/types"
+import { SectionWithContent } from "~/composables/types"
 import {
-  getResourceContents,
-  addContent,
-  deleteContent,
+  getResourceContentsBySection,
   addSection,
+  addContent,
+  emptyContentBySection,
+  deleteSection,
+  deleteContent,
 } from "~/composables/contentsHelper"
 
 const resourceStore = useResourceStore()
 
 const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
-const isGridView = ref<boolean>(true) // TODO
+const isGridView = ref<boolean>(false) // TODO
 
-const contents = ref<Content[]>(
-  (await getResourceContents(resourceStore.currentId!)) || []
+const contentsBySection = ref<SectionWithContent[]>(
+  (await getResourceContentsBySection(resourceStore.currentId!)) ||
+    emptyContentBySection
 )
 
-const nextOrder = computed<number>(() => {
-  if (contents.value.length === 0) return 0
-  return contents.value.slice(-1)[0].order! + 1
-})
-
-async function newContent(type: string) {
-  const content = await addContent(
-    type,
-    nextOrder.value,
-    resourceStore.currentId!
-  )
-  contents.value.push(content)
+function nextOrder(list: { order: number; [key: symbol]: any }[]) {
+  if (list.length === 0) return 0
+  return list.slice(-1)[0].order! + 1
 }
 
-async function onDelete({ id, index }: { id: number; index: number }) {
-  if (await deleteContent(id)) contents.value.splice(index, 1)
-  // TODO display error
+const nextSectionOrder = computed<number>(() => {
+  return nextOrder(contentsBySection.value)
+})
+
+function nextContentOrder(sectionIndex: number): number {
+  return nextOrder(contentsBySection.value[sectionIndex].contents)
 }
 
 async function newSection(sectionTitle: string) {
-  return addSection(resourceStore.currentId!, sectionTitle)
+  const newSection = await addSection(
+    resourceStore.currentId!,
+    nextSectionOrder.value,
+    sectionTitle
+  )
+  contentsBySection.value.push(newSection!)
+}
+
+async function newContentInNewSection(type: string) {
+  const newSection = await addSection(
+    resourceStore.currentId!,
+    nextSectionOrder.value
+  )
+  const content = await addContent(
+    type,
+    0,
+    resourceStore.currentId!,
+    newSection!.id
+  )
+  newSection!.contents.push(content!)
+  contentsBySection.value.push(newSection!)
+}
+
+async function newContentInSection({
+  type,
+  sectionIndex,
+}: {
+  type: string
+  sectionIndex: number
+}) {
+  const content = await addContent(
+    type,
+    nextContentOrder(sectionIndex),
+    resourceStore.currentId!,
+    contentsBySection.value[sectionIndex]!.id
+  )
+  contentsBySection.value[sectionIndex]!.contents.push(content!)
+}
+
+async function onDeleteContent({
+  id,
+  contentIndex,
+  sectionIndex,
+}: {
+  id: number
+  contentIndex: number
+  sectionIndex: number
+}) {
+  if (contentsBySection.value[sectionIndex].contents.length === 1)
+    return onDeleteSection(sectionIndex)
+  if (await deleteContent(id))
+    contentsBySection.value[sectionIndex].contents.splice(contentIndex, 1)
+  // TODO display potential error
+}
+
+async function onDeleteSection(index: number) {
+  const id = contentsBySection.value[index].id
+  console.log({ index, id })
+  if (await deleteSection(id)) contentsBySection.value.splice(index, 1)
+  // TODO display potential error
 }
 </script>
 
