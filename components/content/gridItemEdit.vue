@@ -3,11 +3,9 @@
     <div class="fr-grid-row space-between">
       <div>
         <div class="type-icon" />
-        <button @click="$emit('move-left')">←</button>
-        <button @click="$emit('move-right')">→</button>
-        <span>
-          {{ content.title }}
-        </span>
+        <button @click="$emit('swap-one', -1)">←</button>
+        <button @click="$emit('swap-one', 1)">→</button>
+        <span> {{ content.title }}</span>
       </div>
       <div>
         <button disabled>edit title</button>
@@ -37,7 +35,7 @@ const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
   tagName: { type: String, default: "div" },
 })
-defineEmits(["delete", "move-left", "move-right"])
+defineEmits(["delete", "swap-one"])
 
 const content = useModel<Content>("modelValue", { type: "object" })
 const resizeGhostImage = ref<HTMLElement>()

@@ -24,6 +24,7 @@
           sectionIndex: index,
         })
       "
+      @swap-one="swapOne(index, $event)"
     />
 
     <button @click="$emit('new-section', 'blablab')">new Section</button>
@@ -35,6 +36,7 @@
 import { SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
+import { orderSwap } from "~/composables/contentsHelper"
 
 defineProps({
   modelValue: {
@@ -50,17 +52,16 @@ defineEmits({
   },
   "delete-content": null,
   "new-section": null,
-  "new-content-in-section"({
-    type,
-    sectionIndex,
-  }: {
-    type: string
-    sectionIndex: number
-  }) {
+  "new-content-in-section"({ type }: { type: string; sectionIndex: number }) {
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
   "delete-section": null,
 })
 
 const sections = useModel<SectionWithContent[]>("modelValue", { type: "array" })
+
+async function swapOne(index: number, direction: number) {
+  orderSwap(sections.value, index, direction)
+  return updateSectionOrder(sections.value)
+}
 </script>
