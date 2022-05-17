@@ -13,6 +13,7 @@
       @new-solo-content="newContentInNewSection"
       @new-section="newSection"
       @new-content-in-section="newContentInSection"
+      @new-adhoc-section="createAdHocSectionForContent"
     />
     <client-only>
       <ContentGridEdit
@@ -31,7 +32,7 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { SectionWithContent } from "~/composables/types"
+import { Content, SectionWithContent } from "~/composables/types"
 import {
   getResourceContentsBySection,
   addSection,
@@ -39,6 +40,8 @@ import {
   emptyContentBySection,
   deleteSection,
   deleteContent,
+  updateSectionOrder,
+  updateContent,
 } from "~/composables/contentsHelper"
 
 const resourceStore = useResourceStore()
@@ -86,6 +89,30 @@ async function newContentInNewSection(type: string) {
   )
   newSection!.contents.push(content!)
   contentsBySection.value.push(newSection!)
+}
+
+async function createAdHocSectionForContent({
+  prevSectionIndex,
+  contentIndex,
+  nextIndex,
+}: {
+  prevSectionIndex: number
+  contentIndex: number
+  nextIndex: number
+}) {
+  const newSection = await addSection(
+    resourceStore.currentId!,
+    nextSectionOrder.value
+  )
+  let content: any = contentsBySection.value[nextIndex]
+  console.log({ content, prevSectionIndex, contentIndex })
+  content = await updateContent({
+    id: content!.id,
+    section: newSection!.id,
+  } as any as Content)
+  newSection!.contents.push(content!)
+  contentsBySection.value.splice(nextIndex, 1, newSection!)
+  return updateSectionOrder(contentsBySection.value)
 }
 
 async function newContentInSection({

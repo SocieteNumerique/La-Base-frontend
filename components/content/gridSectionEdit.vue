@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h2 v-if="section.isFoldable">{{ section.title }}</h2>
-    <button @click="$emit('delete-section')">delete section</button>
+    <template v-if="section.isFoldable">
+      <h2 v-if="section.isFoldable">{{ section.title }}</h2>
+      <button @click="$emit('swap-one', -1)">←</button>
+      <button @click="$emit('swap-one', 1)">→</button>
+      <button @click="$emit('delete-section')">delete section</button>
+    </template>
     <div class="grid-container fr-m-n2v">
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
@@ -16,8 +20,7 @@
           @delete="$emit('delete-content', { id: contents[index].id, index })"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
-          @move-left="move(index, -1)"
-          @move-right="move(index, 1)"
+          @swap-one="swapOne(index, $event)"
         />
         <li><button @click="$emit('new-content', 'text')">+</button></li>
       </ul>
@@ -26,25 +29,30 @@
 </template>
 
 <script lang="ts" setup>
-import { Content, ContentOrder, SectionWithContent } from "~/composables/types"
+import { Content, SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
-import { updateContent, updateOrder } from "~/composables/contentsHelper"
+import {
+  orderSwap,
+  updateContent,
+  updateContentOrder,
+} from "~/composables/contentsHelper"
 
 defineProps({
   modelValue: { type: Object as PropType<SectionWithContent>, required: true },
 })
 
-defineEmits({
+const emits = defineEmits({
   "new-content"(type: string) {
     return ["text", "file", "link", "linkedResource"].includes(type)
   },
   "delete-section": null,
   "delete-content": null,
+  "swap-one": null,
 })
 
 const section = useModel<SectionWithContent>("modelValue", { type: "object" })
-// const contents = useModel<Content[]>("modelValue", { type: "array" })
+
 const contents = computed<Content[]>({
   get() {
     return section.value.contents
@@ -54,16 +62,10 @@ const contents = computed<Content[]>({
   },
 })
 
-async function move(index: number, direction: number) {
-  const nextIndex = index + direction
-  console.log({ index, direction, nextIndex })
-  if (nextIndex < 0 || nextIndex >= contents.value.length) return
-
-  const tempContent = contents.value[index]
-  contents.value[index] = contents.value[nextIndex]!
-  contents.value[nextIndex] = tempContent!
-
-  return updateOrder(contents.value, section.value.id)
+async function swapOne(index: number, direction: number) {
+  if (!section.value.isFoldable) return emits("swap-one", direction)
+  orderSwap(contents.value, index, direction)
+  return updateContentOrder(contents.value, section.value.id)
 }
 
 // Drag and drop resize -------------------------------

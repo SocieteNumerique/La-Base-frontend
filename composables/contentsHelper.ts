@@ -69,7 +69,21 @@ export async function deleteContent(id: number) {
   }
 }
 
-export async function updateOrder(contents: Content[], sectionId: number) {
+export function orderSwap(list: any[], index: number, direction: number) {
+  const nextIndex = index + direction
+  if (nextIndex < 0 || nextIndex >= list.length) return
+
+  const tempInstance = list[index]
+  list[index] = list[nextIndex]!
+  list[nextIndex] = tempInstance!
+}
+
+export async function updateContentOrder(
+  contents: Content[],
+  sectionId: number
+) {
+  // to respect unique_together in database while reordering is always managed sequentially
+  const millis = Date.now()
   // transform Content[] to { contentId: { section, order } }
   const order = contents.reduce(
     (
@@ -78,17 +92,35 @@ export async function updateOrder(contents: Content[], sectionId: number) {
       index
     ) => {
       prev[content.id!] = {
-        order: index,
+        order: index + millis,
         section: sectionId,
       }
       return prev
     },
     {}
   )
+  const { data, error } = await useApiPatch("contents/order/", order)
+  if (!error.value) console.log(data)
+}
+
+export async function updateSectionOrder(sections: SectionWithContent[]) {
   // to respect unique_together in database while reordering is always managed sequentially
   const millis = Date.now()
-  Object.values(order).forEach((orderItem) => (orderItem.order += millis))
-  const { data, error } = await useApiPatch("contents/order/", order)
+  // transform Section[] to { sectionId: { order } }
+  const order = sections.reduce(
+    (
+      prev: { [key: number]: { order: number } },
+      section: SectionWithContent,
+      index
+    ) => {
+      prev[section.id!] = {
+        order: index + millis,
+      }
+      return prev
+    },
+    {}
+  )
+  const { data, error } = await useApiPatch("sections/order/", order)
   if (!error.value) console.log(data)
 }
 
