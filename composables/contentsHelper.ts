@@ -1,4 +1,10 @@
-import { Content, ContentOrder } from "~/composables/types"
+import {
+  Content,
+  Section,
+  ContentOrder,
+  SectionWithContent,
+  MiniContent,
+} from "~/composables/types"
 import {
   useApiGet,
   useApiPatch,
@@ -6,19 +12,21 @@ import {
   useApiDelete,
 } from "~/composables/api"
 
-export async function getResourceContents(resourceId: number) {
-  const { data, error } = await useApiGet<Content[]>(
-    `resources/${resourceId}/contents/`
-  )
+export async function getResourceContentsBySection(resourceId: number) {
+  const { data, error } = await useApiGet<{
+    sections: SectionWithContent[]
+  }>(`resources/${resourceId}/contents/`)
   if (!error.value) {
-    return data.value
+    return data.value.sections
   }
 }
 
-function getDefaultContent(type: string): Content {
-  if (type === "text") return { type: "text", text: "", nbCol: 3 }
-  if (type === "file") return { type: "file", nbCol: 1 }
-  if (type === "link") return { type: "link", link: "", nbCol: 1 }
+function getDefaultContent(type: string, sectionId: number): MiniContent {
+  if (type === "text")
+    return { type: "text", text: "", nbCol: 3, section: sectionId }
+  if (type === "file") return { type: "file", nbCol: 1, section: sectionId }
+  if (type === "link")
+    return { type: "link", link: "", nbCol: 1, section: sectionId }
   throw "unknown type"
 }
 
@@ -45,31 +53,69 @@ export async function updateContent(content: Content) {
 export async function addContent(
   type: string,
   order: number,
-  resourceId: number
+  resourceId: number,
+  sectionId: number
 ): Promise<Content> {
-  const content = getDefaultContent(type)
-  content.order = order
-  const createdContent = await createContent(resourceId, content)
+  const content = getDefaultContent(type, sectionId)
+  const createdContent = await createContent(resourceId, { ...content, order })
   if (createdContent) return createdContent
   throw "error at creating Content"
 }
 
 export async function deleteContent(id: number) {
-  const { error } = await useApiDelete<Content>(`contents/${id}/`)
+  const { error } = await useApiDelete(`contents/${id}/`)
   if (!error.value) {
     return true
   }
 }
 
-export async function updateOrder(order: ContentOrder) {
+export async function updateOrder(contents: Content[], sectionId: number) {
+  // transform Content[] to { contentId: { section, order } }
+  const order = contents.reduce(
+    (
+      prev: { [key: number]: { section: number; order: number } },
+      content: Content,
+      index
+    ) => {
+      prev[content.id!] = {
+        order: index,
+        section: sectionId,
+      }
+      return prev
+    },
+    {}
+  )
+  // to respect unique_together in database while reordering is always managed sequentially
+  const millis = Date.now()
+  Object.values(order).forEach((orderItem) => (orderItem.order += millis))
   const { data, error } = await useApiPatch("contents/order/", order)
-  if (!error) console.log(data)
+  if (!error.value) console.log(data)
 }
 
-export async function addSection(resourceId: number, sectionTitle: string) {
-  const { data, error } = await useApiPost("sections/", {
+export async function addSection(
+  resourceId: number,
+  order: number,
+  sectionTitle?: string
+): Promise<SectionWithContent | undefined> {
+  const section: any = {
     resource: resourceId,
-    title: sectionTitle,
-  })
-  if (!error) return data
+    order,
+  }
+  if (sectionTitle) {
+    section.title = sectionTitle
+    section.isFoldable = true
+  }
+  const { data, error } = await useApiPost<Section>("sections/", section)
+  if (!error.value) {
+    return { ...data.value, contents: [] }
+  }
 }
+
+export async function deleteSection(id: number) {
+  const { error } = await useApiDelete(`sections/${id}/`)
+  if (!error.value) {
+    return true
+  }
+}
+
+export const emptyContentBySection: SectionWithContent[] = []

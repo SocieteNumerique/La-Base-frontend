@@ -73,29 +73,49 @@ export type Base = {
   isShort?: boolean
 }
 
-export type BaseContent = {
+type BaseMiniContent = {
+  type: string
+  nbCol: number
+  section: number
+}
+
+interface BaseContent extends BaseMiniContent {
   id?: number
   title?: string
   annotation?: string
-  type: string
   licence?: string
-  nbCol: number
-  order?: number
-  section?: number
+  order: number
 }
+
+export interface MiniLinkContent extends BaseMiniContent {
+  link: string
+}
+export interface MiniTextContent extends BaseMiniContent {
+  text: string
+}
+export type MiniFileContent = BaseMiniContent
+export type MiniContent = MiniLinkContent | MiniTextContent | MiniFileContent
 
 export interface LinkContent extends BaseContent {
   link: string
 }
-
 export interface TextContent extends BaseContent {
   text: string
 }
-
 export type FileContent = BaseContent
-
 export type Content = LinkContent | TextContent | FileContent
 
 export type ContentOrder = {
-  [key: number]: { section?: number; order?: number }
+  [key: number]: { section: number; order: number }
+}
+
+export type Section = {
+  id: number
+  order: number
+  isFoldable: boolean
+  title?: string
+}
+
+export interface SectionWithContent extends Section {
+  contents: Content[]
 }

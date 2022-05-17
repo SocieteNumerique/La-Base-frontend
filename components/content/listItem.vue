@@ -19,7 +19,7 @@ import { PropType } from "vue"
 import { Content } from "~/composables/types"
 import { useModel } from "~/composables/modelWrapper"
 
-const props = defineProps({
+defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
 defineEmits(["delete"])
