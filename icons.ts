@@ -15,7 +15,7 @@ import {
   RiArrowLeftSLine,
   RiArrowRightSLine,
   RiEditLine,
-} from "oh-vue-icons/icons/ri"
+} from "oh-vue-icons/icons/ri/index"
 
 export const icons = [
   RiCloseLine,
