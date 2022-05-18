@@ -47,6 +47,7 @@
               v-for="producer of resourceStore.current?.externalProducers || []"
               :key="producer.emailContact"
               class="has-children-space-between"
+              style="align-items: center"
             >
               <div>{{ producer.name }}</div>
               <div>
