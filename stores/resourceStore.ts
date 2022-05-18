@@ -4,7 +4,6 @@ import {
   MenuByKey,
   MenuWithSubMenusByKey,
   Resource,
-  SubMenu,
   SubMenuByKey,
 } from "~/composables/types"
 import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
@@ -106,7 +105,7 @@ export const useResourceStore = defineStore("resource", {
       currentId: undefined,
       navigation: {
         activeMenu: "informations",
-        activeSubMenu: "credits",
+        activeSubMenu: "general",
       },
       resourcesById: {},
     },
