@@ -122,9 +122,9 @@
         </div>
 
         <TagSelector
-          v-if="tagStore.categoryBySlug('ExternalProducerOccupation')"
+          v-if="tagStore.categoryBySlug('externalProducer_00occupation')"
           class="fr-mt-3w"
-          :category="tagStore.categoryBySlug('ExternalProducerOccupation')"
+          :category="tagStore.categoryBySlug('externalProducer_00occupation')"
           :is-focused="true"
           @change="onNewExternalProducerTagChange"
         />
