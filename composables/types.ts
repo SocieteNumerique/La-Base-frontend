@@ -9,15 +9,19 @@ export type ExternalProducer = {
 }
 
 export type Resource = {
+  accessRequiresUserAccount?: boolean
   contents?: Content[]
+  created?: string
   creator?: number
   id?: number
   internalProducerIds?: number[]
   isDraft?: boolean
+  isLinkedToATerritory?: boolean
   isShort?: boolean
   description?: string
   externalProducers?: ExternalProducer[]
   linkedResourceIds?: number[]
+  modified: string
   producerState: string
   rootBaseId?: number
   rootBase?: number
@@ -118,4 +122,30 @@ export type Section = {
 
 export interface SectionWithContent extends Section {
   contents: Content[]
+}
+
+export type SubMenu = {
+  description: string
+  disabled?: boolean
+  key: string
+  name: string
+}
+export type SubMenuByKey = {
+  [key: string]: SubMenu
+}
+
+export type Menu = {
+  key: string
+  name: string
+  subMenus: SubMenu[]
+}
+
+export type MenuWithSubMenusByKey = {
+  key: string
+  name: string
+  subMenus: SubMenuByKey
+}
+
+export type MenuByKey = {
+  [key: string]: MenuWithSubMenusByKey
 }

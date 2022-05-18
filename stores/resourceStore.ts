@@ -1,29 +1,42 @@
 import { defineStore } from "pinia"
-import { Resource } from "~/composables/types"
+import {
+  Menu,
+  MenuByKey,
+  MenuWithSubMenusByKey,
+  Resource,
+  SubMenu,
+  SubMenuByKey,
+} from "~/composables/types"
 import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
-
-type SubMenu = {
-  key: string
-  name: string
-}
-
-type Menu = {
-  key: string
-  name: string
-  subMenus: SubMenu[]
-}
 
 export const navigationMenus: Menu[] = [
   {
     key: "informations",
     name: "Informations",
     subMenus: [
-      { key: "general", name: "Général" },
-      { key: "indexation", name: "Indexation" },
-      { key: "credits", name: "Crédits" },
-      { key: "territory", name: "Territoire" },
-      { key: "licence", name: "Licence" },
-      { key: "label", name: "Label" },
+      {
+        key: "general",
+        name: "Général",
+        description: "Général quoi",
+      },
+      {
+        key: "indexation",
+        name: "Indexation",
+        description:
+          "Cette indexation est générale, elle permettra, si votre ressource est publique, aux autres utilisateurs de la base de la trouver via le moteur de recherche.",
+      },
+      { key: "credits", name: "Crédits", description: "Les crédits" },
+      {
+        key: "territory",
+        name: "Territoire",
+        description: "Description du territoire",
+      },
+      {
+        key: "license",
+        name: "Licence",
+        description: "Description de la licence",
+      },
+      { key: "label", name: "Label", description: "" },
     ],
   },
   {
@@ -34,9 +47,41 @@ export const navigationMenus: Menu[] = [
   {
     key: "parameters",
     name: "Paramètres",
-    subMenus: [],
+    subMenus: [
+      { key: "status", name: "Statut", description: "Description du statut" },
+      {
+        key: "administration",
+        name: "Administration",
+        description: "Description du Administration",
+      },
+      {
+        key: "comments",
+        name: "Commentaires",
+        description: "Description du Commentaires",
+      },
+      {
+        key: "assessments",
+        name: "Évaluations",
+        description: "Description du Évaluations",
+      },
+      {
+        key: "reports",
+        name: "Signalement",
+        description: "Description du Signalement",
+        disabled: true,
+      },
+    ],
   },
 ]
+export const navigationMenuByKey: MenuByKey = {}
+for (const menu of navigationMenus) {
+  const subMenusByKey: SubMenuByKey = {}
+  for (const subMenu of menu.subMenus) {
+    subMenusByKey[subMenu.key] = subMenu
+  }
+  const menuCopy: MenuWithSubMenusByKey = { ...menu, subMenus: subMenusByKey }
+  navigationMenuByKey[menu.key] = menuCopy
+}
 
 type ResourceNavigation = {
   activeMenu: string
@@ -166,26 +211,9 @@ export const useResourceStore = defineStore("resource", {
         resourceId = this.currentId
       }
       const resource = this.resourcesById[resourceId!]
-      const payload: any = {}
-      const updateFields = [
-        "title",
-        "rootBase",
-        "isDraft",
-        "description",
-        "zipCode",
-        "linkedResources",
-        "internalProducers",
-        "externalProducers",
-        "producerState",
-        "tags",
-      ]
-      for (const field of updateFields) {
-        // @ts-ignore
-        payload[field] = resource[field]
-      }
       const { data, error } = await useApiPatch<Resource>(
         `resources/${resourceId}/`,
-        payload
+        resource
       )
       if (!error.value) {
         console.log("### save resource", resourceId)

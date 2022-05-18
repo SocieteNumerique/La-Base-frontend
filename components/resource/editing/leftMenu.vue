@@ -116,7 +116,11 @@
 </template>
 
 <script setup lang="ts">
-import { useResourceStore, navigationMenus } from "~/stores/resourceStore"
+import {
+  useResourceStore,
+  navigationMenus,
+  navigationMenuByKey,
+} from "~/stores/resourceStore"
 import { computed } from "vue"
 
 const resourceStore = useResourceStore()
@@ -144,8 +148,21 @@ const iconIfSubMenuActive = computed(() => (menuName: string) => {
 const selectSubMenu = (subMenu: string) => {
   resourceStore.navigation.activeSubMenu = subMenu
 }
-const selectMenu = (menu: string) => {
-  resourceStore.navigation.activeMenu = menu
+const selectMenu = (menuKey: string) => {
+  const wasAlreadyActive = resourceStore.navigation.activeMenu === menuKey
+  resourceStore.navigation.activeMenu = menuKey
+
+  // if we go into a new menu with sub-menus, select first sub-menu
+  if (
+    !wasAlreadyActive &&
+    Object.keys(navigationMenuByKey[menuKey].subMenus).length
+  ) {
+    for (const menu of navigationMenus) {
+      if (menu.key === menuKey) {
+        resourceStore.navigation.activeSubMenu = menu.subMenus[0].key
+      }
+    }
+  }
 }
 </script>
 
