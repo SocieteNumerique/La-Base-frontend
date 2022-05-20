@@ -74,6 +74,10 @@
                               ? 'page'
                               : null
                           "
+                          :disabled="
+                            navigationMenuByKey[menu.key].subMenus[subMenu.key]
+                              .disabled
+                          "
                           @click="selectSubMenu(subMenu.key)"
                         >
                           {{ subMenu.name }}
@@ -97,17 +101,29 @@
             </ul>
           </div>
         </div>
-        <div class="fr-pb-3w" style="display: flex; flex-direction: column">
+        <div
+          class="fr-pb-3w fr-mt-6w"
+          style="display: flex; flex-direction: column"
+        >
           <DsfrButton
             :secondary="true"
             label="Prévisualiser"
             icon="ri-eye-line"
+            class="fr-mb-3v"
+            :disabled="true"
           />
-          <DsfrButton label="Sauvegarder" icon="ri-save-line" @click="save" />
+          <DsfrButton
+            label="Sauvegarder"
+            icon="ri-save-line"
+            class="fr-mb-3v"
+            @click="save"
+          />
           <DsfrButton
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
+            class="fr-mb-3v"
+            :disabled="true"
           />
         </div>
       </nav>
@@ -146,6 +162,12 @@ const iconIfSubMenuActive = computed(() => (menuName: string) => {
   return resourceStore.isSubMenuActive(menuName) ? "ri-arrow-right-line" : ""
 })
 const selectSubMenu = (subMenu: string) => {
+  if (
+    navigationMenuByKey[resourceStore.navigation.activeMenu].subMenus[subMenu]
+      .disabled
+  ) {
+    return
+  }
   resourceStore.navigation.activeSubMenu = subMenu
 }
 const selectMenu = (menuKey: string) => {

@@ -59,7 +59,7 @@ const createResource = async () => {
   })
 
   if (resource) {
-    await router.push(`/ressource/${resource.id}`)
+    await router.push(`/ressource/${resource.id}/edition`)
   }
 }
 

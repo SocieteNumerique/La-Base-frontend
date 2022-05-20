@@ -9,12 +9,12 @@
       >
         <ResourceEditingGeneralInfo />
       </div>
-      <div v-else-if="resourceStore.isMenuActive('informations')">
-        <ResourceEditingCategories />
-      </div>
       <ResourceEditingContents
         v-else-if="resourceStore.isMenuActive('contents')"
       />
+      <div v-else>
+        <ResourceEditingCategories />
+      </div>
     </div>
 
     <!-- navigation buttons at the bottom of the page -->
