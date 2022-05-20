@@ -25,6 +25,7 @@ export type Resource = {
   producerState: string
   rootBaseId?: number
   rootBase?: number
+  status: string
   tags?: number[]
   title: string
   url?: string

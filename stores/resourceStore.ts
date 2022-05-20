@@ -35,7 +35,7 @@ export const navigationMenus: Menu[] = [
         name: "Licence",
         description: "Description de la licence",
       },
-      { key: "label", name: "Label", description: "" },
+      { key: "label", name: "Label", description: "", disabled: true },
     ],
   },
   {
@@ -47,7 +47,7 @@ export const navigationMenus: Menu[] = [
     key: "parameters",
     name: "Paramètres",
     subMenus: [
-      { key: "status", name: "Statut", description: "Description du statut" },
+      { key: "state", name: "Statut", description: "Description du statut" },
       {
         key: "administration",
         name: "Administration",
@@ -57,17 +57,19 @@ export const navigationMenus: Menu[] = [
         key: "comments",
         name: "Commentaires",
         description: "Description du Commentaires",
+        disabled: true,
       },
       {
         key: "assessments",
         name: "Évaluations",
+        disabled: true,
         description: "Description du Évaluations",
       },
       {
         key: "reports",
         name: "Signalement",
-        description: "Description du Signalement",
         disabled: true,
+        description: "Description du Signalement",
       },
     ],
   },
@@ -232,8 +234,10 @@ export const useResourceStore = defineStore("resource", {
         id: undefined,
         rootBaseId: undefined,
         title: "",
+        modified: "",
         contents: [],
         producerState: "",
+        status: "draft",
       }
     },
     isMenuActive:

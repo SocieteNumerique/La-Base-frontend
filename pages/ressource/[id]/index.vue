@@ -1,5 +1,9 @@
 <template>
-  <ResourceEditingMain />
+  <div>
+    <template v-if="resourceStore.current">
+      <h1>{{ resourceStore.current.title }}</h1>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +12,7 @@ import { useRoute } from "vue-router"
 import { onMounted } from "vue"
 
 definePageMeta({
-  layout: "resource",
+  layout: "default",
   title: "Ressource",
 })
 const route = useRoute()
