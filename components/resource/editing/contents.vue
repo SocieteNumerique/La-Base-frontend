@@ -10,7 +10,7 @@
       v-model="contentsBySection"
       @delete-content="onDeleteContent"
       @delete-section="onDeleteSection"
-      @new-solo-content="newContentInNewSection"
+      @new-solo-content="newSoloContentInTheEnd"
       @new-section="newSection"
       @new-content-in-section="newContentInSection"
       @new-adhoc-section="createAdHocSectionForContent"
@@ -22,7 +22,7 @@
         v-model="contentsBySection"
         @delete-content="onDeleteContent"
         @delete-section="onDeleteSection"
-        @new-solo-content="newContentInNewSection"
+        @new-solo-content="newSoloContentInTheEnd"
         @new-section="newSection"
         @new-content-in-section="newContentInSection"
       />
@@ -76,6 +76,18 @@ async function newSection(sectionTitle: string) {
   contentsBySection.value.push(newSection!)
 }
 
+async function newSoloContentInTheEnd(type: string) {
+  if (
+    !contentsBySection.value.length ||
+    contentsBySection.value.slice(-1)[0].isFoldable
+  )
+    return newContentInNewSection(type)
+  return newContentInSection({
+    type,
+    sectionIndex: contentsBySection.value.length - 1,
+  })
+}
+
 async function newContentInNewSection(type: string) {
   const newSection = await addSection(
     resourceStore.currentId!,
@@ -89,30 +101,6 @@ async function newContentInNewSection(type: string) {
   )
   newSection!.contents.push(content!)
   contentsBySection.value.push(newSection!)
-}
-
-async function createAdHocSectionForContent({
-  prevSectionIndex,
-  contentIndex,
-  nextIndex,
-}: {
-  prevSectionIndex: number
-  contentIndex: number
-  nextIndex: number
-}) {
-  const newSection = await addSection(
-    resourceStore.currentId!,
-    nextSectionOrder.value
-  )
-  let content: any = contentsBySection.value[nextIndex]
-  console.log({ content, prevSectionIndex, contentIndex })
-  content = await updateContent({
-    id: content!.id,
-    section: newSection!.id,
-  } as any as Content)
-  newSection!.contents.push(content!)
-  contentsBySection.value.splice(nextIndex, 1, newSection!)
-  return updateSectionOrder(contentsBySection.value)
 }
 
 async function newContentInSection({
@@ -131,6 +119,27 @@ async function newContentInSection({
   contentsBySection.value[sectionIndex]!.contents.push(content!)
 }
 
+async function createAdHocSectionForContent({
+  nextIndex,
+}: {
+  prevSectionIndex: number
+  contentIndex: number
+  nextIndex: number
+}) {
+  const newSection = await addSection(
+    resourceStore.currentId!,
+    nextSectionOrder.value
+  )
+  let content: any = contentsBySection.value[nextIndex]
+  content = await updateContent({
+    id: content!.id,
+    section: newSection!.id,
+  } as any as Content)
+  newSection!.contents.push(content!)
+  contentsBySection.value.splice(nextIndex, 1, newSection!)
+  return updateSectionOrder(contentsBySection.value)
+}
+
 async function onDeleteContent({
   id,
   contentIndex,
@@ -140,7 +149,10 @@ async function onDeleteContent({
   contentIndex: number
   sectionIndex: number
 }) {
-  if (contentsBySection.value[sectionIndex].contents.length === 1)
+  if (
+    !contentsBySection.value[sectionIndex].isFoldable &&
+    contentsBySection.value[sectionIndex].contents.length === 1
+  )
     return onDeleteSection(sectionIndex)
   if (await deleteContent(id))
     contentsBySection.value[sectionIndex].contents.splice(contentIndex, 1)
