@@ -19,6 +19,7 @@
       item-key="id"
       tag="ul"
       @update="sendNewSectionOrder"
+      @add="onAddAmongSections"
     >
       <template #item="{ element: section, index: sectionIndex }">
         <div>
@@ -40,8 +41,8 @@
             item-key="id"
             tag="ul"
             @add="sendNewContentOrder(sectionIndex)"
-            @remove="onContentRemove(sectionIndex, $event)"
             @update="sendNewContentOrder(sectionIndex)"
+            @remove="onContentRemove(sectionIndex)"
           >
             <template #item="{ index: contentIndex }">
               <li draggable="true">
@@ -101,17 +102,11 @@ const emits = defineEmits({
 })
 
 const draggableContentsGroup = computed(() => (isFoldable: boolean) => {
-  return isFoldable
-    ? {
-        name: "groupedContents",
-        pull: ["groupedContents", "sections"],
-        put: ["groupedContents", "soloContents"],
-      }
-    : {
-        name: "soloContents",
-        pull: ["groupedContents", "sections"],
-        put: [],
-      }
+  return {
+    name: isFoldable ? "groupedContents" : "soloContents",
+    pull: ["groupedContents", "sections", "soloContents"],
+    put: ["groupedContents", "soloContents"],
+  }
 })
 
 const contentsBySection = useModel<SectionWithContent[]>("modelValue", {
@@ -134,32 +129,55 @@ function elementToType(element: HTMLElement) {
     if (element.classList.contains(type)) return type
 }
 
-async function onContentRemove(parentSectionIndex: number, payload: any) {
+function onContentRemove(parentSectionIndex: number) {
+  if (
+    !(
+      contentsBySection.value[parentSectionIndex].isFoldable ||
+      contentsBySection.value[parentSectionIndex].contents.length
+    )
+  ) {
+    emits("delete-section", parentSectionIndex)
+  }
+}
+
+function findAnonymousNeighbour(sectionIndex: number): {
+  found: boolean
+  insertFunction?: any
+} {
+  if (sectionIndex > 0 && !contentsBySection.value[sectionIndex - 1].isFoldable)
+    return {
+      found: true,
+      insertFunction: contentsBySection.value[sectionIndex - 1].contents.push,
+    }
+  if (
+    sectionIndex + 1 < contentsBySection.value.length &&
+    !contentsBySection.value[sectionIndex + 1].isFoldable
+  )
+    return {
+      found: true,
+      insertFunction: (elt: Content) =>
+        contentsBySection.value[sectionIndex + 1].contents.splice(-1, 0, elt),
+    }
+  return { found: false }
+}
+
+async function onAddAmongSections(payload: any) {
+  const sectionIndex = payload.newIndex
   const elementType = elementToType(payload.from)
-  const arrivalType = elementToType(payload.to)
-  if (elementType === "grouped-contents" && arrivalType === "sections") {
-    return emits("new-adhoc-section", {
-      prevSectionIndex: parentSectionIndex,
-      contentIndex: payload.oldIndex,
-      nextIndex: payload.newIndex,
-    })
+
+  if (elementType === "section") return
+
+  const content = contentsBySection.value[payload.newIndex] as any as Content
+  const whereToInsert = findAnonymousNeighbour(sectionIndex)
+
+  if (whereToInsert.found) {
+    whereToInsert.insertFunction(content)
+    contentsBySection.value.splice(sectionIndex, 1)
+    return sendNewSectionOrder()
   }
-  if (elementType === "solo-contents") {
-    if (arrivalType === "grouped-contents") {
-      emits("delete-section", parentSectionIndex)
-    }
-    if (arrivalType === "sections") {
-      // content has been put among sections
-      const content = contentsBySection.value[
-        payload.newIndex
-      ] as any as Content
-      contentsBySection.value[payload.newIndex] =
-        contentsBySection.value[parentSectionIndex]
-      contentsBySection.value[payload.newIndex].contents.push(content)
-      contentsBySection.value.splice(parentSectionIndex, 1)
-      return sendNewSectionOrder()
-    }
-  }
+  return emits("new-adhoc-section", {
+    nextIndex: payload.newIndex,
+  })
 }
 
 function onDeleteContent(sectionIndex: number, contentIndex: number) {

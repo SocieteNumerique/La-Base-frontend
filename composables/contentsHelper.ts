@@ -85,20 +85,11 @@ export async function updateContentOrder(
   // to respect unique_together in database while reordering is always managed sequentially
   const millis = Date.now()
   // transform Content[] to { contentId: { section, order } }
-  const order = contents.reduce(
-    (
-      prev: { [key: number]: { section: number; order: number } },
-      content: Content,
-      index
-    ) => {
-      prev[content.id!] = {
-        order: index + millis,
-        section: sectionId,
-      }
-      return prev
-    },
-    {}
-  )
+  const order: any = {}
+  contents.forEach((content, index) => {
+    order[content.id!] = { order: index + millis, section: sectionId }
+    contents[index].order = index + millis
+  })
   const { data, error } = await useApiPatch("contents/order/", order)
   if (!error.value) console.log(data)
 }
@@ -107,19 +98,11 @@ export async function updateSectionOrder(sections: SectionWithContent[]) {
   // to respect unique_together in database while reordering is always managed sequentially
   const millis = Date.now()
   // transform Section[] to { sectionId: { order } }
-  const order = sections.reduce(
-    (
-      prev: { [key: number]: { order: number } },
-      section: SectionWithContent,
-      index
-    ) => {
-      prev[section.id!] = {
-        order: index + millis,
-      }
-      return prev
-    },
-    {}
-  )
+  const order: any = {}
+  sections.forEach((section, index) => {
+    order[section.id!] = { order: index + millis }
+    sections[index].order = index + millis
+  })
   const { data, error } = await useApiPatch("sections/order/", order)
   if (!error.value) console.log(data)
 }

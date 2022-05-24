@@ -17,7 +17,7 @@
           v-model="contents[index]"
           :message="message"
           tag-name="li"
-          @delete="$emit('delete-content', { id: contents[index].id, index })"
+          @delete="onDelete(contents[index].id, index)"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
           @swap-one="swapOne(index, $event)"
@@ -63,9 +63,15 @@ const contents = computed<Content[]>({
 })
 
 async function swapOne(index: number, direction: number) {
-  if (!section.value.isFoldable) return emits("swap-one", direction)
+  // TODO allow to leave non-foldable section
   orderSwap(contents.value, index, direction)
   return updateContentOrder(contents.value, section.value.id)
+}
+
+async function onDelete(id: number, index: number) {
+  if (section.value.isFoldable && !section.value.contents.length)
+    return emits("delete-section")
+  return emits("delete-content", { id, index })
 }
 
 // Drag and drop resize -------------------------------
