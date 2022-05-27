@@ -1,18 +1,234 @@
 <template>
-  <div>
-    <template v-if="resourceStore.current">
-      <h1>{{ resourceStore.current.title }}</h1>
+  <NuxtLayout name="default">
+    <template #header>
+      <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
+        <div class="fr-container">
+          <div>Recommandations</div>
+          <h1 style="max-width: 800px">{{ resource?.title }}</h1>
+          <div class="has-children-space-between">
+            <div>Fiche créée par ...</div>
+            <div class="is-flex">
+              <div>Fiche créée le {{ $date(resource?.created) }}</div>
+              <div class="fr-ml-4w">
+                Fiche modifiée le {{ $date(resource?.modified) }}
+              </div>
+            </div>
+          </div>
+          <div
+            style="border-bottom: 1px solid var(--border-default-grey)"
+            class="fr-my-3w"
+          ></div>
+          <div class="has-children-space-between">
+            <div class="is-flex">
+              <div class="stat">
+                <span class="fr-h5">45</span>
+                <span class="fr-text-label--blue-france">enregistrements</span>
+              </div>
+              <div class="stat">
+                <span class="fr-h5">45</span>
+                <span class="fr-text-label--blue-france">mentions</span>
+              </div>
+              <div class="stat">
+                <span class="fr-h5">45</span>
+                <span class="fr-text-label--blue-france">vues</span>
+              </div>
+            </div>
+            <div class="is-flex">
+              <DsfrBadge label="2 signalements erreur type 3" type="warning" />
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
-  </div>
+
+    <div>
+      <RoundButton icon="ri-share-line" label="Partager" />
+      <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
+      <RoundButton icon="ri-download-line" label="Télécharger" disabled />
+      <RoundButton icon="ri-share-line" label="Signaler" disabled />
+    </div>
+    <div
+      style="border-bottom: 1px solid var(--border-default-grey)"
+      class="fr-my-3w"
+    ></div>
+    <div class="fr-grid-row">
+      <div class="fr-col-3">
+        <nav
+          class="fr-sidemenu fr-sidemenu--sticky"
+          role="navigation"
+          aria-label="Menu latéral"
+        >
+          <div class="fr-sidemenu__inner">
+            <button
+              class="fr-sidemenu__btn"
+              aria-controls="fr-sidemenu-wrapper"
+              aria-expanded="false"
+            >
+              Menu
+            </button>
+            <div id="fr-sidemenu-wrapper" class="fr-collapse">
+              <ul class="fr-sidemenu__list">
+                <li
+                  v-for="menu in navigationMenus"
+                  :key="menu.key"
+                  class="fr-sidemenu__item"
+                  :class="
+                    activeMenu === menu.key ? 'fr-sidemenu__item--active' : ''
+                  "
+                >
+                  <button
+                    :aria-current="activeMenu === menu.key ? 'page' : null"
+                    class="fr-sidemenu__link"
+                    @click="selectMenu(menu.key)"
+                  >
+                    {{ menu.name }}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div id="intersectionRoot" class="fr-col-9">
+        <div id="informations">
+          <h2 class="fr-h4">Informations</h2>
+          <h3 class="fr-h5">Général</h3>
+          <div class="fr-grid-row">
+            <div class="fr-col-8">
+              {{ resource.description }}
+            </div>
+            <div class="fr-col-4">
+              <p class="fr-text--bold">Date de création de la ressource</p>
+              <p>?</p>
+              <p class="fr-text--bold">Crédits de la ressource</p>
+              <p>
+                Base 1 <br />
+                Base 2
+              </p>
+            </div>
+          </div>
+
+          <h3 class="fr-h5">Indexation</h3>
+          <IndexTable
+            v-if="resource"
+            :tag-categories="tagStore.categories"
+            :element="resource"
+          />
+        </div>
+        <div id="resource">
+          <h2 class="fr-h4 fr-text--disabled">Ressource</h2>
+          <p class="fr-text--disabled">
+            Fonctionnalité en cours de développement
+          </p>
+        </div>
+        <div id="sources">
+          <h2 class="fr-h4 fr-text--disabled">Source</h2>
+          <p class="fr-text--disabled">
+            Fonctionnalité en cours de développement
+          </p>
+        </div>
+        <div id="evaluations">
+          <h2 class="fr-h4 fr-text--disabled">Évaluations</h2>
+          <p class="fr-text--disabled">
+            Fonctionnalité en cours de développement
+          </p>
+        </div>
+        <div id="reports">
+          <h2 class="fr-h4 fr-text--disabled">Signalements</h2>
+          <p class="fr-text--disabled">
+            Fonctionnalité en cours de développement
+          </p>
+        </div>
+      </div>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { useRoute } from "vue-router"
-import { onMounted } from "vue"
+import { computed, onMounted } from "vue"
+import RoundButton from "~/components/roundButton.vue"
+import IndexTable from "~/components/indexTable.vue"
+import { useTagStore } from "~/stores/tagStore"
+
+const tagStore = useTagStore()
+const activeMenu = ref("informations")
+
+const selectMenu = (key: string) => {
+  activeMenu.value = key
+  const el = document.getElementById(key)
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" })
+  }
+}
+
+const navigationMenus = [
+  {
+    key: "informations",
+    name: "Informations",
+  },
+  {
+    key: "resource",
+    name: "Ressource",
+  },
+  {
+    key: "sources",
+    name: "Sources",
+  },
+  {
+    key: "label",
+    name: "Label",
+  },
+  {
+    key: "evaluations",
+    name: "Évaluation",
+  },
+  {
+    key: "reports",
+    name: "Signalements",
+  },
+]
+
+const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+  // take entry that is the upper-most one amongst those with max intersectionRatio
+  const ratios = entries.map((entry) => entry.intersectionRatio)
+  const maxRatio = Math.max(...ratios)
+  const entriesWithMaxRatio = entries.filter(
+    (entry) => entry.intersectionRatio == maxRatio
+  )
+  // select the top-most one
+  const distancesFromTop = entriesWithMaxRatio.map(
+    (entry) => entry.intersectionRect.y
+  )
+  const indexOfMinDistanceFromTop = distancesFromTop.indexOf(
+    Math.max(...distancesFromTop)
+  )
+
+  activeMenu.value = entriesWithMaxRatio[indexOfMinDistanceFromTop].target.id
+}
+
+onMounted(() => {
+  var options = {
+    root: null,
+    threshold: 0.1,
+  }
+
+  const observer = new IntersectionObserver(handleIntersect, options)
+  const sections = [
+    "informations",
+    "resource",
+    "sources",
+    "evaluations",
+    "reports",
+  ]
+  sections.forEach((el: string) => {
+    observer.observe(document.getElementById(el)!)
+  })
+})
 
 definePageMeta({
-  layout: "default",
+  layout: false,
   title: "Ressource",
 })
 const route = useRoute()
@@ -25,10 +241,13 @@ const getResourceIfNotExists = (): void => {
     !resourceStore.resourcesById[resourceId] ||
     resourceStore.resourcesById[resourceId].isShort
   ) {
-    console.log("### getting resource :)")
     resourceStore.getResource(resourceId)
   }
 }
+
+const resource = computed(() => {
+  return resourceStore.current
+})
 
 if (process.server) {
   getResourceIfNotExists()
@@ -37,3 +256,15 @@ onMounted(() => {
   getResourceIfNotExists()
 })
 </script>
+
+<style>
+.stat {
+  margin-left: -12px;
+}
+.stat + .stat {
+  margin-left: 12px;
+}
+.stat * {
+  margin-left: 12px;
+}
+</style>

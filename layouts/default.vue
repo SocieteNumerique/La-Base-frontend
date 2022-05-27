@@ -1,14 +1,15 @@
 <template>
   <div data-fr-theme>
     <LayoutHeader />
-    <div class="fr-container fr-mt-4w">
-      <slot name="header">
+    <slot name="header">
+      <div class="fr-container fr-mt-4w">
         <div v-if="route.meta.title" class="fr-grid-row">
           <h1>{{ route.meta.title }}</h1>
         </div>
-      </slot>
-
-      <div class="fr-grid-row fr-mb-11v">
+      </div>
+    </slot>
+    <div class="fr-container fr-mt-4w">
+      <div class="fr-mb-11v">
         <slot />
       </div>
     </div>

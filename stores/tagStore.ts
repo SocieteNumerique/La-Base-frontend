@@ -80,6 +80,11 @@ export const useTagStore = defineStore("tag", {
     },
   },
   getters: {
+    categories: (state) => {
+      return state.tagCategoriesOrder.map(
+        (categoryId) => state.tagCategoriesById[categoryId]
+      )
+    },
     categoryBySlug:
       (state) =>
       (name: string): TagCategory | undefined => {
