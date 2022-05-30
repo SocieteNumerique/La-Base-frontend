@@ -1,10 +1,12 @@
 import { defineStore } from "pinia"
-import { Base } from "~/composables/types"
+import { Base, BaseWithDetailedResources, Resource } from "~/composables/types"
+import { useResourceStore } from "~/stores/resourceStore"
 
 export const useBaseStore = defineStore("base", {
   state: () => ({
     basesOrder: <number[]>[],
     basesById: <{ [key: number]: Base }>{},
+    currentId: <number | undefined>undefined,
   }),
   actions: {
     async refreshBases() {
@@ -19,9 +21,21 @@ export const useBaseStore = defineStore("base", {
       }
     },
     async getBase(baseId: number) {
-      const { data, error } = await useApiGet<Base>(`bases/${baseId}`)
+      const { data, error } = await useApiGet<BaseWithDetailedResources>(
+        `bases/${baseId}/`
+      )
       if (!error.value) {
-        const base = data.value
+        const resourceStore = useResourceStore()
+        const resources = data.value.resources!
+        for (const resource of resources) {
+          if (!resourceStore.resourcesById[resource.id]) {
+            resourceStore.resourcesById[resource.id] = resource
+          }
+        }
+        const base = {
+          ...data.value,
+          resources: resources!.map((resource) => resource.id),
+        }
         this.basesById[base.id] = base
       }
     },
@@ -34,6 +48,16 @@ export const useBaseStore = defineStore("base", {
       return state.basesOrder.map((baseId) => {
         return { text: state.basesById[baseId].title, value: baseId }
       })
+    },
+    current: (state): Base => {
+      if (state.currentId) {
+        return state.basesById[state.currentId]
+      }
+      return {
+        id: -1,
+        title: "",
+        owner: -1,
+      }
     },
     hasBases: (state) => {
       return !!state.basesOrder.length

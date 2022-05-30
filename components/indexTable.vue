@@ -26,6 +26,7 @@ const props = defineProps({
 
 const tagsForCategory = computed(
   () => (category: TagCategory, element: Resource) => {
+    console.log("### tagsforcategory", element)
     return element
       .tags!.map((tagId) => tagStore.tagsById[tagId])
       .filter((tag) => tag.category === category.id)

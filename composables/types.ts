@@ -13,7 +13,7 @@ export type Resource = {
   contents?: Content[]
   created?: string
   creator?: number
-  id?: number
+  id: number
   internalProducerIds?: number[]
   isDraft?: boolean
   isLinkedToATerritory?: boolean
@@ -73,9 +73,17 @@ export type TagCategoryWithFullTags = {
 
 export type Base = {
   id: number
-  title: string
-  owner: User
   isShort?: boolean
+  owner: number
+  resources?: number[]
+  title: string
+}
+export type BaseWithDetailedResources = {
+  id: number
+  isShort?: boolean
+  owner: number
+  resources?: Resource[]
+  title: string
 }
 
 type BaseMiniContent = {

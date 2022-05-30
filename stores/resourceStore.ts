@@ -6,7 +6,7 @@ import {
   Resource,
   SubMenuByKey,
 } from "~/composables/types"
-import { useApiPost, useApiGet, useApiPatch } from "~/composables/api"
+import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 
 export const navigationMenus: Menu[] = [
   {
@@ -80,8 +80,7 @@ for (const menu of navigationMenus) {
   for (const subMenu of menu.subMenus) {
     subMenusByKey[subMenu.key] = subMenu
   }
-  const menuCopy: MenuWithSubMenusByKey = { ...menu, subMenus: subMenusByKey }
-  navigationMenuByKey[menu.key] = menuCopy
+  navigationMenuByKey[menu.key] = { ...menu, subMenus: subMenusByKey }
 }
 
 type ResourceNavigation = {
@@ -231,13 +230,14 @@ export const useResourceStore = defineStore("resource", {
         return state.resourcesById[state.currentId]
       }
       return {
-        id: undefined,
-        rootBaseId: undefined,
-        title: "",
-        modified: "",
         contents: [],
+        id: -1,
+        isShort: true,
+        modified: "",
         producerState: "",
+        rootBaseId: undefined,
         status: "draft",
+        title: "",
       }
     },
     isMenuActive:
