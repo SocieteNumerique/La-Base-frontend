@@ -1,9 +1,9 @@
 import {
   Content,
   Section,
-  ContentOrder,
   SectionWithContent,
   MiniContent,
+  FullFile,
 } from "~/composables/types"
 import {
   useApiGet,
@@ -21,13 +21,25 @@ export async function getResourceContentsBySection(resourceId: number) {
   }
 }
 
-export function fileToBase64(file: File) {
+async function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = () => resolve(reader.result)
     reader.onerror = (error) => reject(error)
   })
+}
+
+export async function inputToFileObject(
+  fileInput: HTMLInputElement
+): Promise<FullFile | undefined> {
+  const nbFiles = fileInput.files!.length
+  if (!nbFiles) return
+  if (nbFiles > 1) return /* TODO */
+  const file = fileInput.files![0]
+  const base64 = await fileToBase64(file)
+  fileInput.files = null
+  return { base64, name: file.name, type: file.type }
 }
 
 function getDefaultContent(type: string, sectionId: number): MiniContent {
@@ -48,7 +60,11 @@ async function createContent(resourceId: number, content: Content) {
   }
 }
 
-export async function updateContent(content: Content) {
+export async function updateContent(
+  content: Content
+): Promise<Content | undefined> {
+  if (Object.hasOwn(content, "file") && !Object.hasOwn(content.file, "base64"))
+    delete content?.file
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content
@@ -66,7 +82,7 @@ export async function addContent(
   payload: any = null
 ): Promise<Content> {
   const content = getDefaultContent(type, sectionId)
-  if (type === "file") content.file = payload // TODO adjust to back
+  if (type === "file") content.file = payload.file
   if (type === "linkedResource") content.linkedResource = resourceId
   const createdContent = await createContent(resourceId, { ...content, order })
   if (createdContent) return createdContent
@@ -104,6 +120,8 @@ export async function updateContentOrder(
   const { data, error } = await useApiPatch("contents/order/", order)
   if (!error.value) console.log(data)
 }
+
+// --------------- Sections ---------------------
 
 export async function updateSectionOrder(sections: SectionWithContent[]) {
   // to respect unique_together in database while reordering is always managed sequentially

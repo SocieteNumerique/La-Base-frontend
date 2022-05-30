@@ -25,6 +25,8 @@
 </template>
 
 <script lang="ts" setup>
+import { inputToFileObject } from "~/composables/contentsHelper"
+
 const emits = defineEmits(["new-content"])
 const fileInput = ref<HTMLInputElement>()
 const isMenuShown = ref<boolean>(false)
@@ -34,12 +36,11 @@ function onNewFileContent() {
 }
 
 async function onAddFile() {
-  const nbFiles = fileInput.value!.files!.length
-  if (!nbFiles) return
-  if (nbFiles > 1) return /* TODO */
-  const base64 = await fileToBase64(fileInput.value!.files![0])
-  emits("new-content", { type: "file", file: base64 })
-  fileInput.value!.files = null
+  const fileObject = await inputToFileObject(fileInput.value!)
+  emits("new-content", {
+    type: "file",
+    file: fileObject,
+  })
 }
 
 function addSimpleContent(type: string) {

@@ -79,46 +79,53 @@ async function newSection(sectionTitle: string) {
   contentsBySection.value.push(newSection!)
 }
 
-async function newSoloContentInTheEnd({ type }: { type: string }) {
+async function newSoloContentInTheEnd(payload: {
+  type: string
+  [key: string]: any
+}) {
   if (
     !contentsBySection.value.length ||
     contentsBySection.value.slice(-1)[0].isFoldable
   )
-    return newContentInNewSection({ type })
+    return newContentInNewSection(payload)
   return newContentInSection({
-    type,
+    ...payload,
     sectionIndex: contentsBySection.value.length - 1,
   })
 }
 
-async function newContentInNewSection({ type }: { type: string }) {
+async function newContentInNewSection(payload: {
+  type: string
+  [key: string]: any
+}) {
   const newSection = await addSection(
     resourceStore.currentId!,
     nextSectionOrder.value
   )
   const content = await addContent(
-    type,
+    payload.type,
     0,
     resourceStore.currentId!,
-    newSection!.id
+    newSection!.id,
+    payload
   ) // TODO payload for files
   newSection!.contents.push(content!)
   contentsBySection.value.push(newSection!)
   currentlyEditingContentId.value = content.id!
 }
 
-async function newContentInSection({
-  type,
-  sectionIndex,
-}: {
+async function newContentInSection(payload: {
   type: string
   sectionIndex: number
+  [key: string]: any
 }) {
+  const sectionIndex = payload.sectionIndex
   const content = await addContent(
-    type,
+    payload.type,
     nextContentOrder(sectionIndex),
     resourceStore.currentId!,
-    contentsBySection.value[sectionIndex]!.id
+    contentsBySection.value[sectionIndex]!.id,
+    payload
   )
   contentsBySection.value[sectionIndex]!.contents.push(content!)
   currentlyEditingContentId.value = content.id!

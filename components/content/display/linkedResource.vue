@@ -20,7 +20,6 @@ const resource = computed<Resource>(() => {
 
 if (!resourceStore.resourcesById[props.content.linkedResource]) {
   // TODO only short version
-  console.log("### getting resource :)")
   await resourceStore.getResource(props.content.linkedResource)
 }
 </script>

@@ -20,7 +20,7 @@
           tag-name="li"
           :is-editing="currentEditingContentId === content.id"
           @delete="onDelete(contents[index].id, index)"
-          @dragend="onDrop($event, contents[index])"
+          @dragend="onDrop($event, index)"
           @dragstart="onDragBegin($event, index)"
           @swap-one="swapOne(index, $event)"
           @open-edition="currentEditingContentId = content.id"
@@ -157,7 +157,8 @@ function onDrag(event: DragEvent) {
   // TODO message if too right and not blocked
 }
 
-function onDrop(event: DragEvent, content: Content) {
+async function onDrop(event: DragEvent, contentIndex: number) {
+  const content = contents.value[contentIndex]
   isDragging.value = false
   if (!gridUnderlayRef.value) throw "Layout not setup yet"
   for (let colElement of gridUnderlayRef.value.children) {
@@ -166,7 +167,9 @@ function onDrop(event: DragEvent, content: Content) {
   const nbCol = nextNbCol(content.nbCol)
   if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
-  updateContent(content)
+  const updatedContent = await updateContent(content)
+  if (!updatedContent) return
+  contents.value[contentIndex] = updatedContent
 }
 
 window.addEventListener("dragover", onDrag)

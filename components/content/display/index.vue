@@ -18,6 +18,7 @@ import { PropType } from "vue"
 import { Content } from "~/composables/types"
 import ContentDisplayText from "~/components/content/display/text.vue"
 import ContentDisplayLink from "~/components/content/display/link.vue"
+import ContentDisplayFile from "~/components/content/display/file.vue"
 import ContentDisplayLinkedResource from "~/components/content/display/linkedResource.vue"
 
 const props = defineProps({
@@ -25,11 +26,10 @@ const props = defineProps({
   isEditingView: { type: Boolean, default: true },
 })
 
-const isFullView = computed<boolean>(() => props.content.type !== "text")
-
 const componentByType: { [key: string]: unknown } = {
   text: ContentDisplayText,
   link: ContentDisplayLink,
+  file: ContentDisplayFile,
   linkedResource: ContentDisplayLinkedResource,
 }
 const component = computed(() => componentByType[props.content.type])
