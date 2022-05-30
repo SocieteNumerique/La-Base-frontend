@@ -21,12 +21,20 @@ export async function getResourceContentsBySection(resourceId: number) {
   }
 }
 
+export function fileToBase64(file: File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = (error) => reject(error)
+  })
+}
+
 function getDefaultContent(type: string, sectionId: number): MiniContent {
-  if (type === "text")
-    return { type: "text", text: "", nbCol: 3, section: sectionId }
-  if (type === "file") return { type: "file", nbCol: 1, section: sectionId }
-  if (type === "link")
-    return { type: "link", link: "", nbCol: 1, section: sectionId }
+  if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
+  if (type === "file") return { type, nbCol: 1, section: sectionId }
+  if (type === "link") return { type, link: "", nbCol: 1, section: sectionId }
+  if (type === "linkedResource") return { type, nbCol: 1, section: sectionId }
   throw "unknown type"
 }
 
@@ -54,9 +62,12 @@ export async function addContent(
   type: string,
   order: number,
   resourceId: number,
-  sectionId: number
+  sectionId: number,
+  payload: any = null
 ): Promise<Content> {
   const content = getDefaultContent(type, sectionId)
+  if (type === "file") content.file = payload // TODO adjust to back
+  if (type === "linkedResource") content.linkedResource = resourceId
   const createdContent = await createContent(resourceId, { ...content, order })
   if (createdContent) return createdContent
   throw "error at creating Content"
@@ -123,6 +134,16 @@ export async function addSection(
   const { data, error } = await useApiPost<Section>("sections/", section)
   if (!error.value) {
     return { ...data.value, contents: [] }
+  }
+}
+
+export async function updateSection(section: Section) {
+  const { data, error } = await useApiPatch<Section>(
+    `sections/${section.id}/`,
+    section
+  )
+  if (!error.value) {
+    return data.value
   }
 }
 

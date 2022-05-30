@@ -1,7 +1,7 @@
 <template>
   <button
     :class="{ '-active': !isGridView, '-inactive': isGridView }"
-    class="fr-btn fr-btn--tertiary-no-outline"
+    class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
     @click="isGridView = false"
   >
     Vue en liste
@@ -16,7 +16,7 @@
   <button
     v-show="isGridViewEnabled"
     :class="{ '-active': isGridView, '-inactive': !isGridView }"
-    class="fr-btn fr-btn--tertiary-no-outline"
+    class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
     @click="isGridView = true"
   >
     Vue en grille
@@ -51,8 +51,6 @@ function noGridViewAtAll() {
 </script>
 
 <style lang="sass" scoped>
-.-active
-  border-bottom: 2px solid var(--text-action-high-blue-france)
 .-inactive
   color: var(--text-disabled-grey)
 </style>

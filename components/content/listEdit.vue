@@ -1,11 +1,5 @@
 <template>
   <div>
-    Ajouter :
-    <div class="fr-grid-row">
-      <button @click="$emit('new-solo-content', 'link')">Un lien</button>
-      <button @click="$emit('new-solo-content', 'file')">Un fichier</button>
-      <button @click="$emit('new-solo-content', 'text')">Un texte</button>
-    </div>
     <draggable
       v-model="contentsBySection"
       :animation="100"
@@ -23,16 +17,21 @@
     >
       <template #item="{ element: section, index: sectionIndex }">
         <div>
-          <h2 v-if="section.isFoldable">{{ section.title }}</h2>
-          <button v-if="section.isFoldable" class="section-drag-handle">
-            drag {{ sectionIndex }}
-          </button>
-          <button
-            v-if="section.isFoldable"
-            @click="$emit('delete-section', sectionIndex)"
-          >
-            delete section
-          </button>
+          <template v-if="section.isFoldable">
+            <h2>{{ section.title }}</h2>
+            <button class="section-drag-handle">drag {{ sectionIndex }}</button>
+            <button @click="currentEditingSectionId = section.id">
+              éditer
+            </button>
+            <ContentInputSection
+              v-if="currentEditingSectionId === section.id"
+              v-model="contentsBySection[sectionIndex]"
+              @exit="currentEditingSectionId = null"
+            />
+            <button @click="$emit('delete-section', sectionIndex)">
+              delete section
+            </button>
+          </template>
           <draggable
             v-model="contentsBySection[sectionIndex].contents"
             :animation="100"
@@ -44,30 +43,40 @@
             @update="sendNewContentOrder(sectionIndex)"
             @remove="onContentRemove(sectionIndex)"
           >
-            <template #item="{ index: contentIndex }">
+            <template #item="{ element: content, index: contentIndex }">
               <li draggable="true">
                 <ContentListItem
                   v-model="
                     contentsBySection[sectionIndex].contents[contentIndex]
                   "
+                  :is-editing="currentEditingContentId === content.id"
                   @delete="onDeleteContent(sectionIndex, contentIndex)"
+                  @open-edition="currentEditingContentId = content.id"
+                  @exit-edition="currentEditingContentId = null"
                 />
               </li>
             </template>
           </draggable>
-          <button
+          <ContentInputChooseType
             v-if="section.isFoldable"
-            @click="
-              $emit('new-content-in-section', { type: 'text', sectionIndex })
-            "
+            @new-content="onNewContentInSection($event, sectionIndex)"
           >
-            new content in section
-          </button>
+            Ajouter un contenu à {{ section.title }}
+          </ContentInputChooseType>
         </div>
       </template>
     </draggable>
-    <button @click="$emit('new-section', 'blablab')">new Section</button>
-    <button @click="$emit('new-solo-content', 'text')">new content</button>
+    <div class="fr-btns-group fr-btns-group--inline">
+      <ContentInputChooseType
+        @new-content="$emit('new-solo-content', $event)"
+      />
+      <button
+        class="fr-btn fr-btn--tertiary fr-btn--sm"
+        @click="$emit('new-section', 'Nouvelle section')"
+      >
+        Créer une section
+      </button>
+    </div>
   </div>
 </template>
 
@@ -87,19 +96,17 @@ defineProps({
     type: Object as PropType<SectionWithContent>,
     required: true,
   },
+  editingContent: { type: Number, default: undefined },
 })
-const emits = defineEmits({
-  "new-solo-content"(type: string) {
-    return ["text", "file", "link", "linkedResource"].includes(type)
-  },
-  "delete-content": null,
-  "new-section": null,
-  "new-content-in-section"({ type }: { type: string; sectionIndex: number }) {
-    return ["text", "file", "link", "linkedResource"].includes(type)
-  },
-  "delete-section": null,
-  "new-adhoc-section": null,
-})
+const emits = defineEmits([
+  "new-solo-content",
+  "delete-content",
+  "new-section",
+  "new-content-in-section",
+  "delete-section",
+  "new-adhoc-section",
+  "update:editing-content",
+])
 
 const draggableContentsGroup = computed(() => (isFoldable: boolean) => {
   return {
@@ -112,6 +119,15 @@ const draggableContentsGroup = computed(() => (isFoldable: boolean) => {
 const contentsBySection = useModel<SectionWithContent[]>("modelValue", {
   type: "array",
 })
+const currentEditingSectionId = ref<number>()
+const currentEditingContentId = useModel<number | null>("editingContent")
+
+function onNewContentInSection(payload: any, sectionIndex: number) {
+  emits("new-content-in-section", {
+    ...payload,
+    sectionIndex,
+  })
+}
 
 async function sendNewContentOrder(sectionIndex: number) {
   return updateContentOrder(
@@ -193,4 +209,8 @@ function onDeleteContent(sectionIndex: number, contentIndex: number) {
 .section-drag-handle
   cursor: move
   cursor: -webkit-grabbing
+
+ul
+  list-style: none
+  padding: 0
 </style>

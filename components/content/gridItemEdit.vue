@@ -1,23 +1,41 @@
 <template>
-  <component :is="props.tagName" :style="{ 'grid-column': `span ${nbCol}` }">
-    <div class="fr-grid-row space-between">
-      <div>
-        <div class="type-icon" />
+  <component
+    :is="props.tagName"
+    :class="{ 'is-editing': isEditing }"
+    :style="{ 'grid-column': `span ${nbCol}` }"
+    class="content-container"
+  >
+    <div class="toolbar fr-text--xs">
+      <div class="fr-btns-group--xs">
         <button @click="$emit('swap-one', -1)">←</button>
         <button @click="$emit('swap-one', 1)">→</button>
-        <span> {{ content.title }}</span>
       </div>
-      <div>
-        <button disabled>edit title</button>
-        <button disabled>params</button>
-        <button @click="$emit('delete')">delete</button>
+      <div class="fr-btns-group--xs">
+        <button
+          class="btn-tab-activable fr-btn--tertiary-no-outline"
+          @click="$emit('open-edition')"
+        >
+          <VIcon :scale="0.85" name="ri-edit-line" />
+        </button>
+        <button class="fr-btn--tertiary-no-outline" disabled>
+          <VIcon :scale="0.85" name="ri-settings-line" />
+        </button>
+        <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">
+          <VIcon :scale="0.85" name="ri-delete-bin-line" />
+        </button>
       </div>
     </div>
 
-    <div class="vue"></div>
+    <ContentDisplay
+      v-show="!isEditing"
+      :content="content"
+      :is-editing-view="true"
+    />
+    <DsfrModal :opened="isEditing" @close="$emit('exit-edition')">
+      <ContentInput v-model="content" @exit="$emit('exit-edition')" />
+    </DsfrModal>
 
-    <div class="fr-grid-row space-between">
-      <button disabled>légender</button>
+    <div class="footer">
       <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">
         resize
         <div ref="resizeGhostImage" />
@@ -34,8 +52,9 @@ import { useModel } from "~/composables/modelWrapper"
 const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
   tagName: { type: String, default: "div" },
+  isEditing: { type: Boolean, default: false },
 })
-defineEmits(["delete", "swap-one"])
+defineEmits(["delete", "swap-one", "exit-edition", "open-edition"])
 
 const content = useModel<Content>("modelValue", { type: "object" })
 const resizeGhostImage = ref<HTMLElement>()
@@ -62,11 +81,10 @@ function endDrag() {
 </script>
 
 <style lang="sass">
-.space-between
-  justify-content: space-between
-
-.vue
-  background-color: blue
-  height: 100px
-  position: relative
+.content-container
+  .footer
+    display: flex
+    justify-content: right
+  &:hover .footer
+    border-bottom: 2px solid var(--border-action-high-blue-france)
 </style>

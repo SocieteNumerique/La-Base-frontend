@@ -98,14 +98,21 @@ export interface MiniLinkContent extends BaseMiniContent {
 export interface MiniTextContent extends BaseMiniContent {
   text: string
 }
+export interface MiniLinkedResourceContent extends BaseContent {
+  linkedResource: number
+}
 export type MiniFileContent = BaseMiniContent
 export type MiniContent = MiniLinkContent | MiniTextContent | MiniFileContent
 
 export interface LinkContent extends BaseContent {
   link: string
+  withPreview?: boolean
 }
 export interface TextContent extends BaseContent {
   text: string
+}
+export interface LinkedResourceContent extends BaseContent {
+  linkedResource: number
 }
 export type FileContent = BaseContent
 export type Content = LinkContent | TextContent | FileContent
