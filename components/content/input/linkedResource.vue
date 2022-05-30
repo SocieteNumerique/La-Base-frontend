@@ -37,11 +37,11 @@ const content = useModel<LinkedResourceContent>("modelValue", {
 })
 const resourceLink = computed<string>({
   get() {
-    return `resources/${content.value.linkedResource}`
+    return `ressources/${content.value.linkedResource}`
   },
   set(value) {
     content.value.linkedResource = parseInt(
-      value.match(/resources\/(\d+)/)![1]!
+      value.match(/ressources\/(\d+)/)![1]!
     )
   },
 })

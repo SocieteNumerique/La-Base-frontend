@@ -1,7 +1,7 @@
 <template>
   <h5 v-if="!content.title">{{ resource?.title || content.linkedResource }}</h5>
   <VIcon name="link-line" />
-  <NuxtLink :to="`resource/${content.linkedResource}`">Ouvrir</NuxtLink>
+  <NuxtLink :to="`ressource/${content.linkedResource}`">Ouvrir</NuxtLink>
 </template>
 
 <script lang="ts" setup>
