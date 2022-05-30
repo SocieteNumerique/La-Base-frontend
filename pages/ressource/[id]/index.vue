@@ -110,7 +110,7 @@
 
           <h3 class="fr-h5">Indexation</h3>
           <IndexTable
-            v-if="resource"
+            v-if="resource && !resource.isShort"
             :tag-categories="tagStore.categories"
             :element="resource"
           />
@@ -208,25 +208,6 @@ const handleIntersect = (entries: IntersectionObserverEntry[]) => {
   activeMenu.value = entriesWithMaxRatio[indexOfMinDistanceFromTop].target.id
 }
 
-onMounted(() => {
-  var options = {
-    root: null,
-    threshold: 0.1,
-  }
-
-  const observer = new IntersectionObserver(handleIntersect, options)
-  const sections = [
-    "informations",
-    "resource",
-    "sources",
-    "evaluations",
-    "reports",
-  ]
-  sections.forEach((el: string) => {
-    observer.observe(document.getElementById(el)!)
-  })
-})
-
 definePageMeta({
   layout: false,
   title: "Ressource",
@@ -234,14 +215,14 @@ definePageMeta({
 const route = useRoute()
 const resourceStore = useResourceStore()
 
-const getResourceIfNotExists = (): void => {
+const getResourceIfNotExists = async () => {
   const resourceId = parseInt(route.params.id)
   resourceStore.setCurrentId(resourceId)
   if (
     !resourceStore.resourcesById[resourceId] ||
     resourceStore.resourcesById[resourceId].isShort
   ) {
-    resourceStore.getResource(resourceId)
+    await resourceStore.getResource(resourceId)
   }
 }
 
@@ -252,8 +233,29 @@ const resource = computed(() => {
 if (process.server) {
   getResourceIfNotExists()
 }
-onMounted(() => {
-  getResourceIfNotExists()
+onMounted(async () => {
+  await getResourceIfNotExists()
+
+  // timeout to make sure elements actually exist
+  setTimeout(() => {
+    var options = {
+      root: null,
+      threshold: 0.1,
+    }
+
+    const observer = new IntersectionObserver(handleIntersect, options)
+    const sections = [
+      "informations",
+      "resource",
+      "sources",
+      "evaluations",
+      "reports",
+    ]
+    sections.forEach((el: string) => {
+      console.log("### observing", el)
+      observer.observe(document.getElementById(el)!)
+    })
+  }, 1000)
 })
 </script>
 
