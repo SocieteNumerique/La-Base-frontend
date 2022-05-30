@@ -49,6 +49,7 @@ defineProps({
 const emits = defineEmits([
   "new-solo-content",
   "delete-content",
+  "delete-section",
   "new-section",
   "new-content-in-section",
   "update:editing-content",

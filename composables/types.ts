@@ -114,7 +114,18 @@ export interface TextContent extends BaseContent {
 export interface LinkedResourceContent extends BaseContent {
   linkedResource: number
 }
-export type FileContent = BaseContent
+
+export type FullFile = {
+  base64?: string
+  name: string
+  type?: string
+  link?: string
+}
+
+export interface FileContent extends BaseContent {
+  file: string | FullFile
+  withPreview?: boolean
+}
 export type Content = LinkContent | TextContent | FileContent
 
 export type ContentOrder = {

@@ -12,6 +12,7 @@
 import ContentInputLink from "~/components/content/input/link.vue"
 import ContentInputText from "~/components/content/input/text.vue"
 import ContentInputLinkedResource from "~/components/content/input/linkedResource.vue"
+import ContentInputFile from "~/components/content/input/file.vue"
 import { PropType } from "vue"
 import { Content } from "~/composables/types"
 
@@ -25,11 +26,14 @@ const componentByType: { [key: string]: unknown } = {
   text: ContentInputText,
   link: ContentInputLink,
   linkedResource: ContentInputLinkedResource,
+  file: ContentInputFile,
 }
 const component = computed(() => componentByType[content.value.type])
 
 async function saveContent() {
-  return updateContent(content.value)
+  const updatedContent = await updateContent(content.value)
+  if (!updatedContent) return
+  content.value = updatedContent!
 }
 </script>
 
