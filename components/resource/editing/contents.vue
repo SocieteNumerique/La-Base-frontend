@@ -4,10 +4,12 @@
     <ContentGridViewSwitcher
       v-model="isGridView"
       v-model:enabled="isGridViewEnabled"
+      @update:model-value="currentlyEditingContentId = null"
     />
     <ContentListEdit
       v-show="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
+      v-model:editing-content="currentlyEditingContentId"
       @delete-content="onDeleteContent"
       @delete-section="onDeleteSection"
       @new-solo-content="newSoloContentInTheEnd"
@@ -17,9 +19,9 @@
     />
     <client-only>
       <ContentGridEdit
-        v-if="isGridViewEnabled"
-        v-show="isGridView && isGridViewEnabled"
+        v-if="isGridView && isGridViewEnabled"
         v-model="contentsBySection"
+        v-model:editing-content="currentlyEditingContentId"
         @delete-content="onDeleteContent"
         @delete-section="onDeleteSection"
         @new-solo-content="newSoloContentInTheEnd"
@@ -53,6 +55,7 @@ const contentsBySection = ref<SectionWithContent[]>(
   (await getResourceContentsBySection(resourceStore.currentId!)) ||
     emptyContentBySection
 )
+const currentlyEditingContentId = ref<number | null>(null)
 
 function nextOrder(list: { order: number; [key: symbol]: any }[]) {
   if (list.length === 0) return 0
@@ -76,19 +79,19 @@ async function newSection(sectionTitle: string) {
   contentsBySection.value.push(newSection!)
 }
 
-async function newSoloContentInTheEnd(type: string) {
+async function newSoloContentInTheEnd({ type }: { type: string }) {
   if (
     !contentsBySection.value.length ||
     contentsBySection.value.slice(-1)[0].isFoldable
   )
-    return newContentInNewSection(type)
+    return newContentInNewSection({ type })
   return newContentInSection({
     type,
     sectionIndex: contentsBySection.value.length - 1,
   })
 }
 
-async function newContentInNewSection(type: string) {
+async function newContentInNewSection({ type }: { type: string }) {
   const newSection = await addSection(
     resourceStore.currentId!,
     nextSectionOrder.value
@@ -98,9 +101,10 @@ async function newContentInNewSection(type: string) {
     0,
     resourceStore.currentId!,
     newSection!.id
-  )
+  ) // TODO payload for files
   newSection!.contents.push(content!)
   contentsBySection.value.push(newSection!)
+  currentlyEditingContentId.value = content.id!
 }
 
 async function newContentInSection({
@@ -117,6 +121,7 @@ async function newContentInSection({
     contentsBySection.value[sectionIndex]!.id
   )
   contentsBySection.value[sectionIndex]!.contents.push(content!)
+  currentlyEditingContentId.value = content.id!
 }
 
 async function createAdHocSectionForContent({
@@ -154,8 +159,10 @@ async function onDeleteContent({
     contentsBySection.value[sectionIndex].contents.length === 1
   )
     return onDeleteSection(sectionIndex)
-  if (await deleteContent(id))
+  if (await deleteContent(id)) {
     contentsBySection.value[sectionIndex].contents.splice(contentIndex, 1)
+    currentlyEditingContentId.value = null
+  }
   // TODO display potential error
 }
 

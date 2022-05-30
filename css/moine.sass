@@ -28,5 +28,25 @@
   display: flex
   justify-content: space-between
 
+.btn-tab-activable
+  &.-active
+    border-bottom: 2px solid var(--text-action-high-blue-france)
+
+.btn-tab-group-activable
+  .-active
+    border-bottom: 2px solid var(--text-action-high-blue-france)
+
+.content-container
+  &.is-editing, &:hover
+    .toolbar
+      opacity: 1
+  .toolbar
+    opacity: 0
+    border-bottom: 1px solid var(--border-default-grey)
+    display: flex
+    justify-content: space-between
+    color: var(--text-title-blue-france)
+    margin: 0
+
 .fr-text--disabled
   color: var(--text-disabled-grey)

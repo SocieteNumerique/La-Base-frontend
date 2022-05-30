@@ -1,28 +1,36 @@
 <template>
-  <div>
+  <div class="fr-mb-6w">
     <template v-if="section.isFoldable">
       <h2 v-if="section.isFoldable">{{ section.title }}</h2>
       <button @click="$emit('swap-one', -1)">←</button>
       <button @click="$emit('swap-one', 1)">→</button>
       <button @click="$emit('delete-section')">delete section</button>
     </template>
-    <div class="grid-container fr-m-n2v">
+    <div class="grid-container">
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
       </div>
       <ul ref="blockGridRef" class="grid content-grid">
         <ContentGridItemEdit
-          v-for="(_, index) of contents"
+          v-for="(content, index) of contents"
           :key="index"
           v-model="contents[index]"
           :message="message"
+          class="content-item"
           tag-name="li"
+          :is-editing="currentEditingContentId === content.id"
           @delete="onDelete(contents[index].id, index)"
           @dragend="onDrop($event, contents[index])"
           @dragstart="onDragBegin($event, index)"
           @swap-one="swapOne(index, $event)"
+          @open-edition="currentEditingContentId = content.id"
+          @exit-edition="currentEditingContentId = undefined"
         />
-        <li><button @click="$emit('new-content', 'text')">+</button></li>
+        <li v-if="section.isFoldable" :style="{ 'grid-column': `span 2` }">
+          <ContentInputChooseType @new-content="$emit('new-content', $event)">
+            Ajouter un contenu à {{ section.title }}
+          </ContentInputChooseType>
+        </li>
       </ul>
     </div>
   </div>
@@ -40,18 +48,20 @@ import {
 
 defineProps({
   modelValue: { type: Object as PropType<SectionWithContent>, required: true },
+  editingContent: { type: Number, default: undefined },
 })
 
-const emits = defineEmits({
-  "new-content"(type: string) {
-    return ["text", "file", "link", "linkedResource"].includes(type)
-  },
-  "delete-section": null,
-  "delete-content": null,
-  "swap-one": null,
-})
+const emits = defineEmits([
+  "new-content",
+  "new-content-in-section",
+  "delete-section",
+  "delete-content",
+  "swap-one",
+  "update:editing-content",
+])
 
 const section = useModel<SectionWithContent>("modelValue", { type: "object" })
+const currentEditingContentId = useModel<number | null>("editingContent")
 
 const contents = computed<Content[]>({
   get() {
@@ -176,7 +186,7 @@ window.addEventListener("dragover", onDrag)
     &.grid-underlay
       position: absolute
     .grid-block
-      background-color: antiquewhite
+      background-color: var(--background-alt-grey)
       height: 100%
       &.targeted
         background-color: tan
@@ -184,6 +194,9 @@ window.addEventListener("dragover", onDrag)
     list-style-type: none
     padding: 0
     margin: 0
-    li
+    li.content-item
       padding: 0
+      text-overflow: ellipsis
+      overflow-wrap: break-word
+      overflow: hidden
 </style>

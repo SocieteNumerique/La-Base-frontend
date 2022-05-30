@@ -1,21 +1,11 @@
 <template>
   <div>
-    Ajouter :
-    <div class="fr-grid-row">
-      <button @click="$emit('new-solo-content', 'link')">Un lien</button>
-      <button @click="$emit('new-solo-content', 'file')">Un fichier</button>
-      <button @click="$emit('new-solo-content', 'text')">Un texte</button>
-    </div>
-    <button @click="$emit('new-section', 'default name')">
-      Ajouter une section
-    </button>
     <ContentGridSectionEdit
       v-for="(section, index) of sections"
       :key="section.id"
       v-model="sections[index]"
-      @new-content="
-        $emit('new-content-in-section', { type: 'text', sectionIndex: index })
-      "
+      v-model:editing-content="currentEditingContentId"
+      @new-content="onNewContentInSection($event, index)"
       @delete-section="$emit('delete-section', index)"
       @delete-content="
         $emit('delete-content', {
@@ -27,8 +17,17 @@
       @swap-one="swapOne(index, $event)"
     />
 
-    <button @click="$emit('new-section', 'blablab')">new Section</button>
-    <button @click="$emit('new-solo-content', 'text')">new content</button>
+    <div class="fr-btns-group fr-btns-group--inline">
+      <ContentInputChooseType
+        @new-content="$emit('new-solo-content', $event)"
+      />
+      <button
+        class="fr-btn fr-btn--tertiary fr-btn--sm"
+        @click="$emit('new-section', 'Nouvelle section')"
+      >
+        Créer une section
+      </button>
+    </div>
   </div>
 </template>
 
@@ -44,24 +43,26 @@ defineProps({
     default: () => [],
   },
   enabled: { type: Boolean, default: false },
+  editingContent: { type: Number, default: null },
 })
 
-defineEmits({
-  "new-solo-content"(type: string) {
-    return ["text", "file", "link", "linkedResource"].includes(type)
-  },
-  "delete-content": null,
-  "new-section": null,
-  "new-content-in-section"({ type }: { type: string; sectionIndex: number }) {
-    return ["text", "file", "link", "linkedResource"].includes(type)
-  },
-  "delete-section": null,
-})
+const emits = defineEmits([
+  "new-solo-content",
+  "delete-content",
+  "new-section",
+  "new-content-in-section",
+  "update:editing-content",
+])
 
 const sections = useModel<SectionWithContent[]>("modelValue", { type: "array" })
+const currentEditingContentId = useModel<number>("editingContent")
 
 async function swapOne(index: number, direction: number) {
   orderSwap(sections.value, index, direction)
   return updateSectionOrder(sections.value)
+}
+
+function onNewContentInSection(payload: any, sectionIndex: number) {
+  emits("new-content-in-section", { ...payload, sectionIndex })
 }
 </script>

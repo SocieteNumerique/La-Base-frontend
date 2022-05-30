@@ -1,0 +1,36 @@
+<template>
+  <div>
+    <h5 v-if="content.title">{{ content.title }}</h5>
+    <component
+      :is="component"
+      :content="content"
+      :is-editing-view="isEditingView"
+    />
+    <div v-if="content.annotation" class="fr-text--xs">
+      {{ content.annotation }}
+    </div>
+    <DsfrTag v-if="content.licence" :label="content.licence" :small="true" />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { PropType } from "vue"
+import { Content } from "~/composables/types"
+import ContentDisplayText from "~/components/content/display/text.vue"
+import ContentDisplayLink from "~/components/content/display/link.vue"
+import ContentDisplayLinkedResource from "~/components/content/display/linkedResource.vue"
+
+const props = defineProps({
+  content: { type: Object as PropType<Content>, required: true },
+  isEditingView: { type: Boolean, default: true },
+})
+
+const isFullView = computed<boolean>(() => props.content.type !== "text")
+
+const componentByType: { [key: string]: unknown } = {
+  text: ContentDisplayText,
+  link: ContentDisplayLink,
+  linkedResource: ContentDisplayLinkedResource,
+}
+const component = computed(() => componentByType[props.content.type])
+</script>

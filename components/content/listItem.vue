@@ -1,15 +1,38 @@
 <template>
-  <div class="fr-grid-row space-between">
-    <div>
-      <div class="type-icon" />
-      {{ content.title }}
-      <DsfrTag v-if="content.licence" :label="content.licence" :small="true" />
-      <button disabled>Légender</button>
+  <div :class="{ 'is-editing': isEditing }" class="content-container -list">
+    <div class="toolbar fr-px-2w fr-text--xs">
+      <div>Statut :</div>
+      <div class="fr-btns-group--xs">
+        <button
+          :class="{ '-active': isEditing }"
+          class="btn-tab-activable fr-btn--tertiary-no-outline"
+          @click="$emit('open-edition')"
+        >
+          <VIcon name="ri-edit-line" />
+          Éditer
+        </button>
+        <button class="fr-btn--tertiary-no-outline" disabled>
+          <VIcon name="ri-settings-line" />
+          Paramètres
+        </button>
+        <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">
+          <VIcon name="ri-delete-bin-line" />
+          Supprimer
+        </button>
+      </div>
     </div>
-    <div>
-      <button v-if="isToSave">save</button>
-      <button @click="$emit('delete')">delete</button>
-      <button disabled>params</button>
+    <div class="fr-p-2w">
+      <ContentDisplay
+        v-show="!isEditing"
+        :content="content"
+        :is-editing-view="isEditingView"
+      />
+      <ContentInput
+        v-if="isEditingView"
+        v-show="isEditing"
+        v-model="content"
+        @exit="$emit('exit-edition')"
+      />
     </div>
   </div>
 </template>
@@ -21,15 +44,16 @@ import { useModel } from "~/composables/modelWrapper"
 
 defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
+  isEditingView: { type: Boolean, default: true },
+  isEditing: { type: Boolean, default: false },
 })
-defineEmits(["delete"])
+defineEmits(["delete", "exit-edition", "open-edition"])
 
 const content = useModel<Content>("modelValue", { type: "object" })
-
-const isToSave = computed<boolean>(() => !("id" in content.value))
 </script>
 
-<style lang="sass">
-.space-between
-  justify-content: space-between
+<style lang="sass" scoped>
+.content-container.-list
+  &.is-editing, &:hover
+    border: 1px solid var(--border-default-grey)
 </style>
