@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, PropType } from "vue"
+import { PropType } from "vue"
 import { Resource, TagCategory } from "~/composables/types"
 import { DsfrTags } from "@laruiss/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"

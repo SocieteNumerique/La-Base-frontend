@@ -1,5 +1,7 @@
 <template>
-  {{ content.text }}
+  <!-- eslint-disable vue/no-v-html -->
+  <div v-html="content.text" />
+  <!-- eslint-enable -->
 </template>
 
 <script lang="ts" setup>
