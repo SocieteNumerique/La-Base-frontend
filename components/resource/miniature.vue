@@ -15,7 +15,7 @@
       <div class="separator fr-mx-4w fr-my-1w" />
       <div>
         Fiche publiée par
-        <div>{{ base.title }}</div>
+        <div>{{ base?.title }}</div>
       </div>
       <div class="separator fr-mx-4w fr-my-1w" />
       <div v-if="resource.stats">stats</div>
