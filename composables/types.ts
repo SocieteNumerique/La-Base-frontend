@@ -11,6 +11,7 @@ export type ExternalProducer = {
 export type Resource = {
   accessRequiresUserAccount?: boolean
   contents?: Content[]
+  canWrite?: boolean
   created?: string
   creator?: number
   id: number
@@ -72,6 +73,7 @@ export type TagCategoryWithFullTags = {
 }
 
 export type Base = {
+  canWrite?: boolean
   id: number
   isShort?: boolean
   owner: number
