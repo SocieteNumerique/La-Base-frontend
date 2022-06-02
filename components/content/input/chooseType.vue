@@ -4,7 +4,10 @@
       class="fr-btn fr-btn--tertiary fr-btn--sm"
       @click="isMenuShown = !isMenuShown"
     >
-      <slot>Ajouter un contenu</slot>
+      <VIcon name="ri-add-circle-line" />
+      <span>
+        <slot>Ajouter un contenu</slot>
+      </span>
     </button>
     <div v-show="isMenuShown" class="selector__menu fr-px-2w">
       <div class="item" @mousedown="onNewFileContent">Fichier</div>

@@ -175,6 +175,12 @@ async function onDrop(event: DragEvent, contentIndex: number) {
 window.addEventListener("dragover", onDrag)
 </script>
 
+<style>
+.content-item p:last-child {
+  margin-bottom: 0 !important;
+}
+</style>
+
 <style lang="sass" scoped>
 .grid-container
   position: relative
@@ -183,7 +189,8 @@ window.addEventListener("dragover", onDrag)
     height: 100%
     width: 100%
     display: grid
-    grid-gap: 8px
+    grid-gap: 24px
+    row-gap: 24px
     grid-template-columns: repeat(6, 1fr)
     z-index: -1
     &.grid-underlay
@@ -192,13 +199,13 @@ window.addEventListener("dragover", onDrag)
       background-color: var(--background-alt-grey)
       height: 100%
       &.targeted
-        background-color: tan
+        background-color: var(--background-alt-blue-france)
   .content-grid
     list-style-type: none
     padding: 0
     margin: 0
     li.content-item
-      padding: 0
+      padding: 8px
       text-overflow: ellipsis
       overflow-wrap: break-word
       overflow: hidden

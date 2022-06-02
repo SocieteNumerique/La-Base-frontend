@@ -7,8 +7,18 @@
   >
     <div class="toolbar fr-text--xs">
       <div class="fr-btns-group--xs">
-        <button @click="$emit('swap-one', -1)">←</button>
-        <button @click="$emit('swap-one', 1)">→</button>
+        <button
+          class="btn-tab-activable fr-btn--tertiary-no-outline"
+          @click="$emit('swap-one', -1)"
+        >
+          <VIcon :scale="0.85" name="ri-arrow-left-s-line" />
+        </button>
+        <button
+          class="btn-tab-activable fr-btn--tertiary-no-outline"
+          @click="$emit('swap-one', 1)"
+        >
+          <VIcon :scale="0.85" name="ri-arrow-right-s-line" />
+        </button>
       </div>
       <div class="fr-btns-group--xs">
         <button
@@ -37,7 +47,7 @@
 
     <div class="footer">
       <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">
-        resize
+        <VIcon name="ri-arrow-right-down-line" class="resize-image" />
         <div ref="resizeGhostImage" />
       </button>
     </div>
@@ -85,6 +95,12 @@ function endDrag() {
   .footer
     display: flex
     justify-content: right
+    border-bottom: 2px solid transparent
   &:hover .footer
     border-bottom: 2px solid var(--border-action-high-blue-france)
+  .resize-image
+    color: #000091
+    opacity: 0
+  &:hover .resize-image
+    opacity: 1
 </style>

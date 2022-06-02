@@ -17,16 +17,19 @@
       @swap-one="swapOne(index, $event)"
     />
 
-    <div class="fr-btns-group fr-btns-group--inline">
+    <div class="fr-btns-group add-section-content-group">
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
-      <button
-        class="fr-btn fr-btn--tertiary fr-btn--sm"
-        @click="$emit('new-section', 'Nouvelle section')"
-      >
-        Créer une section
-      </button>
+      <div>
+        <button
+          class="fr-btn fr-btn--tertiary fr-btn--sm"
+          @click="$emit('new-section', 'Nouvelle section')"
+        >
+          <VIcon name="ri-folder-add-line" />
+          Créer une section
+        </button>
+      </div>
     </div>
   </div>
 </template>
