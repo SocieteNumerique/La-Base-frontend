@@ -7,6 +7,7 @@ import {
   SubMenuByKey,
 } from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
+import { useAlertStore } from "~/stores/alertStore"
 
 export const navigationMenus: Menu[] = [
   {
@@ -213,10 +214,12 @@ export const useResourceStore = defineStore("resource", {
       const resource = this.resourcesById[resourceId!]
       const { data, error } = await useApiPatch<Resource>(
         `resources/${resourceId}/`,
-        resource
+        resource,
+        {},
+        { title: "La ressource a bien été sauvegardée" },
+        true
       )
       if (!error.value) {
-        console.log("### save resource", resourceId)
         this.resourcesById[data.value.id!] = data.value
       }
     },

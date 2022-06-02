@@ -1,5 +1,7 @@
 import { NuxtApp } from "nuxt3/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
+import { Alert } from "~/composables/types"
+import { useAlertStore } from "~/stores/alertStore"
 
 let base_url = ""
 type MyHeaders = { [key: string]: string }
@@ -66,9 +68,13 @@ export async function useApiRequest<Type>(
   method: string,
   path: string,
   payload: any,
-  params = {}
+  params = {},
+  onSuccess: Alert | null = null,
+  // if onError is true, the alert title and message is built from API response
+  onError: Alert | boolean = false
 ) {
   const loadingStore = useLoadingStore()
+  const alertStore = useAlertStore()
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
@@ -81,35 +87,69 @@ export async function useApiRequest<Type>(
       params: params,
     })
   )
-  console.log(`### api ${method} results`, key, data.value, error.value)
+
+  // handle alerts and loading status
   if (error.value) {
     loadingStore.markError(key)
+    if (onError === true) {
+      alertStore.alert(
+        "Erreur lors de la requête",
+        `${error.value.message} : ${JSON.stringify(error.value.data)}`,
+        "error"
+      )
+    } else if (onError) {
+      alertStore.alert(onError.title, onError.text, "error")
+    }
   } else {
     loadingStore.markDone(key)
+    if (onSuccess) {
+      alertStore.alert(onSuccess.title, onSuccess.text, "success")
+    }
   }
   return { data, error }
 }
 
-export async function useApiGet<Type>(path: string, params = {}) {
-  return useApiRequest<Type>("GET", path, undefined, params)
+export async function useApiGet<Type>(
+  path: string,
+  params = {},
+  onSuccess: Alert | null = null,
+  onError: Alert | boolean = false
+) {
+  return useApiRequest<Type>("GET", path, undefined, params, onSuccess, onError)
 }
 
 export async function useApiPost<Type>(
   path: string,
   payload = {},
-  params = {}
+  params = {},
+  onSuccess: Alert | null = null,
+  onError: Alert | boolean = false
 ) {
-  return useApiRequest<Type>("POST", path, payload, params)
+  return useApiRequest<Type>("POST", path, payload, params, onSuccess, onError)
 }
 
 export async function useApiPatch<Type>(
   path: string,
   payload = {},
-  params = {}
+  params = {},
+  onSuccess: Alert | null = null,
+  onError: Alert | boolean = false
 ) {
-  return useApiRequest<Type>("PATCH", path, payload, params)
+  return useApiRequest<Type>("PATCH", path, payload, params, onSuccess, onError)
 }
 
-export async function useApiDelete<Type>(path: string, params = {}) {
-  return useApiRequest<Type>("DELETE", path, undefined, params)
+export async function useApiDelete<Type>(
+  path: string,
+  params = {},
+  onSuccess: Alert | null = null,
+  onError: Alert | boolean = false
+) {
+  return useApiRequest<Type>(
+    "DELETE",
+    path,
+    undefined,
+    params,
+    onSuccess,
+    onError
+  )
 }
