@@ -53,6 +53,13 @@
     <div class="fr-grid-row">
       <div class="fr-col-3"></div>
       <div class="fr-col-9">
+        <div v-if="base.canWrite">
+          <ResourceCreationModal
+            v-if="showAddResourceModal"
+            @close="showAddResourceModal = false"
+          />
+          <DsfrButton label="Ajouter une ressource" @click="onButtonClick" />
+        </div>
         <div>
           <h2 class="fr-h4">Ressources</h2>
           <ul>
@@ -73,7 +80,6 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { useRoute } from "vue-router"
 import { computed, onMounted } from "vue"
 import RoundButton from "~/components/roundButton.vue"
-import IndexTable from "~/components/indexTable.vue"
 import { useBaseStore } from "~/stores/baseStore"
 
 definePageMeta({
@@ -83,6 +89,11 @@ definePageMeta({
 const route = useRoute()
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
+
+let showAddResourceModal = ref(false)
+const onButtonClick = () => {
+  showAddResourceModal.value = true
+}
 
 const getBaseIfNotExists = (): void => {
   const baseId = parseInt(route.params.id)
