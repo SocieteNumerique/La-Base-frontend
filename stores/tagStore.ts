@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { Tag, TagCategory, TagCategoryWithFullTags } from "~/composables/types"
+import { useAlertStore } from "~/stores/alertStore"
 
 type TagsById = {
   [id: number]: Tag
@@ -53,7 +54,8 @@ export const useTagStore = defineStore("tag", {
     },
     async refreshIndex() {
       const { data, error } = await useApiGet<TagCategoryWithFullTags[]>(
-        "index/"
+        "index/",
+        {}
       )
       if (!error.value) {
         this.saveTagCategoriesToState(data.value)

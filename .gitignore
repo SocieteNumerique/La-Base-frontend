@@ -9,3 +9,4 @@ cypress/videos
 yalc.lock
 cypress/videos
 .vscode
+.idea

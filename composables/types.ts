@@ -176,3 +176,10 @@ export type MenuWithSubMenusByKey = {
 export type MenuByKey = {
   [key: string]: MenuWithSubMenusByKey
 }
+
+export type Alert = {
+  id?: string
+  title: string
+  text?: string
+  type?: string
+}
