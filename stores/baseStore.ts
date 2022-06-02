@@ -20,9 +20,9 @@ export const useBaseStore = defineStore("base", {
         this.basesOrder = bases.map((base) => base.id)
       }
     },
-    async getBase(baseId: number) {
+    async getBase(baseId: number, short = false) {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
-        `bases/${baseId}/`
+        `bases/${short ? "short/" : ""}${baseId}/`
       )
       if (!error.value) {
         const resourceStore = useResourceStore()

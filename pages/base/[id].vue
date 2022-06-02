@@ -5,13 +5,8 @@
         <div class="fr-container">
           <h1 style="max-width: 800px">{{ base?.title }}</h1>
           <div class="has-children-space-between">
-            <div>Base créée par ...</div>
-            <div class="is-flex">
-              <div>Base créée le {{ $date(base?.created) }}</div>
-              <div class="fr-ml-4w">
-                Base modifiée le {{ $date(base?.modified) }}
-              </div>
-            </div>
+            type d'acteur <br />
+            localisation base
           </div>
           <div
             style="border-bottom: 1px solid var(--border-default-grey)"
@@ -50,25 +45,18 @@
       style="border-bottom: 1px solid var(--border-default-grey)"
       class="fr-my-3w"
     ></div>
-    <div class="fr-grid-row">
-      <div class="fr-col-3"></div>
-      <div class="fr-col-9">
-        <div v-if="base.canWrite">
-          <ResourceCreationModal
-            v-if="showAddResourceModal"
-            @close="showAddResourceModal = false"
-          />
-          <DsfrButton label="Ajouter une ressource" @click="onButtonClick" />
-        </div>
-        <div>
-          <h2 class="fr-h4">Ressources</h2>
-          <ul>
-            <li v-for="resourceId in base.resources" :key="resourceId">
-              <NuxtLink :to="'/ressource/' + resourceId + '/edition'">{{
-                resourceStore.resourcesById[resourceId].title
-              }}</NuxtLink>
-            </li>
-          </ul>
+    <div>
+      <h2 class="fr-h4">Ressources</h2>
+      <div v-if="base.canWrite" class="fr-mb-2w">
+        <ResourceCreationModal
+          v-if="showAddResourceModal"
+          @close="showAddResourceModal = false"
+        />
+        <DsfrButton label="Ajouter une ressource" @click="onButtonClick" />
+      </div>
+      <div class="resource-grid">
+        <div v-for="resourceId of base.resources" :key="resourceId">
+          <ResourceMiniature :resource-id="resourceId" />
         </div>
       </div>
     </div>
@@ -115,14 +103,18 @@ onMounted(() => {
 })
 </script>
 
-<style>
-.stat {
-  margin-left: -12px;
-}
-.stat + .stat {
-  margin-left: 12px;
-}
-.stat * {
-  margin-left: 12px;
-}
+<style lang="sass" scoped>
+.stat
+  margin-left: -12px
+
+.stat + .stat
+  margin-left: 12px
+
+.stat *
+  margin-left: 12px
+
+.resource-grid
+  display: grid
+  grid-gap: 24px
+  grid-template-columns: repeat(3, 1fr)
 </style>

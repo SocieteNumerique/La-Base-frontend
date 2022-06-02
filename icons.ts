@@ -30,6 +30,7 @@ import {
   RiShareLine,
   RiEqualizerLine,
   RiDownloadLine,
+  RiFileLine,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -64,4 +65,5 @@ export const icons = [
   RiShareLine,
   RiEqualizerLine,
   RiDownloadLine,
+  RiFileLine,
 ]

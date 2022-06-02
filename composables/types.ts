@@ -31,6 +31,10 @@ export type Resource = {
   title: string
   url?: string
   zipCode?: number
+  stats?: { pinned: number; views: number }
+  contentStats?: { links: number; files: number }
+  supports?: string[]
+  isLabeled?: boolean
 }
 
 export type Tag = {
