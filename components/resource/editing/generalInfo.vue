@@ -6,6 +6,7 @@
   <DsfrInput
     :model-value="resourceStore.current.title"
     label="Nom de la ressource"
+    hint="max 100 caractères"
     :label-visible="true"
     @update:model-value="onTitleUpdate"
   />
@@ -13,7 +14,7 @@
   <DsfrInput
     :model-value="resourceStore.current.description"
     label="Description courte de la ressource"
-    :hint="'Super long texte explicatif'"
+    hint="max 560 caractères"
     :label-visible="true"
     :is-textarea="true"
     @update:model-value="onDescriptionUpdate"
