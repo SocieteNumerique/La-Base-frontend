@@ -4,6 +4,7 @@
     <ContentGridViewSwitcher
       v-model="isGridView"
       v-model:enabled="isGridViewEnabled"
+      style="margin-bottom: 50px"
       @update:model-value="currentlyEditingContentId = null"
     />
     <ContentListEdit

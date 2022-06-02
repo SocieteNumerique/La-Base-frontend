@@ -1,34 +1,36 @@
 <template>
-  <button
-    :class="{ '-active': !isGridView, '-inactive': isGridView }"
-    class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
-    @click="isGridView = false"
-  >
-    Vue en liste
-  </button>
-  <button
-    v-show="!isGridViewEnabled"
-    class="fr-btn fr-btn--tertiary-no-outline -inactive"
-    @click="isGridViewEnabled = true"
-  >
-    Ajouter une vue en grille
-  </button>
-  <button
-    v-show="isGridViewEnabled"
-    :class="{ '-active': isGridView, '-inactive': !isGridView }"
-    class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
-    @click="isGridView = true"
-  >
-    Vue en grille
-  </button>
-  <button
-    v-show="isGridViewEnabled"
-    class="fr-btn fr-btn--tertiary-no-outline"
-    @click="noGridViewAtAll"
-  >
-    X
-  </button>
-  <!-- close-line icon -->
+  <div>
+    <button
+      :class="{ '-active': !isGridView, '-inactive': isGridView }"
+      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
+      @click="isGridView = false"
+    >
+      Vue en liste
+    </button>
+    <button
+      v-show="!isGridViewEnabled"
+      class="fr-btn fr-btn--tertiary-no-outline -inactive"
+      @click="isGridViewEnabled = true"
+    >
+      Ajouter une vue en grille
+    </button>
+    <button
+      v-show="isGridViewEnabled"
+      :class="{ '-active': isGridView, '-inactive': !isGridView }"
+      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
+      @click="isGridView = true"
+    >
+      Vue en grille
+    </button>
+    <button
+      v-show="isGridViewEnabled"
+      class="fr-btn fr-btn--tertiary-no-outline"
+      @click="noGridViewAtAll"
+    >
+      X
+    </button>
+    <!-- close-line icon -->
+  </div>
 </template>
 
 <script lang="ts" setup>
