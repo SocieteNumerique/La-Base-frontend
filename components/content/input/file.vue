@@ -19,6 +19,12 @@
     label="Légende"
     placeholder="Légende"
   />
+  <DsfrCheckbox
+    v-if="isImage"
+    v-model="content.withPreview"
+    label="Afficher l'aperçu de l'image"
+    name="preview"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -32,7 +38,7 @@ defineProps({
 })
 
 const content = useModel<FileContent>("modelValue", { type: "object" })
-const hint = "Taille maximale : xx Mo. Formats supportés : jpg, png, pdf."
+const hint = "Taille maximale : xx Mo."
 
 const inputContainer = ref()
 const inputId = computed(() => `file-input-${content.value.id}`)
@@ -40,6 +46,10 @@ const fileInput = ref<HTMLInputElement>()
 onMounted(() => {
   fileInput.value = inputContainer.value.$el.getElementsByTagName("input")[0]
 })
+
+const isImage = computed<boolean>(
+  () => content.value.file?.mimeType?.includes("image") || false
+)
 
 async function onChange() {
   const fileObject = await inputToFileObject(fileInput.value!)

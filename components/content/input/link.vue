@@ -8,6 +8,7 @@
   />
   <DsfrCheckbox
     v-model="content.withPreview"
+    disabled
     label="Afficher l'aperçu du lien"
     name="preview"
   />

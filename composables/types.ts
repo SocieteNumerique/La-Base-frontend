@@ -133,12 +133,12 @@ export interface LinkedResourceContent extends BaseContent {
 export type FullFile = {
   base64?: string
   name: string
-  type?: string
+  mimeType?: string
   link?: string
 }
 
 export interface FileContent extends BaseContent {
-  file: string | FullFile
+  file: FullFile
   withPreview?: boolean
 }
 export type Content = LinkContent | TextContent | FileContent
