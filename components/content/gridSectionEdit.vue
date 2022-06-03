@@ -104,10 +104,10 @@ function nextNbCol(prevNbCol: number): number {
     // make the element one column bigger than the space left on the line
     return Math.min(6, 6 - initColumnIndex.value + 1)
   // normal situation
-  return Math.max(1, targetColumnIndex.value - initColumnIndex.value + 1)
+  return Math.max(2, targetColumnIndex.value - initColumnIndex.value + 1)
 }
 
-function columnIndexFromX(xPosition: number): number {
+function rawColumnIndexFromX(xPosition: number): number {
   if (!gridColumnWidth.value || !gridUnderlayRef.value)
     throw "Layout not setup yet"
   const distFromBegin =
@@ -133,7 +133,7 @@ function onDragBegin(event: DragEventInit, index: number) {
   const xPosition = blockGridRef!
     .value!.children!.item(index)!
     .getBoundingClientRect().x
-  initColumnIndex.value = columnIndexFromX(xPosition)
+  initColumnIndex.value = rawColumnIndexFromX(xPosition)
 }
 
 function onDrag(event: DragEvent) {
@@ -141,7 +141,10 @@ function onDrag(event: DragEvent) {
   // this test ensures it is a resizing drag
   if (!isDragging.value) return
 
-  targetColumnIndex.value = columnIndexFromX(event.clientX)
+  targetColumnIndex.value = Math.max(
+    initColumnIndex.value + 1,
+    rawColumnIndexFromX(event.clientX)
+  )
   applyOnUnderlayColumns(
     initColumnIndex.value,
     targetColumnIndex.value,
@@ -206,11 +209,11 @@ window.addEventListener("dragover", onDrag)
     padding: 0
     margin: 0
     li.content-item
-      padding: 8px
-      padding-top: 30px
+      padding: 30px 8px 8px
       position: relative
       text-overflow: ellipsis
       overflow-wrap: break-word
+      max-width: 100%
       &:before
         position: absolute
         content: " "
