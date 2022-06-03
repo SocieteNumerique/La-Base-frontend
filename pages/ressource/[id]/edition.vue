@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { useRoute } from "vue-router"
-import { onMounted } from "vue"
+import { onBeforeUnmount, onMounted } from "vue"
 
 definePageMeta({
   layout: "resourceedition",
@@ -13,6 +13,21 @@ definePageMeta({
 })
 const route = useRoute()
 const resourceStore = useResourceStore()
+
+function onBeforeUnload(ev: Event) {
+  if (resourceStore.current.dirty) {
+    ev.preventDefault()
+    ev.returnValue = "Attention, la ressource n'a pas été sauvegardée"
+    return
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("beforeunload", onBeforeUnload)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener("beforeunload", onBeforeUnload)
+})
 
 const getResourceIfNotExists = (): void => {
   const resourceId = parseInt(route.params.id)

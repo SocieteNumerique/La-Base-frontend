@@ -87,6 +87,7 @@ const emit = defineEmits(["focus", "blur", "select", "change"])
 
 const ownSelectedTags = ref<number[]>([])
 
+// detect clicks outside of tagSelector to blur it
 const onClick = (ev: Event) => {
   if (!props.isFocused) {
     return

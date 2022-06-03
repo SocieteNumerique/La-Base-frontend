@@ -24,6 +24,7 @@ const selectedBase = ref<undefined | number>()
 const onBaseUpdate = () => {
   resourceStore.resourcesById[resourceStore.currentId!].rootBase =
     selectedBase.value
+  resourceStore.markDirty()
 }
 
 onMounted(() => {

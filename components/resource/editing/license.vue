@@ -48,5 +48,6 @@ const onChange = (newValue: string) => {
   resourceStore.resourcesById[
     resourceStore.currentId!
   ].accessRequiresUserAccount = !!parseInt(newValue)
+  resourceStore.markDirty()
 }
 </script>

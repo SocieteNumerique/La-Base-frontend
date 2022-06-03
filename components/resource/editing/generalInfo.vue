@@ -29,10 +29,12 @@ const resourceStore = useResourceStore()
 
 const onTitleUpdate = (value: string) => {
   resourceStore.current.title = value
+  resourceStore.markDirty()
 }
 
 const onDescriptionUpdate = (value: string) => {
   resourceStore.current.description = value
+  resourceStore.markDirty()
 }
 </script>
 
