@@ -16,7 +16,7 @@
           :key="index"
           v-model="contents[index]"
           :message="message"
-          class="content-item"
+          class="content-item with-white-border-top"
           tag-name="li"
           :is-editing="currentEditingContentId === content.id"
           @delete="onDelete(contents[index].id, index)"
@@ -26,9 +26,15 @@
           @open-edition="currentEditingContentId = content.id"
           @exit-edition="currentEditingContentId = undefined"
         />
-        <li v-if="section.isFoldable" :style="{ 'grid-column': `span 2` }">
+        <li
+          :style="{ 'grid-column': `span 2` }"
+          class="fr-pt-3w with-white-border-top"
+        >
           <ContentInputChooseType @new-content="$emit('new-content', $event)">
-            Ajouter un contenu à {{ section.title }}
+            Ajouter un contenu
+            <template v-if="section.isFoldable">
+              à {{ section.title }}
+            </template>
           </ContentInputChooseType>
         </li>
       </ul>
@@ -188,7 +194,9 @@ window.addEventListener("dragover", onDrag)
 .grid-container
   position: relative
   height: min-content
-  overflow: hidden
+  overflow-x: hidden
+  overflow-y: visible
+
   .grid
     height: 100%
     width: 100%
@@ -197,6 +205,7 @@ window.addEventListener("dragover", onDrag)
     row-gap: 12px
     grid-template-columns: repeat(6, 1fr)
     z-index: -1
+
     &.grid-underlay
       position: absolute
     .grid-block
@@ -208,12 +217,16 @@ window.addEventListener("dragover", onDrag)
     list-style-type: none
     padding: 0
     margin: 0
+
     li.content-item
       padding: 30px 8px 8px
-      position: relative
       text-overflow: ellipsis
       overflow-wrap: break-word
       max-width: 100%
+
+    .with-white-border-top
+      position: relative
+
       &:before
         position: absolute
         content: " "
