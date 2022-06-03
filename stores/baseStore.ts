@@ -45,9 +45,12 @@ export const useBaseStore = defineStore("base", {
       return state.basesOrder.map((baseId) => state.basesById[baseId])
     },
     baseOptions: (state) => {
-      return state.basesOrder.map((baseId) => {
-        return { text: state.basesById[baseId].title, value: baseId }
-      })
+      return state.basesOrder
+        .map((baseId) => state.basesById[baseId])
+        .filter((base) => base.canWrite)
+        .map((base) => {
+          return { text: base.title, value: base.id }
+        })
     },
     current: (state): Base => {
       if (state.currentId) {

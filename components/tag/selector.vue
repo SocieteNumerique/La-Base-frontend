@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tag-selector">
     <div class="fr-input-group fr-mb-0">
       <label
         v-if="props.category.name"
@@ -23,7 +23,23 @@
         </button>
       </div>
     </div>
-    <div style="transition: height ease-in-out 1s; height: 100%">
+    <ul class="fr-px-2w fr-pt-1w fr-tags-group">
+      <li v-for="tag in selectedTags" :key="tag.id">
+        <button class="fr-tag" @click="removeTag(tag.id)">
+          {{ tag.name }}
+          <VIcon name="ri-close-line" />
+        </button>
+      </li>
+    </ul>
+    <div
+      style="
+        transition: max-height 0.4s ease-in-out 0s;
+        overflow-y: auto;
+        height: 100%;
+        margin-top: -8px;
+      "
+      :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
+    >
       <template v-if="isFocused">
         <TagLine
           v-for="tag in filteredTags"
@@ -32,27 +48,19 @@
           @select="selectTag(tag.id)"
         />
       </template>
-      <div
-        v-if="isFocused && props.category.acceptsFreeTags"
-        class="fr-px-2w fr-py-1w"
-        style="border-bottom: 1px solid #e5e5e5"
+    </div>
+    <div
+      v-if="isFocused && props.category.acceptsFreeTags"
+      class="fr-px-2w fr-py-1w"
+      style="border-bottom: 1px solid #e5e5e5"
+    >
+      <button
+        class="fr-m-0 fr-text--md fr-text-label--blue-france"
+        @click="onSuggestAddingTag"
       >
-        <button
-          class="fr-m-0 fr-text--md fr-text-label--blue-france"
-          @click="onSuggestAddingTag"
-        >
-          <VIcon name="ri-add-circle-line" />
-          Suggérer un nouveau tag
-        </button>
-      </div>
-      <ul class="fr-px-2w fr-py-1w fr-tags-group">
-        <li v-for="tag in selectedTags" :key="tag.id">
-          <button class="fr-tag" @click="removeTag(tag.id)">
-            {{ tag.name }}
-            <VIcon name="ri-close-line" />
-          </button>
-        </li>
-      </ul>
+        <VIcon name="ri-add-circle-line" />
+        Ajouter un nouveau tag
+      </button>
     </div>
     <TagAddModal
       v-if="showAddModal"
@@ -68,9 +76,11 @@ import { Tag, TagCategory } from "~/composables/types"
 import { computed, PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useResourceStore } from "~/stores/resourceStore"
+import { useAlertStore } from "~/stores/alertStore"
 
 const tagStore = useTagStore()
 const resourceStore = useResourceStore()
+const alertStore = useAlertStore()
 
 const inputValue = ref("")
 const emit = defineEmits(["focus", "blur", "select", "change"])
@@ -150,6 +160,12 @@ const selectTag = (tagId: number) => {
       "### already selected the maximum number of tags",
       selectedTags,
       props.category.maximumTagCount
+    )
+    alertStore.alert(
+      "Nombre maximum de tags",
+      "Le nombre maximum de tag pour cette catégorie est de " +
+        props.category.maximumTagCount,
+      "warning"
     )
     return
   }
