@@ -207,14 +207,15 @@ window.addEventListener("dragover", onDrag)
     margin: 0
     li.content-item
       padding: 8px
+      padding-top: 30px
+      position: relative
       text-overflow: ellipsis
       overflow-wrap: break-word
       &:before
-        position: relative
+        position: absolute
         content: " "
-        bottom: 8px
-        right: 8px
-        display: block
+        top: 0
+        left: 0
         height: 24px
         width: 1000px
         background: white
