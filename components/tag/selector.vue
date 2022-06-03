@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-selector">
+  <div :id="'tag-selector-' + props.category.id" class="tag-selector">
     <div class="fr-input-group fr-mb-0">
       <label
         v-if="props.category.name"
@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import { Tag, TagCategory } from "~/composables/types"
-import { computed, PropType } from "vue"
+import { computed, PropType, onMounted, onBeforeUnmount } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useAlertStore } from "~/stores/alertStore"
@@ -86,6 +86,23 @@ const inputValue = ref("")
 const emit = defineEmits(["focus", "blur", "select", "change"])
 
 const ownSelectedTags = ref<number[]>([])
+
+const onClick = (ev: Event) => {
+  if (!props.isFocused) {
+    return
+  }
+  const container = document.getElementById("tag-selector-" + props.category.id)
+  if (!container!.contains(ev!.target)) {
+    emit("blur")
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("mouseup", onClick)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener("mouseup", onClick)
+})
 
 const props = defineProps({
   category: {
