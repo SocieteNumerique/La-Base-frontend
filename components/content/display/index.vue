@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content-display-container">
     <h5 v-if="content.title">{{ content.title }}</h5>
     <component
       :is="component"
@@ -34,3 +34,8 @@ const componentByType: { [key: string]: unknown } = {
 }
 const component = computed(() => componentByType[props.content.type])
 </script>
+
+<style lang="sass" scoped>
+.content-display-container
+  overflow: hidden
+</style>

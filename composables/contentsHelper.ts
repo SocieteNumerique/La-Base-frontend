@@ -44,9 +44,9 @@ export async function inputToFileObject(
 
 function getDefaultContent(type: string, sectionId: number): MiniContent {
   if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
-  if (type === "file") return { type, nbCol: 1, section: sectionId }
-  if (type === "link") return { type, link: "", nbCol: 1, section: sectionId }
-  if (type === "linkedResource") return { type, nbCol: 1, section: sectionId }
+  if (type === "file") return { type, nbCol: 2, section: sectionId }
+  if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
+  if (type === "linkedResource") return { type, nbCol: 2, section: sectionId }
   throw "unknown type"
 }
 
@@ -96,6 +96,52 @@ export async function deleteContent(id: number) {
   }
 }
 
+export async function checkAndMerge(
+  sections: SectionWithContent[],
+  indexMoved: number
+) {
+  const sectionsToConsider = []
+  if (sections[indexMoved - 1] && !sections[indexMoved - 1].isFoldable)
+    sectionsToConsider.push(indexMoved - 1)
+
+  if (sections[indexMoved] && !sections[indexMoved].isFoldable)
+    sectionsToConsider.push(indexMoved)
+  else return
+
+  if (sections[indexMoved + 1] && !sections[indexMoved + 1].isFoldable)
+    sectionsToConsider.push(indexMoved + 1)
+
+  if (sectionsToConsider.length < 2) return
+
+  const mergedContents = []
+  for (const sectionIndex of sectionsToConsider)
+    mergedContents.push(...sections[sectionIndex].contents)
+  const sectionContainerIndex = sectionsToConsider.splice(0, 1)[0]
+  const sectionContainerId = sections[sectionContainerIndex].id
+  console.log({ mergedContents, sectionContainerId })
+  const success = await updateContentOrder(mergedContents, sectionContainerId)
+  if (!success) return
+
+  await Promise.all(
+    sectionsToConsider
+      .map((toDeleteSectionIndex) => sections[toDeleteSectionIndex].id)
+      .map(async (toDeleteSectionId) => deleteSection(toDeleteSectionId))
+  )
+}
+
+export function findSectionToDeleteIndex(
+  sectionId: number,
+  sections: SectionWithContent[]
+): number | undefined {
+  console.log({ sectionId })
+  const oldSectionIndex = sections.findIndex(
+    (sectionToTest) => sectionToTest.id === sectionId
+  )
+  const oldSection = sections[oldSectionIndex]
+  if (!oldSection?.isFoldable && oldSection?.contents.length === 0)
+    return oldSectionIndex
+}
+
 export function orderSwap(list: any[], index: number, direction: number) {
   const nextIndex = index + direction
   if (nextIndex < 0 || nextIndex >= list.length) return
@@ -117,8 +163,8 @@ export async function updateContentOrder(
     order[content.id!] = { order: index + millis, section: sectionId }
     contents[index].order = index + millis
   })
-  const { data, error } = await useApiPatch("contents/order/", order)
-  if (!error.value) console.log(data)
+  const { error } = await useApiPatch("contents/order/", order)
+  return !error.value
 }
 
 // --------------- Sections ---------------------
@@ -132,8 +178,8 @@ export async function updateSectionOrder(sections: SectionWithContent[]) {
     order[section.id!] = { order: index + millis }
     sections[index].order = index + millis
   })
-  const { data, error } = await useApiPatch("sections/order/", order)
-  if (!error.value) console.log(data)
+  const { error } = await useApiPatch("sections/order/", order)
+  return !error.value
 }
 
 export async function addSection(

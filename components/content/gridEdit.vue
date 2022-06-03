@@ -38,7 +38,11 @@
 import { SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
-import { orderSwap } from "~/composables/contentsHelper"
+import {
+  checkAndMerge,
+  orderSwap,
+  updateSectionOrder,
+} from "~/composables/contentsHelper"
 
 defineProps({
   modelValue: {
@@ -56,14 +60,18 @@ const emits = defineEmits([
   "new-section",
   "new-content-in-section",
   "update:editing-content",
+  "reload-contents",
 ])
 
 const sections = useModel<SectionWithContent[]>("modelValue", { type: "array" })
 const currentEditingContentId = useModel<number>("editingContent")
 
 async function swapOne(index: number, direction: number) {
-  orderSwap(sections.value, index, direction)
-  return updateSectionOrder(sections.value)
+  await orderSwap(sections.value, index, direction)
+  await updateSectionOrder(sections.value)
+  await checkAndMerge(sections.value, index)
+  await checkAndMerge(sections.value, index + direction)
+  emits("reload-contents")
 }
 
 function onNewContentInSection(payload: any, sectionIndex: number) {

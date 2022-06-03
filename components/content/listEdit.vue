@@ -39,9 +39,8 @@
             :group="draggableContentsGroup(section.isFoldable)"
             item-key="id"
             tag="ul"
-            @add="sendNewContentOrder(sectionIndex)"
-            @update="sendNewContentOrder(sectionIndex)"
-            @remove="onContentRemove(sectionIndex)"
+            @add="sendNewContentOrder(sectionIndex, $event)"
+            @update="sendNewContentOrder(sectionIndex, $event)"
           >
             <template #item="{ element: content, index: contentIndex }">
               <li draggable="true">
@@ -88,6 +87,7 @@ import { Content, SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
 import {
+  checkAndMerge,
   updateContentOrder,
   updateSectionOrder,
 } from "~/composables/contentsHelper"
@@ -109,6 +109,7 @@ const emits = defineEmits([
   "delete-section",
   "new-adhoc-section",
   "update:editing-content",
+  "reload-contents",
 ])
 
 const draggableContentsGroup = computed(() => (isFoldable: boolean) => {
@@ -132,31 +133,29 @@ function onNewContentInSection(payload: any, sectionIndex: number) {
   })
 }
 
-async function sendNewContentOrder(sectionIndex: number) {
-  return updateContentOrder(
-    contentsBySection.value[sectionIndex].contents,
-    contentsBySection.value[sectionIndex].id
+async function sendNewContentOrder(newSectionIndex: number, payload: any) {
+  const sectionToRemoveIndex = findSectionToDeleteIndex(
+    contentsBySection.value[newSectionIndex].contents[payload.newIndex].section,
+    contentsBySection.value
   )
+  await updateContentOrder(
+    contentsBySection.value[newSectionIndex].contents,
+    contentsBySection.value[newSectionIndex].id
+  )
+  if (!(sectionToRemoveIndex === undefined))
+    emits("delete-section", sectionToRemoveIndex)
 }
 
-async function sendNewSectionOrder() {
-  return updateSectionOrder(contentsBySection.value)
+async function sendNewSectionOrder(payload: any) {
+  await updateSectionOrder(contentsBySection.value)
+  await checkAndMerge(contentsBySection.value, payload.oldIndex)
+  await checkAndMerge(contentsBySection.value, payload.newIndex)
+  emits("reload-contents")
 }
 
 function elementToType(element: HTMLElement) {
   for (const type of ["sections", "solo-contents", "grouped-contents"])
     if (element.classList.contains(type)) return type
-}
-
-function onContentRemove(parentSectionIndex: number) {
-  if (
-    !(
-      contentsBySection.value[parentSectionIndex].isFoldable ||
-      contentsBySection.value[parentSectionIndex].contents.length
-    )
-  ) {
-    emits("delete-section", parentSectionIndex)
-  }
 }
 
 function findAnonymousNeighbour(sectionIndex: number): {
@@ -192,7 +191,7 @@ async function onAddAmongSections(payload: any) {
   if (whereToInsert.found) {
     whereToInsert.insertFunction(content)
     contentsBySection.value.splice(sectionIndex, 1)
-    return sendNewSectionOrder()
+    return sendNewSectionOrder(payload)
   }
   return emits("new-adhoc-section", {
     nextIndex: payload.newIndex,

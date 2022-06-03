@@ -17,6 +17,7 @@
       @new-section="newSection"
       @new-content-in-section="newContentInSection"
       @new-adhoc-section="createAdHocSectionForContent"
+      @reload-contents="reloadContents"
     />
     <client-only>
       <ContentGridEdit
@@ -28,6 +29,7 @@
         @new-solo-content="newSoloContentInTheEnd"
         @new-section="newSection"
         @new-content-in-section="newContentInSection"
+        @reload-contents="reloadContents"
       />
     </client-only>
   </div>
@@ -135,8 +137,6 @@ async function newContentInSection(payload: {
 async function createAdHocSectionForContent({
   nextIndex,
 }: {
-  prevSectionIndex: number
-  contentIndex: number
   nextIndex: number
 }) {
   const newSection = await addSection(
@@ -144,13 +144,23 @@ async function createAdHocSectionForContent({
     nextSectionOrder.value
   )
   let content: any = contentsBySection.value[nextIndex]
+
   content = await updateContent({
     id: content!.id,
     section: newSection!.id,
   } as any as Content)
   newSection!.contents.push(content!)
   contentsBySection.value.splice(nextIndex, 1, newSection!)
-  return updateSectionOrder(contentsBySection.value)
+
+  await updateSectionOrder(contentsBySection.value)
+
+  const sectionToRemoveIndex = findSectionToDeleteIndex(
+    content.section,
+    contentsBySection.value
+  )
+  if (!(sectionToRemoveIndex === undefined))
+    await onDeleteSection(sectionToRemoveIndex)
+  return reloadContents()
 }
 
 async function onDeleteContent({
@@ -179,6 +189,14 @@ async function onDeleteSection(index: number) {
   console.log({ index, id })
   if (await deleteSection(id)) contentsBySection.value.splice(index, 1)
   // TODO display potential error
+}
+
+async function reloadContents() {
+  const reloadedContents = await getResourceContentsBySection(
+    resourceStore.currentId!
+  )
+  if (!reloadedContents) return
+  contentsBySection.value = reloadedContents
 }
 </script>
 
