@@ -8,7 +8,7 @@
         put: ['sections', 'groupedContents', 'soloContents'],
         pull: 'sections',
       }"
-      class="sections"
+      class="sections fr-my-4w"
       handle=".section-drag-handle"
       item-key="id"
       tag="ul"
@@ -16,52 +16,97 @@
       @add="onAddAmongSections"
     >
       <template #item="{ element: section, index: sectionIndex }">
-        <div>
-          <template v-if="section.isFoldable">
-            <h2>{{ section.title }}</h2>
-            <button class="section-drag-handle">drag {{ sectionIndex }}</button>
-            <button @click="currentEditingSectionId = section.id">
-              éditer
-            </button>
-            <ContentInputSection
-              v-if="currentEditingSectionId === section.id"
-              v-model="contentsBySection[sectionIndex]"
-              @exit="currentEditingSectionId = null"
-            />
-            <button @click="$emit('delete-section', sectionIndex)">
-              delete section
-            </button>
-          </template>
-          <draggable
-            v-model="contentsBySection[sectionIndex].contents"
-            :animation="100"
-            :class="section.isFoldable ? 'grouped-contents' : 'solo-contents'"
-            :group="draggableContentsGroup(section.isFoldable)"
-            item-key="id"
-            tag="ul"
-            @add="sendNewContentOrder(sectionIndex, $event)"
-            @update="sendNewContentOrder(sectionIndex, $event)"
+        <div class="section-container fr-pb-4w">
+          <div
+            :class="section.isFoldable ? 'foldable-section' : ''"
+            class="section"
           >
-            <template #item="{ element: content, index: contentIndex }">
-              <li draggable="true">
-                <ContentListItem
-                  v-model="
-                    contentsBySection[sectionIndex].contents[contentIndex]
-                  "
-                  :is-editing="currentEditingContentId === content.id"
-                  @delete="onDeleteContent(sectionIndex, contentIndex)"
-                  @open-edition="currentEditingContentId = content.id"
-                  @exit-edition="currentEditingContentId = null"
+            <template v-if="section.isFoldable">
+              <div class="toolbar-section">
+                <div>
+                  <button class="section-drag-handle">
+                    <img src="~/assets/svg/dragHandle.svg" />
+                  </button>
+                </div>
+                <div>
+                  <button
+                    class="btn-tab-activable fr-btn--tertiary-no-outline"
+                    @click="currentEditingSectionId = section.id"
+                  >
+                    <VIcon name="ri-edit-line" />
+                    Éditer
+                  </button>
+                  <button
+                    class="fr-btn--tertiary-no-outline"
+                    @click="$emit('delete-section', sectionIndex)"
+                  >
+                    <VIcon name="ri-delete-bin-line" />
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+              <div class="header-section">
+                <h2>{{ section.title }}</h2>
+                <ContentInputSection
+                  v-if="currentEditingSectionId === section.id"
+                  v-model="contentsBySection[sectionIndex]"
+                  @exit="currentEditingSectionId = null"
                 />
-              </li>
+                <button
+                  class="fr-btn--tertiary-no-outline"
+                  @click="
+                    isSectionFoldedById[section.id] =
+                      !isSectionFoldedById[section.id]
+                  "
+                >
+                  <span v-show="!isSectionFoldedById[section.id]">
+                    <VIcon name="ri-arrow-up-s-line" /> Fermer
+                  </span>
+                  <span v-show="isSectionFoldedById[section.id]">
+                    <VIcon name="ri-arrow-down-s-line" /> Ouvrir
+                  </span>
+                </button>
+              </div>
             </template>
-          </draggable>
-          <ContentInputChooseType
-            v-if="section.isFoldable"
-            @new-content="onNewContentInSection($event, sectionIndex)"
-          >
-            Ajouter un contenu à {{ section.title }}
-          </ContentInputChooseType>
+            <div
+              :class="isSectionFoldedById[section.id] ? '-folded' : ''"
+              class="hide-if-folded"
+            >
+              <draggable
+                v-model="contentsBySection[sectionIndex].contents"
+                :animation="100"
+                :class="
+                  section.isFoldable ? 'grouped-contents' : 'solo-contents'
+                "
+                :group="draggableContentsGroup(section.isFoldable)"
+                item-key="id"
+                tag="ul"
+                @add="sendNewContentOrder(sectionIndex, $event)"
+                @update="sendNewContentOrder(sectionIndex, $event)"
+              >
+                <template #item="{ element: content, index: contentIndex }">
+                  <li draggable="true">
+                    <ContentListItem
+                      v-model="
+                        contentsBySection[sectionIndex].contents[contentIndex]
+                      "
+                      :is-editing="currentEditingContentId === content.id"
+                      class="content-in-section"
+                      @delete="onDeleteContent(sectionIndex, contentIndex)"
+                      @open-edition="currentEditingContentId = content.id"
+                      @exit-edition="currentEditingContentId = null"
+                    />
+                  </li>
+                </template>
+              </draggable>
+              <ContentInputChooseType
+                v-if="section.isFoldable"
+                @new-content="onNewContentInSection($event, sectionIndex)"
+              >
+                Ajouter un contenu à {{ section.title }}
+              </ContentInputChooseType>
+            </div>
+          </div>
         </div>
       </template>
     </draggable>
@@ -125,6 +170,13 @@ const contentsBySection = useModel<SectionWithContent[]>("modelValue", {
 })
 const currentEditingSectionId = ref<number>()
 const currentEditingContentId = useModel<number | null>("editingContent")
+const isSectionFoldedById = ref<{ [key: number]: boolean }>({})
+
+onMounted(() => {
+  for (const section of contentsBySection.value) {
+    isSectionFoldedById.value[section.id] = false
+  }
+})
 
 function onNewContentInSection(payload: any, sectionIndex: number) {
   emits("new-content-in-section", {
@@ -215,4 +267,17 @@ function onDeleteContent(sectionIndex: number, contentIndex: number) {
 ul
   list-style: none
   padding: 0
+
+li:not(:last-child) .content-in-section, .section-container:not(:last-child)
+  border-bottom: 1px solid var(--border-default-grey)
+
+li:not(:last-child) .content-in-section
+  padding-bottom: 16px
+
+.hide-if-folded
+  transition: max-height 200ms ease-in-out
+  overflow: hidden
+
+  &.-folded
+    max-height: 0
 </style>
