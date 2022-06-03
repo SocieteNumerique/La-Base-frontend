@@ -39,6 +39,7 @@ export type Resource = {
 
 export type Tag = {
   category: number
+  count?: number
   definition?: string
   id: number
   isDraft: boolean
@@ -188,4 +189,9 @@ export type Alert = {
   title: string
   text?: string
   type?: string
+}
+
+export type SearchResult = {
+  data_type: string
+  objects: Resource[] | Base[]
 }

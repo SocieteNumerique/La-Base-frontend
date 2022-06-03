@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { useApiPost } from "~/composables/api"
-import { Resource, Base } from "~/composables/types"
+import { Resource, Base, SearchResult } from "~/composables/types"
 import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
 
@@ -59,11 +59,6 @@ definePageMeta({
   layout: false,
   title: "Base",
 })
-
-type SearchResult = {
-  data_type: string
-  objects: Resource[] | Base[]
-}
 
 const resultIds = ref<number[]>([])
 const textInput = ref("")

@@ -105,13 +105,16 @@
           class="fr-pb-3w fr-mt-6w"
           style="display: flex; flex-direction: column"
         >
-          <DsfrButton
-            :secondary="true"
-            label="Prévisualiser"
-            icon="ri-eye-line"
-            class="fr-mb-3v"
-            :disabled="true"
-          />
+          <NuxtLink :to="'/ressource/' + resourceStore.currentId">
+            <DsfrButton
+              :secondary="true"
+              label="Visualiser"
+              icon="ri-eye-line"
+              class="fr-mb-3v"
+              :disabled="false"
+              style="width: 100%"
+            />
+          </NuxtLink>
           <DsfrButton
             label="Sauvegarder"
             icon="ri-save-line"

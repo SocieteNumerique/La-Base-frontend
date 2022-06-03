@@ -79,3 +79,9 @@ const focusCategory = (categoryName: string) => {
   focusedCategory.value = categoryName
 }
 </script>
+
+<style>
+.tag-selector + .tag-selector {
+  margin-top: 24px;
+}
+</style>

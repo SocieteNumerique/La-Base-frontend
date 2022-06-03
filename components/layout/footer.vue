@@ -1,6 +1,6 @@
 <template>
   <DsfrFooter
-    :logo-text="['La plateforme de l\'ANCT']"
+    :logo-text="['Les pratiques publiques de', 'la médiation numérique']"
     a11y-compliance="partiellement conforme"
     desc-text="référencer, découvrir, partager des outils pour l'inclusion numérique"
     home-link="/"

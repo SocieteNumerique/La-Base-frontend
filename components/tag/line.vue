@@ -5,8 +5,13 @@
         {{ props.tag.name }}
       </p>
       <div>
-        <VIcon name="ri-shield-check-line" />
-        34
+        <VIcon v-if="!props.tag.isFree" name="ri-shield-check-line" />
+        <span
+          v-if="props.tag.count"
+          style="display: inline-block; margin-left: 8px"
+        >
+          {{ props.tag.count }}
+        </span>
         <template v-if="props.tag.definition">
           <VIcon
             v-if="showDefinition"
