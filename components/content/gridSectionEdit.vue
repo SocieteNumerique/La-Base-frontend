@@ -185,12 +185,13 @@ window.addEventListener("dragover", onDrag)
 .grid-container
   position: relative
   height: min-content
+  overflow: hidden
   .grid
     height: 100%
     width: 100%
     display: grid
     grid-gap: 24px
-    row-gap: 24px
+    row-gap: 12px
     grid-template-columns: repeat(6, 1fr)
     z-index: -1
     &.grid-underlay
@@ -208,5 +209,13 @@ window.addEventListener("dragover", onDrag)
       padding: 8px
       text-overflow: ellipsis
       overflow-wrap: break-word
-      overflow: hidden
+      &:before
+        position: relative
+        content: " "
+        bottom: 8px
+        right: 8px
+        display: block
+        height: 24px
+        width: 1000px
+        background: white
 </style>
