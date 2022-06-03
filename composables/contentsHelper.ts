@@ -39,7 +39,7 @@ export async function inputToFileObject(
   const file = fileInput.files![0]
   const base64 = await fileToBase64(file)
   fileInput.files = null
-  return { base64, name: file.name, type: file.type }
+  return { base64, name: file.name, mimeType: file.type }
 }
 
 function getDefaultContent(type: string, sectionId: number): MiniContent {
