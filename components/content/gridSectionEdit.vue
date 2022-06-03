@@ -1,12 +1,60 @@
 <template>
-  <div class="fr-mb-6w">
+  <div
+    :class="section.isFoldable ? 'foldable-section' : ''"
+    class="fr-mb-6w section -grid"
+  >
     <template v-if="section.isFoldable">
-      <h2 v-if="section.isFoldable">{{ section.title }}</h2>
-      <button @click="$emit('swap-one', -1)">←</button>
-      <button @click="$emit('swap-one', 1)">→</button>
-      <button @click="$emit('delete-section')">delete section</button>
+      <div class="toolbar-section">
+        <div>
+          <button
+            class="fr-btn--tertiary-no-outline"
+            @click="$emit('swap-one', -1)"
+          >
+            ←
+          </button>
+          <button
+            class="fr-btn--tertiary-no-outline"
+            @click="$emit('swap-one', 1)"
+          >
+            →
+          </button>
+        </div>
+        <div>
+          <button
+            class="btn-tab-activable fr-btn--tertiary-no-outline"
+            @click="currentEditingSectionId = section.id"
+          >
+            <VIcon name="ri-edit-line" />
+            Éditer
+          </button>
+          <button
+            class="fr-btn--tertiary-no-outline"
+            @click="$emit('delete-section')"
+          >
+            <VIcon name="ri-delete-bin-line" />
+            Supprimer
+          </button>
+        </div>
+      </div>
+      <div class="header-section">
+        <h2>{{ section.title }}</h2>
+        <DsfrModal :opened="isEditing" @close="isEditing = false">
+          <ContentInputSection v-model="section" @exit="isEditing = false" />
+        </DsfrModal>
+        <button
+          class="fr-btn--tertiary-no-outline"
+          @click="isFolded = !isFolded"
+        >
+          <span v-show="!isFolded">
+            <VIcon name="ri-arrow-up-s-line" /> Fermer
+          </span>
+          <span v-show="isFolded">
+            <VIcon name="ri-arrow-down-s-line" /> Ouvrir
+          </span>
+        </button>
+      </div>
     </template>
-    <div class="grid-container">
+    <div :class="isFolded ? '-folded' : ''" class="grid-container">
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
       </div>
@@ -68,6 +116,8 @@ const emits = defineEmits([
 
 const section = useModel<SectionWithContent>("modelValue", { type: "object" })
 const currentEditingContentId = useModel<number | null>("editingContent")
+const isFolded = ref<boolean>(false)
+const isEditing = ref<boolean>(false)
 
 const contents = computed<Content[]>({
   get() {
@@ -235,4 +285,9 @@ window.addEventListener("dragover", onDrag)
         height: 24px
         width: 1000px
         background: white
+
+  transition: max-height 200ms ease-in-out
+
+  &.-folded
+    max-height: 0
 </style>

@@ -36,20 +36,40 @@
   .-active
     border-bottom: 2px solid var(--text-action-high-blue-france)
 
+.fr-text--disabled
+  color: var(--text-disabled-grey)
+
+// ---------------- Content ----------------------
 .content-container
   &.is-editing, &:hover
     .toolbar
       opacity: 1
+
   .toolbar
     opacity: 0
-    border-bottom: 1px solid var(--border-default-grey)
     display: flex
     justify-content: space-between
     color: var(--text-title-blue-france)
     margin: 0
 
-.fr-text--disabled
-  color: var(--text-disabled-grey)
+.foldable-section
+  border-left: 2px solid var(--border-action-high-blue-france)
+  padding-left: 20px
+  margin: 20px 0
+
+  .toolbar-section
+    display: flex
+    justify-content: space-between
+    margin-bottom: 16px
+
+  .header-section
+    margin-left: 25px
+    display: flex
+    justify-content: space-between
+
+  > :not(.toolbar-section)
+    padding-left: 16px
+
 .add-section-content-group
   display: flex
   flex-direction: column

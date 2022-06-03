@@ -54,6 +54,6 @@ const content = useModel<Content>("modelValue", { type: "object" })
 
 <style lang="sass" scoped>
 .content-container.-list
-  &.is-editing, &:hover
+  &.is-editing
     border: 1px solid var(--border-default-grey)
 </style>

@@ -55,9 +55,9 @@ function addSimpleContent(type: string) {
 .content-type-selector
   background-color: white
   border-color: var(--background-open-blue-france)
-  position: relative
+  //position: relative
   .selector__menu
-    position: absolute
+    //position: absolute
     background-color: white
     z-index: 10
     width: 170px
