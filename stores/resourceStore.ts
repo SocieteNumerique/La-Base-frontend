@@ -120,6 +120,7 @@ export const useResourceStore = defineStore("resource", {
       if (resource.tags.indexOf(tagId) === -1) {
         resource.tags.push(tagId)
       }
+      this.markDirty(resourceId)
     },
     async createResource(resource: Resource) {
       const { data, error } = await useApiPost<Resource>("resources/", resource)
@@ -160,6 +161,15 @@ export const useResourceStore = defineStore("resource", {
         this.resourcesById[resource.id!] = resource
         console.log("### got resource", resourceId, resource.id)
       }
+    },
+    markDirty(resourceId: number | null = null) {
+      if (resourceId == null && this.currentId == null) {
+        return
+      }
+      if (resourceId == null) {
+        resourceId = this.currentId!
+      }
+      this.resourcesById[resourceId].dirty = true
     },
     navigationNext() {
       if (this.isNavigationNextDisabled) {
@@ -206,6 +216,7 @@ export const useResourceStore = defineStore("resource", {
         resource.tags = []
       }
       resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
+      this.markDirty(resourceId)
     },
     async save(resourceId: number | undefined = undefined) {
       if (resourceId == null) {

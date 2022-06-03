@@ -47,5 +47,6 @@ const onChange = (newValue: string) => {
   radioValue.value = newValue
   resourceStore.resourcesById[resourceStore.currentId!].isLinkedToATerritory =
     !!parseInt(newValue)
+  resourceStore.markDirty()
 }
 </script>

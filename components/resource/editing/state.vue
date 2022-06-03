@@ -48,5 +48,6 @@ const options = [
 const onChange = (newValue: string) => {
   radioValue.value = newValue
   resourceStore.resourcesById[resourceStore.currentId!].status = newValue
+  resourceStore.markDirty()
 }
 </script>

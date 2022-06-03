@@ -179,12 +179,14 @@ const removeProducer = (producerEmail: string) => {
   )
   resourceStore.resourcesById[resourceStore.currentId!].externalProducers =
     producers
+  resourceStore.markDirty()
 }
 
 const onOwnBaseChose = () => {
   showOwnBaseModal.value = false
   resourceStore.resourcesById[resourceStore.currentId!].creator =
     ownSelectedBase.value
+  resourceStore.markDirty()
   console.log("### selected", ownSelectedBase)
 }
 const onExternalProducersAdd = () => {
@@ -199,6 +201,7 @@ const onExternalProducersAdd = () => {
   resourceStore.resourcesById[resourceStore.currentId!].externalProducers.push({
     ...newExternalProducer.value,
   })
+  resourceStore.markDirty()
   showExternalProducersModal.value = false
 }
 const ownBaseModalOptions = [
@@ -225,6 +228,7 @@ const selectProducer = (producer: string) => {
     resourceStore.currentId
   )
   resourceStore.resourcesById[resourceStore.currentId!].producerState = producer
+  resourceStore.markDirty()
   if (producer === "me") {
     showOwnBaseModal.value = true
   }

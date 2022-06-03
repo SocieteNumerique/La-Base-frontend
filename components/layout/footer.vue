@@ -1,6 +1,6 @@
 <template>
   <DsfrFooter
-    :logo-text="['Les pratiques publiques de', 'la médiation numérique']"
+    :logo-text="['La base de la médiation ', 'et de l’inclusion numérique']"
     a11y-compliance="partiellement conforme"
     desc-text="référencer, découvrir, partager des outils pour l'inclusion numérique"
     home-link="/"

@@ -14,27 +14,28 @@ export type Resource = {
   canWrite?: boolean
   created?: string
   creator?: number
+  contentStats?: { links: number; files: number }
+  description?: string
+  dirty?: boolean
+  externalProducers?: ExternalProducer[]
   id: number
   internalProducerIds?: number[]
   isDraft?: boolean
+  isLabeled?: boolean
   isLinkedToATerritory?: boolean
   isShort?: boolean
-  description?: string
-  externalProducers?: ExternalProducer[]
   linkedResourceIds?: number[]
   modified: string
   producerState: string
   rootBaseId?: number
   rootBase?: number
+  stats?: { pinned: number; views: number }
   status: string
+  supports?: string[]
   tags?: number[]
   title: string
   url?: string
   zipCode?: number
-  stats?: { pinned: number; views: number }
-  contentStats?: { links: number; files: number }
-  supports?: string[]
-  isLabeled?: boolean
 }
 
 export type Tag = {
