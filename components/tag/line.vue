@@ -1,5 +1,5 @@
 <template>
-  <div class="fr-px-2w" style="border-bottom: 1px solid #e5e5e5">
+  <div class="result-line">
     <div class="tag-line fr-py-1w">
       <p class="fr-m-0 cursor--pointer" @click="emit('select')">
         {{ props.tag.name }}

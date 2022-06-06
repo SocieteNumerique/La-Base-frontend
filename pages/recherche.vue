@@ -48,12 +48,11 @@
 <script setup lang="ts">
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { useApiPost } from "~/composables/api"
-import { Resource, Base, SearchResult } from "~/composables/types"
+import { BasesSearchResult } from "~/composables/types"
 import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
 
 const baseStore = useBaseStore()
-const resourcesStore = useResourceStore()
 
 definePageMeta({
   layout: false,
@@ -80,7 +79,7 @@ const onRadioChange = (newValue: string) => {
 const onTextInput = debounce(async () => {
   console.log("### on text input")
   let endpoint = `search/${radioValue.value}`
-  const { data, error } = await useApiPost<SearchResult>(endpoint, {
+  const { data, error } = await useApiPost<BasesSearchResult>(endpoint, {
     text: textInput.value,
   })
   if (!error.value) {

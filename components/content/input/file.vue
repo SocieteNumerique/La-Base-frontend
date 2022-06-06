@@ -31,7 +31,7 @@
 import { PropType } from "vue"
 import { FileContent } from "~/composables/types"
 import { useModel } from "~/composables/modelWrapper"
-import { inputToFileObject } from "~/composables/contentsHelper"
+import { inputToFileObject } from "~/composables/fileUpload"
 
 defineProps({
   modelValue: { type: Object as PropType<FileContent>, required: true },

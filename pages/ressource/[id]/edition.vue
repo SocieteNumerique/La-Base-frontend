@@ -11,8 +11,8 @@ definePageMeta({
   layout: "resourceedition",
   title: "Ressource",
 })
-const route = useRoute()
 const resourceStore = useResourceStore()
+const route = useRoute()
 
 function onBeforeUnload(ev: Event) {
   if (resourceStore.current.dirty) {
