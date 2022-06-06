@@ -3,8 +3,8 @@
     <h6>Contenu</h6>
     <ContentGridViewSwitcher
       v-model="isGridView"
-      v-model:enabled="isGridViewEnabled"
-      style="margin-bottom: 50px"
+      :is-editing-mode="true"
+      class="fr-mb-3w"
       @update:model-value="currentlyEditingContentId = null"
     />
     <ContentListEdit
@@ -51,7 +51,9 @@ import {
 
 const resourceStore = useResourceStore()
 
-const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
+const isGridViewEnabled = computed<boolean>(
+  () => resourceStore?.current?.isGridViewEnabled || false
+)
 const isGridView = ref<boolean>(false) // TODO
 
 const contentsBySection = ref<SectionWithContent[]>(

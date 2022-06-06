@@ -1,6 +1,6 @@
 <template>
   <DsfrInput
-    v-model="content.link"
+    v-model="link"
     :label-visible="true"
     label="Lien URL"
     placeholder="https://"
@@ -35,5 +35,15 @@ defineProps({
   modelValue: { type: Object as PropType<LinkContent>, required: true },
 })
 
-const content = useModel("modelValue", { type: "object" })
+const content = useModel<LinkContent>("modelValue", { type: "object" })
+const link = computed<string>({
+  get() {
+    return content.value?.link
+  },
+  set(value) {
+    if (!content.value) return
+    if (/^https?:\/\/.*/.test(value)) return (content.value.link = value)
+    content.value.link = `http://${value}`
+  },
+})
 </script>

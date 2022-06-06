@@ -5,8 +5,9 @@
       :is="component"
       :content="content"
       :is-editing-view="isEditingView"
+      :is-grid-view="isGridView"
     />
-    <div v-if="content.annotation" class="fr-text--xs">
+    <div v-if="content.annotation" class="fr-text--xs fr-my-2w">
       {{ content.annotation }}
     </div>
     <DsfrTag v-if="content.licence" :label="content.licence" :small="true" />
@@ -23,7 +24,8 @@ import ContentDisplayLinkedResource from "~/components/content/display/linkedRes
 
 const props = defineProps({
   content: { type: Object as PropType<Content>, required: true },
-  isEditingView: { type: Boolean, default: true },
+  isEditingView: { type: Boolean, default: false },
+  isGridView: { type: Boolean, default: false },
 })
 
 const componentByType: { [key: string]: unknown } = {

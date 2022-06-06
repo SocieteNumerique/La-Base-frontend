@@ -91,7 +91,7 @@
       </div>
       <div id="intersectionRoot" class="fr-col-9">
         <div id="informations">
-          <h2 class="fr-h4">Informations</h2>
+          <h2 class="">Informations</h2>
           <h3 class="fr-h5">Général</h3>
           <div class="fr-grid-row">
             <div class="fr-col-8">
@@ -116,25 +116,23 @@
           />
         </div>
         <div id="resource">
-          <h2 class="fr-h4 fr-text--disabled">Ressource</h2>
-          <p class="fr-text--disabled">
-            Fonctionnalité en cours de développement
-          </p>
+          <h2>Ressource</h2>
+          <ResourceContents />
         </div>
         <div id="sources">
-          <h2 class="fr-h4 fr-text--disabled">Source</h2>
+          <h2 class="fr-text--disabled">Source</h2>
           <p class="fr-text--disabled">
             Fonctionnalité en cours de développement
           </p>
         </div>
         <div id="evaluations">
-          <h2 class="fr-h4 fr-text--disabled">Évaluations</h2>
+          <h2 class="fr-text--disabled">Évaluations</h2>
           <p class="fr-text--disabled">
             Fonctionnalité en cours de développement
           </p>
         </div>
         <div id="reports">
-          <h2 class="fr-h4 fr-text--disabled">Signalements</h2>
+          <h2 class="fr-text--disabled">Signalements</h2>
           <p class="fr-text--disabled">
             Fonctionnalité en cours de développement
           </p>

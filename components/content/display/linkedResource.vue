@@ -1,7 +1,14 @@
 <template>
   <h5 v-if="!content.title">{{ resource?.title || content.linkedResource }}</h5>
-  <VIcon name="link-line" />
-  <NuxtLink :to="`ressource/${content.linkedResource}`">Ouvrir</NuxtLink>
+  <VIcon class="fr-mr-1w" name="ri-link" />
+  <NuxtLink
+    :to="`/ressource/${content.linkedResource}`"
+    class="no-underline no-append-ico fr-text-title--blue-france"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Ouvrir
+  </NuxtLink>
 </template>
 
 <script lang="ts" setup>
@@ -19,8 +26,7 @@ const resource = computed<Resource>(() => {
 })
 
 if (!resourceStore.resourcesById[props.content.linkedResource]) {
-  // TODO only short version
-  await resourceStore.getResource(props.content.linkedResource)
+  await resourceStore.getResource(props.content.linkedResource, true)
 }
 </script>
 

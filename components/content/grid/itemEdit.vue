@@ -47,7 +47,7 @@
 
     <div class="footer">
       <button draggable="true" @drag="resizeOverlay" @dragstart="beginDrag">
-        <VIcon name="ri-arrow-right-down-line" class="resize-image" />
+        <VIcon class="resize-image" name="ri-arrow-right-down-line" />
         <div ref="resizeGhostImage" />
       </button>
     </div>
@@ -96,11 +96,14 @@ function endDrag() {
     display: flex
     justify-content: right
     border-bottom: 2px solid transparent
+
   &:hover .footer
     border-bottom: 2px solid var(--border-action-high-blue-france)
+
   .resize-image
     color: #000091
     opacity: 0
+
   &:hover .resize-image
     opacity: 1
 </style>

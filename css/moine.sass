@@ -63,7 +63,6 @@
     margin-bottom: 16px
 
   .header-section
-    margin-left: 25px
     display: flex
     justify-content: space-between
 
@@ -74,6 +73,18 @@
   display: flex
   flex-direction: column
   width: 220px
+
+.section
+  .hide-if-folded
+    transition: max-height 200ms ease-in-out
+    overflow: hidden
+    transition: max-height 200ms ease-in-out
+
+    &.-folded
+      max-height: 0
+
+  h3
+    color: var(--text-action-high-blue-france)
 
 // for UserSelector, TagSelector
 .result-line
@@ -86,5 +97,9 @@
   overflow-y: auto
   max-height: 300px
 
-a.no-underline
-  background: none !important
+a
+  &.no-underline
+    background: none !important
+
+  &.no-append-ico::after
+    content: none
