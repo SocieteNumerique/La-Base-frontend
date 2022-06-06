@@ -95,7 +95,7 @@
           <h3 class="fr-h5">Général</h3>
           <div class="fr-grid-row">
             <div class="fr-col-8">
-              {{ resource.description }}
+              {{ resource?.description }}
             </div>
             <div class="fr-col-4">
               <p class="fr-text--bold">Date de création de la ressource</p>
@@ -212,19 +212,7 @@ definePageMeta({
   layout: false,
   title: "Ressource",
 })
-const route = useRoute()
 const resourceStore = useResourceStore()
-
-const getResourceIfNotExists = async () => {
-  const resourceId = parseInt(route.params.id)
-  resourceStore.setCurrentId(resourceId)
-  if (
-    !resourceStore.resourcesById[resourceId] ||
-    resourceStore.resourcesById[resourceId].isShort
-  ) {
-    await resourceStore.getResource(resourceId)
-  }
-}
 
 const resource = computed(() => {
   return resourceStore.current
@@ -234,8 +222,14 @@ if (process.server) {
   getResourceIfNotExists()
 }
 onMounted(async () => {
-  await getResourceIfNotExists()
+  const isResourceOK = await getResourceIfNotExists()
 
+  // no need to observe if we're being redirected
+  if (!isResourceOK) {
+    return
+  }
+
+  // observe scroll to update left menu
   // timeout to make sure elements actually exist
   setTimeout(() => {
     var options = {

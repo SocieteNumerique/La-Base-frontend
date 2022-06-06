@@ -30,6 +30,7 @@
     <ResourceEditingAdministration
       v-if="resourceStore.isSubMenuActive('administration')"
     />
+    <ResourceEditingLabel v-if="resourceStore.isSubMenuActive('label')" />
   </div>
 </template>
 

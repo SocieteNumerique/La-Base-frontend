@@ -1,13 +1,6 @@
 import { defineStore } from "pinia"
-import {
-  Menu,
-  MenuByKey,
-  MenuWithSubMenusByKey,
-  Resource,
-  SubMenuByKey,
-} from "~/composables/types"
+import { Menu, MenuByKey, Resource, SubMenuByKey } from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
-import { useAlertStore } from "~/stores/alertStore"
 
 export const navigationMenus: Menu[] = [
   {
@@ -36,7 +29,12 @@ export const navigationMenus: Menu[] = [
         name: "Licence",
         description: "Description de la licence",
       },
-      { key: "label", name: "Label", description: "", disabled: true },
+      {
+        key: "label",
+        name: "Label NEC",
+        description:
+          "Le label Numérique en Commun[s] décerné par l'Agence Nationale de la Cohésion des Territoires vise à identifier des dispositifs concourant à l'inclusion numérique sur l'ensemble du territoire. Les ressources élligibles sont des dispositifs numériques, tangibles et pédagogiques.",
+      },
     ],
   },
   {
@@ -48,7 +46,7 @@ export const navigationMenus: Menu[] = [
     key: "parameters",
     name: "Paramètres",
     subMenus: [
-      { key: "state", name: "Statut", description: "Description du statut" },
+      { key: "state", name: "Statut" },
       {
         key: "administration",
         name: "Administration",
@@ -160,6 +158,7 @@ export const useResourceStore = defineStore("resource", {
         const resource = data.value
         this.resourcesById[resource.id!] = resource
         console.log("### got resource", resourceId, resource.id)
+        return resource
       }
     },
     markDirty(resourceId: number | null = null) {
@@ -247,10 +246,12 @@ export const useResourceStore = defineStore("resource", {
         contents: [],
         id: -1,
         isShort: true,
+        labelState: "",
         modified: "",
         producerState: "",
+        resourceCreatedOn: "",
         rootBaseId: undefined,
-        status: "draft",
+        state: "draft",
         title: "",
       }
     },

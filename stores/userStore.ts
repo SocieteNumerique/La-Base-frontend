@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { User } from "~/composables/types"
+import { useBaseStore } from "~/stores/baseStore"
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -16,6 +17,9 @@ export const useUserStore = defineStore("user", {
       if (!error.value) {
         this.updateState(data.value)
         const router = useRouter()
+
+        const baseStore = useBaseStore()
+        await baseStore.refreshBases()
         router.push("/profile")
       }
     },

@@ -1,4 +1,11 @@
-export type User = { id: number; email: string; username: string }
+export type User = {
+  id: number
+  email: string
+  isAdmin?: boolean
+  firstName: string
+  lastName: string
+  username: string
+}
 
 export type ExternalProducer = {
   name: string
@@ -12,25 +19,28 @@ export type Resource = {
   accessRequiresUserAccount?: boolean
   contents?: Content[]
   canWrite?: boolean
+  coverImage?: FullFile
+  contentStats?: { links: number; files: number }
   created?: string
   creator?: number
-  contentStats?: { links: number; files: number }
-  description?: string
-  dirty?: boolean
-  externalProducers?: ExternalProducer[]
   id: number
   internalProducerIds?: number[]
   isDraft?: boolean
   isLabeled?: boolean
   isLinkedToATerritory?: boolean
   isShort?: boolean
+  description?: string
+  externalProducers?: ExternalProducer[]
+  labelDetails?: string
+  labelState: string
   linkedResourceIds?: number[]
   modified: string
   producerState: string
+  resourceCreatedOn: string
   rootBaseId?: number
   rootBase?: number
+  state: string
   stats?: { pinned: number; views: number }
-  status: string
   supports?: string[]
   tags?: number[]
   title: string
@@ -192,7 +202,10 @@ export type Alert = {
   type?: string
 }
 
-export type SearchResult = {
+type SearchResult<ResultType> = {
   data_type: string
-  objects: Resource[] | Base[]
+  objects: ResultType[]
 }
+export type UsersSearchResult = SearchResult<User>
+export type BasesSearchResult = SearchResult<Base>
+export type ResourcesSearchResult = SearchResult<Resource>

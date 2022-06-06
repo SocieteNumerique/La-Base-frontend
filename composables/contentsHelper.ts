@@ -1,15 +1,14 @@
 import {
   Content,
+  MiniContent,
   Section,
   SectionWithContent,
-  MiniContent,
-  FullFile,
 } from "~/composables/types"
 import {
+  useApiDelete,
   useApiGet,
   useApiPatch,
   useApiPost,
-  useApiDelete,
 } from "~/composables/api"
 
 export async function getResourceContentsBySection(resourceId: number) {
@@ -19,27 +18,6 @@ export async function getResourceContentsBySection(resourceId: number) {
   if (!error.value) {
     return data.value.sections
   }
-}
-
-async function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = (error) => reject(error)
-  })
-}
-
-export async function inputToFileObject(
-  fileInput: HTMLInputElement
-): Promise<FullFile | undefined> {
-  const nbFiles = fileInput.files!.length
-  if (!nbFiles) return
-  if (nbFiles > 1) return /* TODO */
-  const file = fileInput.files![0]
-  const base64 = await fileToBase64(file)
-  fileInput.files = null
-  return { base64, name: file.name, mimeType: file.type }
 }
 
 function getDefaultContent(type: string, sectionId: number): MiniContent {
@@ -63,13 +41,21 @@ async function createContent(resourceId: number, content: Content) {
 export async function updateContent(
   content: Content
 ): Promise<Content | undefined> {
-  if (Object.hasOwn(content, "file") && !Object.hasOwn(content.file, "base64"))
+  if (
+    Object.hasOwn(content, "file") &&
+    // @ts-ignore
+    !Object.hasOwn(content.file, "base64")
+  ) {
+    // @ts-ignore
     delete content?.file
+  }
+
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content
   )
   if (!error.value) {
+    // @ts-ignore
     return data.value
   }
 }

@@ -13,12 +13,10 @@ const loadingStore = useLoadingStore()
 
 const onEmailUpdate = (value: string) => {
   isEmailUntouched.value = false
-  console.log("### onEmailUpdate", value)
   email.value = value
 }
 const onPasswordUpdate = (value: string) => {
   isPasswordUntouched.value = false
-  console.log("### onPasswordUpdate", value)
   password.value = value
 }
 const isMailValid = computed(() => {
@@ -26,15 +24,12 @@ const isMailValid = computed(() => {
     return true
   }
 
-  console.log("### ismailvalid?", email.value)
-
   if (!email.value.includes("@")) {
     emailErrorMessage.value = "Le courriel doit contenir @"
     return false
   }
 
   emailErrorMessage.value = ""
-  console.log("### is valid")
 
   return true
 })
@@ -43,16 +38,12 @@ const isPasswordValid = computed(() => {
     return true
   }
 
-  console.log("### isPasswordValid?", password.value)
-
   if (!password.value.length) {
     passwordErrorMessage.value = "Le mot de passe ne peut pas être vide"
     return false
   }
 
   passwordErrorMessage.value = ""
-  console.log("### is valid")
-
   return true
 })
 const submit = () => {

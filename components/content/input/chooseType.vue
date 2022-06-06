@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inputToFileObject } from "~/composables/contentsHelper"
+import { inputToFileObject } from "~/composables/fileUpload"
 
 const emits = defineEmits(["new-content"])
 const fileInput = ref<HTMLInputElement>()

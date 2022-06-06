@@ -26,9 +26,7 @@ export const useAlertStore = defineStore("alerts", {
   },
   getters: {
     getAlerts: (state): Alert[] => {
-      const toReturn = Object.values(state.alerts)
-      console.log("### alerts", toReturn)
-      return toReturn
+      return Object.values(state.alerts)
     },
   },
 })
