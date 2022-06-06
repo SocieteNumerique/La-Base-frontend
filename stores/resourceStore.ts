@@ -150,9 +150,9 @@ export const useResourceStore = defineStore("resource", {
       }
       return { currentMenuIx, currentSubMenuIx }
     },
-    async getResource(resourceId: number) {
+    async getResource(resourceId: number, short = false) {
       const { data, error } = await useApiGet<Resource>(
-        `resources/${resourceId}/`
+        `resources/${resourceId}/${short ? "short/" : ""}`
       )
       if (!error.value) {
         const resource = data.value
@@ -235,6 +235,11 @@ export const useResourceStore = defineStore("resource", {
     },
     setCurrentId(resourceId: number) {
       this.currentId = resourceId
+    },
+    setGridViewActivation(isGridViewEnabled: boolean, resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      resource.isGridViewEnabled = isGridViewEnabled
+      this.markDirty(resourceId)
     },
   },
   getters: {

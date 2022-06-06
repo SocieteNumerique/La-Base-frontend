@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'is-editing': isEditing }" class="content-container -list">
+  <div :class="{ 'is-editing': isEditing }" class="content-container">
     <div class="toolbar fr-px-2w fr-text--xs">
       <div>Statut :</div>
       <div class="fr-btns-group--xs">
@@ -25,10 +25,9 @@
       <ContentDisplay
         v-show="!isEditing"
         :content="content"
-        :is-editing-view="isEditingView"
+        :is-editing-view="true"
       />
       <ContentInput
-        v-if="isEditingView"
         v-show="isEditing"
         v-model="content"
         @exit="$emit('exit-edition')"
@@ -44,7 +43,6 @@ import { useModel } from "~/composables/modelWrapper"
 
 defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
-  isEditingView: { type: Boolean, default: true },
   isEditing: { type: Boolean, default: false },
 })
 defineEmits(["delete", "exit-edition", "open-edition"])
@@ -53,7 +51,7 @@ const content = useModel<Content>("modelValue", { type: "object" })
 </script>
 
 <style lang="sass" scoped>
-.content-container.-list
+.content-container
   &.is-editing
     border: 1px solid var(--border-default-grey)
 </style>

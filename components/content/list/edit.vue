@@ -12,8 +12,8 @@
       handle=".section-drag-handle"
       item-key="id"
       tag="ul"
-      @update="sendNewSectionOrder"
       @add="onAddAmongSections"
+      @update="sendNewSectionOrder"
     >
       <template #item="{ element: section, index: sectionIndex }">
         <div class="section-container fr-pb-4w">
@@ -46,12 +46,12 @@
                 </div>
               </div>
               <div class="header-section">
-                <h2>{{ section.title }}</h2>
                 <ContentInputSection
                   v-if="currentEditingSectionId === section.id"
                   v-model="contentsBySection[sectionIndex]"
                   @exit="currentEditingSectionId = null"
                 />
+                <h3 v-else>{{ section.title }}</h3>
                 <button
                   class="fr-btn--tertiary-no-outline"
                   @click="
@@ -86,7 +86,7 @@
               >
                 <template #item="{ element: content, index: contentIndex }">
                   <li draggable="true">
-                    <ContentListItem
+                    <ContentListItemEdit
                       v-model="
                         contentsBySection[sectionIndex].contents[contentIndex]
                       "
@@ -273,11 +273,4 @@ li:not(:last-child) .content-in-section, .section-container:not(:last-child)
 
 li:not(:last-child) .content-in-section
   padding-bottom: 16px
-
-.hide-if-folded
-  transition: max-height 200ms ease-in-out
-  overflow: hidden
-
-  &.-folded
-    max-height: 0
 </style>

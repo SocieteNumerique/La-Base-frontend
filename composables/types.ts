@@ -23,9 +23,11 @@ export type Resource = {
   contentStats?: { links: number; files: number }
   created?: string
   creator?: number
+  dirty?: boolean
   id: number
   internalProducerIds?: number[]
   isDraft?: boolean
+  isGridViewEnabled?: boolean
   isLabeled?: boolean
   isLinkedToATerritory?: boolean
   isShort?: boolean
@@ -170,7 +172,7 @@ export interface SectionWithContent extends Section {
 }
 
 export type SubMenu = {
-  description: string
+  description?: string
   disabled?: boolean
   key: string
   name: string

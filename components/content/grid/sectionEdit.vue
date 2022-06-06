@@ -1,7 +1,7 @@
 <template>
   <div
     :class="section.isFoldable ? 'foldable-section' : ''"
-    class="fr-mb-6w section -grid"
+    class="fr-mb-6w section"
   >
     <template v-if="section.isFoldable">
       <div class="toolbar-section">
@@ -22,7 +22,7 @@
         <div>
           <button
             class="btn-tab-activable fr-btn--tertiary-no-outline"
-            @click="currentEditingSectionId = section.id"
+            @click="isEditing = true"
           >
             <VIcon name="ri-edit-line" />
             Éditer
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="header-section">
-        <h2>{{ section.title }}</h2>
+        <h3>{{ section.title }}</h3>
         <DsfrModal :opened="isEditing" @close="isEditing = false">
           <ContentInputSection v-model="section" @exit="isEditing = false" />
         </DsfrModal>
@@ -54,7 +54,10 @@
         </button>
       </div>
     </template>
-    <div :class="isFolded ? '-folded' : ''" class="grid-container">
+    <div
+      :class="isFolded ? '-folded' : ''"
+      class="grid-container hide-if-folded"
+    >
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
       </div>
@@ -63,10 +66,10 @@
           v-for="(content, index) of contents"
           :key="index"
           v-model="contents[index]"
+          :is-editing="currentEditingContentId === content.id"
           :message="message"
           class="content-item with-white-border-top"
           tag-name="li"
-          :is-editing="currentEditingContentId === content.id"
           @delete="onDelete(contents[index].id, index)"
           @dragend="onDrop($event, index)"
           @dragstart="onDragBegin($event, index)"
@@ -154,7 +157,7 @@ const isDragging = ref<boolean>(false)
 
 // computes the size of the block at drop
 // making sure it is between 1 and 6
-function nextNbCol(prevNbCol: number): number {
+function nextNbCol(): number {
   if (targetColumnIndex.value >= 6)
     // if we drop with the mouse on the right of the grid
     // make the element one column bigger than the space left on the line
@@ -223,7 +226,7 @@ async function onDrop(event: DragEvent, contentIndex: number) {
   for (let colElement of gridUnderlayRef.value.children) {
     colElement.classList.toggle("targeted", false)
   }
-  const nbCol = nextNbCol(content.nbCol)
+  const nbCol = nextNbCol()
   if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
   const updatedContent = await updateContent(content)
@@ -258,11 +261,14 @@ window.addEventListener("dragover", onDrag)
 
     &.grid-underlay
       position: absolute
+
     .grid-block
       background-color: var(--background-alt-grey)
       height: 100%
+
       &.targeted
         background-color: var(--background-alt-blue-france)
+
   .content-grid
     list-style-type: none
     padding: 0
@@ -285,9 +291,4 @@ window.addEventListener("dragover", onDrag)
         height: 24px
         width: 1000px
         background: white
-
-  transition: max-height 200ms ease-in-out
-
-  &.-folded
-    max-height: 0
 </style>

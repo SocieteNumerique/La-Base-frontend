@@ -7,6 +7,7 @@ import {
   RiAddCircleLine,
   RiEyeLine,
   RiLink,
+  RiLinkUnlink,
   RiDeleteBinLine,
   RiArrowRightLine,
   RiArrowRightDownLine,
@@ -34,6 +35,8 @@ import {
   RiMailSendLine,
   RiArrowUpSLine,
   RiArrowDownSLine,
+  RiGridLine,
+  RiAddLine,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -45,6 +48,7 @@ export const icons = [
   RiAddCircleLine,
   RiEyeLine,
   RiLink,
+  RiLinkUnlink,
   RiDeleteBinLine,
   RiArrowRightLine,
   RiArrowRightDownLine,
@@ -72,4 +76,6 @@ export const icons = [
   RiMailSendLine,
   RiArrowUpSLine,
   RiArrowDownSLine,
+  RiGridLine,
+  RiAddLine,
 ]

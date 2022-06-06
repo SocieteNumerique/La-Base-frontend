@@ -1,17 +1,20 @@
 <template>
-  <div>
+  <div class="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
     <button
       :class="{ '-active': !isGridView, '-inactive': isGridView }"
       class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
       @click="isGridView = false"
     >
+      <VIcon class="fr-mr-2v" name="ri-align-left" />
       Vue en liste
     </button>
     <button
+      v-if="isEditingMode"
       v-show="!isGridViewEnabled"
       class="fr-btn fr-btn--tertiary-no-outline -inactive"
       @click="isGridViewEnabled = true"
     >
+      <VIcon class="fr-mr-2v" name="ri-add-line" />
       Ajouter une vue en grille
     </button>
     <button
@@ -20,14 +23,16 @@
       class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
       @click="isGridView = true"
     >
+      <VIcon class="fr-mr-2v" name="ri-grid-line" />
       Vue en grille
     </button>
     <button
-      v-show="isGridViewEnabled"
+      v-if="isEditingMode"
+      v-show="isGridViewEnabled && isGridView"
       class="fr-btn fr-btn--tertiary-no-outline"
       @click="noGridViewAtAll"
     >
-      X
+      <VIcon name="ri-close-line" />
     </button>
     <!-- close-line icon -->
   </div>
@@ -35,16 +40,26 @@
 
 <script lang="ts" setup>
 import { useModel } from "~/composables/modelWrapper"
+import { useResourceStore } from "~/stores/resourceStore"
 
 defineProps({
   modelValue: { type: Boolean, required: true },
-  enabled: { type: Boolean, required: true },
+  isEditingMode: { type: Boolean, default: false },
 })
-
 defineEmits(["update:enabled"])
 
+const resourceStore = useResourceStore()
+
 const isGridView = useModel<boolean>("modelValue")
-const isGridViewEnabled = useModel<boolean>("enabled")
+
+const isGridViewEnabled = computed<boolean>({
+  get: () => resourceStore?.current?.isGridViewEnabled || false,
+  set(value: boolean) {
+    const resourceId = resourceStore?.currentId
+    if (!resourceId) return
+    resourceStore.setGridViewActivation(value, resourceId)
+  },
+})
 
 function noGridViewAtAll() {
   isGridViewEnabled.value = false

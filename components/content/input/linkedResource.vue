@@ -9,8 +9,8 @@
   <DsfrInput
     v-model="content.title"
     :label-visible="true"
-    label="Titre de lien"
-    placeholder="Titre de lien"
+    label="Titre alternatif de la ressource"
+    placeholder="Titre alternatif de la ressource"
   />
   <DsfrInput
     v-model="content.annotation"

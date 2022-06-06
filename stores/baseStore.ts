@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { Base, BaseWithDetailedResources, Resource } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
+import { useApiGet } from "~/composables/api"
 
 export const useBaseStore = defineStore("base", {
   state: () => ({
@@ -17,12 +18,12 @@ export const useBaseStore = defineStore("base", {
         for (const base of bases) {
           this.basesById[base.id] = base
         }
-        this.basesOrder = bases.map((base) => base.id)
+        this.basesOrder = bases.map((base: Base) => base.id)
       }
     },
     async getBase(baseId: number, short = false) {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
-        `bases/${short ? "short/" : ""}${baseId}/`
+        `bases/${baseId}/${short ? "short/" : ""}`
       )
       if (!error.value) {
         const resourceStore = useResourceStore()
@@ -34,7 +35,7 @@ export const useBaseStore = defineStore("base", {
         }
         const base = {
           ...data.value,
-          resources: resources!.map((resource) => resource.id),
+          resources: resources!.map((resource: Resource) => resource.id),
         }
         this.basesById[base.id] = base
       }
