@@ -1,5 +1,11 @@
 import { defineStore } from "pinia"
-import { Menu, MenuByKey, Resource, SubMenuByKey } from "~/composables/types"
+import {
+  Menu,
+  MenuByKey,
+  Resource,
+  ResourceCreate,
+  SubMenuByKey,
+} from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 
 export const navigationMenus: Menu[] = [
@@ -120,7 +126,7 @@ export const useResourceStore = defineStore("resource", {
       }
       this.markDirty(resourceId)
     },
-    async createResource(resource: Resource) {
+    async createResource(resource: ResourceCreate) {
       const { data, error } = await useApiPost<Resource>("resources/", resource)
       if (!error.value) {
         this.resourcesById[data.value.id!] = data.value
@@ -255,7 +261,6 @@ export const useResourceStore = defineStore("resource", {
         modified: "",
         producerState: "",
         resourceCreatedOn: "",
-        rootBaseId: undefined,
         state: "draft",
         title: "",
       }

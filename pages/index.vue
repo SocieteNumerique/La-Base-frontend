@@ -3,7 +3,7 @@
     <h1 class="fr-mt-4w">Accueil</h1>
     <h2 class="fr-mt-5w">Mes bases</h2>
     <div class="is-flex fr-mb-4w">
-      <BaseCard
+      <BaseMiniature
         v-for="baseId of baseStore.basesOrder"
         :key="baseId"
         :base="baseStore.basesById[baseId]"

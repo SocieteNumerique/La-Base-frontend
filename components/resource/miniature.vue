@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="`/ressource/${resourceId}/edition`"
+    :to="`/ressource/${resource.id}/edition`"
     class="resource-miniature-container fr-text--xs"
   >
     <div class="fr-grid-row fr-grid-row--right">
@@ -15,7 +15,7 @@
       <div class="separator fr-mx-4w fr-my-1w" />
       <div>
         Fiche publiée par
-        <div>{{ base?.title }}</div>
+        <div>{{ resource?.rootBaseTitle }}</div>
       </div>
       <div class="separator fr-mx-4w fr-my-1w" />
       <div v-if="resource.stats">stats</div>
@@ -50,48 +50,20 @@
 </template>
 
 <script lang="ts" setup>
-import { useResourceStore } from "~/stores/resourceStore"
 import { pluralize } from "~/composables/strUtils"
-import { Base, Resource } from "~/composables/types"
-import { useBaseStore } from "~/stores/baseStore"
-import { onMounted } from "vue"
-
-const resourceStore = useResourceStore()
-const baseStore = useBaseStore()
+import { Resource } from "~/composables/types"
+import { PropType } from "vue"
 
 const props = defineProps({
-  resourceId: { type: Number, required: true },
-})
-
-const resource = computed<Resource>(
-  () => resourceStore.resourcesById[props.resourceId]
-)
-
-const base = computed<Base | undefined>(() => {
-  if (!resource.value.rootBase) return
-  return baseStore.basesById[resource.value.rootBase]
+  resource: { type: Object as PropType<Resource>, required: true },
 })
 
 const supportTags = computed<{ label: string }[]>(
   () =>
-    resource.value.supports?.map((label: string) => {
+    props.resource.supports?.map((label: string) => {
       return { label }
     }) || []
 )
-
-function getBaseIfNotExists() {
-  if (!resource.value.rootBase) return
-  if (!baseStore.basesById[resource.value.rootBase]) {
-    baseStore.getBase(resource.value.rootBase, true)
-  }
-}
-
-if (process.server) {
-  getBaseIfNotExists()
-}
-onMounted(() => {
-  getBaseIfNotExists()
-})
 </script>
 
 <style lang="sass" scoped>
@@ -99,7 +71,6 @@ onMounted(() => {
   border: 1px solid var(--grey-975-75-active)
   display: block
   background: none
-  height: 695px
 
   > *
     padding: 16px
