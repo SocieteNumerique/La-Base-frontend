@@ -27,7 +27,7 @@
                 <span class="fr-text-label--blue-france">vues</span>
               </div>
             </div>
-            <div class="is-flex">
+            <div v-if="base.reports" class="is-flex">
               <DsfrBadge label="2 signalements erreur type 3" type="warning" />
             </div>
           </div>
@@ -56,7 +56,7 @@
       </div>
       <div class="resource-grid">
         <div v-for="resourceId of base.resources" :key="resourceId">
-          <ResourceMiniature :resource-id="resourceId" />
+          <ResourceMiniatureById :resource-id="resourceId" />
         </div>
       </div>
     </div>
@@ -64,7 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import { useResourceStore } from "~/stores/resourceStore"
 import { useRoute } from "vue-router"
 import { computed, onMounted } from "vue"
 import RoundButton from "~/components/roundButton.vue"
@@ -75,7 +74,6 @@ definePageMeta({
   title: "Base",
 })
 const route = useRoute()
-const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 
 let showAddResourceModal = ref(false)
@@ -112,9 +110,4 @@ onMounted(() => {
 
 .stat *
   margin-left: 12px
-
-.resource-grid
-  display: grid
-  grid-gap: 24px
-  grid-template-columns: repeat(3, minmax(0, 1fr))
 </style>

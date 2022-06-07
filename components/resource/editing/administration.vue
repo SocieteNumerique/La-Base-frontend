@@ -15,7 +15,6 @@
 import { onMounted } from "vue"
 import { useResourceStore } from "~/stores/resourceStore"
 import { DsfrCallout } from "@laruiss/vue-dsfr"
-import UserSelector from "~/components/userSelector.vue"
 
 const resourceStore = useResourceStore()
 

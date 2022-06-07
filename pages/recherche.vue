@@ -32,34 +32,37 @@
         <VIcon name="ri-search-line" />
       </button>
     </div>
-    <div class="is-flex fr-mb-4w">
-      <template v-if="radioValue === 'bases'">
-        <BaseCard
-          v-for="baseId of resultIds"
-          :key="baseId"
-          :base="baseStore.basesById[baseId]"
+    <div class="fr-mb-4w">
+      <div v-if="radioValue === 'bases'" class="is-flex">
+        <BaseMiniature v-for="base of results" :key="base.id" :base="base" />
+      </div>
+      <div v-if="radioValue === 'resources'" class="resource-grid">
+        <ResourceMiniature
+          v-for="resource of results"
+          :key="resource.id"
+          :resource="resource"
         />
-      </template>
+      </div>
     </div>
-    <pre>{{ resultIds }}</pre>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { useApiPost } from "~/composables/api"
-import { BasesSearchResult } from "~/composables/types"
-import { useBaseStore } from "~/stores/baseStore"
-import { useResourceStore } from "~/stores/resourceStore"
-
-const baseStore = useBaseStore()
+import {
+  BasesSearchResult,
+  ResourcesSearchResult,
+  Base,
+  Resource,
+} from "~/composables/types"
 
 definePageMeta({
   layout: false,
   title: "Base",
 })
 
-const resultIds = ref<number[]>([])
+const results = ref<Base[] | Resource[]>([])
 const textInput = ref("")
 const radioOptions = [
   {
@@ -79,23 +82,14 @@ const onRadioChange = (newValue: string) => {
 const onTextInput = debounce(async () => {
   console.log("### on text input")
   let endpoint = `search/${radioValue.value}`
-  const { data, error } = await useApiPost<BasesSearchResult>(endpoint, {
+  const { data, error } = await useApiPost<
+    BasesSearchResult | ResourcesSearchResult
+  >(endpoint, {
     text: textInput.value,
   })
   if (!error.value) {
-    if (radioValue.value === "bases") {
-      for (const base of data.value.objects) {
-        // @ts-ignore
-        baseStore.basesById[base.id] = base
-      }
-    }
-    if (radioValue.value === "resources") {
-      for (const resource of data.value.objects) {
-        // @ts-ignore
-        resourceStore.resourcesById[resource.id] = resource
-      }
-    }
-    resultIds.value = data.value.objects.map((el) => el.id)
+    console.log("### results", data.value)
+    results.value = data.value.objects
   }
 }, 200)
 </script>

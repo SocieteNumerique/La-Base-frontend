@@ -39,8 +39,8 @@ export type Resource = {
   modified: string
   producerState: string
   resourceCreatedOn: string
-  rootBaseId?: number
   rootBase?: number
+  rootBaseTitle?: string
   state: string
   stats?: { pinned: number; views: number }
   supports?: string[]
@@ -48,6 +48,11 @@ export type Resource = {
   title: string
   url?: string
   zipCode?: number
+}
+
+export type ResourceCreate = {
+  rootBase: number
+  title: string
 }
 
 export type Tag = {
