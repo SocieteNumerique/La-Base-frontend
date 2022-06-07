@@ -94,7 +94,7 @@
           <h2 class="">Informations</h2>
           <h3 class="fr-h5">Général</h3>
           <div class="fr-grid-row">
-            <div class="fr-col-8">
+            <div class="fr-col-8" style="white-space: pre-line">
               {{ resource?.description }}
             </div>
             <div class="fr-col-4">

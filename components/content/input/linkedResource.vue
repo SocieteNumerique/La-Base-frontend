@@ -8,8 +8,9 @@
   />
   <DsfrInput
     v-model="content.title"
-    hint="max 25 caractères"
+    hint="max 50 caractères"
     :label-visible="true"
+    maxlength="50"
     label="Titre alternatif de la ressource"
     placeholder="Titre alternatif de la ressource"
   />
@@ -19,6 +20,7 @@
     :label-visible="true"
     label="Légende"
     placeholder="Légende"
+    maxlength="280"
   />
 </template>
 

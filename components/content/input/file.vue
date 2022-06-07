@@ -8,7 +8,8 @@
   />
   <DsfrInput
     v-model="content.title"
-    hint="max 25 caractères"
+    hint="max 50 caractères"
+    maxlength="50"
     :label-visible="true"
     label="Titre"
     placeholder="Titre"
@@ -19,6 +20,7 @@
     :label-visible="true"
     label="Légende"
     placeholder="Légende"
+    maxlength="280"
   />
   <DsfrCheckbox
     v-if="isImage"

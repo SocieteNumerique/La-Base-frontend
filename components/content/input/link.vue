@@ -14,10 +14,11 @@
   />
   <DsfrInput
     v-model="content.title"
-    hint="max 25 caractères"
+    hint="max 50 caractères"
     :label-visible="true"
     label="Titre de lien"
     placeholder="Titre de lien"
+    maxlength="50"
   />
   <DsfrInput
     v-model="content.annotation"
@@ -25,6 +26,7 @@
     :label-visible="true"
     label="Légende"
     placeholder="Légende"
+    maxlength="280"
   />
 </template>
 
