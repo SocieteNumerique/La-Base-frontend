@@ -4,6 +4,7 @@
       v-model="section.title"
       :label-visible="true"
       label="Titre"
+      hint="max 25 caractères"
       placeholder="Titre"
     />
   </ContentInputBase>

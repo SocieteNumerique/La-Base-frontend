@@ -133,6 +133,7 @@ async function newContentInSection(payload: {
     payload
   )
   contentsBySection.value[sectionIndex]!.contents.push(content!)
+  if (content.type === "file") return
   currentlyEditingContentId.value = content.id!
 }
 

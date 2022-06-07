@@ -15,7 +15,7 @@
     </client-only>
     <DsfrModal :opened="isAddingLink" @close="closeLinkModal">
       <DsfrInput
-        v-model="linkToAdd"
+        v-model="correctedLink"
         :label-visible="true"
         label="URL"
         placeholder="https://"
@@ -130,17 +130,26 @@ const toolbar = [
 
 const isAddingLink = ref<boolean>(false)
 const linkToAdd = ref<string>("")
+const correctedLink = computed<string>({
+  get() {
+    return linkToAdd.value
+  },
+  set(value) {
+    if (/^https?:\/\/.*/.test(linkToAdd.value)) return (linkToAdd.value = value)
+    linkToAdd.value = `http://${value || ""}`
+  },
+})
 
 function openLinkModal() {
   if (!editor.value) return
 
   const previousUrl = editor.value.getAttributes("link").href
-  linkToAdd.value = previousUrl
+  correctedLink.value = previousUrl
   isAddingLink.value = true
 }
 
 function closeLinkModal() {
-  linkToAdd.value = ""
+  correctedLink.value = ""
   isAddingLink.value = false
 }
 
@@ -148,7 +157,7 @@ function setLink() {
   if (!editor.value) return
 
   // empty
-  if (linkToAdd.value === "") {
+  if (correctedLink.value === "") {
     editor.value.chain().focus().extendMarkRange("link").unsetLink().run()
     return
   }
@@ -158,7 +167,7 @@ function setLink() {
     .chain()
     .focus()
     .extendMarkRange("link")
-    .setLink({ href: linkToAdd.value })
+    .setLink({ href: correctedLink.value })
     .run()
 }
 

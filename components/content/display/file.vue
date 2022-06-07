@@ -5,24 +5,24 @@
     </div>
     <div v-if="isEditingView">
       <a
-        :href="content.file.link"
+        :href="content.file?.link"
         class="no-underline no-append-ico"
         rel="noopener noreferrer"
         target="_blank"
       >
         <VIcon name="ri-file-line" />
-        {{ content.file.name }}
+        {{ content.file?.name }}
       </a>
     </div>
     <div v-else-if="!content.withPreview || !isImage" class="file-no-preview">
       <VIcon name="ri-file-line" />
-      {{ content.file.name }}
+      {{ content.file?.name }}
     </div>
     <div v-if="!isEditingView">
       <div class="fr-btns-group--xs">
         <a
-          :download="content.file.name"
-          :href="content.file.link"
+          :download="content.file?.name"
+          :href="content.file?.link"
           class="no-underline no-append-ico"
           rel="noopener noreferrer"
         >
@@ -32,7 +32,7 @@
           </button>
         </a>
         <a
-          :href="content.file.link"
+          :href="content.file?.link"
           class="no-underline no-append-ico"
           rel="noopener noreferrer"
           target="_blank"
@@ -62,7 +62,8 @@ const isImage = computed<boolean>(
 )
 
 const imageLink = computed<string | undefined>(() => {
-  if (isImage.value && props.content.withPreview) return props.content.file.link
+  if (isImage.value && props.content.withPreview)
+    return props.content.file?.link
 })
 </script>
 

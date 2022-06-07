@@ -106,31 +106,16 @@ export type BaseWithDetailedResources = {
   title: string
 }
 
-type BaseMiniContent = {
-  type: string
-  nbCol: number
-  section: number
-}
-
-interface BaseContent extends BaseMiniContent {
-  id?: number
-  title?: string
+type BaseContent = {
   annotation?: string
+  id?: number
   licence?: string
-  order: number
+  nbCol: number
+  order?: number
+  section: number
+  title?: string
+  type: string
 }
-
-export interface MiniLinkContent extends BaseMiniContent {
-  link: string
-}
-export interface MiniTextContent extends BaseMiniContent {
-  text: string
-}
-export interface MiniLinkedResourceContent extends BaseContent {
-  linkedResource: number
-}
-export type MiniFileContent = BaseMiniContent
-export type MiniContent = MiniLinkContent | MiniTextContent | MiniFileContent
 
 export interface LinkContent extends BaseContent {
   link: string
@@ -151,10 +136,15 @@ export type FullFile = {
 }
 
 export interface FileContent extends BaseContent {
-  file: FullFile
+  file?: FullFile
   withPreview?: boolean
 }
-export type Content = LinkContent | TextContent | FileContent
+
+export type Content =
+  | FileContent
+  | LinkContent
+  | TextContent
+  | LinkedResourceContent
 
 export type ContentOrder = {
   [key: number]: { section: number; order: number }
