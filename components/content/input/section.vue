@@ -6,6 +6,7 @@
       label="Titre"
       hint="max 25 caractères"
       placeholder="Titre"
+      maxlength="25"
     />
   </ContentInputBase>
 </template>
