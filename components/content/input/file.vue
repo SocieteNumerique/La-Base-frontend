@@ -8,6 +8,7 @@
   />
   <DsfrInput
     v-model="content.title"
+    hint="max 25 caractères"
     :label-visible="true"
     label="Titre"
     placeholder="Titre"

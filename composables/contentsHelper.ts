@@ -1,6 +1,7 @@
 import {
   Content,
-  MiniContent,
+  FileContent,
+  LinkedResourceContent,
   Section,
   SectionWithContent,
 } from "~/composables/types"
@@ -20,7 +21,7 @@ export async function getResourceContentsBySection(resourceId: number) {
   }
 }
 
-function getDefaultContent(type: string, sectionId: number): MiniContent {
+function getDefaultContent(type: string, sectionId: number): Content {
   if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
   if (type === "file") return { type, nbCol: 2, section: sectionId }
   if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
@@ -41,21 +42,18 @@ async function createContent(resourceId: number, content: Content) {
 export async function updateContent(
   content: Content
 ): Promise<Content | undefined> {
-  if (
-    Object.hasOwn(content, "file") &&
-    // @ts-ignore
-    !Object.hasOwn(content.file, "base64")
-  ) {
-    // @ts-ignore
-    delete content?.file
+  if ("file" in content && content.file && !("base64" in content.file)) {
+    delete content.file
   }
 
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
-    content
+    content,
+    undefined,
+    { title: "Mise à jour réussie du contenu" },
+    true
   )
   if (!error.value) {
-    // @ts-ignore
     return data.value
   }
 }
@@ -68,8 +66,9 @@ export async function addContent(
   payload: any = null
 ): Promise<Content> {
   const content = getDefaultContent(type, sectionId)
-  if (type === "file") content.file = payload.file
-  if (type === "linkedResource") content.linkedResource = resourceId
+  if (type === "file") (content as FileContent).file = payload.file
+  if (type === "linkedResource")
+    (content as LinkedResourceContent).linkedResource = resourceId
   const createdContent = await createContent(resourceId, { ...content, order })
   if (createdContent) return createdContent
   throw "error at creating Content"
@@ -190,7 +189,10 @@ export async function addSection(
 export async function updateSection(section: Section) {
   const { data, error } = await useApiPatch<Section>(
     `sections/${section.id}/`,
-    section
+    section,
+    undefined,
+    { title: "Mise à jour de la section réussie" },
+    true
   )
   if (!error.value) {
     return data.value
