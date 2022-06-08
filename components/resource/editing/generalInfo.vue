@@ -6,6 +6,7 @@
   <DsfrInput
     :model-value="resourceStore.current?.title"
     label="Nom de la ressource"
+    maxlength="100"
     hint="max 100 caractères"
     :label-visible="true"
     @update:model-value="onTitleUpdate"

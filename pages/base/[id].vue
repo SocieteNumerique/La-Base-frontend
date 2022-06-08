@@ -47,7 +47,7 @@
     ></div>
     <div>
       <h2 class="fr-h4">Ressources</h2>
-      <div v-if="base.canWrite" class="fr-mb-2w">
+      <div v-if="base?.canWrite" class="fr-mb-2w">
         <ResourceCreationModal
           v-if="showAddResourceModal"
           @close="showAddResourceModal = false"
@@ -55,7 +55,7 @@
         <DsfrButton label="Ajouter une ressource" @click="onButtonClick" />
       </div>
       <div class="resource-grid">
-        <div v-for="resourceId of base.resources" :key="resourceId">
+        <div v-for="resourceId of base?.resources" :key="resourceId">
           <ResourceMiniatureById :resource-id="resourceId" />
         </div>
       </div>

@@ -69,9 +69,9 @@ export async function useApiRequest<Type>(
   path: string,
   payload: any,
   params = {},
-  onSuccess: Alert | null = null,
+  onSuccess: Alert | string | null = null,
   // if onError is true, the alert title and message is built from API response
-  onError: Alert | boolean = false
+  onError: Alert | string | boolean = false
 ) {
   const loadingStore = useLoadingStore()
   const alertStore = useAlertStore()
@@ -98,12 +98,28 @@ export async function useApiRequest<Type>(
         "error"
       )
     } else if (onError) {
-      alertStore.alert(onError.title, onError.text, "error")
+      let title: string
+      let text = ""
+      if (typeof onError === "string") {
+        title = onError
+      } else {
+        title = onError.title
+        text = onError.text || ""
+      }
+      alertStore.alert(title, text, "error")
     }
   } else {
     loadingStore.markDone(key)
     if (onSuccess) {
-      alertStore.alert(onSuccess.title, onSuccess.text, "success")
+      let title: string
+      let text = ""
+      if (typeof onSuccess === "string") {
+        title = onSuccess
+      } else {
+        title = onSuccess.title
+        text = onSuccess.text || ""
+      }
+      alertStore.alert(title, text, "success")
     }
   }
   return { data, error }
@@ -112,8 +128,8 @@ export async function useApiRequest<Type>(
 export async function useApiGet<Type>(
   path: string,
   params = {},
-  onSuccess: Alert | null = null,
-  onError: Alert | boolean = false
+  onSuccess: Alert | string | null = null,
+  onError: Alert | string | boolean = false
 ) {
   return useApiRequest<Type>("GET", path, undefined, params, onSuccess, onError)
 }
@@ -122,8 +138,8 @@ export async function useApiPost<Type>(
   path: string,
   payload = {},
   params = {},
-  onSuccess: Alert | null = null,
-  onError: Alert | boolean = false
+  onSuccess: Alert | string | null = null,
+  onError: Alert | string | boolean = false
 ) {
   return useApiRequest<Type>("POST", path, payload, params, onSuccess, onError)
 }
@@ -132,8 +148,8 @@ export async function useApiPatch<Type>(
   path: string,
   payload = {},
   params = {},
-  onSuccess: Alert | null = null,
-  onError: Alert | boolean = false
+  onSuccess: Alert | string | null = null,
+  onError: Alert | string | boolean = false
 ) {
   return useApiRequest<Type>("PATCH", path, payload, params, onSuccess, onError)
 }
@@ -141,8 +157,8 @@ export async function useApiPatch<Type>(
 export async function useApiDelete<Type>(
   path: string,
   params = {},
-  onSuccess: Alert | null = null,
-  onError: Alert | boolean = false
+  onSuccess: Alert | string | null = null,
+  onError: Alert | string | boolean = false
 ) {
   return useApiRequest<Type>(
     "DELETE",
