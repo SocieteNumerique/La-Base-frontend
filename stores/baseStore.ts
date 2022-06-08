@@ -10,16 +10,21 @@ export const useBaseStore = defineStore("base", {
     currentId: <number | undefined>undefined,
   }),
   actions: {
-    async refreshBases() {
-      const { data, error } = await useApiGet<Base[]>("bases/")
+    async createBase(baseTitle: string) {
+      const { data, error } = await useApiPost<Base>(
+        "bases/",
+        { title: baseTitle },
+        {},
+        "La base a bien été créée",
+        true
+      )
       if (!error.value) {
-        console.log("### refreshBases, value", data.value)
-        const bases = data.value
-        for (const base of bases) {
-          this.basesById[base.id] = base
-        }
-        this.basesOrder = bases.map((base: Base) => base.id)
+        this.basesById[data.value.id] = data.value
+        this.basesOrder.push(data.value.id)
+        const router = useRouter()
+        router.push(`/base/${data.value.id}`)
       }
+      return { data, error }
     },
     async getBase(baseId: number, short = false) {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
@@ -38,6 +43,21 @@ export const useBaseStore = defineStore("base", {
           resources: resources!.map((resource: Resource) => resource.id),
         }
         this.basesById[base.id] = base
+      }
+    },
+    async refreshBases() {
+      const { data, error } = await useApiGet<Base[]>(
+        "bases/",
+        {},
+        null,
+        "impossible de récupérer la liste des bases"
+      )
+      if (!error.value) {
+        const bases = data.value
+        for (const base of bases) {
+          this.basesById[base.id] = base
+        }
+        this.basesOrder = bases.map((base: Base) => base.id)
       }
     },
   },

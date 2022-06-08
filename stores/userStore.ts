@@ -26,7 +26,13 @@ export const useUserStore = defineStore("user", {
     async logout() {
       const { data, error } = await useApiPost<User>("auth/logout")
       if (!error.value) {
-        this.updateState({ id: 0, username: "", email: "" })
+        this.updateState({
+          id: 0,
+          firstName: "",
+          lastName: "",
+          username: "",
+          email: "",
+        })
         const router = useRouter()
         router.push("/login")
       }
