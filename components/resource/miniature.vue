@@ -60,7 +60,7 @@ import { PropType } from "vue"
 
 const props = defineProps({
   resource: { type: Object as PropType<Resource>, required: true },
-  modelValue: { type: Array as PropType<PinStatus[]>, default: () => [] },
+  modelValue: { type: Array as PropType<PinStatus[]>, required: true },
 })
 
 const basesPinnedIn = useModel("modelValue", { type: "array" })

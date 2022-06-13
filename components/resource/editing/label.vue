@@ -46,7 +46,7 @@ const resourceStore = useResourceStore()
 
 const badge = computed(() => {
   if (!resourceStore.current?.labelState) {
-    return { label: "Non demandé", type: "" }
+    return { label: "Non demandé ou demande non encore traitée", type: "" }
   }
   if (resourceStore.current?.labelState === "pending") {
     return { label: "Demande en cours de traitement", type: "new" }

@@ -2,7 +2,11 @@
   <div>
     <h1 class="fr-mt-4w">Accueil</h1>
     <h2 class="fr-mt-5w">Mes bases</h2>
-    <DsfrButton label="Créer une base" @click="showAddModal" />
+    <DsfrButton
+      v-if="userStore.isLoggedIn"
+      label="Créer une base"
+      @click="showAddModal"
+    />
     <div class="is-flex fr-mb-4w bases-holder">
       <BaseMiniature
         v-for="baseId of baseStore.basesOrder"
@@ -33,8 +37,10 @@
 <script setup lang="ts">
 import { useBaseStore } from "~/stores/baseStore"
 import { DsfrButton, DsfrInput, DsfrModal } from "@laruiss/vue-dsfr"
+import { useUserStore } from "~/stores/userStore"
 
 const baseStore = useBaseStore()
+const userStore = useUserStore()
 
 const showAddBaseModal = ref(false)
 const newBaseTitle = ref("")
@@ -67,13 +73,4 @@ const addActions = computed(() => [
 const onBaseTitleUpdate = (value: string) => (newBaseTitle.value = value)
 </script>
 
-<style>
-.bases-holder {
-  flex-wrap: wrap;
-  margin-left: -16px;
-}
-.bases-holder > * {
-  margin-left: 16px;
-  margin-top: 24px;
-}
-</style>
+<style></style>
