@@ -38,8 +38,9 @@
       </div>
       <div v-if="radioValue === 'resources'" class="resource-grid">
         <ResourceMiniature
-          v-for="resource of results"
+          v-for="(resource, index) of results"
           :key="resource.id"
+          v-model="results[index].basesPinnedIn"
           :resource="resource"
         />
       </div>

@@ -33,7 +33,7 @@
                 <span class="fr-text-label--blue-france">vues</span>
               </div>
             </div>
-            <div v-if="resource.reports" class="is-flex">
+            <div v-if="resource?.reports" class="is-flex">
               <DsfrBadge label="2 signalements erreur type 3" type="warning" />
             </div>
           </div>
@@ -41,11 +41,18 @@
       </div>
     </template>
 
-    <div>
+    <div class="is-flex">
       <RoundButton icon="ri-share-line" label="Partager" />
       <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
       <RoundButton icon="ri-download-line" label="Télécharger" disabled />
       <RoundButton icon="ri-share-line" label="Signaler" disabled />
+      <PinMenu
+        v-model="resource.basesPinnedIn"
+        :instance-id="resource?.id"
+        :root-base-id="resource?.rootBase"
+        class="fr-ml-auto"
+        instance-type="resource"
+      />
     </div>
     <div
       style="border-bottom: 1px solid var(--border-default-grey)"
@@ -144,7 +151,6 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { useRoute } from "vue-router"
 import { computed, onMounted } from "vue"
 import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"

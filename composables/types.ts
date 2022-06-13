@@ -15,8 +15,11 @@ export type ExternalProducer = {
   occupation?: number
 }
 
+export type PinStatus = { id: number; isPinned: boolean }
+
 export type Resource = {
   accessRequiresUserAccount?: boolean
+  basesPinnedIn?: PinStatus[]
   contents?: Content[]
   canWrite?: boolean
   coverImage?: FullFile
