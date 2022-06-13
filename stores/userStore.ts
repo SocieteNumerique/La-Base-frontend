@@ -10,10 +10,16 @@ export const useUserStore = defineStore("user", {
   }),
   actions: {
     async login(email: string, password: string) {
-      const { data, error } = await useApiPost<User>("auth/login", {
-        email,
-        password,
-      })
+      const { data, error } = await useApiPost<User>(
+        "auth/login",
+        {
+          email,
+          password,
+        },
+        {},
+        { title: "Connexion réussie" },
+        true
+      )
       if (!error.value) {
         this.updateState(data.value)
         const router = useRouter()
