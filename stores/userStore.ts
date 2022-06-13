@@ -20,7 +20,7 @@ export const useUserStore = defineStore("user", {
 
         const baseStore = useBaseStore()
         await baseStore.refreshBases()
-        router.push("/profile")
+        router.push("/")
       }
     },
     async logout() {
@@ -47,5 +47,8 @@ export const useUserStore = defineStore("user", {
       this.username = data.username
       this.email = data.email
     },
+  },
+  getters: {
+    isLoggedIn: (state) => !!state.email,
   },
 })

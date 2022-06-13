@@ -33,7 +33,7 @@
       </button>
     </div>
     <div class="fr-mb-4w">
-      <div v-if="radioValue === 'bases'" class="is-flex">
+      <div v-if="radioValue === 'bases'" class="bases-holder">
         <BaseMiniature v-for="base of results" :key="base.id" :base="base" />
       </div>
       <div v-if="radioValue === 'resources'" class="resource-grid">
@@ -82,15 +82,15 @@ const onRadioChange = (newValue: string) => {
 }
 const onTextInput = debounce(async () => {
   console.log("### on text input")
-  let endpoint = `search/${radioValue.value}`
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult
-  >(endpoint, {
+  >("search/", {
     text: textInput.value,
+    dataType: radioValue.value,
   })
   if (!error.value) {
-    console.log("### results", data.value)
-    results.value = data.value.objects
+    console.log("### results", data.value, data.value.results.objects)
+    results.value = data.value.results.objects
   }
 }, 200)
 </script>

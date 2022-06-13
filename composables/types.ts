@@ -202,9 +202,14 @@ export type Alert = {
   type?: string
 }
 
-type SearchResult<ResultType> = {
-  data_type: string
+type SearchResultResults<ResultType> = {
   objects: ResultType[]
+  possibleTags: number[]
+  dataType: string
+}
+type SearchResult<ResultType> = {
+  count: number
+  results: SearchResultResults<ResultType>
 }
 export type UsersSearchResult = SearchResult<User>
 export type BasesSearchResult = SearchResult<Base>

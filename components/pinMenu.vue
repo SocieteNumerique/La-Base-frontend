@@ -11,6 +11,7 @@
       <span v-show="!atLeastOnePin">Enregistrer</span>
     </button>
     <div
+      v-if="pinStatusByBaseId"
       v-show="isMenuShown"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
@@ -47,11 +48,11 @@ import { PropType } from "vue"
 import { PinStatus } from "~/composables/types"
 
 const props = defineProps({
-  modelValue: { type: Array as PropType<PinStatus[]>, default: () => [] },
+  modelValue: { type: Array as PropType<PinStatus[]>, required: true },
   instanceId: { type: Number, required: true },
   rootBaseId: { type: Number, default: null },
   instanceType: {
-    type: "resource" | "collection",
+    type: String as PropType<"resource" | "collection">,
     default: "resource",
   },
 })
