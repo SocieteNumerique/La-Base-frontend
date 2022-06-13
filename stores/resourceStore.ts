@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import {
   Menu,
   MenuByKey,
+  PinStatus,
   Resource,
   ResourceCreate,
   SubMenuByKey,
@@ -246,6 +247,10 @@ export const useResourceStore = defineStore("resource", {
       const resource = this.resourcesById[resourceId]
       resource.isGridViewEnabled = isGridViewEnabled
       this.markDirty(resourceId)
+    },
+    refreshPinStatus(basesPinnedIn: PinStatus[], resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      resource.basesPinnedIn = basesPinnedIn
     },
   },
   getters: {

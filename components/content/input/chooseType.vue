@@ -1,5 +1,5 @@
 <template>
-  <div class="content-type-selector" @focusout="isMenuShown = false">
+  <div class="pin-base-selector" @focusout="isMenuShown = false">
     <button
       class="fr-btn fr-btn--tertiary fr-btn--sm"
       @click="isMenuShown = !isMenuShown"
@@ -52,7 +52,7 @@ function addSimpleContent(type: string) {
 </script>
 
 <style lang="sass" scoped>
-.content-type-selector
+.pin-base-selector
   background-color: white
   border-color: var(--background-open-blue-france)
   //position: relative

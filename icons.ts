@@ -37,6 +37,7 @@ import {
   RiArrowDownSLine,
   RiGridLine,
   RiAddLine,
+  RiCheckboxCircleFill,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -78,4 +79,5 @@ export const icons = [
   RiArrowDownSLine,
   RiGridLine,
   RiAddLine,
+  RiCheckboxCircleFill,
 ]

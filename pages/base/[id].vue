@@ -27,7 +27,7 @@
                 <span class="fr-text-label--blue-france">vues</span>
               </div>
             </div>
-            <div v-if="base.reports" class="is-flex">
+            <div v-if="base?.reports" class="is-flex">
               <DsfrBadge label="2 signalements erreur type 3" type="warning" />
             </div>
           </div>
