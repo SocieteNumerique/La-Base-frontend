@@ -38,6 +38,7 @@ import {
   RiGridLine,
   RiAddLine,
   RiCheckboxCircleFill,
+  RiLoader5Line,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -80,4 +81,5 @@ export const icons = [
   RiGridLine,
   RiAddLine,
   RiCheckboxCircleFill,
+  RiLoader5Line,
 ]

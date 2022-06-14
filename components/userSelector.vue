@@ -64,10 +64,15 @@ const onInput = debounce(async () => {
   if (!textInput.value) {
     return
   }
-  let endpoint = `search/users`
-  const { data, error } = await useApiPost<UsersSearchResult>(endpoint, {
-    text: textInput.value,
-  })
+  let endpoint = `search`
+  const { data, error } = await useApiPost<UsersSearchResult>(
+    endpoint,
+    {
+      text: textInput.value,
+      dataType: "users",
+    },
+    { page: 1, page_size: 100 }
+  )
   if (!error.value) {
     // filter out already selected users
     const selectedUserIds = selectedUsers.value.map((user) => user.id)

@@ -206,6 +206,7 @@ type SearchResultResults<ResultType> = {
   objects: ResultType[]
   possibleTags: number[]
   dataType: string
+  text: string
 }
 type SearchResult<ResultType> = {
   count: number

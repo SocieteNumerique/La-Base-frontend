@@ -38,14 +38,12 @@
           <div class="fr-mr-2w">
             <VIcon :scale="0.7" class="fr-mr-2v" name="ri-link" />
             {{ resource?.contentStats?.links }}
-            {{ pluralize(["lien", "liens"], resource?.contentStats?.links) }}
+            {{ pluralize(["lien"], resource?.contentStats?.links) }}
           </div>
           <div>
             <VIcon :scale="0.7" class="fr-mr-2v" name="ri-file-line" />
             {{ resource?.contentStats?.files }}
-            {{
-              pluralize(["fichier", "fichiers"], resource?.contentStats?.files)
-            }}
+            {{ pluralize(["fichier"], resource?.contentStats?.files) }}
           </div>
         </div>
       </div>
