@@ -10,7 +10,7 @@
 <script setup lang="ts">
 const props = defineProps({
   icon: { type: String, required: true },
-  label: { type: String, required: true },
+  label: { type: String, default: "" },
 })
 </script>
 

@@ -12,10 +12,13 @@
                     <span class="fr-link fr-fi-home-4-line">Accueil</span>
                   </NuxtLink>
                 </li>
-                <li style="align-items: baseline">
-                  <NuxtLink to="/recherche">
-                    <span class="fr-link fr-fi-search-line">Recherche</span>
-                  </NuxtLink>
+                <li v-if="userStore.isLoggedIn" style="align-items: baseline">
+                  <button
+                    class="fr-link fr-fi-add-circle-line"
+                    @click="showAddModal"
+                  >
+                    Créer une base
+                  </button>
                 </li>
                 <li style="align-items: baseline">
                   <template v-if="userStore.isLoggedIn">
@@ -40,14 +43,63 @@
       </div>
     </div>
   </header>
+  <DsfrModal
+    :actions="addActions"
+    title="Ajouter une base"
+    :opened="showAddBaseModal"
+    @close="showAddBaseModal = false"
+  >
+    <DsfrInput
+      id="newBaseTitle"
+      :model-value="newBaseTitle"
+      label="Nom de la base"
+      hint="max 100 caractères"
+      maxlength="100"
+      :label-visible="true"
+      autofocus
+      @update:model-value="onBaseTitleUpdate"
+    />
+  </DsfrModal>
 </template>
 
 <script lang="ts" setup>
 import { useUserStore } from "~/stores/userStore"
+import { useBaseStore } from "~/stores/baseStore"
 
 const userStore = useUserStore()
+const baseStore = useBaseStore()
 
 const logoTitle = ["La base de la médiation ", "et de l’inclusion numérique"]
+
+const showAddBaseModal = ref(false)
+const newBaseTitle = ref("")
+
+const showAddModal = () => {
+  showAddBaseModal.value = true
+  setTimeout(() => {
+    const el = document.getElementById("newBaseTitle")
+    if (el) {
+      el.focus()
+    }
+  }, 200)
+}
+const createBase = () => {
+  baseStore.createBase(newBaseTitle.value)
+}
+
+const addActions = computed(() => [
+  {
+    label: "Valider",
+    onClick: createBase,
+    disabled: newBaseTitle.value.length === 0,
+  },
+  {
+    label: "Annuler",
+    secondary: true,
+    onClick: () => (showAddBaseModal.value = false),
+  },
+])
+const onBaseTitleUpdate = (value: string) => (newBaseTitle.value = value)
 </script>
 
 <style lang="sass" scoped>

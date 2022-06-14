@@ -1,7 +1,10 @@
 <template>
   <div class="result-line">
-    <div class="tag-line fr-py-1w">
-      <p class="fr-m-0 cursor--pointer" @click="emit('select')">
+    <div
+      class="tag-line fr-py-1w"
+      :class="disabled ? 'fr-text--disabled' : null"
+    >
+      <p class="fr-m-0 cursor--pointer" @click="!disabled && emit('select')">
         {{ props.tag.name }}
       </p>
       <div>
@@ -40,6 +43,7 @@ import { PropType } from "vue"
 
 const props = defineProps({
   tag: { type: Object as PropType<Tag>, required: true },
+  disabled: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(["select"])

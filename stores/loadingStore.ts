@@ -1,21 +1,31 @@
 import { defineStore } from "pinia"
 
+type LoadingStoreState = {
+  statePerKey: { [key: string]: "loading" | "done" | "error" }
+}
+
 export const useLoadingStore = defineStore("loading", {
-  state: () => <{ [key: string]: "loading" | "done" | "error" }>{},
+  state: () =>
+    <LoadingStoreState>{
+      statePerKey: {},
+    },
   actions: {
     markLoading(key: string) {
-      this.$patch({ [key]: "loading" })
+      this.statePerKey[key] = "loading"
     },
     markDone(key: string) {
+      this.statePerKey[key] = "done"
       this.$patch({ [key]: "done" })
     },
     markError(key: string) {
-      this.$patch({ [key]: "error" })
+      this.statePerKey[key] = "error"
     },
   },
   getters: {
     isLoading: (state) => {
-      return (key: string) => state[key] === "loading"
+      return (key: string) => {
+        return state.statePerKey[key] === "loading"
+      }
     },
   },
 })
