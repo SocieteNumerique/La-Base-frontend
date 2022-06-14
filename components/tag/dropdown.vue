@@ -15,7 +15,8 @@
         position: absolute;
         background: white;
         z-index: 100;
-        box-shadow: 4px 4px 4px #c7c7c7ff, -4px 4px 4px #c7c7c7;
+        box-shadow: 4px 4px 4px var(--grey-975-75-hover),
+          -4px 4px 4px var(--grey-975-75-hover);
       "
       :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
     >
