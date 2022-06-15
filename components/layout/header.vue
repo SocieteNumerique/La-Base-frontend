@@ -17,7 +17,7 @@
                     class="fr-link fr-fi-add-circle-line"
                     @click="showAddModal"
                   >
-                    Créer une base
+                    Ajouter une base
                   </button>
                 </li>
                 <li style="align-items: baseline">
@@ -31,10 +31,29 @@
                     </span>
                   </template>
                   <template v-else>
-                    <NuxtLink to="/login">
-                      <span class="fr-link fr-fi-lock-line">Se connecter</span>
-                    </NuxtLink>
+                    <span
+                      class="fr-link fr-fi-lock-line cursor--pointer"
+                      @click="showLoginModal = true"
+                    >
+                      Se connecter
+                    </span>
                   </template>
+                </li>
+                <li v-if="!userStore.isLoggedIn" style="align-items: baseline">
+                  <span
+                    class="fr-link fr-fi-add-circle-line cursor--pointer"
+                    @click="showSignUpModal = true"
+                  >
+                    Créer un compte
+                  </span>
+                </li>
+                <li v-if="userStore.isLoggedIn" style="align-items: baseline">
+                  <span
+                    class="fr-link fr-fi-logout-box-r-line cursor--pointer"
+                    @click="userStore.logout"
+                  >
+                    Déconnexion
+                  </span>
                 </li>
               </ul>
             </div>
@@ -44,9 +63,9 @@
     </div>
   </header>
   <DsfrModal
+    v-if="showAddBaseModal"
     :actions="addActions"
     title="Ajouter une base"
-    :opened="showAddBaseModal"
     @close="showAddBaseModal = false"
   >
     <DsfrInput
@@ -60,6 +79,8 @@
       @update:model-value="onBaseTitleUpdate"
     />
   </DsfrModal>
+  <AuthLoginModal v-if="showLoginModal" @close="showLoginModal = false" />
+  <AuthSignupModal v-if="showSignUpModal" @close="showSignUpModal = false" />
 </template>
 
 <script lang="ts" setup>
@@ -72,6 +93,8 @@ const baseStore = useBaseStore()
 const logoTitle = ["La base de la médiation ", "et de l’inclusion numérique"]
 
 const showAddBaseModal = ref(false)
+const showLoginModal = ref(false)
+const showSignUpModal = ref(false)
 const newBaseTitle = ref("")
 
 const showAddModal = () => {

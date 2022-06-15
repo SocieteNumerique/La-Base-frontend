@@ -9,7 +9,13 @@
       </div>
     </slot>
     <div
-      style="position: fixed; width: 400px; left: calc(50vw - 200px); top: 50px"
+      style="
+        position: fixed;
+        width: 400px;
+        left: calc(50vw - 200px);
+        top: 50px;
+        z-index: 10000000;
+      "
     >
       <DsfrAlert
         v-for="alert of alertStore.getAlerts"
@@ -46,22 +52,4 @@ const userStore = useUserStore()
 const closeAlert = (alertId: string) => {
   alertStore.removeAlert(alertId)
 }
-
-const baseNavItems = [
-  {
-    to: "/",
-    text: "Accueil",
-  },
-]
-
-const navItems = computed(() => {
-  userStore.email
-  let newItem
-  if (userStore.email) {
-    newItem = { text: userStore.email, to: "/profile" }
-  } else {
-    newItem = { text: "Connexion", to: "/login" }
-  }
-  return baseNavItems.concat(newItem)
-})
 </script>

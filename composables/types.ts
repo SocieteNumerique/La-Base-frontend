@@ -1,10 +1,10 @@
 export type User = {
-  id: number
+  id?: number
   email: string
   isAdmin?: boolean
   firstName: string
   lastName: string
-  username: string
+  password?: string
 }
 
 export type ExternalProducer = {
