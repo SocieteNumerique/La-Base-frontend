@@ -15,7 +15,12 @@ export const useAlertStore = defineStore("alerts", {
         return
       }
       const alertId = generateRandomId()
-      this.alerts[alertId] = { text, title, type, id: alertId }
+      this.alerts[alertId] = {
+        text: text.substring(0, 100),
+        title,
+        type,
+        id: alertId,
+      }
       const duration =
         type === "success" ? SUCCESS_ALERT_DURATION : ERROR_ALERT_DURATION
       setTimeout(() => this.removeAlert(alertId), duration)
