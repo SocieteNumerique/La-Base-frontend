@@ -16,7 +16,7 @@ export const useAlertStore = defineStore("alerts", {
       }
       const alertId = generateRandomId()
       this.alerts[alertId] = {
-        text: text.substring(0, 100),
+        text: text.substring(0, 300),
         title,
         type,
         id: alertId,

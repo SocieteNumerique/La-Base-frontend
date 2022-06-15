@@ -5,6 +5,7 @@ export type User = {
   firstName: string
   lastName: string
   password?: string
+  tags?: number[]
 }
 
 export type ExternalProducer = {
