@@ -37,6 +37,6 @@ const props = defineProps({
   base: { type: Object as PropType<Base>, required: true },
 })
 
-const detail = computed(() => props.base.owner.email)
+const detail = computed(() => props.base.owner?.email)
 const link = computed(() => `/base/${props.base.id}`)
 </script>

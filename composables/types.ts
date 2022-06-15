@@ -103,7 +103,7 @@ export type Base = {
   canWrite?: boolean
   id: number
   isShort?: boolean
-  owner: number
+  owner: User
   resources?: number[]
   title: string
 }
