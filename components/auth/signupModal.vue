@@ -61,6 +61,14 @@
           style="margin-bottom: 16px"
           @update:model-value="onPasswordConfirmationUpdate"
         />
+        <TagSelector
+          :is-focused="focusedCategory === categoryName"
+          :category="tagStore.categoryBySlug('externalProducer_00occupation')"
+          source="own"
+          @focus="focusCategory(categoryName)"
+          @blur="focusCategory('')"
+          @change="onTagsChange"
+        />
       </div>
     </div>
   </DsfrModal>
@@ -70,7 +78,21 @@
 import { useUserStore } from "~/stores/userStore"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { DsfrInputGroup, DsfrModal } from "@laruiss/vue-dsfr"
+import { useTagStore } from "~/stores/tagStore"
+import { Tag } from "~/composables/types"
 
+const emit = defineEmits(["close"])
+const tagStore = useTagStore()
+
+// tags handling
+const focusedCategory = ref("")
+const selectedTags = ref<number[]>([])
+const categoryName = "externalProducer_00occupation"
+const focusCategory = (category: string) => (focusedCategory.value = category)
+const onTagsChange = (tags: Tag[]) =>
+  (selectedTags.value = tags.map((tag) => tag.id))
+
+// form handling
 const email = ref("")
 const isEmailUntouched = ref(true)
 const isPasswordUntouched = ref(true)
@@ -89,10 +111,9 @@ const lastName = ref("")
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 
-const emit = defineEmits(["close"])
 const actions = computed(() => [
   {
-    label: "Connexion",
+    label: "Créer mon compte",
     onClick: submit,
     disabled: !isFormValid.value || loadingStore.isLoading("authLogin"),
   },
@@ -210,6 +231,7 @@ const submit = async () => {
     firstName: firstName.value,
     lastName: lastName.value,
     password: password.value,
+    tags: selectedTags.value,
   })
   if (!error.value) {
     emit("close")
