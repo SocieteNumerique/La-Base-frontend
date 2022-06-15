@@ -64,6 +64,7 @@
   </header>
   <DsfrModal
     v-if="showAddBaseModal"
+    :opened="true"
     :actions="addActions"
     title="Ajouter une base"
     @close="showAddBaseModal = false"
