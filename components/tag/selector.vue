@@ -6,8 +6,11 @@
         class="fr-label"
         :for="'category-input-' + props.category.id"
         >{{ props.category.name }}
-        <span v-if="props.category.description" class="fr-hint-text">
-          {{ props.category.description }}
+        <span v-if="hintTextLines.length" class="fr-hint-text">
+          <template v-for="line in hintTextLines" :key="line">
+            {{ line }}
+            <br />
+          </template>
         </span>
       </label>
       <div class="fr-search-bar fr-input-group">
@@ -86,6 +89,26 @@ const inputValue = ref("")
 const emit = defineEmits(["focus", "blur", "select", "change"])
 
 const ownSelectedTags = ref<number[]>([])
+
+const hintTextLines = computed(() => {
+  const toShow: string[] = []
+  if (props.category.requiredToBePublic) {
+    toShow.push("requis")
+  }
+  if (props.category.maximumTagCount) {
+    toShow.push(`${props.category.maximumTagCount} maximum`)
+  }
+
+  const lines = []
+  if (toShow.length) {
+    lines.push(toShow.join(", "))
+  }
+  if (props.category.description) {
+    lines.push(props.category.description)
+  }
+
+  return lines
+})
 
 // detect clicks outside of tagSelector to blur it
 const onClick = (ev: Event) => {
@@ -174,11 +197,6 @@ const selectTag = (tagId: number) => {
     props.category.maximumTagCount &&
     selectedTags.value.length >= props.category.maximumTagCount
   ) {
-    console.log(
-      "### already selected the maximum number of tags",
-      selectedTags,
-      props.category.maximumTagCount
-    )
     alertStore.alert(
       "Nombre maximum de tags",
       "Le nombre maximum de tag pour cette catégorie est de " +
