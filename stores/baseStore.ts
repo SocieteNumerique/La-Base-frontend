@@ -1,7 +1,24 @@
 import { defineStore } from "pinia"
-import { Base, BaseWithDetailedResources, Resource } from "~/composables/types"
+import {
+  Base,
+  BaseWithDetailedResources,
+  Resource,
+  Collection,
+} from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
+import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet } from "~/composables/api"
+
+function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
+  for (const instance of instancesSrc) {
+    if (
+      !instancesInStore[instance.id] ||
+      instancesInStore[instance.id].isShort
+    ) {
+      instancesInStore[instance.id] = instance
+    }
+  }
+}
 
 export const useBaseStore = defineStore("base", {
   state: () => ({
@@ -32,16 +49,25 @@ export const useBaseStore = defineStore("base", {
       )
       if (!error.value) {
         const resourceStore = useResourceStore()
-        const resources = data.value.resources!
-        for (const resource of resources) {
-          if (!resourceStore.resourcesById[resource.id]) {
-            resourceStore.resourcesById[resource.id] = resource
-          }
-        }
+        saveInOtherStores(resourceStore.resourcesById, data.value.resources!)
+        saveInOtherStores(
+          resourceStore.resourcesById,
+          data.value.resourcesInPinnedCollections!
+        )
+        saveInOtherStores(
+          useCollectionStore().collectionsById,
+          data.value.collections!
+        )
         const base = {
           ...data.value,
-          resources: resources!.map((resource: Resource) => resource.id),
+          resources: data.value.resources!.map(
+            (resource: Resource) => resource.id
+          ),
+          collections: data.value.collections!.map(
+            (collection: Collection) => collection.id
+          ),
         }
+        delete base.resourcesInPinnedCollections
         this.basesById[base.id] = base
       }
     },
@@ -59,6 +85,15 @@ export const useBaseStore = defineStore("base", {
         }
         this.basesOrder = bases.map((base: Base) => base.id)
       }
+    },
+    removeCollectionIdFromBase(collectionId: number) {
+      this.basesById[this.currentId!].collections =
+        this.current.collections?.filter(
+          (collection) => collection != collectionId
+        )
+    },
+    addCollectionIdToBase(collection: Collection) {
+      this.basesById[collection.base].collections?.push(collection.id)
     },
   },
   getters: {

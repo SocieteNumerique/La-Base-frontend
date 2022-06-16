@@ -59,6 +59,20 @@ export type ResourceCreate = {
   title: string
 }
 
+export type CollectionCreate = {
+  base: number
+  name: string
+}
+
+export type Collection = {
+  id: number
+  base: number
+  basesPinnedIn?: PinStatus[]
+  name: string
+  nbResources?: number
+  resources?: number[]
+}
+
 export type Tag = {
   category: number
   count?: number
@@ -105,6 +119,7 @@ export type Base = {
   isShort?: boolean
   owner: User
   resources?: number[]
+  collections?: number[]
   title: string
 }
 export type BaseWithDetailedResources = {
@@ -113,6 +128,8 @@ export type BaseWithDetailedResources = {
   owner: number
   resources?: Resource[]
   title: string
+  collections: Collection[]
+  resourcesInPinnedCollections?: Resource[]
 }
 
 type BaseContent = {
