@@ -120,6 +120,9 @@
           <template v-if="nResults">
             {{ nResults }}
             {{ pluralize(["résultat"], nResults, true) }}
+            <template v-if="nResults > pageSize">
+              - affichage la page {{ currentPage + 1 }}
+            </template>
           </template>
           <template v-else> aucun résultat correspondant </template>
           <span v-if="searchedText"> pour {{ searchedText }}</span>
@@ -145,6 +148,15 @@
         </div>
       </div>
     </template>
+
+    <!-- pagination -->
+    <div v-if="nResults && nResults > pageSize" class="is-flex flex-center">
+      <DsfrPagination
+        v-model:current-page="currentPage"
+        :pages="pages"
+        @update:current-page="onCurrentPageChange"
+      />
+    </div>
   </NuxtLayout>
 </template>
 
@@ -158,7 +170,7 @@ import {
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
-import { onMounted } from "vue"
+import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
 
@@ -173,6 +185,9 @@ const selectedTags = ref<number[]>([])
 
 const tagStore = useTagStore()
 const loadingStore = useLoadingStore()
+
+const pageSize = 12
+
 const results = ref<Base[] | Resource[]>([])
 const nResults = ref<null | number>(null)
 const textInput = ref("")
@@ -181,6 +196,7 @@ const possibleTags = ref<number[]>([])
 const dataType = ref<"resources" | "bases">("resources")
 const updateDataType = (newDataType: "resources" | "bases") => {
   dataType.value = newDataType
+  currentPage.value = 0
   doSearch()
 }
 const tagCategories = computed(() => {
@@ -192,12 +208,16 @@ const tagCategories = computed(() => {
 const doSearch = debounce(async () => {
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult
-  >("search/", {
-    text: textInput.value,
-    dataType: dataType.value,
-    tags: selectedTags.value,
-    tagOperator: tagOperator.value,
-  })
+  >(
+    "search/",
+    {
+      text: textInput.value,
+      dataType: dataType.value,
+      tags: selectedTags.value,
+      tagOperator: tagOperator.value,
+    },
+    { page: currentPage.value + 1 }
+  )
   if (!error.value) {
     results.value = data.value.results.objects
     nResults.value = data.value.count
@@ -209,26 +229,57 @@ const doSearch = debounce(async () => {
 const onSelect = (tagId: number) => {
   selectedTags.value.push(tagId)
   focusedCategory.value = 0
+  currentPage.value = 0
   doSearch()
 }
 const removeTag = (tagId: number) => {
   selectedTags.value = selectedTags.value.filter((tag) => tag !== tagId)
   focusedCategory.value = 0
+  currentPage.value = 0
   doSearch()
 }
 
 const reset = () => {
   selectedTags.value = []
   textInput.value = ""
+  currentPage.value = 0
   doSearch()
 }
 
 const onRadioChange = (value: "OR" | "AND") => {
   tagOperator.value = value
+  currentPage.value = 0
   doSearch()
 }
 
 onMounted(() => doSearch())
+
+// pagination
+const currentPage = ref(0)
+const pages = computed(() => {
+  if (nResults.value == null) {
+    return []
+  }
+  if (nResults.value <= pageSize) {
+    return []
+  }
+  let nPages = Math.ceil(nResults.value / pageSize)
+  nPages = Math.min(nPages, 10) // maximum 10 pages
+  const toReturn = [...Array(nPages).keys()]
+    .map((number) => number + 1)
+    .map((page) => ({
+      label: String(page),
+      title: `Page ${page}`,
+      href: `?page=${page}`,
+    }))
+  console.log("### pages", toReturn)
+  return toReturn
+})
+const onCurrentPageChange = (page: number) => {
+  console.log("### page change", page)
+  currentPage.value = page
+  doSearch()
+}
 </script>
 
 <style scoped lang="sass">

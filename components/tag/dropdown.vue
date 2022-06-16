@@ -9,15 +9,7 @@
       <VIcon name="ri-arrow-down-s-line" />
     </div>
     <div
-      style="
-        transition: max-height 0.4s ease-in-out 0s;
-        overflow-y: auto;
-        position: absolute;
-        background: white;
-        z-index: 100;
-        box-shadow: 4px 4px 4px var(--grey-975-75-hover),
-          -4px 4px 4px var(--grey-975-75-hover);
-      "
+      class="dropdown-tags"
       :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
     >
       <template v-if="isFocused">
@@ -88,5 +80,14 @@ const selectTag = (tagId: number) => {
 <style scoped>
 .underlined {
   border-bottom: 2px solid #000091;
+}
+.dropdown-tags {
+  transition: max-height 0.2s ease-in-out 0s;
+  overflow-y: auto;
+  position: absolute;
+  background: white;
+  z-index: 100;
+  box-shadow: 4px 4px 4px var(--grey-975-75-hover),
+    -4px 4px 4px var(--grey-975-75-hover);
 }
 </style>
