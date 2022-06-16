@@ -54,7 +54,6 @@
     title="Supprimer la collection"
     @close="onClose"
   >
-    Êtes-vous sûrs de vouloir fermer sans enregistrer ?
   </DsfrModal>
 </template>
 
