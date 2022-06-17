@@ -37,13 +37,17 @@
       </div>
     </template>
 
-    <div class="fr-grid-row">
-      <div class="fr-col-3 fr-pr-3w">
-        <ResourceEditingLeftMenu />
-      </div>
+    <div class="fr-container fr-mt-4w">
+      <div class="fr-mb-11v">
+        <div class="fr-grid-row">
+          <div class="fr-col-3 fr-pr-3w">
+            <ResourceEditingLeftMenu />
+          </div>
 
-      <div class="fr-col-6 fr-pr-3w">
-        <slot />
+          <div class="fr-col-6 fr-pr-3w">
+            <slot />
+          </div>
+        </div>
       </div>
     </div>
   </NuxtLayout>

@@ -105,16 +105,15 @@
           class="fr-pb-3w fr-mt-6w"
           style="display: flex; flex-direction: column"
         >
-          <NuxtLink :to="'/ressource/' + resourceStore.currentId">
-            <DsfrButton
-              :secondary="true"
-              label="Visualiser"
-              icon="ri-eye-line"
-              class="fr-mb-3v"
-              :disabled="false"
-              style="width: 100%"
-            />
-          </NuxtLink>
+          <DsfrButton
+            :secondary="true"
+            label="Visualiser"
+            icon="ri-eye-line"
+            class="fr-mb-3v"
+            :disabled="false"
+            style="width: 100%"
+            @click="doShowPreview"
+          />
           <DsfrButton
             label="Sauvegarder"
             icon="ri-save-line"
@@ -131,6 +130,15 @@
         </div>
       </nav>
     </div>
+    <DsfrModal
+      v-if="showPreview"
+      class="full-width-modal"
+      style="width: 100%"
+      :opened="true"
+      @close="showPreview = false"
+    >
+      <ResourceView :is-preview="true" />
+    </DsfrModal>
   </div>
 </template>
 
@@ -142,10 +150,14 @@ import {
 } from "~/stores/resourceStore"
 import { computed } from "vue"
 
+const showPreview = ref(false)
 const resourceStore = useResourceStore()
 
 const save = () => {
   resourceStore.save()
+}
+const doShowPreview = () => {
+  showPreview.value = true
 }
 
 const boldIfMenuActive = computed(() => (menuName: string) => {
@@ -191,4 +203,12 @@ const selectMenu = (menuKey: string) => {
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.full-width-modal
+  .fr-container--fluid
+    max-width: 100% !important
+  .fr-col-12
+    width: 90% !important
+    flex: 0 0 90% !important
+    max-width: 90% !important
+</style>

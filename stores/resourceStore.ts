@@ -163,8 +163,8 @@ export const useResourceStore = defineStore("resource", {
       )
       if (!error.value) {
         const resource = data.value
-        this.resourcesById[resource.id!] = resource
-        console.log("### got resource", resourceId, resource.id)
+        console.log("### got resource", resource, resourceId)
+        this.resourcesById[resourceId] = resource
         return resource
       }
     },
