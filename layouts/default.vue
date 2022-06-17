@@ -28,8 +28,9 @@
         @close="closeAlert(alert.id)"
       />
     </div>
-    <div class="fr-container fr-mt-4w">
-      <div class="fr-mb-11v">
+
+    <div :class="mainStore.useFullWidthLayout ? null : 'fr-container fr-mt-4w'">
+      <div :class="mainStore.useFullWidthLayout ? null : 'fr-mb-11v'">
         <slot />
       </div>
     </div>
@@ -42,8 +43,10 @@
 import { useUserStore } from "~/stores/userStore"
 import { DsfrAlert } from "@laruiss/vue-dsfr"
 import { useAlertStore } from "~/stores/alertStore"
+import { useMainStore } from "~/stores/mainStore"
 
 const alertStore = useAlertStore()
+const mainStore = useMainStore()
 
 const route = useRoute()
 

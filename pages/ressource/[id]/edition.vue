@@ -6,12 +6,14 @@
 import { useResourceStore } from "~/stores/resourceStore"
 import { useRoute } from "vue-router"
 import { onBeforeUnmount, onMounted } from "vue"
+import { useMainStore } from "~/stores/mainStore"
 
 definePageMeta({
   layout: "resourceedition",
   title: "Ressource",
 })
 const resourceStore = useResourceStore()
+const mainStore = useMainStore()
 const route = useRoute()
 
 function onBeforeUnload(ev: Event) {
@@ -22,11 +24,17 @@ function onBeforeUnload(ev: Event) {
   }
 }
 
-onMounted(() => {
-  window.addEventListener("beforeunload", onBeforeUnload)
-})
+if (process.server) {
+  mainStore.useFullWidthLayout = true
+} else {
+  onMounted(() => {
+    window.addEventListener("beforeunload", onBeforeUnload)
+    mainStore.useFullWidthLayout = true
+  })
+}
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", onBeforeUnload)
+  mainStore.useFullWidthLayout = false
 })
 
 const getResourceIfNotExists = (): void => {
