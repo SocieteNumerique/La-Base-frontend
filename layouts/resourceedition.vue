@@ -4,7 +4,7 @@
       <div class="fr-container fr-mt-4w">
         <div class="fr-grid-row">
           <div class="fr-col-3 fr-pr-3w fr-text--xs">
-            <div>Statut : brouillon</div>
+            <div>Statut : {{ stateLabel[resourceStore.current.state] }}</div>
             <template v-if="resourceStore.current">
               <div>Signalements : 0</div>
               <div>Créée le : {{ $date(resourceStore.current.created) }}</div>
@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
+import { stateLabel } from "~/composables/strUtils"
 
 const resourceStore = useResourceStore()
 </script>

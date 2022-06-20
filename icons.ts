@@ -13,7 +13,7 @@ import {
   RiArrowRightDownLine,
   RiFolderAddLine,
   RiSearchLine,
-  RiSettingsLine,
+  RiSettings3Line,
   RiSaveLine,
   RiShieldCheckLine,
   RiArrowLeftSLine,
@@ -41,6 +41,7 @@ import {
   RiLoader5Line,
   RiFolder3Line,
   RiArrowLeftLine,
+  RiMapPinLine,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -58,7 +59,7 @@ export const icons = [
   RiArrowRightDownLine,
   RiFolderAddLine,
   RiSearchLine,
-  RiSettingsLine,
+  RiSettings3Line,
   RiSaveLine,
   RiShieldCheckLine,
   RiArrowLeftSLine,
@@ -86,4 +87,5 @@ export const icons = [
   RiLoader5Line,
   RiFolder3Line,
   RiArrowLeftLine,
+  RiMapPinLine,
 ]

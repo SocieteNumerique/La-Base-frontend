@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'is-editing': isEditing }" class="content-container">
     <div class="toolbar fr-px-2w fr-text--xs">
-      <div>Statut :</div>
+      <!-- <div>Statut :</div> -->
       <div class="fr-btns-group--xs">
         <button
           :class="{ '-active': isEditing }"
@@ -12,7 +12,7 @@
           Éditer
         </button>
         <button class="fr-btn--tertiary-no-outline" disabled>
-          <VIcon name="ri-settings-line" />
+          <VIcon name="ri-settings-3-line" />
           Paramètres
         </button>
         <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">

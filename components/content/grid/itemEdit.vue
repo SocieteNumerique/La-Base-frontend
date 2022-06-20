@@ -28,7 +28,7 @@
           <VIcon :scale="0.85" name="ri-edit-line" />
         </button>
         <button class="fr-btn--tertiary-no-outline" disabled>
-          <VIcon :scale="0.85" name="ri-settings-line" />
+          <VIcon :scale="0.85" name="ri-settings-3-line" />
         </button>
         <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">
           <VIcon :scale="0.85" name="ri-delete-bin-line" />

@@ -54,7 +54,7 @@ export const useUserStore = defineStore("user", {
       }
     },
     async resetPassword(email: string) {
-      const { data, error } = await useApiGet(
+      return useApiGet(
         `password/reset?email=${email}`,
         {},
         { title: `Lien envoyé à ${email}`, text: "Vérifiez votre boite mail" },

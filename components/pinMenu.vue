@@ -1,7 +1,12 @@
 <template>
-  <div :id="containerId" class="pin-base-selector">
+  <div :id="containerId" class="selector">
     <button
-      :class="'fr-btn' + (atLeastOnePin ? ' fr-btn--secondary' : '')"
+      :class="{
+        ...$attrs.class,
+        'fr-btn--sm': small,
+        'fr-btn--secondary': atLeastOnePin,
+      }"
+      class="fr-btn"
       @click="isMenuShown = !isMenuShown"
     >
       <span v-show="atLeastOnePin">
@@ -55,6 +60,7 @@ const props = defineProps({
     type: String as PropType<"resource" | "collection">,
     default: "resource",
   },
+  small: { type: Boolean, default: true },
 })
 const isMenuShown = ref<boolean>(false)
 const containerId = computed<string>(
@@ -108,42 +114,22 @@ async function togglePin(pinStatus: PinStatus) {
 </script>
 
 <style lang="sass" scoped>
-.pin-base-selector
-  background-color: white
-  border-color: var(--background-open-blue-france)
-  position: relative
+.selector .selector__menu .item
+  .check, .cross, .unchangeable-check
+    justify-self: end
+    margin-left: auto
 
-  .selector__menu
-    position: absolute
-    background-color: white
-    z-index: 10
-    width: 170px
-    box-shadow: 0 16px 16px -16px rgba(0, 0, 0, 0.32), 0 8px 16px rgba(0, 0, 0, 0.1)
+  .check, .cross
+    display: none
 
-    .item
-      border-bottom: 1px solid var(--border-default-grey)
-      padding: 12px 0
-      cursor: pointer
-      display: flex
-      align-items: center
-      width: 100%
-      height: 44px
+  &:hover, &.-checked
+    .check
+      display: block
 
-      .check, .cross, .unchangeable-check
-        justify-self: end
-        margin-left: auto
+  &.-checked:hover
+    .cross
+      display: block
 
-      .check, .cross
-        display: none
-
-      &:hover, &.-checked
-        .check
-          display: block
-
-      &.-checked:hover
-        .cross
-          display: block
-
-        .check
-          display: none
+    .check
+      display: none
 </style>

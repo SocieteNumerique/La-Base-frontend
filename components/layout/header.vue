@@ -15,7 +15,7 @@
                 <li v-if="userStore.isLoggedIn" style="align-items: baseline">
                   <button
                     class="fr-link fr-fi-add-circle-line"
-                    @click="showAddModal"
+                    @click="showAddBaseModal = true"
                   >
                     Ajouter une base
                   </button>
@@ -62,68 +62,25 @@
       </div>
     </div>
   </header>
-  <DsfrModal
+  <BaseEditGeneral
     v-if="showAddBaseModal"
-    :opened="true"
-    :actions="addActions"
-    title="Ajouter une base"
+    new
     @close="showAddBaseModal = false"
-  >
-    <DsfrInput
-      id="newBaseTitle"
-      :model-value="newBaseTitle"
-      label="Nom de la base"
-      hint="max 100 caractères"
-      maxlength="100"
-      :label-visible="true"
-      autofocus
-      @update:model-value="onBaseTitleUpdate"
-    />
-  </DsfrModal>
+  />
   <AuthLoginModal v-if="showLoginModal" @close="showLoginModal = false" />
   <AuthSignupModal v-if="showSignUpModal" @close="showSignUpModal = false" />
 </template>
 
 <script lang="ts" setup>
 import { useUserStore } from "~/stores/userStore"
-import { useBaseStore } from "~/stores/baseStore"
 
 const userStore = useUserStore()
-const baseStore = useBaseStore()
 
 const logoTitle = ["La base de la médiation ", "et de l’inclusion numérique"]
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
 const showSignUpModal = ref(false)
-const newBaseTitle = ref("")
-
-const showAddModal = () => {
-  showAddBaseModal.value = true
-  setTimeout(() => {
-    const el = document.getElementById("newBaseTitle")
-    if (el) {
-      el.focus()
-    }
-  }, 200)
-}
-const createBase = () => {
-  baseStore.createBase(newBaseTitle.value)
-}
-
-const addActions = computed(() => [
-  {
-    label: "Valider",
-    onClick: createBase,
-    disabled: newBaseTitle.value.length === 0,
-  },
-  {
-    label: "Annuler",
-    secondary: true,
-    onClick: () => (showAddBaseModal.value = false),
-  },
-])
-const onBaseTitleUpdate = (value: string) => (newBaseTitle.value = value)
 </script>
 
 <style lang="sass" scoped>

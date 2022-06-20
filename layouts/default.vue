@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "~/stores/userStore"
 import { DsfrAlert } from "@laruiss/vue-dsfr"
 import { useAlertStore } from "~/stores/alertStore"
 import { useMainStore } from "~/stores/mainStore"
@@ -49,8 +48,6 @@ const alertStore = useAlertStore()
 const mainStore = useMainStore()
 
 const route = useRoute()
-
-const userStore = useUserStore()
 
 const closeAlert = (alertId: string) => {
   alertStore.removeAlert(alertId)

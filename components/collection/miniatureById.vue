@@ -6,7 +6,7 @@
       @discard="collection = { ...savedCollection }"
       @exit="isEditModalOpen = false"
     />
-    <div class="fr-grid-row fr-p-2w">
+    <div class="fr-p-2w has-children-space-between">
       <button
         v-if="editable"
         class="fr-btn--tertiary-no-outline"
@@ -14,14 +14,17 @@
       >
         <VIcon :scale="0.85" name="ri-edit-line" />
       </button>
-      <!--      <RoundButton icon="ri-share-line" />-->
-      <PinMenu
-        v-model="basesPinnedIn"
-        :instance-id="collection?.id"
-        :root-base-id="collection?.base"
-        instance-type="collection"
-        class="fr-ml-auto"
-      />
+      <div v-else />
+      <div class="is-flex">
+        <ShareButton :link="link" class="fr-mr-3w" />
+        <PinMenu
+          v-model="basesPinnedIn"
+          :instance-id="collection?.id"
+          :root-base-id="collection?.base"
+          class="fr-ml-auto"
+          instance-type="collection"
+        />
+      </div>
     </div>
     <NuxtLink
       :to="{ query: { ...route.query, collection: collection.id } }"
@@ -45,11 +48,22 @@ import { watchOnce } from "@vueuse/shared"
 import { useBaseStore } from "~/stores/baseStore"
 
 const route = useRoute()
+const baseStore = useBaseStore()
 const collectionStore = useCollectionStore()
 const props = defineProps({
   collectionId: { type: Number, required: true },
-  editable: { type: Boolean, default: false },
 })
+const editable = ref<boolean>(
+  baseStore.current?.canWrite || baseStore.current?.canAddResources || false
+)
+const link = computed(
+  () =>
+    useRouter().resolve({
+      name: "base-id",
+      params: { id: baseStore.currentId },
+      query: { ...route.query, collection: savedCollection.value.id },
+    }).href
+)
 
 const savedCollection = computed<Collection>(
   () => collectionStore.collectionsById[props.collectionId]
@@ -83,15 +97,17 @@ watchOnce(isEditModalOpen, () => {
   display: block
   background: none
 
+  &:hover
+    border-color: var(--text-title-blue-france)
+
 .preview
   background: var(--background-alt-grey)
   height: 320px
   display: flex
   flex-direction: column
   justify-content: center
-
   &:hover
-    background-color: var(--background-default-grey)
+    background: var(--background-alt-grey)
 
 .bordered
   border-top: 1px solid var(--grey-975-75-active)

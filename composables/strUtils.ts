@@ -4,3 +4,10 @@ export function pluralize([singular, plural]: string[], nb: number): string {
   }
   return nb > 1 ? plural : singular
 }
+
+export const stateLabel = {
+  public: "Public",
+  private: "Privé",
+  draft: "Brouillon",
+  restricted: "Restreint",
+}

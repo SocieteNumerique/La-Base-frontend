@@ -42,7 +42,9 @@
     <div class="fr-container fr-mt-4w">
       <div class="fr-mb-11v">
         <div class="is-flex">
-          <RoundButton icon="ri-share-line" label="Partager" />
+          <ShareButton :link="route.fullPath">
+            <RoundButton icon="ri-share-line" label="Partager" />
+          </ShareButton>
           <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
           <RoundButton icon="ri-download-line" label="Télécharger" disabled />
           <RoundButton icon="ri-share-line" label="Signaler" disabled />
@@ -165,6 +167,7 @@ const props = defineProps({
 })
 const tagStore = useTagStore()
 const resourceStore = useResourceStore()
+const route = useRoute()
 
 const activeMenu = ref("informations")
 

@@ -47,7 +47,7 @@ export type Resource = {
   rootBaseTitle?: string
   state: string
   stats?: { pinned: number; views: number }
-  supports?: string[]
+  supportTags?: number[]
   tags?: number[]
   title: string
   url?: string
@@ -112,20 +112,34 @@ export type TagCategoryWithFullTags = {
   slug: string
   tags: Tag[]
 }
-
+export type BaseCreate = {
+  contact?: string
+  description?: string
+  tags?: number[]
+  title: string
+}
 export type Base = {
+  admins: User[]
+  canAddResources?: boolean
   canWrite?: boolean
+  collections?: number[]
+  contact?: string
+  contributor_tags?: number[]
+  description?: string
   id: number
   isShort?: boolean
-  owner: User
+  owner: User | number
+  participantTypeTags?: number[]
   resources?: number[]
-  collections?: number[]
+  state?: string
+  tags?: number[]
+  territoryTags?: number[]
   title: string
 }
 export type BaseWithDetailedResources = {
   id: number
   isShort?: boolean
-  owner: number
+  owner: User | number
   resources?: Resource[]
   title: string
   collections: Collection[]

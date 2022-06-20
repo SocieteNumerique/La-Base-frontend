@@ -4,10 +4,11 @@ import {
   BaseWithDetailedResources,
   Resource,
   Collection,
+  BaseCreate,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
-import { useApiGet } from "~/composables/api"
+import { useApiGet, useApiPatch } from "~/composables/api"
 
 function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   for (const instance of instancesSrc) {
@@ -20,6 +21,18 @@ function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   }
 }
 
+function simplifyBase(base: BaseWithDetailedResources): Base {
+  const res = {
+    ...base,
+    resources: base.resources!.map((resource: Resource) => resource.id),
+    collections: base.collections!.map(
+      (collection: Collection) => collection.id
+    ),
+  }
+  delete res.resourcesInPinnedCollections
+  return res
+}
+
 export const useBaseStore = defineStore("base", {
   state: () => ({
     basesOrder: <number[]>[],
@@ -27,10 +40,10 @@ export const useBaseStore = defineStore("base", {
     currentId: <number | undefined>undefined,
   }),
   actions: {
-    async createBase(baseTitle: string) {
+    async createBase(base: BaseCreate) {
       const { data, error } = await useApiPost<Base>(
         "bases/",
-        { title: baseTitle },
+        base,
         {},
         "La base a bien été créée",
         true
@@ -58,17 +71,33 @@ export const useBaseStore = defineStore("base", {
           useCollectionStore().collectionsById,
           data.value.collections!
         )
-        const base = {
-          ...data.value,
-          resources: data.value.resources!.map(
-            (resource: Resource) => resource.id
-          ),
-          collections: data.value.collections!.map(
-            (collection: Collection) => collection.id
-          ),
-        }
-        delete base.resourcesInPinnedCollections
+        const base = simplifyBase(data.value)
         this.basesById[base.id] = base
+      }
+    },
+    async update(partialBase: any) {
+      const { data, error } = await useApiPatch<BaseWithDetailedResources>(
+        `bases/${partialBase.id}/`,
+        partialBase,
+        {},
+        "La base a bien été modifiée",
+        true
+      )
+      if (!error.value) {
+        this.basesById[data.value.id!] = simplifyBase(data.value)
+      }
+      return { data, error }
+    },
+    async delete(id: number) {
+      const { error } = await useApiDelete(
+        `bases/${id}/`,
+        {},
+        "La base a bien été supprimée",
+        true
+      )
+      if (!error.value) {
+        delete this.basesById[id]
+        return true
       }
     },
     async refreshBases() {
