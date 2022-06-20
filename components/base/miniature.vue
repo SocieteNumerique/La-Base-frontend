@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue"
-import { Base } from "../composables/types"
+import { Base } from "../../composables/types"
 
 const props = defineProps({
   base: { type: Object as PropType<Base>, required: true },

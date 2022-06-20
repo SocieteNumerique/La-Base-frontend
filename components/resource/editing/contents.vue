@@ -62,7 +62,7 @@ const contentsBySection = ref<SectionWithContent[]>(
 )
 const currentlyEditingContentId = ref<number | null>(null)
 
-function nextOrder(list: { order: number; [key: symbol]: any }[]) {
+function nextOrder(list: { order?: number; [key: symbol]: any }[]) {
   if (list.length === 0) return 0
   return list.slice(-1)[0].order! + 1
 }

@@ -5,7 +5,8 @@
         v-if="props.category.name"
         class="fr-label"
         :for="'category-input-' + props.category.id"
-        >{{ props.category.name }}
+      >
+        {{ props.label || props.category.name }}
         <span v-if="hintTextLines.length" class="fr-hint-text">
           <template v-for="line in hintTextLines" :key="line">
             {{ line }}
@@ -88,7 +89,36 @@ const alertStore = useAlertStore()
 const inputValue = ref("")
 const emit = defineEmits(["focus", "blur", "select", "change"])
 
-const ownSelectedTags = ref<number[]>([])
+onMounted(() => {
+  document.addEventListener("mouseup", onClick)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener("mouseup", onClick)
+})
+
+const props = defineProps({
+  category: {
+    type: Object as PropType<TagCategory>,
+    required: true,
+  },
+  isFocused: {
+    type: Boolean,
+    default: false,
+  },
+  source: {
+    type: String,
+    default: "CurrentResource",
+  },
+  initTags: {
+    type: Array as PropType<number[]>,
+    default: () => [],
+  },
+  label: {
+    type: String,
+    default: null,
+  },
+})
+const ownSelectedTags = ref<number[]>(props.initTags)
 
 const hintTextLines = computed(() => {
   const toShow: string[] = []
@@ -120,28 +150,6 @@ const onClick = (ev: Event) => {
     emit("blur")
   }
 }
-
-onMounted(() => {
-  document.addEventListener("mouseup", onClick)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener("mouseup", onClick)
-})
-
-const props = defineProps({
-  category: {
-    type: Object as PropType<TagCategory>,
-    required: true,
-  },
-  isFocused: {
-    type: Boolean,
-    default: false,
-  },
-  source: {
-    type: String,
-    default: "CurrentResource",
-  },
-})
 
 const showAddModal = ref(false)
 

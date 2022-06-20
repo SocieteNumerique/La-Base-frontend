@@ -92,7 +92,7 @@ const options = computed(() => {
   canGoPublic.value
   return [
     {
-      label: "public",
+      label: "Public",
       value: "public",
       disabled: !canGoPublic.value,
     },
@@ -112,7 +112,7 @@ const options = computed(() => {
 })
 const onChange = (newValue: string) => {
   radioValue.value = newValue
-  resourceStore.resourcesById[resourceStore.currentId!].status = newValue
+  resourceStore.resourcesById[resourceStore.currentId!].state = newValue
   resourceStore.markDirty()
 }
 </script>

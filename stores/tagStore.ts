@@ -1,6 +1,5 @@
 import { defineStore } from "pinia"
 import { Tag, TagCategory, TagCategoryWithFullTags } from "~/composables/types"
-import { useAlertStore } from "~/stores/alertStore"
 
 type TagsById = {
   [id: number]: Tag
