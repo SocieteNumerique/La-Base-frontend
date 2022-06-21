@@ -121,11 +121,12 @@
             @click="save"
           />
           <DsfrButton
+            v-if="canDelete"
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
             class="fr-mb-3v"
-            :disabled="true"
+            @click="deleteBase"
           />
         </div>
       </nav>
@@ -149,16 +150,27 @@ import {
   navigationMenuByKey,
 } from "~/stores/resourceStore"
 import { computed } from "vue"
+import { useBaseStore } from "~/stores/baseStore"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
+const baseStore = useBaseStore()
 
 const save = () => {
   resourceStore.save()
 }
+const deleteBase = async () => {
+  const success = await resourceStore.delete()
+  if (success) useRouter().push("/")
+}
 const doShowPreview = () => {
   showPreview.value = true
 }
+const canDelete = computed(() => {
+  const baseId = resourceStore.current.rootBase
+  if (!(baseId && baseId in baseStore.basesById)) return false
+  return baseStore.basesById[baseId].canWrite || false
+})
 
 const boldIfMenuActive = computed(() => (menuName: string) => {
   return resourceStore.isMenuActive(menuName)

@@ -15,6 +15,12 @@
                       @click="showBasesList = !showBasesList"
                     >
                       Mes bases
+                      <VIcon
+                        :name="`ri-arrow-${
+                          showBasesList ? 'up' : 'down'
+                        }-s-line`"
+                        class="fr-ml-3v"
+                      />
                     </button>
                     <div
                       v-show="showBasesList"
