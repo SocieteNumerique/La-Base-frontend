@@ -51,8 +51,6 @@ export const useBaseStore = defineStore("base", {
       if (!error.value) {
         this.basesById[data.value.id] = data.value
         this.basesOrder.push(data.value.id)
-        const router = useRouter()
-        router.push(`/base/${data.value.id}`)
       }
       return { data, error }
     },
@@ -98,6 +96,7 @@ export const useBaseStore = defineStore("base", {
       )
       if (!error.value) {
         delete this.basesById[id]
+        this.basesOrder.filter((curr_id) => curr_id != id)
         return true
       }
     },

@@ -168,6 +168,20 @@ export const useResourceStore = defineStore("resource", {
         return resource
       }
     },
+    async delete(id: number | undefined = undefined) {
+      if (id === undefined) id = this.currentId!
+      console.log("étest")
+      const { error } = await useApiDelete(
+        `resources/${id}/`,
+        {},
+        "La ressource a bien été supprimée",
+        true
+      )
+      if (!error.value) {
+        delete this.resourcesById[id]
+        return true
+      }
+    },
     markDirty(resourceId: number | null = null) {
       if (resourceId == null && this.currentId == null) {
         return

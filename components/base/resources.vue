@@ -22,13 +22,11 @@
       <div v-if="base?.canWrite || base?.canAddResources">
         <DsfrButton
           v-show="view === 'resources'"
-          :secondary="true"
           label="Ajouter une ressource"
           @click="onAddResourceClick"
         />
         <DsfrButton
           v-show="view === 'collections'"
-          :secondary="true"
           label="Ajouter une collection"
           @click="onAddCollectionClick"
         />

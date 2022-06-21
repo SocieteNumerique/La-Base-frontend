@@ -1,5 +1,13 @@
 <template>
   <div :id="containerId" class="selector">
+    <BaseEditGeneral
+      v-if="showAddBaseModal"
+      :id="newBaseContainerId"
+      new
+      new-stay-on-page
+      @close="showAddBaseModal = false"
+      @done="pinInNewBase"
+    />
     <button
       :class="{
         ...$attrs.class,
@@ -16,11 +24,11 @@
       <span v-show="!atLeastOnePin">Enregistrer</span>
     </button>
     <div
-      v-if="pinStatusByBaseId"
+      v-if="pinStatuses"
       v-show="isMenuShown"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
-      <template v-for="{ id, isPinned } of pinStatusByBaseId" :key="id">
+      <template v-for="{ id, isPinned } of pinStatuses" :key="id">
         <div v-if="id === rootBaseId" class="item fr-text-default--grey">
           <div>
             {{ baseStore.basesById[id]?.title }}
@@ -35,11 +43,11 @@
           @click="togglePin({ id, isPinned: isPinned })"
         >
           {{ baseStore.basesById[id]?.title }}
-          <VIcon class="check" name="ri-check-line" />
-          <VIcon class="cross" name="ri-close-line" />
+          <VIcon class="check fr-ml-2v" name="ri-check-line" />
+          <VIcon class="cross fr-ml-2v" name="ri-close-line" />
         </div>
       </template>
-      <div class="item">
+      <div class="item" @click="showAddBaseModal = true">
         <VIcon class="fr-mr-1w" name="ri-add-circle-line" />
         Créer une base
       </div>
@@ -66,24 +74,29 @@ const isMenuShown = ref<boolean>(false)
 const containerId = computed<string>(
   () => `pin-menu-${props.instanceType}-${props.instanceId}`
 )
+const newBaseContainerId = computed(() => `${containerId.value}-new-base-modal`)
+const showAddBaseModal = ref<boolean>(false)
 onFocusOut(
   () => (isMenuShown.value = false),
   containerId.value,
   () => isMenuShown.value
 )
+onFocusOut(
+  () => (showAddBaseModal.value = false),
+  newBaseContainerId.value,
+  () => showAddBaseModal.value
+)
 const baseStore = useBaseStore()
 
-const savedPinStatusByBaseId = useModel<PinStatus[]>("modelValue", {
+const savedPinStatuses = useModel<PinStatus[]>("modelValue", {
   type: "array",
 })
-const pinStatusByBaseId = ref<PinStatus[]>(props.modelValue)
-watch(savedPinStatusByBaseId, (value) => (pinStatusByBaseId.value = value))
+const pinStatuses = ref<PinStatus[]>(props.modelValue)
+watch(savedPinStatuses, (value) => (pinStatuses.value = value))
 
 const atLeastOnePin = computed<boolean>(() => {
-  if (!pinStatusByBaseId.value) return false
-  return pinStatusByBaseId.value.some(
-    (pinStatus: PinStatus) => pinStatus.isPinned
-  )
+  if (!pinStatuses.value) return false
+  return pinStatuses.value.some((pinStatus: PinStatus) => pinStatus.isPinned)
 })
 const endpoint = computed<string>(() => `${props.instanceType}s`)
 const frenchInstanceNames: { [key: string]: string } = {
@@ -93,6 +106,10 @@ const frenchInstanceNames: { [key: string]: string } = {
 const verboseInstanceName = computed<string>(
   () => frenchInstanceNames[props.instanceType]
 )
+
+function pinInNewBase(baseId: number) {
+  togglePin({ id: baseId, isPinned: false })
+}
 
 async function togglePin(pinStatus: PinStatus) {
   pinStatus.isPinned = !pinStatus.isPinned
@@ -107,9 +124,8 @@ async function togglePin(pinStatus: PinStatus) {
     },
     true
   )
-  if (error.value)
-    return (pinStatusByBaseId.value = savedPinStatusByBaseId.value)
-  savedPinStatusByBaseId.value = data.value
+  if (error.value) return (pinStatuses.value = savedPinStatuses.value)
+  savedPinStatuses.value = data.value
 }
 </script>
 

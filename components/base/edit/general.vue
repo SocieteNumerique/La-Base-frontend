@@ -75,9 +75,10 @@ const baseStore = useBaseStore()
 const tagStore = useTagStore()
 const userStore = useUserStore()
 
-const emits = defineEmits(["close", "save"])
+const emits = defineEmits(["close", "save", "done"])
 const props = defineProps({
   new: { type: Boolean, default: false },
+  newStayOnPage: { type: Boolean, default: false },
 })
 
 const modalTitle = props.new
@@ -126,8 +127,12 @@ async function updateBase() {
 }
 
 async function createBase() {
-  const { error } = await baseStore.createBase(base.value)
-  if (!error.value) emits("close")
+  const { data, error } = await baseStore.createBase(base.value)
+  if (!error.value) {
+    emits("close")
+    if (props.newStayOnPage) return emits("done", data.value.id)
+    useRouter().push(`/base/${data.value.id}`)
+  }
 }
 
 const isNotValid = computed<boolean>(
