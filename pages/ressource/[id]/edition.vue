@@ -14,7 +14,6 @@ definePageMeta({
 })
 const resourceStore = useResourceStore()
 const mainStore = useMainStore()
-const route = useRoute()
 
 function onBeforeUnload(ev: Event) {
   if (resourceStore.current.dirty) {
@@ -36,18 +35,6 @@ onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", onBeforeUnload)
   mainStore.useFullWidthLayout = false
 })
-
-const getResourceIfNotExists = (): void => {
-  const resourceId = parseInt(route.params.id)
-  resourceStore.setCurrentId(resourceId)
-  if (
-    !resourceStore.resourcesById[resourceId] ||
-    resourceStore.resourcesById[resourceId].isShort
-  ) {
-    console.log("### getting resource :)")
-    resourceStore.getResource(resourceId)
-  }
-}
 
 if (process.server) {
   getResourceIfNotExists()

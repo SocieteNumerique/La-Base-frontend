@@ -1,6 +1,7 @@
 import { useResourceStore } from "~/stores/resourceStore"
 import { useAlertStore } from "~/stores/alertStore"
 import { useRoute } from "vue-router"
+import { useUserStore } from "~/stores/userStore"
 
 export const getResourceIfNotExists = async () => {
   const resourceStore = useResourceStore()
@@ -23,14 +24,25 @@ export const getResourceIfNotExists = async () => {
     }
 
     if (resource == null) {
-      alertStore.alert(
-        "Impossible d'accéder à la ressource demandée",
-        "Vous n'y avez peut-être pas accès",
-        "error"
-      )
-      router.push("/")
-      return false
+      const userStore = useUserStore()
+      if (!userStore.isLoggedIn) {
+        alertStore.alert(
+          "Veuillez vous connecter pour avoir accès à cette ressource",
+          "",
+          "warning"
+        )
+        router.push({ path: "/connexion", query: { next: route.path } })
+      } else {
+        alertStore.alert(
+          "Impossible d'accéder à la ressource demandée",
+          "Vous n'y avez peut-être pas accès",
+          "warning"
+        )
+        router.push("/")
+      }
     }
-    return true
+
+    return false
   }
+  return true
 }

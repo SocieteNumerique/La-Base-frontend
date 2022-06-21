@@ -157,7 +157,7 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { computed, onMounted } from "vue"
+import { computed, onBeforeMount } from "vue"
 import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
 import { useTagStore } from "~/stores/tagStore"
@@ -231,7 +231,7 @@ const resource = computed(() => {
 if (process.server && !props.isPreview) {
   getResourceIfNotExists()
 }
-onMounted(async () => {
+onBeforeMount(async () => {
   if (!props.isPreview) {
     const isResourceOK = await getResourceIfNotExists()
     // no need to observe if we're being redirected
