@@ -34,6 +34,7 @@
         />
         <ResourceCreationModal
           v-if="showAddResourceModal"
+          :base-id="base.id"
           @close="showAddResourceModal = false"
         />
         <CollectionNew

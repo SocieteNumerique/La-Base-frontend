@@ -7,56 +7,90 @@
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
-                <li style="align-items: baseline">
-                  <NuxtLink to="/">
-                    <span class="fr-link fr-fi-home-4-line">Accueil</span>
-                  </NuxtLink>
-                </li>
-                <li v-if="userStore.isLoggedIn" style="align-items: baseline">
-                  <button
-                    class="fr-link fr-fi-add-circle-line"
-                    @click="showAddBaseModal = true"
-                  >
-                    Ajouter une base
-                  </button>
-                </li>
-                <li style="align-items: baseline">
-                  <template v-if="userStore.isLoggedIn">
-                    <span>Connecté</span>
-                    <span
-                      style="display: inline-block"
-                      class="fr-text--xs fr-text--light fr-ml-1w"
+                <li v-if="userStore.isLoggedIn" class="selector">
+                  <template v-if="baseStore.hasBases">
+                    <button
+                      :class="{ '-active': showBasesList }"
+                      class="fr-link btn-tab-activable"
+                      @click="showBasesList = !showBasesList"
                     >
-                      ({{ userStore.email }})
-                    </span>
+                      Mes bases
+                    </button>
+                    <div
+                      v-show="showBasesList"
+                      id="header-bases-list"
+                      class="selector__menu fr-px-2w fr-text--xs"
+                    >
+                      <NuxtLink
+                        v-for="{ value: id, text } of baseStore.baseOptions"
+                        :key="id"
+                        :to="`/base/${id}`"
+                        class="item"
+                      >
+                        {{ text }}
+                      </NuxtLink>
+                      <div
+                        class="item fr-text-title--blue-france"
+                        @click="showAddBaseModal = true"
+                      >
+                        Créer une base
+                      </div>
+                    </div>
                   </template>
                   <template v-else>
-                    <span
-                      class="fr-link fr-fi-lock-line cursor--pointer"
-                      @click="showLoginModal = true"
-                    >
-                      Se connecter
-                    </span>
+                    <button class="fr-link" @click="showAddBaseModal = true">
+                      Créer une base
+                    </button>
                   </template>
                 </li>
-                <li v-if="!userStore.isLoggedIn" style="align-items: baseline">
-                  <span
-                    class="fr-link fr-fi-add-circle-line cursor--pointer"
-                    @click="showSignUpModal = true"
-                  >
-                    Créer un compte
-                  </span>
+                <li v-if="!userStore.isLoggedIn">
+                  <button class="fr-link" @click="showSignUpModal = true">
+                    S'inscrire
+                  </button>
                 </li>
-                <li v-if="userStore.isLoggedIn" style="align-items: baseline">
-                  <span
-                    class="fr-link fr-fi-logout-box-r-line cursor--pointer"
+                <li>
+                  <button
+                    v-if="userStore.isLoggedIn"
+                    class="fr-link"
+                    :title="userStore.email"
                     @click="userStore.logout"
                   >
-                    Déconnexion
-                  </span>
+                    Se déconnecter
+                  </button>
+                  <button v-else class="fr-link" @click="showLoginModal = true">
+                    Se connecter
+                  </button>
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fr-header__body fr-header__nav">
+      <div class="fr-container">
+        <div class="fr-header__body-row">
+          <div>
+            <ul class="fr-links-group">
+              <li v-if="userStore.isLoggedIn">
+                <NuxtLink to="/">
+                  <button>
+                    Recherche
+                    <VIcon class="fr-ml-1w" name="ri-search-line" />
+                  </button>
+                </NuxtLink>
+              </li>
+              <li v-if="userStore.isLoggedIn">
+                <NuxtLink to="/label">
+                  <button>Label</button>
+                </NuxtLink>
+              </li>
+              <li v-if="userStore.isLoggedIn">
+                <NuxtLink to="/a-propos">
+                  <button>À propos</button>
+                </NuxtLink>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -73,18 +107,44 @@
 
 <script lang="ts" setup>
 import { useUserStore } from "~/stores/userStore"
+import { useBaseStore } from "~/stores/baseStore"
 
 const userStore = useUserStore()
+const baseStore = useBaseStore()
 
 const logoTitle = ["La base de la médiation ", "et de l’inclusion numérique"]
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
 const showSignUpModal = ref(false)
+const showBasesList = ref(false)
+
+onFocusOut(
+  () => (showBasesList.value = false),
+  "header-bases-list",
+  () => showBasesList.value
+)
 </script>
 
 <style lang="sass" scoped>
 .fr-header
   box-shadow: none
   border-bottom: var(--grey-925-125) 1px solid
+
+  .fr-links-group li
+    align-items: baseline
+
+  .fr-header__nav
+    border-top: 1px solid var(--border-default-grey)
+
+    .fr-header__body-row
+      padding: 0
+
+    button
+      padding: 16px 12px
+
+.selector__menu
+  max-height: calc(5 * var(--item-height))
+  overflow-y: scroll
+  top: 40px
 </style>
