@@ -69,9 +69,11 @@
 import { useBaseStore } from "~/stores/baseStore"
 import { Base, BaseCreate, Tag } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
+import { useUserStore } from "~/stores/userStore"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
+const userStore = useUserStore()
 
 const emits = defineEmits(["close", "save"])
 const props = defineProps({
@@ -87,7 +89,7 @@ const base = ref<Base | BaseCreate>(
     ? {
         title: "",
         description: "",
-        contact: "",
+        contact: userStore.email,
         tags: [],
       }
     : { ...baseStore.current }

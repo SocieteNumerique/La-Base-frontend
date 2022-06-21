@@ -7,7 +7,11 @@
     @close="onClose()"
   >
     <template v-if="baseStore.hasBases">
-      <BaseSelector v-model="selectedBase" description="Publier dans" />
+      <BaseSelector
+        v-if="!props.baseId"
+        v-model="selectedBase"
+        description="Publier dans"
+      />
       <DsfrInput
         :model-value="title"
         label="Nom de la ressource"
@@ -22,7 +26,14 @@
         ressource, vous devez d'abord
       </p>
       <p>
-        <RouterLink to="/base/new" class="fr-btn">Créer une base</RouterLink>
+        <button class="fr-btn" @click="showAddBaseModal = true">
+          Créer une base
+        </button>
+        <BaseEditGeneral
+          v-if="showAddBaseModal"
+          new
+          @close="showAddBaseModal = false"
+        />
       </p>
     </template>
   </DsfrModal>
@@ -40,9 +51,12 @@ const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 const router = useRouter()
 const emit = defineEmits(["close"])
+const props = defineProps({
+  baseId: { type: Number, default: undefined },
+})
 
 const title = ref("")
-
+const showAddBaseModal = ref<boolean>(false)
 const onClose = () => {
   emit("close")
 }
@@ -51,7 +65,7 @@ const onTitleUpdate = (newTitle: string) => {
   title.value = newTitle
 }
 
-const selectedBase = ref<number | undefined>(undefined)
+const selectedBase = ref<number | undefined>(props.baseId)
 const createResource = async () => {
   const resource = await resourceStore.createResource({
     title: title.value,

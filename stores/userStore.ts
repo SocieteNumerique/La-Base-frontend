@@ -1,6 +1,14 @@
 import { defineStore } from "pinia"
 import { User } from "~/composables/types"
 import { useBaseStore } from "~/stores/baseStore"
+import { useCollectionStore } from "~/stores/collectionStore"
+import { useResourceStore } from "~/stores/resourceStore"
+
+function resetPerUserData() {
+  useCollectionStore().collectionsById = {}
+  useResourceStore().resourcesById = {}
+  useBaseStore().basesById = {}
+}
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -25,6 +33,7 @@ export const useUserStore = defineStore("user", {
       if (!error.value) {
         this.updateState(data.value)
         const baseStore = useBaseStore()
+        resetPerUserData()
         baseStore.refreshBases()
       }
     },
@@ -33,7 +42,7 @@ export const useUserStore = defineStore("user", {
         "auth/logout",
         {},
         {},
-        { title: "Déconnection réussie" }
+        { title: "Déconnexion réussie" }
       )
       if (!error.value) {
         this.updateState({
@@ -45,6 +54,7 @@ export const useUserStore = defineStore("user", {
         const router = useRouter()
         const baseStore = useBaseStore()
         baseStore.refreshBases()
+        resetPerUserData()
         router.push("/")
       }
     },

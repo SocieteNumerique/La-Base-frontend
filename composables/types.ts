@@ -119,7 +119,7 @@ export type BaseCreate = {
   title: string
 }
 export type Base = {
-  admins: User[]
+  admins?: User[]
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]

@@ -60,7 +60,7 @@ export const useBaseStore = defineStore("base", {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
         `bases/${baseId}/${short ? "short/" : ""}`
       )
-      if (!error.value) {
+      if (!error.value && !data.value.isShort) {
         const resourceStore = useResourceStore()
         saveInOtherStores(resourceStore.resourcesById, data.value.resources!)
         saveInOtherStores(
@@ -133,7 +133,7 @@ export const useBaseStore = defineStore("base", {
     baseOptions: (state) => {
       return state.basesOrder
         .map((baseId) => state.basesById[baseId])
-        .filter((base) => base?.canWrite)
+        .filter((base) => base?.canWrite || base?.canAddResources)
         .map((base) => {
           return { text: base.title, value: base.id }
         })
@@ -149,7 +149,9 @@ export const useBaseStore = defineStore("base", {
       }
     },
     hasBases: (state) => {
-      return !!state.basesOrder.length
+      return state.basesOrder
+        .map((baseId) => state.basesById[baseId])
+        .filter((base) => base?.canWrite || base?.canAddResources).length
     },
   },
 })
