@@ -74,6 +74,7 @@ export const useBaseStore = defineStore("base", {
         const base = simplifyBase(data.value)
         this.basesById[base.id] = base
       }
+      return { data, error }
     },
     async update(partialBase: any) {
       const { data, error } = await useApiPatch<BaseWithDetailedResources>(

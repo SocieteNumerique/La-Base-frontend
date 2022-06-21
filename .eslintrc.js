@@ -6,6 +6,9 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2020,
+    ecmaFeatures: {
+      jsx: false,
+    },
     sourceType: "module",
     parser: "@typescript-eslint/parser",
   },

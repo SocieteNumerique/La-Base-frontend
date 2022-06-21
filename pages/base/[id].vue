@@ -93,10 +93,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router"
-import { computed, onMounted } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { computed, onBeforeMount } from "vue"
 import RoundButton from "~/components/roundButton.vue"
 import { useBaseStore } from "~/stores/baseStore"
+import { useUserStore } from "~/stores/userStore"
+import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
 import { stateLabel } from "~/composables/strUtils"
 
@@ -105,6 +107,7 @@ definePageMeta({
   title: "Base",
 })
 const route = useRoute()
+const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
 
@@ -122,12 +125,16 @@ const territory = computed<string>(() =>
   ).join(", ")
 )
 
-const getBaseIfNotExists = (): void => {
-  const baseId = parseInt(route.params.id)
+const getBaseIfNotExists = async () => {
+  const baseId = parseInt(<string>route.params.id)
   baseStore.currentId = baseId
   if (!baseStore.basesById[baseId] || baseStore.basesById[baseId].isShort) {
-    baseStore.getBase(baseId)
+    return await baseStore.getBase(baseId)
   }
+  return Promise.resolve({
+    error: ref(false),
+    data: ref(baseStore.basesById[baseId]),
+  })
 }
 
 const base = computed(() => {
@@ -137,8 +144,34 @@ const base = computed(() => {
 if (process.server) {
   getBaseIfNotExists()
 }
-onMounted(() => {
-  getBaseIfNotExists()
+onBeforeMount(async () => {
+  // prefill email if exists
+  if (route.query.email) {
+    const userStore = useUserStore()
+    userStore.prefillEmail = <string>route.query.email
+    router.replace({ path: route.path, query: {} })
+  }
+
+  // fetch base
+  const { error } = await getBaseIfNotExists()
+
+  // if we have no access to this base, redirect to home or login
+  if (error.value) {
+    console.log("### error", error.value)
+    const alertStore = useAlertStore()
+    const userStore = useUserStore()
+    if (!userStore.isLoggedIn) {
+      alertStore.alert(
+        "Veuillez vous connecter pour avoir accès à cette base",
+        "",
+        "warning"
+      )
+      router.push({ path: "/connexion", query: { next: route.path } })
+    } else {
+      alertStore.alert("Vous n'avez pas accès à cette base", "", "warning")
+      router.push("/")
+    }
+  }
 })
 </script>
 

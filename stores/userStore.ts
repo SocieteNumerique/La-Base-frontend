@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", {
     firstName: "",
     id: 0,
     lastName: "",
+    prefillEmail: "",
   }),
   actions: {
     async login(email: string, password: string) {
