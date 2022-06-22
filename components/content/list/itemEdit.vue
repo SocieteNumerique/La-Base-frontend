@@ -1,8 +1,13 @@
 <template>
   <div :class="{ 'is-editing': isEditing }" class="content-container">
     <div class="toolbar fr-px-2w fr-text--xs">
-      <!-- <div>Statut :</div> -->
-      <div class="fr-btns-group--xs">
+      <div>
+        <button class="content-drag-handle fr-ml-n5v">
+          <img src="~/assets/svg/dragHandle.svg" />
+        </button>
+        <!-- <span>Statut :</span> -->
+      </div>
+      <div class="fr-btns-group--xs fr-ml-auto">
         <button
           :class="{ '-active': isEditing }"
           class="btn-tab-activable fr-btn--tertiary-no-outline"
@@ -11,10 +16,10 @@
           <VIcon name="ri-edit-line" />
           Éditer
         </button>
-        <button class="fr-btn--tertiary-no-outline" disabled>
+        <!--<button class="fr-btn--tertiary-no-outline" disabled>
           <VIcon name="ri-settings-3-line" />
           Paramètres
-        </button>
+        </button>-->
         <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">
           <VIcon name="ri-delete-bin-line" />
           Supprimer
@@ -51,6 +56,10 @@ const content = useModel<Content>("modelValue", { type: "object" })
 </script>
 
 <style lang="sass" scoped>
+.content-drag-handle
+  cursor: move
+  cursor: -webkit-grabbing
+
 .content-container
   &.is-editing
     border: 1px solid var(--border-default-grey)

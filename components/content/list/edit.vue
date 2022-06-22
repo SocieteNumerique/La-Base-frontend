@@ -23,11 +23,9 @@
           >
             <template v-if="section.isFoldable">
               <div class="toolbar-section">
-                <div>
-                  <button class="section-drag-handle">
-                    <img src="~/assets/svg/dragHandle.svg" />
-                  </button>
-                </div>
+                <button class="section-drag-handle">
+                  <img src="~/assets/svg/dragHandle.svg" />
+                </button>
                 <div>
                   <button
                     class="btn-tab-activable fr-btn--tertiary-no-outline"
@@ -79,13 +77,14 @@
                   section.isFoldable ? 'grouped-contents' : 'solo-contents'
                 "
                 :group="draggableContentsGroup(section.isFoldable)"
+                handle=".content-drag-handle"
                 item-key="id"
                 tag="ul"
                 @add="sendNewContentOrder(sectionIndex, $event)"
                 @update="sendNewContentOrder(sectionIndex, $event)"
               >
                 <template #item="{ element: content, index: contentIndex }">
-                  <li draggable="true">
+                  <li>
                     <ContentListItemEdit
                       v-model="
                         contentsBySection[sectionIndex].contents[contentIndex]
@@ -116,10 +115,10 @@
       />
       <div>
         <button
-          class="fr-btn fr-btn--tertiary fr-btn--sm"
+          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
           @click="$emit('new-section', 'Nouvelle section')"
         >
-          <VIcon name="ri-folder-add-line" />
+          <VIcon class="fr-mr-2v" name="ri-folder-add-line" />
           Créer une section
         </button>
       </div>

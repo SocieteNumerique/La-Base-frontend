@@ -23,10 +23,10 @@
       />
       <div>
         <button
-          class="fr-btn fr-btn--tertiary fr-btn--sm"
+          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
           @click="$emit('new-section', 'Nouvelle section')"
         >
-          <VIcon name="ri-folder-add-line" />
+          <VIcon class="fr-mr-2v" name="ri-folder-add-line" />
           Créer une section
         </button>
       </div>

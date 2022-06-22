@@ -20,17 +20,19 @@
     </div>
     <div v-if="!isEditingView">
       <div class="fr-btns-group--xs">
-        <a
-          :download="content.file?.name"
-          :href="content.file?.link"
-          class="no-underline no-append-ico"
-          rel="noopener noreferrer"
+        <button
+          class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
+          @click="download"
         >
-          <button class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w">
-            <VIcon :scale="0.8" class="fr-mr-2v" name="ri-download-line" />
-            <span v-if="!isGridView">Télécharger</span>
-          </button>
-        </a>
+          <VIcon :scale="0.8" class="fr-mr-2v" name="ri-download-line" />
+          <span v-if="!isGridView">Télécharger</span>
+        </button>
+        <a
+          ref="blobElement"
+          :download="content.file?.name"
+          :href="blob"
+          rel="noopener noreferrer"
+        />
         <a
           :href="content.file?.link"
           class="no-underline no-append-ico"
@@ -50,6 +52,8 @@
 <script lang="ts" setup>
 import { FileContent } from "~/composables/types"
 import { PropType } from "vue"
+import { useAlertStore } from "~/stores/alertStore"
+import { watchOnce } from "@vueuse/core"
 
 const props = defineProps({
   content: { type: Object as PropType<FileContent>, required: true },
@@ -65,6 +69,22 @@ const imageLink = computed<string | undefined>(() => {
   if (isImage.value && props.content.withPreview)
     return props.content.file?.link
 })
+
+const blob = ref<string>()
+const blobElement = ref<HTMLLinkElement>()
+
+async function download() {
+  if (process.server) return
+  if (!props.content.file?.link)
+    return useAlertStore().alert("Une erreur est survenue", "", "error")
+  const blobResponse = await $fetch<Blob>(props.content.file.link, {
+    responseType: "blob",
+  })
+  blob.value = window.URL.createObjectURL(new Blob([blobResponse]))
+  await nextTick()
+  console.log({ url: blob.value, inElement: blobElement.value!.href })
+  blobElement.value!.click()
+}
 </script>
 
 <style lang="sass" scoped>
