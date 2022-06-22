@@ -47,7 +47,10 @@ const buttons = ref([
 ])
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .content-edit
   border: 1px solid var(--grey-975)
+
+  .fr-label
+    margin-top: 16px
 </style>

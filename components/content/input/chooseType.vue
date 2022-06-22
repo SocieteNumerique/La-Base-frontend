@@ -1,10 +1,10 @@
 <template>
   <div class="pin-base-selector" @focusout="isMenuShown = false">
     <button
-      class="fr-btn fr-btn--tertiary fr-btn--sm"
+      class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
       @click="isMenuShown = !isMenuShown"
     >
-      <VIcon name="ri-add-circle-line" />
+      <VIcon class="fr-mr-2v" name="ri-add-circle-line" />
       <span>
         <slot>Ajouter un contenu</slot>
       </span>
