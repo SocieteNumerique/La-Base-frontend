@@ -42,10 +42,6 @@ async function createContent(resourceId: number, content: Content) {
 export async function updateContent(
   content: Content
 ): Promise<Content | undefined> {
-  if ("file" in content && content.file && !("base64" in content.file)) {
-    delete content.file
-  }
-
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content,

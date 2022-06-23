@@ -32,6 +32,19 @@
         maxlength="100"
         required="true"
       />
+      <label class="fr-label" for="new-base-from-header-state">
+        Le statut de la base est<span class="required">&nbsp;*</span>
+      </label>
+      <DsfrRadioButtonSet
+        v-if="props.new"
+        id="new-base-from-header-state"
+        v-model="base.state"
+        :inline="true"
+        :options="baseStateOptions"
+        :required="true"
+        label="Le statut de la base est"
+        name="baseState"
+      />
       <!-- <DsfrRadioButtonSet
         v-model="base.contactStatus"
         :inline="true"
@@ -46,7 +59,7 @@
         :init-tags="base.participantTypeTags"
         source="own"
         @blur="focusCategory('')"
-        @change="actorTags = $event"
+        @change="participantTags = $event"
         @focus="focusCategory(participantTypeCategoryName)"
       />
       <TagSelector
@@ -55,11 +68,15 @@
         :is-focused="focusedCategory === territoryCategoryName"
         :init-tags="base.territoryTags"
         source="own"
+        label="Localisation"
         @blur="focusCategory('')"
         @change="territoryTags = $event"
         @focus="focusCategory(territoryCategoryName)"
       />
-      <!--    profil -->
+      <FileUpload
+        v-model="base.profileImage"
+        :label="`${fileActionWord}image de profil pour la base`"
+      />
       <!--    cover -->
     </div>
   </DsfrModal>
@@ -84,6 +101,7 @@ const props = defineProps({
 const modalTitle = props.new
   ? "Création d'une base"
   : "Les informations de la base"
+const fileActionWord = props.new ? "Ajouter une " : "Changer l'"
 
 const base = ref<Base | BaseCreate>(
   props.new
@@ -98,12 +116,32 @@ const base = ref<Base | BaseCreate>(
 
 const participantTypeCategoryName = "general_00participantType"
 const territoryCategoryName = "territory_00city"
-const actorTags = ref<Tag[]>([])
-const territoryTags = ref<Tag[]>([])
+const participantTags = ref<Tag[]>(
+  base.value?.participantTypeTags?.map((id: number) => tagStore.tagsById[id]) ||
+    []
+)
+const territoryTags = ref<Tag[]>(
+  base.value?.territoryTags?.map((id: number) => tagStore.tagsById[id]) || []
+)
 const focusedCategory = ref("")
 const focusCategory = (categoryName: string) => {
   focusedCategory.value = categoryName
 }
+
+const baseStateOptions = [
+  {
+    label: "Public",
+    value: "public",
+  },
+  {
+    label: "Privé",
+    value: "private",
+  },
+  /*{
+      label: "Brouillon",
+      value: "draft",
+    },*/
+]
 
 /*const contactStatusOptions = [
   {
@@ -116,11 +154,16 @@ const focusCategory = (categoryName: string) => {
   },
 ]*/
 
+const selectedTags = computed(() => [
+  ...participantTags.value.map((tag) => tag.id),
+  ...territoryTags.value.map((tag) => tag.id),
+])
+
 async function updateBase() {
   emits("save", {
     ...base.value,
     tags: [
-      ...actorTags.value.map((tag) => tag.id),
+      ...participantTags.value.map((tag) => tag.id),
       ...territoryTags.value.map((tag) => tag.id),
     ],
   })

@@ -24,22 +24,20 @@ const emits = defineEmits(["close", "save"])
 const baseStore = useBaseStore()
 const baseState = ref<string>(baseStore.current.state || "private")
 
-const options = computed(() => {
-  return [
-    {
-      label: "Public",
-      value: "public",
-    },
-    {
-      label: "Privé",
-      value: "private",
-    },
-    /*{
+const options = [
+  {
+    label: "Public",
+    value: "public",
+  },
+  {
+    label: "Privé",
+    value: "private",
+  },
+  /*{
       label: "Brouillon",
       value: "draft",
     },*/
-  ]
-})
+]
 
 const actions = computed(() => [
   {

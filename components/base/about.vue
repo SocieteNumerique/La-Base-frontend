@@ -10,7 +10,10 @@
           <div v-if="participantTypes" class="h7 fr-text--md fr-text--md">
             Type d'acteurs
           </div>
-          <DsfrTags :tags="participantTypes" class="fr-mr-3w actor-tags" />
+          <DsfrTags
+            :tags="participantTypes"
+            class="fr-mr-3w participant-tags"
+          />
         </div>
         <div v-if="territory">
           <div class="h7 fr-text--md">Localisation</div>
