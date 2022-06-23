@@ -189,9 +189,12 @@ async function onDeleteContent({
 
 async function onDeleteSection(index: number) {
   const id = contentsBySection.value[index].id
-  console.log({ index, id })
+  if (await deleteSection(id, true)) contentsBySection.value.splice(index, 1)
+}
+
+async function onAutoDeleteSection(index: number) {
+  const id = contentsBySection.value[index].id
   if (await deleteSection(id)) contentsBySection.value.splice(index, 1)
-  // TODO display potential error
 }
 
 async function reloadContents() {

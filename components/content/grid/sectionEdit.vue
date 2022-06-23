@@ -112,6 +112,7 @@ const emits = defineEmits([
   "new-content",
   "new-content-in-section",
   "delete-section",
+  "auto-delete-section",
   "delete-content",
   "swap-one",
   "update:editing-content",
@@ -139,7 +140,7 @@ async function swapOne(index: number, direction: number) {
 
 async function onDelete(id: number, index: number) {
   if (section.value.isFoldable && !section.value.contents.length)
-    return emits("delete-section")
+    return emits("auto-delete-section")
   return emits("delete-content", { id, index })
 }
 
@@ -229,7 +230,7 @@ async function onDrop(event: DragEvent, contentIndex: number) {
   const nbCol = nextNbCol()
   if (nbCol <= 0 || nbCol === content.nbCol) return // TODO message
   content.nbCol = nbCol
-  const updatedContent = await updateContent(content)
+  const updatedContent = await updateContent(content, false)
   if (!updatedContent) return
   contents.value[contentIndex] = updatedContent
 }

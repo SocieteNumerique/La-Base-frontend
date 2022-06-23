@@ -20,10 +20,7 @@
           <VIcon name="ri-settings-3-line" />
           Paramètres
         </button>-->
-        <button class="fr-btn--tertiary-no-outline" @click="$emit('delete')">
-          <VIcon name="ri-delete-bin-line" />
-          Supprimer
-        </button>
+        <ContentButtonDeleteContent full @delete="$emit('delete')" />
       </div>
     </div>
     <div class="fr-p-2w">

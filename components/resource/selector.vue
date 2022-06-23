@@ -70,9 +70,3 @@ const onInput = debounce(async () => {
     ) || []
 }, 200)
 </script>
-
-<style lang="sass" scoped>
-.resource-choices
-  max-height: 320px
-  overflow-y: scroll
-</style>

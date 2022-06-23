@@ -7,6 +7,7 @@
       v-model:editing-content="currentEditingContentId"
       @new-content="onNewContentInSection($event, index)"
       @delete-section="$emit('delete-section', index)"
+      @auto-delete-section="$emit('auto-delete-section', index)"
       @delete-content="
         $emit('delete-content', {
           id: $event.id,
@@ -17,19 +18,18 @@
       @swap-one="swapOne(index, $event)"
     />
 
-    <div class="fr-btns-group add-section-content-group">
+    <div class="fr-btns-group fr-btns-group--inline">
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
-      <div>
-        <button
-          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-          @click="$emit('new-section', 'Nouvelle section')"
-        >
-          <VIcon class="fr-mr-2v" name="ri-folder-add-line" />
-          Créer une section
-        </button>
-      </div>
+      <button
+        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
+        @click="$emit('new-section', 'Nouvelle section')"
+      >
+        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+        <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
+        Créer une section
+      </button>
     </div>
   </div>
 </template>
@@ -57,6 +57,7 @@ const emits = defineEmits([
   "new-solo-content",
   "delete-content",
   "delete-section",
+  "auto-delete-section",
   "new-section",
   "new-content-in-section",
   "update:editing-content",
