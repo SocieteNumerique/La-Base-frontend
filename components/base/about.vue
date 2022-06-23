@@ -3,7 +3,7 @@
     <h3 class="fr-h6">Présentation de la base</h3>
     <article class="fr-grid-row">
       <div class="fr-col-4">
-        <p>{{ base.description }}</p>
+        <p>{{ base?.description }}</p>
       </div>
       <div class="misc-base-data fr-col-2 fr-col-offset-1">
         <div>
@@ -20,8 +20,8 @@
           <p>{{ territory }}</p>
         </div>
         <div>
-          <div v-if="base.contact" class="h7 fr-text--md">Contact</div>
-          <p>{{ base.contact }}</p>
+          <div v-if="base?.contact" class="h7 fr-text--md">Contact</div>
+          <p>{{ base?.contact }}</p>
         </div>
       </div>
     </article>

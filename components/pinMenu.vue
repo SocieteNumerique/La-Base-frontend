@@ -1,5 +1,5 @@
 <template>
-  <div :id="containerId" class="selector">
+  <div v-if="userStore.isLoggedIn" :id="containerId" class="selector">
     <BaseEditGeneral
       v-if="showAddBaseModal"
       :id="newBaseContainerId"
@@ -61,6 +61,9 @@
 import { useBaseStore } from "~/stores/baseStore"
 import { PropType } from "vue"
 import { PinStatus } from "~/composables/types"
+import { useUserStore } from "~/stores/userStore"
+
+const userStore = useUserStore()
 
 const props = defineProps({
   modelValue: { type: Array as PropType<PinStatus[]>, required: true },

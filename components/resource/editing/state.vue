@@ -100,10 +100,10 @@ const options = computed(() => {
       label: "Privé",
       value: "private",
     },
-    {
+    /*{
       label: "Restreint",
       value: "restricted",
-    },
+    },*/
     {
       label: "Brouillon",
       value: "draft",

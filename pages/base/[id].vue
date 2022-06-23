@@ -4,15 +4,15 @@
       <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
         <div class="fr-container">
           <ImageProfileRound
-            :image-url="base.profileImage?.link"
+            :image-url="base?.profileImage?.link"
             class="fr-mb-3v"
             size="large"
           />
           <div
-            v-if="base.canWrite"
+            v-if="base?.canWrite"
             class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2w pre-header"
           >
-            <div>Statut : {{ stateLabel[base.state] }}</div>
+            <div>Statut : {{ stateLabel[base?.state] }}</div>
             <BaseSettings />
           </div>
           <h1 style="max-width: 800px">{{ base?.title }}</h1>
@@ -171,10 +171,10 @@ onBeforeMount(async () => {
         "",
         "warning"
       )
-      router.push({ path: "/connexion", query: { next: route.path } })
+      router.replace({ path: "/connexion", query: { next: route.path } })
     } else {
       alertStore.alert("Vous n'avez pas accès à cette base", "", "warning")
-      router.push("/")
+      router.replace("/")
     }
   }
 })

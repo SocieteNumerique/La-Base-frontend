@@ -33,10 +33,10 @@ const options = [
     label: "Privé",
     value: "private",
   },
-  /*{
-      label: "Brouillon",
-      value: "draft",
-    },*/
+  {
+    label: "Invisible",
+    value: "draft",
+  },
 ]
 
 const actions = computed(() => [
