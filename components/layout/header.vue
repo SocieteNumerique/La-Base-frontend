@@ -28,12 +28,12 @@
                       class="selector__menu fr-px-2w fr-text--xs"
                     >
                       <NuxtLink
-                        v-for="{ value: id, text } of baseStore.baseOptions"
-                        :key="id"
-                        :to="`/base/${id}`"
+                        v-for="base of baseStore.baseOptions"
+                        :key="base.id"
+                        :to="`/base/${base.id}`"
                         class="item"
                       >
-                        {{ text }}
+                        <BaseLabel :base="base" />
                       </NuxtLink>
                       <div
                         class="item fr-text-title--blue-france"

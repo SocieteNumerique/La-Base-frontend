@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-miniature-container fr-text--xs">
+  <div class="miniature-container fr-text--xs">
     <div class="fr-grid-row fr-grid-row--right fr-p-2w">
       <ShareButton :link="link" class="fr-mr-3w" />
       <PinMenu
@@ -83,14 +83,7 @@ const link = computed(
 </script>
 
 <style lang="sass" scoped>
-.resource-miniature-container
-  border: 1px solid var(--grey-975-75-active)
-  display: block
-  background: none
-
-  &:hover
-    border-color: var(--text-action-high-blue-france)
-
+.miniature-container
   .description-text
     max-height: 80px
     overflow: hidden
@@ -107,7 +100,4 @@ const link = computed(
   border-top: 1px solid var(--grey-975-75-active)
   border-bottom: 1px solid var(--grey-975-75-active)
   color: var(--text-action-high-grey)
-
-.separator
-  border-top: 1px solid var(--grey-975-75-active)
 </style>

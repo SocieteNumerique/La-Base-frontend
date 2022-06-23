@@ -126,6 +126,7 @@ export type Base = {
   contact?: string
   contributor_tags?: number[]
   description?: string
+  profileImage?: FullFile
   id: number
   isShort?: boolean
   owner: User | number

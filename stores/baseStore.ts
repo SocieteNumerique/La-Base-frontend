@@ -134,7 +134,11 @@ export const useBaseStore = defineStore("base", {
         .map((baseId) => state.basesById[baseId])
         .filter((base) => base?.canWrite || base?.canAddResources)
         .map((base) => {
-          return { text: base.title, value: base.id }
+          return {
+            title: base.title,
+            id: base.id,
+            imageProfile: base.profileImage,
+          }
         })
     },
     current: (state): Base => {

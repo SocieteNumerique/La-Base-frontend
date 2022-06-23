@@ -3,6 +3,11 @@
     <template #header>
       <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
         <div class="fr-container">
+          <ImageProfileRound
+            :image-url="base.profileImage?.link"
+            class="fr-mb-3v"
+            size="large"
+          />
           <div
             v-if="base.canWrite"
             class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2w pre-header"
@@ -13,9 +18,9 @@
           <h1 style="max-width: 800px">{{ base?.title }}</h1>
           <div class="is-flex base-meta">
             <DsfrTags
-              v-if="participantTypes"
+              v-if="participantTypes.length"
               :tags="participantTypes"
-              class="fr-mr-3w actor-tags"
+              class="fr-mr-3w participant-tags"
             />
             <div v-if="territory" class="territory">
               <VIcon
@@ -56,8 +61,8 @@
       <ShareButton :link="route.fullPath">
         <RoundButton icon="ri-share-line" label="Partager" />
       </ShareButton>
-      <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
-      <RoundButton icon="ri-download-line" label="Télécharger" disabled />
+      <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
+      <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
       <RoundButton icon="ri-share-line" label="Signaler" disabled />
     </div>
     <div
@@ -65,17 +70,17 @@
       class="fr-my-3w"
     ></div>
 
-    <div class="fr-btns-group">
+    <div class="fr-btns-group fr-mb-9v">
       <button
         :class="{ '-active': tab === 'resources' }"
-        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-text-title--blue-france fr-h4 fr-mr-5w"
+        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-mb-0 fr-text-title--blue-france fr-h4 fr-mr-5w"
         @click="tab = 'resources'"
       >
         Ressources
       </button>
       <button
         :class="{ '-active': tab === 'about' }"
-        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-text-title--blue-france fr-h4"
+        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-mb-0 fr-text-title--blue-france fr-h4"
         @click="tab = 'about'"
       >
         À propos
@@ -85,7 +90,7 @@
     <BaseResources v-show="tab === 'resources'" :base="base" />
     <BaseAbout
       v-show="tab === 'about'"
-      :actor-types="participantTypes"
+      :participant-types="participantTypes"
       :base="base"
       :territory="territory"
     />
@@ -194,6 +199,6 @@ onBeforeMount(async () => {
 </style>
 
 <style lang="sass">
-.base-meta .actor-tags .fr-tag
+.base-meta .participant-tags .fr-tag
   margin-bottom: 0
 </style>

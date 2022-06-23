@@ -30,10 +30,12 @@
     >
       <template v-for="{ id, isPinned } of pinStatuses" :key="id">
         <div v-if="id === rootBaseId" class="item fr-text-default--grey">
-          <div>
-            {{ baseStore.basesById[id]?.title }}
-            <div class="fr-text-mention--grey">Base propriétaire</div>
-          </div>
+          <BaseLabel :base="baseStore.basesById[id]" class="fr-mr-2v">
+            <div>
+              {{ baseStore.basesById[id]?.title }}
+              <div class="fr-text-mention--grey">Base propriétaire</div>
+            </div>
+          </BaseLabel>
           <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
         </div>
         <div
@@ -42,9 +44,9 @@
           class="item"
           @click="togglePin({ id, isPinned: isPinned })"
         >
-          {{ baseStore.basesById[id]?.title }}
-          <VIcon class="check fr-ml-2v" name="ri-check-line" />
-          <VIcon class="cross fr-ml-2v" name="ri-close-line" />
+          <BaseLabel :base="baseStore.basesById[id]" class="fr-mr-2v" />
+          <VIcon class="check fr-ml-auto" name="ri-check-line" />
+          <VIcon class="cross fr-ml-auto" name="ri-close-line" />
         </div>
       </template>
       <div class="item" @click="showAddBaseModal = true">
@@ -130,22 +132,27 @@ async function togglePin(pinStatus: PinStatus) {
 </script>
 
 <style lang="sass" scoped>
-.selector .selector__menu .item
-  .check, .cross, .unchangeable-check
-    justify-self: end
-    margin-left: auto
+.selector .selector__menu
+  max-height: calc(5 * var(--item-height))
+  overflow-y: scroll
+  top: 40px
 
-  .check, .cross
-    display: none
+  .item
+    .check, .cross, .unchangeable-check
+      justify-self: end
+      margin-left: auto
 
-  &:hover, &.-checked
-    .check
-      display: block
-
-  &.-checked:hover
-    .cross
-      display: block
-
-    .check
+    .check, .cross
       display: none
+
+    &:hover, &.-checked
+      .check
+        display: block
+
+    &.-checked:hover
+      .cross
+        display: block
+
+      .check
+        display: none
 </style>

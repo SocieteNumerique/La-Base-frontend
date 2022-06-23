@@ -92,14 +92,6 @@ watchOnce(isEditModalOpen, () => {
 </script>
 
 <style lang="sass" scoped>
-.miniature-container
-  border: 1px solid var(--grey-975-75-active)
-  display: block
-  background: none
-
-  &:hover
-    border-color: var(--text-title-blue-france)
-
 .preview
   background: var(--background-alt-grey)
   height: 320px
