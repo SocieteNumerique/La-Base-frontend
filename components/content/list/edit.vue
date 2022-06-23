@@ -34,13 +34,9 @@
                     <VIcon name="ri-edit-line" />
                     Éditer
                   </button>
-                  <button
-                    class="fr-btn--tertiary-no-outline"
-                    @click="$emit('delete-section', sectionIndex)"
-                  >
-                    <VIcon name="ri-delete-bin-line" />
-                    Supprimer
-                  </button>
+                  <ContentButtonDeleteSection
+                    @delete-section="$emit('delete-section', sectionIndex)"
+                  />
                 </div>
               </div>
               <div class="header-section">
@@ -109,19 +105,18 @@
         </div>
       </template>
     </draggable>
-    <div class="fr-btns-group add-section-content-group">
+    <div class="fr-btns-group fr-btns-group--inline">
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
-      <div>
-        <button
-          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-          @click="$emit('new-section', 'Nouvelle section')"
-        >
-          <VIcon class="fr-mr-2v" name="ri-folder-add-line" />
-          Créer une section
-        </button>
-      </div>
+      <button
+        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
+        @click="$emit('new-section', 'Nouvelle section')"
+      >
+        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+        <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
+        Créer une section
+      </button>
     </div>
   </div>
 </template>
@@ -151,6 +146,7 @@ const emits = defineEmits([
   "new-section",
   "new-content-in-section",
   "delete-section",
+  "auto-delete-section",
   "new-adhoc-section",
   "update:editing-content",
   "reload-contents",
@@ -194,7 +190,7 @@ async function sendNewContentOrder(newSectionIndex: number, payload: any) {
     contentsBySection.value[newSectionIndex].id
   )
   if (!(sectionToRemoveIndex === undefined))
-    emits("delete-section", sectionToRemoveIndex)
+    emits("auto-delete-section", sectionToRemoveIndex)
 }
 
 async function sendNewSectionOrder(payload: any) {

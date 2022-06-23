@@ -126,8 +126,18 @@
             label="Supprimer"
             icon="ri-delete-bin-line"
             class="fr-mb-3v"
-            @click="deleteBase"
+            @click="ongoingDeletion = true"
           />
+          <DsfrModal
+            v-if="ongoingDeletion"
+            :actions="actions"
+            :opened="true"
+            title="Supprimer la ressource"
+            @close="ongoingDeletion = false"
+          >
+            Confirmez-vous la suppression de la ressource ? <br />
+            Tous les contenus de la ressource seront supprimés avec elle.
+          </DsfrModal>
         </div>
       </nav>
     </div>
@@ -159,8 +169,9 @@ const baseStore = useBaseStore()
 const save = () => {
   resourceStore.save()
 }
-const deleteBase = async () => {
+const deleteResource = async () => {
   const success = await resourceStore.delete()
+  ongoingDeletion.value = false
   if (success) useRouter().push("/")
 }
 const doShowPreview = () => {
@@ -213,6 +224,19 @@ const selectMenu = (menuKey: string) => {
     }
   }
 }
+
+const ongoingDeletion = ref<boolean>(false)
+const actions = [
+  {
+    label: "Oui",
+    onClick: async () => deleteResource(),
+  },
+  {
+    label: "Non",
+    secondary: true,
+    onClick: () => (ongoingDeletion.value = false),
+  },
+]
 </script>
 
 <style lang="sass">

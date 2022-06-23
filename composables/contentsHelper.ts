@@ -40,7 +40,8 @@ async function createContent(resourceId: number, content: Content) {
 }
 
 export async function updateContent(
-  content: Content
+  content: Content,
+  showSuccess = true
 ): Promise<Content | undefined> {
   if ("file" in content && content.file && !("base64" in content.file)) {
     delete content.file
@@ -50,7 +51,7 @@ export async function updateContent(
     `contents/${content.id}/`,
     content,
     undefined,
-    { title: "Mise à jour réussie du contenu" },
+    showSuccess ? "Mise à jour réussie du contenu" : null,
     true
   )
   if (!error.value) {
@@ -74,8 +75,13 @@ export async function addContent(
   throw "error at creating Content"
 }
 
-export async function deleteContent(id: number) {
-  const { error } = await useApiDelete(`contents/${id}/`)
+export async function deleteContent(id: number, showSuccess = false) {
+  const { error } = await useApiDelete(
+    `contents/${id}/`,
+    {},
+    showSuccess ? "Le contenu a bien été supprimé" : null,
+    true
+  )
   if (!error.value) {
     return true
   }
@@ -199,8 +205,13 @@ export async function updateSection(section: Section) {
   }
 }
 
-export async function deleteSection(id: number) {
-  const { error } = await useApiDelete(`sections/${id}/`)
+export async function deleteSection(id: number, showSuccess = false) {
+  const { error } = await useApiDelete(
+    `sections/${id}/`,
+    {},
+    showSuccess ? "La section a bien été supprimée" : null,
+    true
+  )
   if (!error.value) {
     return true
   }

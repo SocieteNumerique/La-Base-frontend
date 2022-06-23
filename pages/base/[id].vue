@@ -85,7 +85,7 @@
     <BaseResources v-show="tab === 'resources'" :base="base" />
     <BaseAbout
       v-show="tab === 'about'"
-      :actor-types="participantTypes"
+      :participant-types="participantTypes"
       :base="base"
       :territory="territory"
     />

@@ -164,14 +164,6 @@ const discardActions = [
       save()
     },
   },
-  {
-    label: "Retour",
-    secondary: true,
-    onClick() {
-      if (isDirtyResources.value) toStep("adding")
-      else toStep("init")
-    },
-  },
 ]
 
 const deleteActions = [
@@ -186,6 +178,7 @@ const deleteActions = [
     onClick() {
       toStep("init")
     },
+    secondary: true,
   },
 ]
 </script>
