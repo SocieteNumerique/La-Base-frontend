@@ -16,7 +16,7 @@ const resource = computed<Resource>(
   () => resourceStore.resourcesById[props.resourceId]
 )
 const basesPinnedIn = computed<PinStatus[]>({
-  get: () => resource.value.basesPinnedIn || [],
+  get: () => resource.value?.basesPinnedIn || [],
   set(value: PinStatus[]) {
     resourceStore.refreshPinStatus(value, resource.value.id)
   },

@@ -15,7 +15,6 @@ const onLoginClose = () => {
 const onLoginSuccess = () => {
   if (route.query.next) {
     router.push({ path: route.query.next })
-    // TODO after success, also redirects to "/" :(
   } else {
     router.push("/")
   }

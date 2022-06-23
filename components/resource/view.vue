@@ -49,6 +49,7 @@
           <RoundButton icon="ri-download-line" label="Télécharger" disabled />
           <RoundButton icon="ri-share-line" label="Signaler" disabled />
           <PinMenu
+            v-if="resource"
             v-model="resource.basesPinnedIn"
             :instance-id="resource?.id"
             :root-base-id="resource?.rootBase"

@@ -23,6 +23,6 @@ const selectedBase = useModel<number>("modelValue")
 const baseStore = useBaseStore()
 
 onMounted(() => {
-  selectedBase.value = (baseStore.baseOptions[0] || {}).value
+  selectedBase.value = (baseStore.baseOptions[0] || {}).id
 })
 </script>

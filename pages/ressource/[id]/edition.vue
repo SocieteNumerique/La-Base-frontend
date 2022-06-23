@@ -4,9 +4,9 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { useRoute } from "vue-router"
 import { onBeforeUnmount, onMounted } from "vue"
 import { useMainStore } from "~/stores/mainStore"
+import { useAlertStore } from "~/stores/alertStore"
 
 definePageMeta({
   layout: "resourceedition",
@@ -14,6 +14,8 @@ definePageMeta({
 })
 const resourceStore = useResourceStore()
 const mainStore = useMainStore()
+const alertStore = useAlertStore()
+const router = useRouter()
 
 function onBeforeUnload(ev: Event) {
   if (resourceStore.current.dirty) {
@@ -39,7 +41,16 @@ onBeforeUnmount(() => {
 if (process.server) {
   getResourceIfNotExists()
 }
-onMounted(() => {
-  getResourceIfNotExists()
+
+onMounted(async () => {
+  await getResourceIfNotExists()
+  if (!resourceStore.current.canWrite) {
+    alertStore.alert(
+      "Vous n'avez pas le droit d'éditer cette ressource",
+      "",
+      "error"
+    )
+    router.replace(`/ressource/${resourceStore.currentId}`)
+  }
 })
 </script>

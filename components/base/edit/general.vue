@@ -109,6 +109,7 @@ const base = ref<Base | BaseCreate>(
         title: "",
         description: "",
         contact: userStore.email,
+        state: "private",
         tags: [],
       }
     : { ...baseStore.current }

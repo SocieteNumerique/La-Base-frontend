@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from "~/stores/mainStore"
-
 definePageMeta({
   layout: false,
 })

@@ -74,7 +74,7 @@ const nbResources = computed<number>(
 const collection = ref<Collection>({ ...savedCollection.value })
 
 const basesPinnedIn = computed<PinStatus[]>({
-  get: () => collection.value.basesPinnedIn || [],
+  get: () => collection.value?.basesPinnedIn || [],
   set(value: PinStatus[]) {
     collectionStore.refreshPinStatus(value, collection.value.id)
   },
