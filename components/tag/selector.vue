@@ -214,10 +214,18 @@ const selectTag = (tagId: number) => {
     return
   }
 
+  let nTags: number
   if (props.source === "CurrentResource") {
     resourceStore.addTagToResource(tagId, resourceStore.currentId!)
+    nTags = resourceStore.current.tags!.length
   } else {
     ownSelectedTags.value.push(tagId)
+    nTags = ownSelectedTags.value.length
+  }
+
+  // if we've already select the maximum number of tags, close the menu
+  if (nTags >= props.category.maximumTagCount) {
+    emit("blur")
   }
   emit("change", selectedTags.value)
 }

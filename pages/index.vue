@@ -3,19 +3,47 @@
     <template #header>
       <div style="background: #e8edff" class="fr-py-4w">
         <div class="fr-container">
-          <h1 class="fr-h1 fr-mb-0">
-            Bienvenue sur la Base de l’inclusion et de la médiation numérique
+          <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
+            Bienvenue sur la Base du numérique d’intérêt général
           </h1>
         </div>
       </div>
     </template>
     <div>
-      <p>
-        Cette base regroupent les ressources des professionnels du secteur de
-        l’inclusion et de la médiation numérique. Vous pourrez naviguer au
-        travers des bases des différents acteurs qui partagent leurs ressources
-        et vous pourrez vous même créer votre propre base.
-      </p>
+      <div class="fr-grid-row fr-mb-5w" style="justify-content: space-between">
+        <div class="fr-col-6">
+          <p class="fr-mb-0">
+            Cette base regroupent les ressources des professionnels du secteur
+            de l’inclusion et de la médiation numérique. Vous pourrez naviguer
+            au travers des bases des différents acteurs qui partagent leurs
+            ressources et vous pourrez vous même créer votre propre base.
+          </p>
+          <div>
+            <NuxtLink to="/a-propos" style="background: none">
+              <DsfrButton
+                class="fr-btn--tertiary-no-outline fr-pl-0"
+                label="En savoir plus"
+                icon="ri-arrow-right-line"
+              />
+            </NuxtLink>
+          </div>
+        </div>
+        <div v-if="!userStore.isLoggedIn" class="fr-col-5">
+          <p class="fr-mb-0">
+            Pour pouvoir créer une base, renseigner, publier et enregister des
+            fiches ressources vous devez bénéficier d’un compte.
+          </p>
+          <div>
+            <DsfrButton
+              class="fr-btn--tertiary-no-outline fr-pl-0 fr-btn--sm"
+              label="Inscrivez-vous"
+              icon="ri-arrow-right-line"
+              @click="userStore.showSignUpModal = true"
+            />
+          </div>
+        </div>
+      </div>
+
       <h2 class="fr-h4">Découvrir</h2>
       <div class="dataTypeChooserHolder">
         <div
@@ -28,8 +56,8 @@
           </div>
           <h3 class="fr-h6">Les fiches ressources</h3>
           <p>
-            Rapide descriptions de ce qu’est une fiche ressourcerapide de ce
-            qu’est une fiche ressource
+            Parcourez les fiches ressources créées par les acteurs de la
+            plateforme.
           </p>
         </div>
         <div
@@ -42,8 +70,7 @@
           </div>
           <h3 class="fr-h6">Les bases</h3>
           <p>
-            Rapide descriptions de ce qu’est une fiche base ; rapide desc de ce
-            qu’est une base
+            Parcourez les bases des acteurs de la plateforme et leurs contenus.
           </p>
         </div>
       </div>
@@ -66,7 +93,9 @@
 
     <hr />
 
-    <h3 class="fr-h6 fr-mb-0">Filtrer avec l'index</h3>
+    <h3 class="fr-mb-0 fr-text--regular fr-text--md">
+      Filtrer avec l'index officiel
+    </h3>
 
     <ul class="fr-px-2w fr-pt-1w fr-tags-group">
       <li v-for="tagId in selectedTags" :key="tagId">
@@ -120,9 +149,6 @@
           <template v-if="nResults">
             {{ nResults }}
             {{ pluralize(["résultat"], nResults, true) }}
-            <template v-if="nResults > pageSize">
-              - affichage la page {{ currentPage + 1 }}
-            </template>
           </template>
           <template v-else> aucun résultat correspondant </template>
           <span v-if="searchedText"> pour {{ searchedText }}</span>
@@ -173,6 +199,7 @@ import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
+import { useUserStore } from "~/stores/userStore"
 
 definePageMeta({
   layout: false,
@@ -184,6 +211,7 @@ const focusedCategory = ref(0)
 const selectedTags = ref<number[]>([])
 
 const tagStore = useTagStore()
+const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 
 const pageSize = 12
@@ -293,8 +321,11 @@ const onCurrentPageChange = (page: number) => {
   padding: 24px 8px 0px 8px
   &.selected
     background: #F5F5FE
+    box-shadow: inset 0 0-2px 0 var(--border-action-high-blue-france)
     border: 1px solid #F5F5FE
   width: 383px
+  &:hover
+    border-color: var(--text-title-blue-france)
 
 .dataTypeChooser + .dataTypeChooser
   margin-left: 24px

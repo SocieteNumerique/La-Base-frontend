@@ -1,7 +1,10 @@
 <template>
-  <div :id="'tag-dropdown-' + props.category.id" class="tag-dropdown">
+  <div
+    :id="'tag-dropdown-' + props.category.id"
+    class="tag-dropdown fr-text-label--blue-france"
+  >
     <div
-      class="cursor--pointer"
+      class="cursor--pointer dropdown-title"
       :class="isFocused ? 'underlined' : null"
       @click="onTitleClick"
     >
@@ -78,11 +81,15 @@ const selectTag = (tagId: number) => {
 </script>
 
 <style scoped>
-.underlined {
+.dropdown-title {
+  border-bottom: 2px solid transparent;
+}
+.dropdown-title.underlined {
   border-bottom: 2px solid #000091;
 }
 .dropdown-tags {
   transition: max-height 0.2s ease-in-out 0s;
+  width: 400px;
   overflow-y: auto;
   position: absolute;
   background: white;

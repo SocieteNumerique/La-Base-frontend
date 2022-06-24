@@ -50,7 +50,10 @@
                   </template>
                 </li>
                 <li v-if="!userStore.isLoggedIn">
-                  <button class="fr-link" @click="showSignUpModal = true">
+                  <button
+                    class="fr-link"
+                    @click="userStore.showSignUpModal = true"
+                  >
                     S'inscrire
                   </button>
                 </li>
@@ -108,7 +111,10 @@
     @close="showAddBaseModal = false"
   />
   <AuthLoginModal v-if="showLoginModal" @close="showLoginModal = false" />
-  <AuthSignupModal v-if="showSignUpModal" @close="showSignUpModal = false" />
+  <AuthSignupModal
+    v-if="userStore.showSignUpModal"
+    @close="userStore.showSignUpModal = false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -118,11 +124,10 @@ import { useBaseStore } from "~/stores/baseStore"
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 
-const logoTitle = ["La base de la médiation ", "et de l’inclusion numérique"]
+const logoTitle = ["La base du numérique", "d'intérêt général"]
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
-const showSignUpModal = ref(false)
 const showBasesList = ref(false)
 
 onFocusOut(

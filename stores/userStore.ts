@@ -17,6 +17,7 @@ export const useUserStore = defineStore("user", {
     id: 0,
     lastName: "",
     prefillEmail: "",
+    showSignupModal: false,
   }),
   actions: {
     async login(email: string, password: string) {

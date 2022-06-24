@@ -18,13 +18,13 @@
     </div>
 
     <!-- navigation buttons at the bottom of the page -->
-    <div class="navigation-buttons-holder">
+    <div class="navigation-buttons-holder fr-mt-7w">
       <div>
         <DsfrButton
           v-if="!resourceStore.isNavigationPreviousDisabled"
           icon="ri-arrow-left-s-line"
           label="Précédent"
-          class="fr-btn--secondary btn--no-border"
+          class="fr-btn--secondary btn--no-border fr-pl-0"
           @click="resourceStore.navigationPrevious"
         />
       </div>
@@ -34,7 +34,7 @@
           icon="ri-arrow-right-s-line"
           label="Suivant"
           icon-right
-          class="fr-btn--secondary btn--no-border"
+          class="fr-btn--secondary btn--no-border fr-pr-0"
           @click="resourceStore.navigationNext"
         />
       </div>

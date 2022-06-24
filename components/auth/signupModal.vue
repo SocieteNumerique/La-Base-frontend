@@ -96,7 +96,6 @@ import { useLoadingStore } from "~/stores/loadingStore"
 import { DsfrCheckbox, DsfrInputGroup, DsfrModal } from "@laruiss/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"
 import { Tag } from "~/composables/types"
-import { policyContent } from "~/composables/policyContent"
 
 const emit = defineEmits(["close"])
 const tagStore = useTagStore()
