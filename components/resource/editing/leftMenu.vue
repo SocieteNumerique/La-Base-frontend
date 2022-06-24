@@ -107,7 +107,7 @@
         >
           <DsfrButton
             :secondary="true"
-            label="Visualiser"
+            label="Pré-visualiser"
             icon="ri-eye-line"
             class="fr-mb-3v"
             :disabled="false"

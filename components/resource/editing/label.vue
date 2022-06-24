@@ -14,17 +14,7 @@
         />
       </a>
     </div>
-    <div>
-      <a :href="mailto" class="no-underline">
-        <DsfrButton
-          class="fr-btn--tertiary-no-outline"
-          label="Faire une demande de Label Nec"
-          :icon-right="true"
-          icon="ri-mail-send-line"
-        />
-      </a>
-    </div>
-    <h3 class="fr-mt-2w">Statut</h3>
+    <h2 class="fr-mt-2w fr-h6">Statut</h2>
     <div>
       <DsfrBadge v-if="badge" :label="badge.label" :type="badge.type" />
       <p
@@ -59,13 +49,5 @@ const badge = computed(() => {
   }
 
   return null
-})
-const mailto = computed(() => {
-  let toReturn =
-    "mailto:demande-label-nec@anct.gouv.fr?subject=Demande de label NEC pour ma ressource"
-  if (resourceStore.current?.title) {
-    toReturn += ` "${resourceStore.current.title}" (id ${resourceStore.current.id})`
-  }
-  return toReturn
 })
 </script>
