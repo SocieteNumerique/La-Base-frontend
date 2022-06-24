@@ -4,7 +4,7 @@
       <ShareButton :link="link" class="fr-mr-3w" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
-      <div class="banner fr-p-1w">
+      <div v-if="base.profileImage" class="banner fr-p-1w">
         <ImageProfileRound :image-url="base.profileImage?.link" size="medium" />
       </div>
       <div class="fr-p-2w">

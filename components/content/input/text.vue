@@ -13,7 +13,7 @@
       </div>
       <editor-content :editor="editor" />
     </client-only>
-    <DsfrModal :opened="isAddingLink" @close="closeLinkModal">
+    <DsfrModal :opened="isAddingLink" title="" @close="closeLinkModal">
       <DsfrInput
         v-model="correctedLink"
         :label-visible="true"

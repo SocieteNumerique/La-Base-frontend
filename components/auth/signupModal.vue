@@ -93,7 +93,6 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/userStore"
 import { useLoadingStore } from "~/stores/loadingStore"
-import { DsfrCheckbox, DsfrInputGroup, DsfrModal } from "@laruiss/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"
 import { Tag } from "~/composables/types"
 
