@@ -93,8 +93,6 @@
         @close="showOwnBaseModal = false"
       >
         <BaseSelector v-model="ownSelectedBase" label="Créditer la base" />
-        <h2 class="fr-h4">Ou</h2>
-        <p></p>
       </DsfrModal>
       <DsfrModal
         v-if="showExternalProducersModal"

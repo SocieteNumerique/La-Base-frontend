@@ -2,10 +2,19 @@
   <div>
     <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
       <div class="fr-container">
-        <h1 style="max-width: 800px">{{ resource?.title }}</h1>
+        <h1 style="max-width: 800px" class="fr-mb-7w">{{ resource?.title }}</h1>
         <div class="has-children-space-between">
-          <div>Fiche créée par {{ resource?.rootBaseTitle }}</div>
-          <div class="is-flex">
+          <div>
+            Fiche créée par
+            <NuxtLink
+              :to="'/base/' + resource?.rootBase"
+              class="fr-text-label--blue-france"
+              style="background: none"
+            >
+              {{ resource?.rootBaseTitle }}
+            </NuxtLink>
+          </div>
+          <div class="is-flex fr-text--sm">
             <div>Fiche créée le {{ $date(resource?.created) }}</div>
             <div class="fr-ml-4w">
               Fiche modifiée le {{ $date(resource?.modified) }}
@@ -42,26 +51,45 @@
 
     <div class="fr-container fr-mt-2w">
       <div class="fr-mb-11v">
-        <div class="is-flex" style="align-items: center">
-          <ShareButton :link="route.fullPath">
-            <RoundButton icon="ri-share-line" label="Partager" />
-          </ShareButton>
+        <div
+          class="is-flex"
+          style="align-items: center; justify-content: space-between"
+        >
+          <div class="is-flex" style="align-items: center">
+            <ShareButton :link="route.fullPath">
+              <RoundButton icon="ri-share-line" label="Partager" />
+            </ShareButton>
 
-          <!-- TODO re-add these -->
-          <template v-if="false">
-            <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
-            <RoundButton icon="ri-download-line" label="Télécharger" disabled />
-            <RoundButton icon="ri-share-line" label="Signaler" disabled />
-          </template>
+            <!-- TODO re-add these -->
+            <template v-if="false">
+              <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
+              <RoundButton
+                icon="ri-download-line"
+                label="Télécharger"
+                disabled
+              />
+              <RoundButton icon="ri-share-line" label="Signaler" disabled />
+            </template>
+          </div>
 
-          <PinMenu
-            v-if="resource"
-            v-model="resource.basesPinnedIn"
-            :instance-id="resource?.id"
-            :root-base-id="resource?.rootBase"
-            class="fr-ml-auto"
-            instance-type="resource"
-          />
+          <div class="is-flex" style="align-items: center">
+            <NuxtLink
+              v-if="resource?.canWrite"
+              :to="editionLink"
+              style="background: none"
+            >
+              <DsfrButton label="Éditer" class="fr-btn--sm" secondary />
+            </NuxtLink>
+
+            <PinMenu
+              v-if="resource"
+              v-model="resource.basesPinnedIn"
+              :instance-id="resource?.id"
+              :root-base-id="resource?.rootBase"
+              class="fr-ml-2w"
+              instance-type="resource"
+            />
+          </div>
         </div>
         <div
           style="border-bottom: 1px solid var(--border-default-grey)"
@@ -109,13 +137,13 @@
           </div>
           <div id="intersectionRoot" class="fr-col-9">
             <div id="informations">
-              <h2 class="">Informations</h2>
-              <h3 class="fr-h5">Général</h3>
-              <div class="fr-grid-row">
+              <h2 class="fr-mb-11v">Informations</h2>
+              <h3 class="fr-h5 fr-mb-9v">Général</h3>
+              <div class="fr-grid-row" style="justify-content: space-between">
                 <div class="fr-col-8" style="white-space: pre-line">
                   {{ resource?.description }}
                 </div>
-                <div class="fr-col-4">
+                <div class="fr-col-3">
                   <p class="fr-text--bold fr-mb-0">
                     Date de création de la ressource
                   </p>
@@ -123,7 +151,7 @@
                 </div>
               </div>
 
-              <h3 class="fr-h5">Indexation</h3>
+              <h3 class="fr-h5 fr-mb-9v">Indexation</h3>
               <IndexTable
                 v-if="resource && !resource.isShort"
                 :tag-categories="tagStore.categories"
@@ -148,6 +176,7 @@ import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
 import { useTagStore } from "~/stores/tagStore"
 import { getResourceIfNotExists } from "~/composables/resource"
+import { DsfrButton } from "@laruiss/vue-dsfr"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
@@ -157,6 +186,9 @@ const resourceStore = useResourceStore()
 const route = useRoute()
 
 const activeMenu = ref("informations")
+const editionLink = computed(
+  () => `/ressource/${resourceStore.currentId}/edition`
+)
 
 const selectMenu = (key: string) => {
   activeMenu.value = key
@@ -220,13 +252,7 @@ onBeforeMount(async () => {
     }
 
     const observer = new IntersectionObserver(handleIntersect, options)
-    const sections = [
-      "informations",
-      "resource",
-      "sources",
-      "evaluations",
-      "reports",
-    ]
+    const sections = ["informations", "resource"]
     sections.forEach((el: string) => {
       console.log("### observing", el)
       observer.observe(document.getElementById(el)!)

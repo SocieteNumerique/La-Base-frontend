@@ -35,11 +35,15 @@ const tagsForCategory = computed(
 )
 </script>
 
-<style>
+<style scoped>
 th,
 td,
 tr,
 tbody {
   background: none !important;
+}
+th,
+td {
+  padding: 10px;
 }
 </style>

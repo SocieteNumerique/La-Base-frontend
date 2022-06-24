@@ -10,7 +10,7 @@
         :small="true"
       />
     </div>
-    <NuxtLink :to="`/ressource/${resource.id}/edition`" class="no-underline">
+    <NuxtLink :to="`/ressource/${resource.id}`" class="no-underline">
       <div
         :class="resource.isLabeled ? 'green-bg' : 'grey-bg'"
         class="bordered fr-p-2w"
