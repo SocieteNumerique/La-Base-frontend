@@ -5,7 +5,11 @@
         <div class="fr-footer__brand fr-enlarge-link">
           <LayoutLogo />
         </div>
-        <img class="fr-ml-6w" src="assets/logos/FranceRelance.png" />
+        <img
+          alt="logo du site"
+          class="fr-ml-6w"
+          src="/logos/FranceRelance.png"
+        />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
             Cette base regroupent les ressources des professionnels du secteur
