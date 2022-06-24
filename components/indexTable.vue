@@ -2,7 +2,7 @@
   <div class="fr-table fr-table--bordered">
     <table>
       <tbody>
-        <tr v-for="category in props.tagCategories" :key="category.id">
+        <tr v-for="category in categories" :key="category.id">
           <th>{{ category.name }}</th>
           <td><DsfrTags :tags="tagsForCategory(category, props.element)" /></td>
         </tr>
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue"
+import { computed, PropType } from "vue"
 import { Resource, TagCategory } from "~/composables/types"
 import { DsfrTags } from "@laruiss/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"
@@ -31,6 +31,12 @@ const tagsForCategory = computed(
       .filter((tag) => tag?.category === category.id)
       .map((tag) => ({ label: tag.name }))
   }
+)
+
+const categories = computed(() =>
+  props.tagCategories.filter(
+    (category) => tagsForCategory.value(category, props.element).length
+  )
 )
 </script>
 
