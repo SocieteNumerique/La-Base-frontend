@@ -3,7 +3,7 @@
     <div class="fr-header__body">
       <div class="fr-container">
         <div class="fr-header__body-row">
-          <NuxtLink to="/"><DsfrLogo :logo-text="logoTitle" /></NuxtLink>
+          <LayoutLogo class="fr-ml-3w" />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">

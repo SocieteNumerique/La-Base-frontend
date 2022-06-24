@@ -1,10 +1,77 @@
 <template>
-  <DsfrFooter
-    :logo-text="['Les bases de la médiation ', 'et de l’inclusion numérique']"
-    a11y-compliance="partiellement conforme"
-    desc-text="référencer, découvrir, partager des outils pour l'inclusion numérique"
-    home-link="/"
-  />
+  <footer id="footer" class="fr-footer" role="contentinfo">
+    <div class="fr-container">
+      <div class="fr-footer__body">
+        <div class="fr-footer__brand fr-enlarge-link">
+          <LayoutLogo />
+        </div>
+        <img class="fr-ml-6w" src="assets/logos/FranceRelance.png" />
+        <div class="fr-footer__content">
+          <p class="fr-footer__content-desc">
+            Cette base regroupent les ressources des professionnels du secteur
+            de l’inclusion et de la médiation numérique.
+          </p>
+          <ul class="fr-footer__content-list">
+            <li class="fr-footer__content-item">
+              <a
+                class="fr-footer__content-link"
+                href="https://legifrance.gouv.fr"
+                >legifrance.gouv.fr</a
+              >
+            </li>
+            <li class="fr-footer__content-item">
+              <a class="fr-footer__content-link" href="https://gouvernement.fr"
+                >gouvernement.fr</a
+              >
+            </li>
+            <li class="fr-footer__content-item">
+              <a
+                class="fr-footer__content-link"
+                href="https://service-public.fr"
+                >service-public.fr</a
+              >
+            </li>
+            <li class="fr-footer__content-item">
+              <a class="fr-footer__content-link" href="https://data.gouv.fr"
+                >data.gouv.fr</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="fr-footer__bottom">
+        <ul class="fr-footer__bottom-list">
+          <li class="fr-footer__bottom-item">
+            <a class="fr-footer__bottom-link" href="#">Plan du site</a>
+          </li>
+          <li class="fr-footer__bottom-item">
+            <a class="fr-footer__bottom-link" href="#"
+              >Accessibilité: partiellement</a
+            >
+          </li>
+          <li class="fr-footer__bottom-item">
+            <a class="fr-footer__bottom-link" href="#">Mentions légales</a>
+          </li>
+          <li class="fr-footer__bottom-item">
+            <a class="fr-footer__bottom-link" href="#">Données personnelles</a>
+          </li>
+          <li class="fr-footer__bottom-item">
+            <a class="fr-footer__bottom-link" href="#">Gestion des cookies</a>
+          </li>
+        </ul>
+        <div class="fr-footer__bottom-copy">
+          <p>
+            Sauf mention contraire, tous les contenus de ce site sont sous
+            <a
+              href="https://github.com/etalab/licence-ouverte/blob/master/LO.md"
+              target="_blank"
+              >licence etalab-2.0</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <style lang="sass">

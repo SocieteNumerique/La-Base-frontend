@@ -1,5 +1,5 @@
 <template>
-  <div data-fr-theme>
+  <div class="nuxt-body" data-fr-theme>
     <LayoutHeader />
     <slot name="header">
       <div class="fr-container fr-mt-4w">
@@ -53,3 +53,13 @@ const closeAlert = (alertId: string) => {
   alertStore.removeAlert(alertId)
 }
 </script>
+
+<style lang="sass">
+.nuxt-body
+  display: flex
+  flex-flow: column
+  min-height: 100vh
+
+  footer
+    margin-top: auto
+</style>
