@@ -59,24 +59,6 @@ export const navigationMenus: Menu[] = [
         name: "Administration",
         description: "Description du Administration",
       },
-      {
-        key: "comments",
-        name: "Commentaires",
-        description: "Description du Commentaires",
-        disabled: true,
-      },
-      {
-        key: "assessments",
-        name: "Évaluations",
-        disabled: true,
-        description: "Description du Évaluations",
-      },
-      {
-        key: "reports",
-        name: "Signalement",
-        disabled: true,
-        description: "Description du Signalement",
-      },
     ],
   },
 ]

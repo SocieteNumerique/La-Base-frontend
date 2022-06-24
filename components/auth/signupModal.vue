@@ -1,74 +1,90 @@
 <template>
   <DsfrModal
     :actions="actions"
-    title="Créer un compte"
+    :title="title"
     :opened="true"
     @close="emit('close')"
   >
     <div class="is-flex flex-center">
       <div class="sm-container">
-        <DsfrInputGroup
-          :error-message="emailErrorMessage"
-          :is-invalid="!isMailValid"
-          :label-visible="true"
-          :model-value="email"
-          label="Courriel"
-          placeholder="jean@fournisseur.fr"
-          style="margin-bottom: 16px"
-          @update:model-value="onEmailUpdate"
-        />
-        <DsfrInputGroup
-          :error-message="firstNameErrorMessage"
-          :is-invalid="!isFirstNameValid"
-          :label-visible="true"
-          :model-value="firstName"
-          label="Prénom"
-          placeholder="Michel"
-          type="type"
-          style="margin-bottom: 16px"
-          @update:model-value="firstNameUpdate"
-        />
-        <DsfrInputGroup
-          :error-message="lastNameErrorMessage"
-          :is-invalid="!isLastNameValid"
-          :label-visible="true"
-          :model-value="lastName"
-          label="Nom"
-          placeholder="Dupont"
-          type="type"
-          style="margin-bottom: 16px"
-          @update:model-value="lastNameUpdate"
-        />
-        <DsfrInputGroup
-          :error-message="passwordErrorMessage"
-          :is-invalid="!isPasswordValid"
-          :label-visible="true"
-          :model-value="password"
-          label="Mot de passe"
-          placeholder="******"
-          type="password"
-          style="margin-bottom: 16px"
-          @update:model-value="onPasswordUpdate"
-        />
-        <DsfrInputGroup
-          :error-message="passwordConfirmationErrorMessage"
-          :is-invalid="!isPasswordConfirmationValid"
-          :label-visible="true"
-          :model-value="passwordConfirmation"
-          label="Confirmation du mot de passe"
-          placeholder="******"
-          type="password"
-          style="margin-bottom: 16px"
-          @update:model-value="onPasswordConfirmationUpdate"
-        />
-        <TagSelector
-          :is-focused="focusedCategory === categoryName"
-          :category="tagStore.categoryBySlug('externalProducer_00occupation')"
-          source="own"
-          @focus="focusCategory(categoryName)"
-          @blur="focusCategory('')"
-          @change="onTagsChange"
-        />
+        <template v-if="step === 'creation'">
+          <DsfrInputGroup
+            :error-message="emailErrorMessage"
+            :is-invalid="!isMailValid"
+            :label-visible="true"
+            :model-value="email"
+            label="Courriel"
+            placeholder="jean@fournisseur.fr"
+            style="margin-bottom: 16px"
+            @update:model-value="onEmailUpdate"
+          />
+          <DsfrInputGroup
+            :error-message="firstNameErrorMessage"
+            :is-invalid="!isFirstNameValid"
+            :label-visible="true"
+            :model-value="firstName"
+            label="Prénom"
+            placeholder="Michel"
+            type="type"
+            style="margin-bottom: 16px"
+            @update:model-value="firstNameUpdate"
+          />
+          <DsfrInputGroup
+            :error-message="lastNameErrorMessage"
+            :is-invalid="!isLastNameValid"
+            :label-visible="true"
+            :model-value="lastName"
+            label="Nom"
+            placeholder="Dupont"
+            type="type"
+            style="margin-bottom: 16px"
+            @update:model-value="lastNameUpdate"
+          />
+          <DsfrInputGroup
+            :error-message="passwordErrorMessage"
+            :is-invalid="!isPasswordValid"
+            :label-visible="true"
+            :model-value="password"
+            label="Mot de passe"
+            placeholder="******"
+            type="password"
+            style="margin-bottom: 16px"
+            @update:model-value="onPasswordUpdate"
+          />
+          <DsfrInputGroup
+            :error-message="passwordConfirmationErrorMessage"
+            :is-invalid="!isPasswordConfirmationValid"
+            :label-visible="true"
+            :model-value="passwordConfirmation"
+            label="Confirmation du mot de passe"
+            placeholder="******"
+            type="password"
+            style="margin-bottom: 16px"
+            @update:model-value="onPasswordConfirmationUpdate"
+          />
+          <TagSelector
+            :is-focused="focusedCategory === 'general_00participantType'"
+            :category="tagStore.categoryBySlug('general_00participantType')"
+            source="own"
+            @focus="focusCategory('general_00participantType')"
+            @blur="focusCategory('')"
+            @change="onParticipantTagsChange"
+          />
+          <TagSelector
+            :is-focused="focusedCategory === 'territory_00city'"
+            :category="tagStore.categoryBySlug('territory_00city')"
+            source="own"
+            @focus="focusCategory('territory_00city')"
+            @blur="focusCategory('')"
+            @change="onTerritoryTagsChange"
+          />
+        </template>
+        <template v-else>
+          <div>
+            <UserPolicyContent />
+          </div>
+          <DsfrCheckbox v-model="isPolicyChecked" :label="checkboxLabel" />
+        </template>
       </div>
     </div>
   </DsfrModal>
@@ -77,20 +93,37 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/userStore"
 import { useLoadingStore } from "~/stores/loadingStore"
-import { DsfrInputGroup, DsfrModal } from "@laruiss/vue-dsfr"
+import { DsfrCheckbox, DsfrInputGroup, DsfrModal } from "@laruiss/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"
 import { Tag } from "~/composables/types"
+import { policyContent } from "~/composables/policyContent"
 
 const emit = defineEmits(["close"])
 const tagStore = useTagStore()
+const step = ref("creation")
+const isPolicyChecked = ref(false)
+
+const title = computed(() =>
+  step.value === "creation"
+    ? "Créer un compte"
+    : "Accepter la charte de la base"
+)
 
 // tags handling
 const focusedCategory = ref("")
-const selectedTags = ref<number[]>([])
-const categoryName = "externalProducer_00occupation"
+const participantSelectedTags = ref<number[]>([])
+const territorySelectedTags = ref<number[]>([])
+const selectedTags = computed(() => [
+  ...participantSelectedTags.value,
+  ...territorySelectedTags.value,
+])
 const focusCategory = (category: string) => (focusedCategory.value = category)
-const onTagsChange = (tags: Tag[]) =>
-  (selectedTags.value = tags.map((tag) => tag.id))
+const onParticipantTagsChange = (tags: Tag[]) => {
+  participantSelectedTags.value = tags.map((tag) => tag.id)
+}
+const onTerritoryTagsChange = (tags: Tag[]) => {
+  territorySelectedTags.value = tags.map((tag) => tag.id)
+}
 
 // form handling
 const email = ref("")
@@ -111,14 +144,34 @@ const lastName = ref("")
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 
-const actions = computed(() => [
-  {
-    label: "Créer mon compte",
-    onClick: submit,
-    disabled: !isFormValid.value || loadingStore.isLoading("authLogin"),
-  },
-  { label: "Annuler", onClick: () => emit("close"), secondary: true },
-])
+const checkboxLabel =
+  "En m'inscrivant, j'accepte les conditions d'utilisation et je m'engage à respecter les cadres juridiques (conditions d'utilisation et de partage notamment) associés à chaque ressource."
+
+const actions = computed(() => {
+  if (step.value === "creation") {
+    return [
+      {
+        label: "Créer mon compte",
+        onClick: () => (step.value = "policy"),
+        disabled: !isFormValid.value || loadingStore.isLoading("authLogin"),
+      },
+      { label: "Annuler", onClick: () => emit("close"), secondary: true },
+    ]
+  } else {
+    return [
+      {
+        label: "OK",
+        onClick: submit,
+        disabled: !isPolicyChecked.value,
+      },
+      {
+        label: "Retour",
+        onClick: () => (step.value = "creation"),
+        secondary: true,
+      },
+    ]
+  }
+})
 
 const onEmailUpdate = (value: string) => {
   isEmailUntouched.value = false

@@ -5,15 +5,15 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { onBeforeUnmount, onMounted } from "vue"
-import { useMainStore } from "~/stores/mainStore"
+import { useFullWidth } from "~/composables/useFullWidth"
 import { useAlertStore } from "~/stores/alertStore"
+import { getResourceIfNotExists } from "~/composables/resource"
 
 definePageMeta({
   layout: "resourceedition",
   title: "Ressource",
 })
 const resourceStore = useResourceStore()
-const mainStore = useMainStore()
 const alertStore = useAlertStore()
 const router = useRouter()
 
@@ -25,17 +25,12 @@ function onBeforeUnload(ev: Event) {
   }
 }
 
-if (process.server) {
-  mainStore.useFullWidthLayout = true
-} else {
-  onMounted(() => {
-    window.addEventListener("beforeunload", onBeforeUnload)
-    mainStore.useFullWidthLayout = true
-  })
-}
+useFullWidth()
+onMounted(() => {
+  window.addEventListener("beforeunload", onBeforeUnload)
+})
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", onBeforeUnload)
-  mainStore.useFullWidthLayout = false
 })
 
 if (process.server) {

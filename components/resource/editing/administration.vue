@@ -1,8 +1,7 @@
 <template>
   <div>
-    <DsfrCallout
-      title="Attention"
-      content="Ce changement - une fois sauvegardé - est définitif. Les utilisateurs n'ayant pas accès à la base à laquelle vous transférer l'administration n'auront plus accès à l'édition de cette ressource."
+    <DsfrHighlight
+      text="Attention : ce changement - une fois sauvegardé - est définitif. Les utilisateurs n'ayant pas accès à la base à laquelle vous transférer l'administration n'auront plus accès à l'édition de cette ressource."
     />
     <BaseSelector
       v-model="selectedBase"
@@ -14,7 +13,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
 import { useResourceStore } from "~/stores/resourceStore"
-import { DsfrCallout } from "@laruiss/vue-dsfr"
 
 const resourceStore = useResourceStore()
 

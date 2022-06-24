@@ -2,10 +2,9 @@
   <div>
     <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
       <div class="fr-container">
-        <div>Recommandations</div>
         <h1 style="max-width: 800px">{{ resource?.title }}</h1>
         <div class="has-children-space-between">
-          <div>Fiche créée par ...</div>
+          <div>Fiche créée par {{ resource?.rootBaseTitle }}</div>
           <div class="is-flex">
             <div>Fiche créée le {{ $date(resource?.created) }}</div>
             <div class="fr-ml-4w">
@@ -13,11 +12,13 @@
             </div>
           </div>
         </div>
+        <!-- TODO re-add this and next div -->
         <div
+          v-if="false"
           style="border-bottom: 1px solid var(--border-default-grey)"
           class="fr-my-3w"
         ></div>
-        <div class="has-children-space-between">
+        <div v-if="false" class="has-children-space-between">
           <div class="is-flex">
             <div class="stat">
               <span class="fr-h5">45</span>
@@ -39,15 +40,20 @@
       </div>
     </div>
 
-    <div class="fr-container fr-mt-4w">
+    <div class="fr-container fr-mt-2w">
       <div class="fr-mb-11v">
-        <div class="is-flex">
+        <div class="is-flex" style="align-items: center">
           <ShareButton :link="route.fullPath">
             <RoundButton icon="ri-share-line" label="Partager" />
           </ShareButton>
-          <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
-          <RoundButton icon="ri-download-line" label="Télécharger" disabled />
-          <RoundButton icon="ri-share-line" label="Signaler" disabled />
+
+          <!-- TODO re-add these -->
+          <template v-if="false">
+            <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
+            <RoundButton icon="ri-download-line" label="Télécharger" disabled />
+            <RoundButton icon="ri-share-line" label="Signaler" disabled />
+          </template>
+
           <PinMenu
             v-if="resource"
             v-model="resource.basesPinnedIn"
@@ -59,7 +65,7 @@
         </div>
         <div
           style="border-bottom: 1px solid var(--border-default-grey)"
-          class="fr-my-3w"
+          class="fr-mt-1w fr-mb-5w"
         ></div>
         <div class="fr-grid-row">
           <div class="fr-col-3">
@@ -110,13 +116,10 @@
                   {{ resource?.description }}
                 </div>
                 <div class="fr-col-4">
-                  <p class="fr-text--bold">Date de création de la ressource</p>
-                  <p>?</p>
-                  <p class="fr-text--bold">Crédits de la ressource</p>
-                  <p>
-                    Base 1 <br />
-                    Base 2
+                  <p class="fr-text--bold fr-mb-0">
+                    Date de création de la ressource
                   </p>
+                  <p>{{ resource?.resourceCreatedOn }}</p>
                 </div>
               </div>
 
@@ -131,24 +134,6 @@
               <h2>Ressource</h2>
               <ResourceContents />
             </div>
-            <div id="sources">
-              <h2 class="fr-text--disabled">Source</h2>
-              <p class="fr-text--disabled">
-                Fonctionnalité en cours de développement
-              </p>
-            </div>
-            <div id="evaluations">
-              <h2 class="fr-text--disabled">Évaluations</h2>
-              <p class="fr-text--disabled">
-                Fonctionnalité en cours de développement
-              </p>
-            </div>
-            <div id="reports">
-              <h2 class="fr-text--disabled">Signalements</h2>
-              <p class="fr-text--disabled">
-                Fonctionnalité en cours de développement
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -162,6 +147,7 @@ import { computed, onBeforeMount } from "vue"
 import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
 import { useTagStore } from "~/stores/tagStore"
+import { getResourceIfNotExists } from "~/composables/resource"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
@@ -188,22 +174,6 @@ const navigationMenus = [
   {
     key: "resource",
     name: "Ressource",
-  },
-  {
-    key: "sources",
-    name: "Sources",
-  },
-  {
-    key: "label",
-    name: "Label",
-  },
-  {
-    key: "evaluations",
-    name: "Évaluation",
-  },
-  {
-    key: "reports",
-    name: "Signalements",
   },
 ]
 

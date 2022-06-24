@@ -11,7 +11,9 @@
     />
     <div v-if="!canGoPublicOnMounted">
       <div v-if="!canGoPublic" class="fr-alert fr-alert--info">
-        <p class="fr-alert__title">La ressource ne peut pas être publiée</p>
+        <p class="fr-alert__title">
+          La ressource ne peut être publiée en public
+        </p>
         <p>
           Pour passer la ressource en public, il manque les informations
           suivantes :
@@ -100,10 +102,6 @@ const options = computed(() => {
       label: "Privé",
       value: "private",
     },
-    /*{
-      label: "Restreint",
-      value: "restricted",
-    },*/
     {
       label: "Brouillon",
       value: "draft",
