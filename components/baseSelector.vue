@@ -3,7 +3,7 @@
     v-model="selectedBase"
     :required="true"
     :label="props.label"
-    :options="baseStore.baseOptions"
+    :options="options"
     :description="props.description"
   />
 </template>
@@ -25,4 +25,9 @@ const baseStore = useBaseStore()
 onMounted(() => {
   selectedBase.value = (baseStore.baseOptions[0] || {}).id
 })
+
+const options = baseStore.baseOptions.map(({ id, title }) => ({
+  value: id,
+  text: title,
+}))
 </script>

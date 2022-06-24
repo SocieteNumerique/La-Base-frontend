@@ -20,7 +20,7 @@ const diameters = {
 }
 
 const style = {
-  background: props.imageUrl
+  "background-image": props.imageUrl
     ? `url('${props.imageUrl}')`
     : "var(--background-default-grey)",
   "--diameter": diameters[props.size],
@@ -37,4 +37,6 @@ const style = {
   /* light/background/contrast-info */
   border: 0.847059px solid #E8EDFF
   border-radius: 847.059px
+  background-position: center
+  background-size: cover
 </style>
