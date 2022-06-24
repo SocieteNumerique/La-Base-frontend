@@ -5,6 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import { DsfrModal } from "@laruiss/vue-dsfr"
 const emit = defineEmits(["close"])
 </script>

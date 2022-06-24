@@ -1,6 +1,6 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-grid-row--right fr-p-2w">
+    <div class="fr-grid-row fr-grid-row--right fr-p-2w toolbar">
       <ShareButton :link="link" class="fr-mr-3w" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
@@ -9,7 +9,10 @@
       </div>
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">{{ base.title }}</h3>
-        <div class="separator fr-my-1w" />
+        <div
+          v-if="participantTypes.length || territory.length"
+          class="separator fr-my-1w"
+        />
         <DsfrTags
           v-if="participantTypes.length"
           :tags="participantTypes"
@@ -55,8 +58,7 @@ const territory = computed<string>(() =>
 <style lang="sass" scoped>
 .miniature-container
   width: 384px
-  height: 354px
-  // 406px with stats
+
   .banner
     height: 116px
     background-color: var(--background-default-grey-active)
@@ -64,4 +66,7 @@ const territory = computed<string>(() =>
   .link-container
     display: flex
     flex-direction: column
+
+  .toolbar
+    border-bottom: 1px solid var(--grey-975-75-active)
 </style>

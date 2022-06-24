@@ -115,7 +115,7 @@ const base = ref<Base | BaseCreate>(
     : { ...baseStore.current }
 )
 
-const participantTypeCategoryName = "general_00participantType"
+const participantTypeCategoryName = "externalProducer_00occupation"
 const territoryCategoryName = "territory_00city"
 const participantTags = ref<Tag[]>(
   base.value?.participantTypeTags?.map((id: number) => tagStore.tagsById[id]) ||
