@@ -145,6 +145,7 @@
       v-if="showPreview"
       class="full-width-modal"
       style="width: 100%"
+      title=""
       :opened="true"
       @close="showPreview = false"
     >

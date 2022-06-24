@@ -148,7 +148,7 @@ const emits = defineEmits([
   "delete-section",
   "auto-delete-section",
   "new-adhoc-section",
-  "update:editing-content",
+  "update:editingContent",
   "reload-contents",
 ])
 
@@ -209,10 +209,15 @@ function findAnonymousNeighbour(sectionIndex: number): {
   found: boolean
   insertFunction?: any
 } {
-  if (sectionIndex > 0 && !contentsBySection.value[sectionIndex - 1].isFoldable)
+  if (
+    sectionIndex > 0 &&
+    !contentsBySection.value[sectionIndex - 1]?.isFoldable
+  )
     return {
       found: true,
-      insertFunction: contentsBySection.value[sectionIndex - 1].contents.push,
+      insertFunction: (elt: Content) => {
+        contentsBySection.value[sectionIndex - 1].contents.push(elt)
+      },
     }
   if (
     sectionIndex + 1 < contentsBySection.value.length &&

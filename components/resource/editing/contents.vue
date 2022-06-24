@@ -5,33 +5,32 @@
       v-model="isGridView"
       :is-editing-mode="true"
       class="fr-mb-3w"
-      @update:model-value="currentlyEditingContentId = null"
     />
     <ContentListEdit
       v-show="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
       v-model:editing-content="currentlyEditingContentId"
       @delete-content="onDeleteContent"
-      @delete-section="onDeleteSection"
+      @delete-section="onDeleteSection($event, true)"
+      @auto-delete-section="onDeleteSection"
       @new-solo-content="newSoloContentInTheEnd"
       @new-section="newSection"
       @new-content-in-section="newContentInSection"
       @new-adhoc-section="createAdHocSectionForContent"
       @reload-contents="reloadContents"
     />
-    <client-only>
-      <ContentGridEdit
-        v-if="isGridView && isGridViewEnabled"
-        v-model="contentsBySection"
-        v-model:editing-content="currentlyEditingContentId"
-        @delete-content="onDeleteContent"
-        @delete-section="onDeleteSection"
-        @new-solo-content="newSoloContentInTheEnd"
-        @new-section="newSection"
-        @new-content-in-section="newContentInSection"
-        @reload-contents="reloadContents"
-      />
-    </client-only>
+    <ContentGridEdit
+      v-if="isGridView && isGridViewEnabled"
+      v-model="contentsBySection"
+      v-model:editing-content="currentlyEditingContentId"
+      @delete-content="onDeleteContent"
+      @delete-section="onDeleteSection($event, true)"
+      @auto-delete-section="onDeleteSection"
+      @new-solo-content="newSoloContentInTheEnd"
+      @new-section="newSection"
+      @new-content-in-section="newContentInSection"
+      @reload-contents="reloadContents"
+    />
   </div>
 </template>
 
@@ -47,14 +46,17 @@ import {
   deleteContent,
   updateSectionOrder,
   updateContent,
+  checkAndMerge,
 } from "~/composables/contentsHelper"
+import { useAlertStore } from "~/stores/alertStore"
 
 const resourceStore = useResourceStore()
 
 const isGridViewEnabled = computed<boolean>(
   () => resourceStore?.current?.isGridViewEnabled || false
 )
-const isGridView = ref<boolean>(false) // TODO
+const isGridView = ref<boolean>(false)
+watch(isGridView, () => (currentlyEditingContentId.value = null))
 
 const contentsBySection = ref<SectionWithContent[]>(
   (await getResourceContentsBySection(resourceStore.currentId!)) ||
@@ -148,10 +150,13 @@ async function createAdHocSectionForContent({
   )
   let content: any = contentsBySection.value[nextIndex]
 
-  content = await updateContent({
-    id: content!.id,
-    section: newSection!.id,
-  } as any as Content)
+  content = await updateContent(
+    {
+      id: content!.id,
+      section: newSection!.id,
+    } as any as Content,
+    false
+  )
   newSection!.contents.push(content!)
   contentsBySection.value.splice(nextIndex, 1, newSection!)
 
@@ -187,14 +192,16 @@ async function onDeleteContent({
   // TODO display potential error
 }
 
-async function onDeleteSection(index: number) {
+async function onDeleteSection(index: number, showSuccess = false) {
   const id = contentsBySection.value[index].id
-  if (await deleteSection(id, true)) contentsBySection.value.splice(index, 1)
-}
+  const success = await deleteSection(id)
+  if (!success) return
 
-async function onAutoDeleteSection(index: number) {
-  const id = contentsBySection.value[index].id
-  if (await deleteSection(id)) contentsBySection.value.splice(index, 1)
+  contentsBySection.value.splice(index, 1)
+  await checkAndMerge(contentsBySection.value, index)
+  reloadContents()
+  if (success && showSuccess)
+    useAlertStore().alert("La section a bien été supprimée")
 }
 
 async function reloadContents() {

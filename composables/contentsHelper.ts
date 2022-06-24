@@ -98,22 +98,23 @@ export async function checkAndMerge(
   if (sections[indexMoved + 1] && !sections[indexMoved + 1].isFoldable)
     sectionsToConsider.push(indexMoved + 1)
 
-  if (sectionsToConsider.length < 2) return
+  if (sectionsToConsider.length < 2) return true
 
   const mergedContents = []
   for (const sectionIndex of sectionsToConsider)
     mergedContents.push(...sections[sectionIndex].contents)
   const sectionContainerIndex = sectionsToConsider.splice(0, 1)[0]
-  const sectionContainerId = sections[sectionContainerIndex].id
-  console.log({ mergedContents, sectionContainerId })
-  const success = await updateContentOrder(mergedContents, sectionContainerId)
-  if (!success) return
+  const sectionContainer = sections[sectionContainerIndex]
+  const success = await updateContentOrder(mergedContents, sectionContainer.id)
+  if (!success) return false
 
-  await Promise.all(
-    sectionsToConsider
-      .map((toDeleteSectionIndex) => sections[toDeleteSectionIndex].id)
-      .map(async (toDeleteSectionId) => deleteSection(toDeleteSectionId))
-  )
+  return (
+    await Promise.all(
+      sectionsToConsider
+        .map((toDeleteSectionIndex) => sections[toDeleteSectionIndex].id)
+        .map(async (toDeleteSectionId) => deleteSection(toDeleteSectionId))
+    )
+  ).every((deletionSuccess: boolean) => deletionSuccess)
 }
 
 export function findSectionToDeleteIndex(
@@ -201,7 +202,10 @@ export async function updateSection(section: Section) {
   }
 }
 
-export async function deleteSection(id: number, showSuccess = false) {
+export async function deleteSection(
+  id: number,
+  showSuccess = false
+): Promise<boolean> {
   const { error } = await useApiDelete(
     `sections/${id}/`,
     {},
@@ -211,6 +215,7 @@ export async function deleteSection(id: number, showSuccess = false) {
   if (!error.value) {
     return true
   }
+  return false
 }
 
 export const emptyContentBySection: SectionWithContent[] = []

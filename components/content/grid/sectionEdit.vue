@@ -38,7 +38,7 @@
       </div>
       <div class="header-section">
         <h3>{{ section.title }}</h3>
-        <DsfrModal :opened="isEditing" @close="isEditing = false">
+        <DsfrModal :opened="isEditing" title="" @close="isEditing = false">
           <ContentInputSection v-model="section" @exit="isEditing = false" />
         </DsfrModal>
         <button
@@ -235,7 +235,7 @@ async function onDrop(event: DragEvent, contentIndex: number) {
   contents.value[contentIndex] = updatedContent
 }
 
-window.addEventListener("dragover", onDrag)
+if (!process.server) window.addEventListener("dragover", onDrag)
 </script>
 
 <style>

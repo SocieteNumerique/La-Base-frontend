@@ -46,7 +46,6 @@ defineProps({
   modelValue: { type: Boolean, required: true },
   isEditingMode: { type: Boolean, default: false },
 })
-defineEmits(["update:enabled"])
 
 const resourceStore = useResourceStore()
 
