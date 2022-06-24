@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fr-mt-11v">
     <DsfrRadioButtonSet
       v-model="radioValue"
       name="accessRequiresUserAccount"
@@ -7,6 +7,7 @@
       :options="options"
       :required="true"
       legend="L'accès à la ressource nécessite la création d'un compte utilisateur ?"
+      class="fr-text--regular"
       @update:model-value="onChange"
     />
   </div>

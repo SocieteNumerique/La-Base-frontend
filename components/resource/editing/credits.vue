@@ -87,8 +87,8 @@
       </fieldset>
       <DsfrModal
         v-if="showOwnBaseModal"
-        :opened="showOwnBaseModal"
-        :actions="ownBaseModalOptions"
+        opened
+        :actions="ownBaseModalActions"
         title="Je suis producteur"
         @close="showOwnBaseModal = false"
       >
@@ -96,7 +96,7 @@
       </DsfrModal>
       <DsfrModal
         v-if="showExternalProducersModal"
-        :opened="showExternalProducersModal"
+        opened
         :actions="addExternalProducerActions"
         title="Ajouter un producteur"
         @close="onNewExternalProducerModalClose"
@@ -202,7 +202,7 @@ const onExternalProducersAdd = () => {
   resourceStore.markDirty()
   showExternalProducersModal.value = false
 }
-const ownBaseModalOptions = [
+const ownBaseModalActions = [
   {
     label: "Sélectionner",
     onClick: onOwnBaseChose,
@@ -232,6 +232,15 @@ const selectProducer = (producer: string) => {
   }
   if (producer === "know") {
     showExternalProducersModal.value = true
+  }
+
+  // reset values if we've changed something
+  if (producer != "me") {
+    ownSelectedBase.value = -1
+    resourceStore.resourcesById[resourceStore.currentId!].creator = undefined
+  }
+  if (producer != "know") {
+    resourceStore.resourcesById[resourceStore.currentId!].externalProducers = []
   }
 }
 

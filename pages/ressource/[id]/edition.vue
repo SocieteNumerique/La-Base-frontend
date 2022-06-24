@@ -31,6 +31,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", onBeforeUnload)
+  resourceStore.resetNavigation()
 })
 
 if (process.server) {

@@ -145,7 +145,6 @@ export const useResourceStore = defineStore("resource", {
       )
       if (!error.value) {
         const resource = data.value
-        console.log("### got resource", resource, resourceId)
         this.resourcesById[resourceId] = resource
         return resource
       }
@@ -218,6 +217,9 @@ export const useResourceStore = defineStore("resource", {
       }
       resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
       this.markDirty(resourceId)
+    },
+    resetNavigation() {
+      this.navigation = { activeMenu: "informations", activeSubMenu: "general" }
     },
     async save(resourceId: number | undefined = undefined) {
       if (resourceId == null) {
