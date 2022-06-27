@@ -101,12 +101,15 @@
             </ul>
           </div>
         </div>
-        <div class="fr-mt-6w" style="display: flex; flex-direction: column">
+        <div
+          class="fr-mt-6w"
+          style="display: flex; flex-direction: column; max-width: 150px"
+        >
           <DsfrButton
             :secondary="true"
             label="Pré-visualiser"
             icon="ri-eye-line"
-            class="fr-mb-3v"
+            class="fr-mb-3v fr-btn--sm"
             :disabled="false"
             style="width: 100%"
             @click="doShowPreview"
@@ -114,7 +117,7 @@
           <DsfrButton
             label="Sauvegarder"
             icon="ri-save-line"
-            class="fr-mb-3v"
+            class="fr-mb-3v fr-btn--sm"
             @click="save"
           />
           <DsfrButton
@@ -122,6 +125,7 @@
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
+            class="fr-btn--sm"
             @click="ongoingDeletion = true"
           />
           <DsfrModal
