@@ -32,7 +32,7 @@
         </div>
         <div v-if="!userStore.isLoggedIn" class="fr-col-5">
           <p class="fr-mb-0">
-            Pour pouvoir créer une base, renseigner, publier et enregistrer des
+            Pour pouvoir créer une base, renseigner, publier et enregister des
             fiches ressources vous devez bénéficier d’un compte.
           </p>
           <div>
@@ -47,33 +47,43 @@
       </div>
 
       <h2 class="fr-h4">Découvrir</h2>
-      <div class="dataTypeChooserHolder">
-        <div
-          class="dataTypeChooser"
-          :class="dataType === 'resources' ? 'selected' : null"
-          @click="updateDataType('resources')"
-        >
-          <div>
-            <VIcon scale="3" name="ri-file-line" />
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-6">
+          <div
+            class="dataTypeChooser flex-center"
+            :class="dataType === 'resources' ? 'selected' : null"
+            @click="updateDataType('resources')"
+          >
+            <div class="dataTypeIcon">
+              <VIcon scale="3" name="ri-file-line" />
+            </div>
+            <div class="dataTypeContent">
+              <h3 class="fr-h6">Les fiches ressources</h3>
+              <p>
+                Parcourez les fiches ressources créées par les acteurs de la
+                plateforme.
+              </p>
+            </div>
           </div>
-          <h3 class="fr-h6">Les Fiches ressources</h3>
-          <p>
-            Parcourez les fiches ressources créées par les acteurs de la
-            plateforme.
-          </p>
         </div>
-        <div
-          class="dataTypeChooser"
-          :class="dataType === 'bases' ? 'selected' : null"
-          @click="updateDataType('bases')"
-        >
-          <div>
-            <VIcon scale="3" name="ri-file-line" />
+
+        <div class="fr-col-6">
+          <div
+            class="dataTypeChooser flex-center"
+            :class="dataType === 'bases' ? 'selected' : null"
+            @click="updateDataType('bases')"
+          >
+            <div class="dataTypeIcon">
+              <img alt="Logo du site" class="fr-mr-5v" src="/logos/main.svg" />
+            </div>
+            <div class="dataTypeContent">
+              <h3 class="fr-h6">Les bases</h3>
+              <p>
+                Parcourez les bases des acteurs de la plateforme et leurs
+                contenus.
+              </p>
+            </div>
           </div>
-          <h3 class="fr-h6">Les bases</h3>
-          <p>
-            Parcourez les bases des acteurs de la plateforme et leurs contenus.
-          </p>
         </div>
       </div>
     </div>
@@ -313,24 +323,23 @@ const onCurrentPageChange = (page: number) => {
 </script>
 
 <style scoped lang="sass">
-.dataTypeChooserHolder
-  display: flex
-
 .dataTypeChooser
+  display: flex
   cursor: pointer
   text-align: center
   border: 1px solid #CECECE
-  padding: 24px 8px 0px 8px
   &.selected
     background: #F5F5FE
     box-shadow: inset 0 0-2px 0 var(--border-action-high-blue-france)
-    border: 1px solid #F5F5FE
-  width: 383px
+    border: 1px solid transparent
   &:hover
     border-color: var(--text-title-blue-france)
 
-.dataTypeChooser + .dataTypeChooser
-  margin-left: 24px
+.dataTypeIcon
+  padding: 65px
+
+.dataTypeContent
+  padding-right: 65px
 
 .dropdown-holder
   display: flex
