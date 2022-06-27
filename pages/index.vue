@@ -4,7 +4,7 @@
       <div style="background: #e8edff" class="fr-py-4w">
         <div class="fr-container">
           <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
-            Bienvenue sur la Base du numérique d’intérêt général
+            Bienvenue sur La Base du numérique d’intérêt général
           </h1>
         </div>
       </div>
@@ -55,7 +55,11 @@
             @click="updateDataType('resources')"
           >
             <div class="dataTypeIcon">
-              <VIcon scale="3" name="ri-file-line" />
+              <img
+                alt="Chercher des ressources"
+                class="fr-mr-5v"
+                src="/img/home/ressources.svg"
+              />
             </div>
             <div class="dataTypeContent">
               <h3 class="fr-h6">Les fiches ressources</h3>
@@ -74,7 +78,11 @@
             @click="updateDataType('bases')"
           >
             <div class="dataTypeIcon">
-              <img alt="Logo du site" class="fr-mr-5v" src="/logos/main.svg" />
+              <img
+                alt="Chercher des bases"
+                class="fr-mr-5v"
+                src="/img/home/bases.svg"
+              />
             </div>
             <div class="dataTypeContent">
               <h3 class="fr-h6">Les bases</h3>
@@ -340,6 +348,7 @@ const onCurrentPageChange = (page: number) => {
 
 .dataTypeContent
   padding-right: 65px
+  text-align: left
 
 .dropdown-holder
   display: flex
