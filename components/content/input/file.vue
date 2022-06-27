@@ -15,6 +15,17 @@
     placeholder="Légende"
     maxlength="280"
   />
+  <div v-if="content.file?.link" class="fr-mt-2w">
+    <a
+      :href="content.file?.link"
+      class="no-underline no-append-ico"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <VIcon name="ri-file-line" />
+      {{ content.file?.name }}
+    </a>
+  </div>
   <DsfrFileUpload
     :id="inputId"
     ref="inputContainer"
