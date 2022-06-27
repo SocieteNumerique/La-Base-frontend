@@ -9,7 +9,7 @@
           alt="logo du site"
           class="fr-ml-6w"
           style="width: 88px; height: 88px"
-          src="/logos/france%20relance.jpg"
+          src="/logos/france_relance.jpg"
         />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
