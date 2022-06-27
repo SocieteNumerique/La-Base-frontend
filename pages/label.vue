@@ -73,20 +73,10 @@
         >
       </li>
     </ul>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ee1e1b92-c629-49c9-8dc4-767f6ed89753/Frame_1663.png"
-        alt="Frame 1663.png"
-      />
-    </p>
+    <p><img src="/img/label/img1.png" alt="" /></p>
     <p><strong>Quels sont les critères du label ?</strong></p>
     <p>Peut être labellisé un dispositif ...</p>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9dec7640-e822-4ccb-9a6d-e76dde42b303/Frame_1665.png"
-        alt="Frame 1665.png"
-      />
-    </p>
+    <p><img src="/img/label/img2.png" alt="" /></p>
     <h3 id="apports-et-engagements-li-s-au-label">
       Apports et engagements liés au label
     </h3>
@@ -155,28 +145,16 @@
       2).
     </p>
     <p><strong>Pour un dispositif numérique</strong></p>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/acad5563-0aee-45da-87f2-17456afcd8ab/Tableau_-_Complet_0.png"
-        alt="Tableau - Complet 0.png"
-      />
-    </p>
+    <p><img src="/img/label/img3.png" alt="" /></p>
     <p><strong>Pour un dispositif tangible (physique)</strong></p>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bf8e5cfe-91c0-491b-b33a-780da0895e1c/Tableau_-_Complet-1.png"
-        alt="Tableau - Complet-1.png"
-      />
-    </p>
+    <p><img src="/img/label/img4.png" alt="" /></p>
     <p><strong>Pour un dispositif méthodologique (ingénierie)</strong></p>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d94578a3-9117-4bef-9698-0a25ef742e3b/Tableau_-_Complet-2.png"
-        alt="Tableau - Complet-2.png"
-      />
-    </p>
+    <p><img src="/img/label/img5.png" alt="" /></p>
     <p><strong>Etape 2 – Demande de labellisation à l’ANCT</strong></p>
-    <p>Vous pouvez candidater via <a href="">ce lien</a> .</p>
+    <p>
+      Vous pouvez candidater via
+      <a href="https://tripetto.app/run/FQ5DYIXR3J">ce lien</a> .
+    </p>
     <p>
       Les pièces justificatives pour votre labellisation vous seront demandées
       dans ce formulaire (voir les preuves demandées dans les grilles figurant à
@@ -192,11 +170,12 @@
       accompagnement pour vous permettre d’améliorer l’atteinte d’un ou
       plusieurs critère(s) de labellisation.
     </p>
-    <p>
-      <img
-        src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f68a61a0-7f9f-4fd6-bc06-d8a5a5f9fddf/Frame_1663-1.png"
-        alt="Frame 1663-1.png"
-      />
-    </p>
+    <p><img src="/img/label/img6.png" alt="" /></p>
   </div>
 </template>
+
+<style scoped>
+img {
+  max-width: 100%;
+}
+</style>
