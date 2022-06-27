@@ -1,11 +1,11 @@
 <template>
   <div>
     <DsfrHighlight
-      text="Attention : ce changement - une fois sauvegardé - est définitif. Les utilisateurs n'ayant pas accès à la base à laquelle vous transférer l'administration n'auront plus accès à l'édition de cette ressource."
+      text="Attention : ce changement - une fois sauvegardé - est définitif. Les utilisateurs n'ayant pas accès à la base à laquelle vous transférez l'administration n'auront plus accès à l'édition de cette fiche ressource."
     />
     <BaseSelector
       v-model="selectedBase"
-      label="Base à laquelle cette ressource est rattachée"
+      label="Base administratrice de la fiche ressource"
       @change="onBaseUpdate"
     />
   </div>

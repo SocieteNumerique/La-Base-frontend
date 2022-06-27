@@ -1,11 +1,4 @@
 <template>
-  <DsfrFileUpload
-    :id="inputId"
-    ref="inputContainer"
-    :hint="hint"
-    label="Remplacer le fichier"
-    @change="onChange"
-  />
   <DsfrInput
     v-model="content.title"
     hint="max 50 caractères"
@@ -21,6 +14,13 @@
     label="Légende"
     placeholder="Légende"
     maxlength="280"
+  />
+  <DsfrFileUpload
+    :id="inputId"
+    ref="inputContainer"
+    :hint="hint"
+    label="Remplacer le fichier"
+    @change="onChange"
   />
   <DsfrCheckbox
     v-if="isImage"
@@ -41,7 +41,7 @@ defineProps({
 })
 
 const content = useModel<FileContent>("modelValue", { type: "object" })
-const hint = "Taille maximale : xx Mo."
+const hint = "Taille maximale de fichier : 15 Mo."
 
 const inputContainer = ref()
 const inputId = computed(() => `file-input-${content.value.id}`)

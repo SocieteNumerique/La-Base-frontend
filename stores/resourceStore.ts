@@ -23,13 +23,18 @@ export const navigationMenus: Menu[] = [
         key: "indexation",
         name: "Indexation",
         description:
-          "Cette indexation est générale, elle permettra, si votre ressource est publique, aux autres utilisateurs de la base de la trouver via le moteur de recherche.",
+          "L’indexation permettra aux autres utilisateurs de la base de la trouver via le moteur de recherche (si votre ressource est publique).",
       },
-      { key: "credits", name: "Crédits", description: "Les crédits" },
+      {
+        key: "credits",
+        name: "Crédits",
+        description:
+          "Qui a produit la ressource ? Les producteurs que vous indiquerez seront visibles dans la fiche en consultation.",
+      },
       {
         key: "territory",
         name: "Territoire",
-        description: "Description du territoire",
+        description: "",
       },
       {
         key: "license",
@@ -40,24 +45,30 @@ export const navigationMenus: Menu[] = [
         key: "label",
         name: "Label NEC",
         description:
-          "Le label Numérique en Commun[s] décerné par l'Agence Nationale de la Cohésion des Territoires vise à identifier des dispositifs concourant à l'inclusion numérique sur l'ensemble du territoire. Les ressources élligibles sont des dispositifs numériques, tangibles et pédagogiques.",
+          "Le label Numérique en Commun[s] décerné par l'Agence Nationale de la Cohésion des Territoires vise à identifier des dispositifs concourant à l'inclusion numérique sur l'ensemble du territoire. Les ressources éligibles sont des dispositifs numériques, tangibles et pédagogiques.",
       },
     ],
   },
   {
     key: "contents",
-    name: "Contenus",
+    name: "Ressource",
     subMenus: [],
   },
   {
     key: "parameters",
     name: "Paramètres",
     subMenus: [
-      { key: "state", name: "Statut" },
+      {
+        key: "state",
+        name: "Statut",
+        description:
+          "Paramétrer les droits de consultation de la fiche.<br />Vous pouvez modifier ces droits à tout moment.",
+      },
       {
         key: "administration",
         name: "Administration",
-        description: "Description du Administration",
+        description:
+          "Définir les droits d’administration de la fiche ressource.",
       },
     ],
   },

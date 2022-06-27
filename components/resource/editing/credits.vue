@@ -112,7 +112,7 @@
           <DsfrInput
             :model-value="newExternalProducer.emailContact"
             label="Contact mail"
-            hint="Si la personne possède déjà un compte sur la plateforme, elle sera directemetn indiquée en tant que producteur. Sinon, elle sera invitée à se créer un compte."
+            hint="Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
             type="email"
             :label-visible="true"
             @update:model-value="onNewExternalProducerEmailContact"
@@ -204,14 +204,14 @@ const onExternalProducersAdd = () => {
 }
 const ownBaseModalActions = [
   {
-    label: "Sélectionner",
+    label: "Valider",
     onClick: onOwnBaseChose,
   },
 ]
 const addExternalProducerActions = computed(() => {
   return [
     {
-      label: "Sélectionner",
+      label: "Valider",
       onClick: onExternalProducersAdd,
       disabled: isAddExternalProducerDisabled.value,
     },

@@ -2,28 +2,37 @@
   <div style="display: flex; align-items: baseline">
     <h2 class="fr-h6">Informations générales</h2>
   </div>
+  <p>Vous pouvez ré-éditer ces informations à tout moment.</p>
 
   <DsfrInput
     :model-value="resourceStore.current?.title"
     label="Nom de la ressource"
     maxlength="100"
-    hint="max 100 caractères"
+    hint="Requis - 100 caractères maximum"
     :label-visible="true"
     @update:model-value="onTitleUpdate"
   />
   <div class="fr-mt-3w"></div>
   <DsfrInput
     :model-value="resourceStore.current?.description"
-    label="Description courte de la ressource"
-    hint="max 560 caractères"
-    :label-visible="true"
+    label-visible
     :is-textarea="true"
     @update:model-value="onDescriptionUpdate"
-  />
-  <div class="fr-mt-3w"></div>
+  >
+    <template #label>
+      Description courte de la ressource
+      <span class="fr-hint-text">
+        Requis - 560 caractères maximum
+        <br />
+        Décrivez en quelques mots votre ressource (nature, objectifs...). Cette
+        description apparaîtra aussi dans les résultats du moteur de recherche.
+      </span>
+    </template>
+  </DsfrInput>
+  <div class="fr-mt-3w" />
   <DsfrInput
     :model-value="resourceStore.current?.resourceCreatedOn"
-    label="Date de création de la ressource"
+    label="Date de production de la ressource"
     type="text"
     hint="Au format mois/année"
     placeholder="MM/AAAA"
@@ -61,6 +70,7 @@
       class="input-file"
       type="file"
       accept="image/*"
+      hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
       @change="onAddFile"
     />
   </template>

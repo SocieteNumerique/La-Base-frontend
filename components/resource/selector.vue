@@ -7,6 +7,7 @@
         v-model="textInput"
         class="fr-input"
         type="text"
+        :placeholder="placeholder"
         @input="onInput"
       />
       <button class="fr-btn">
@@ -43,6 +44,7 @@ const props = defineProps({
   modelValue: { type: Array as PropType<Resource[]>, default: () => [] },
   label: { type: String, default: "Choisissez une ressource" },
   baseId: { type: Number, required: true },
+  placeholder: { type: String, default: "" },
 })
 
 const textInput = ref("")
