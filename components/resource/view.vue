@@ -202,7 +202,7 @@ const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
 const mailToHref = computed(() => {
-  let toReturn = "mailto:labase@anct-gouv.fr"
+  let toReturn = "mailto:labase@anct.gouv.fr"
   if (!resource.value) {
     return toReturn
   }
