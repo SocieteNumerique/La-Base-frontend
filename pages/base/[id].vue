@@ -63,7 +63,16 @@
       </ShareButton>
       <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
       <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
-      <RoundButton icon="ri-share-line" label="Signaler" disabled />
+      <!-- TODO should show the report modal on click-->
+      <a :href="mailToHref" style="background: none">
+        <RoundButton icon="ri-alert-line" label="Signaler" />
+      </a>
+      <ReportSimpleModal
+        v-if="showReportModal"
+        :id="base.id"
+        instance-type="Base"
+        @close="showReportModal = false"
+      />
     </div>
     <div
       style="border-bottom: 1px solid var(--border-default-grey)"
@@ -117,6 +126,7 @@ const baseStore = useBaseStore()
 const tagStore = useTagStore()
 
 const tab = ref<string>("resources")
+const showReportModal = ref<boolean>(false)
 
 const participantTypes = computed<{ label: string }[]>(
   () =>
@@ -177,6 +187,21 @@ onBeforeMount(async () => {
       router.replace("/")
     }
   }
+})
+
+const mailToHref = computed(() => {
+  let toReturn = "mailto:labase@anct-gouv.fr"
+  if (!base.value) {
+    return toReturn
+  }
+  const subject = `[La Base] Signalement pour la base "${base.value.title}" (id ${base.value.id})`
+  let body: string
+  if (process.client) {
+    body = `Ce signalement concerne la base suivante : ${window.location.href}`
+  } else {
+    body = ""
+  }
+  return `${toReturn}?subject=${subject}&body=${body}`
 })
 </script>
 

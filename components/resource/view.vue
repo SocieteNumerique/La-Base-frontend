@@ -59,6 +59,17 @@
             <ShareButton :link="route.fullPath">
               <RoundButton icon="ri-share-line" label="Partager" />
             </ShareButton>
+            <!-- TODO should show the report modal on click-->
+            <a :href="mailToHref" style="background: none">
+              <RoundButton icon="ri-alert-line" label="Signaler" />
+            </a>
+
+            <ReportSimpleModal
+              v-if="showReportModal"
+              :id="resource.id"
+              instance-type="Resource"
+              @close="showReportModal = false"
+            />
 
             <!-- TODO re-add these -->
             <template v-if="false">
@@ -186,9 +197,24 @@ const resourceStore = useResourceStore()
 const route = useRoute()
 
 const activeMenu = ref("informations")
+const showReportModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
+const mailToHref = computed(() => {
+  let toReturn = "mailto:labase@anct-gouv.fr"
+  if (!resource.value) {
+    return toReturn
+  }
+  const subject = `[La Base] Signalement pour la ressource "${resource.value.title}" (id ${resource.value.id})`
+  let body: string
+  if (process.client) {
+    body = `Ce signalement concerne la ressource suivante : ${window.location.href}`
+  } else {
+    body = ""
+  }
+  return `${toReturn}?subject=${subject}&body=${body}`
+})
 
 const selectMenu = (key: string) => {
   activeMenu.value = key
