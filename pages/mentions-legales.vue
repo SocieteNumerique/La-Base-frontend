@@ -22,10 +22,7 @@
     75334 PARIS CEDEX 07 <a href="mailto:dpo@anct.gouv.fr">dpo@anct.gouv.fr</a>
   </p>
   <h3 id="conception">Conception</h3>
-  <p>
-    Ce site est réalisé par la SAS BAM et la SARL SCOP TelesCoop + licence de la
-    plateforme
-  </p>
+  <p>Ce site est réalisé par la SAS BAM et la SARL SCOP TelesCoop</p>
   <p>Dénomination : <strong>BAM</strong></p>
   <p>Nom commercial : <strong>Collectif Bam</strong> (marque déposée)</p>
   <p>
@@ -206,5 +203,4 @@
     fichier texte auquel un serveur accède pour lire et enregistrer des
     informations. Aucune partie n’est accessible sans l’acceptation de cookies.
   </p>
-  <hr />
 </template>
