@@ -1,5 +1,5 @@
 <template>
-  <div class="fr-pr-2w">
+  <div class="fr-pr-2w full-height">
     <div
       v-if="
         false && resourceStore.isCreating && resourceStore.creationStepIndex < 2
@@ -11,9 +11,9 @@
         ressource.
       </div>
     </div>
-    <div v-else>
+    <div v-else class="full-height">
       <nav
-        class="fr-sidemenu fr-sidemenu--sticky"
+        class="fr-sidemenu fr-sidemenu--sticky my-navigation"
         role="navigation"
         aria-label="Menu latéral"
       >
@@ -101,10 +101,7 @@
             </ul>
           </div>
         </div>
-        <div
-          class="fr-pb-3w fr-mt-6w"
-          style="display: flex; flex-direction: column"
-        >
+        <div class="fr-mt-6w" style="display: flex; flex-direction: column">
           <DsfrButton
             :secondary="true"
             label="Pré-visualiser"
@@ -125,7 +122,6 @@
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
-            class="fr-mb-3v"
             @click="ongoingDeletion = true"
           />
           <DsfrModal
@@ -248,4 +244,13 @@ const actions = [
     width: 90% !important
     flex: 0 0 90% !important
     max-width: 90% !important
+
+.full-height
+  height: 100%
+
+.my-navigation
+  display: flex
+  flex-direction: column
+  height: 100%
+  justify-content: space-between
 </style>
