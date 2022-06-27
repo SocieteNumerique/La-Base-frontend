@@ -45,25 +45,30 @@
       </div>
       <div class="fr-footer__bottom">
         <ul class="fr-footer__bottom-list">
+          <!--          <li class="fr-footer__bottom-item">-->
+          <!--            <a class="fr-footer__bottom-link" href="#">Plan du site</a>-->
+          <!--          </li>-->
           <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" href="#">Plan du site</a>
-          </li>
-          <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" href="#"
-              >Accessibilité: partiellement</a
+            <span class="fr-footer__bottom-link"
+              >Accessibilité: partiellement conforme</span
             >
           </li>
           <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" href="/mentions-legales"
-              >Mentions légales</a
-            >
+            <NuxtLink to="/mentions-legales" class="fr-footer__bottom-link">
+              Mentions légales
+            </NuxtLink>
           </li>
           <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" href="#">Données personnelles</a>
+            <NuxtLink to="/charte" class="fr-footer__bottom-link">
+              Charte
+            </NuxtLink>
           </li>
-          <li class="fr-footer__bottom-item">
-            <a class="fr-footer__bottom-link" href="#">Gestion des cookies</a>
-          </li>
+          <!--          <li class="fr-footer__bottom-item">-->
+          <!--            <a class="fr-footer__bottom-link" href="#">Données personnelles</a>-->
+          <!--          </li>-->
+          <!--          <li class="fr-footer__bottom-item">-->
+          <!--            <a class="fr-footer__bottom-link" href="#">Gestion des cookies</a>-->
+          <!--          </li>-->
         </ul>
         <div class="fr-footer__bottom-copy">
           <p>
