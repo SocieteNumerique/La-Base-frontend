@@ -8,7 +8,7 @@
         <img
           alt="logo du site"
           class="fr-ml-6w"
-          src="/logos/FranceRelance.png"
+          src="/logos/france%20relance.jpg"
         />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
