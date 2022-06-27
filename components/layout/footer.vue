@@ -63,6 +63,11 @@
               Charte
             </NuxtLink>
           </li>
+          <li class="fr-footer__bottom-item">
+            <NuxtLink to="/contact" class="fr-footer__bottom-link">
+              Contact
+            </NuxtLink>
+          </li>
           <!--          <li class="fr-footer__bottom-item">-->
           <!--            <a class="fr-footer__bottom-link" href="#">Données personnelles</a>-->
           <!--          </li>-->

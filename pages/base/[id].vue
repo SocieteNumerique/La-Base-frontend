@@ -190,7 +190,7 @@ onBeforeMount(async () => {
 })
 
 const mailToHref = computed(() => {
-  let toReturn = "mailto:labase@anct-gouv.fr"
+  let toReturn = "mailto:labase@anct.gouv.fr"
   if (!base.value) {
     return toReturn
   }
