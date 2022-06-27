@@ -81,7 +81,7 @@
         <div class="fr-header__body-row">
           <div>
             <ul class="fr-links-group">
-              <li v-if="userStore.isLoggedIn">
+              <li>
                 <NuxtLink to="/">
                   <button>
                     Recherche
@@ -89,12 +89,12 @@
                   </button>
                 </NuxtLink>
               </li>
-              <li v-if="userStore.isLoggedIn">
+              <li>
                 <NuxtLink to="/label">
                   <button>Label</button>
                 </NuxtLink>
               </li>
-              <li v-if="userStore.isLoggedIn">
+              <li>
                 <NuxtLink to="/a-propos">
                   <button>À propos</button>
                 </NuxtLink>
