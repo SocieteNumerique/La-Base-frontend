@@ -12,8 +12,8 @@
         />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
-            Cette base regroupent les ressources des professionnels du secteur
-            de l’inclusion et de la médiation numérique.
+            Cette base regroupe les ressources des professionnels du secteur de
+            l’inclusion et de la médiation numérique.
           </p>
           <ul class="fr-footer__content-list">
             <li class="fr-footer__content-item">
