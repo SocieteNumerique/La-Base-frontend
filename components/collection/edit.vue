@@ -5,6 +5,7 @@
     :title="`${isNew ? 'Ajouter' : 'Éditer'} une collection`"
     @close="onClose"
   >
+    <p>Une collection permet de regrouper des fiches ressources.</p>
     <DsfrInput
       v-model="collection.name"
       :label-visible="true"
@@ -30,10 +31,15 @@
     title="Ajouter des fiches à la collection"
     @close="onClose"
   >
+    <p>
+      Sélectionnez dans la liste ci-dessous les ressources que vous voulez
+      ajouter à votre collection.
+    </p>
     <ResourceSelector
       v-model="collection.resources"
       :base-id="collection.base"
       label="Appliquer à"
+      placeholder="Rechercher dans les ressources de la base"
       @update:model-value="isDirtyResources = true"
     />
   </DsfrModal>
@@ -54,6 +60,8 @@
     title="Supprimer la collection"
     @close="onClose"
   >
+    Êtes-vous sûr de vouloir supprimer cette collection ? Les fiches contenues
+    dans la collection ne seront pas supprimées.
   </DsfrModal>
 </template>
 

@@ -3,9 +3,7 @@
     <h2 class="fr-h6">
       {{ subMenu.name }}
     </h2>
-    <p>
-      {{ subMenu.description }}
-    </p>
+    <p v-html="subMenu.description" />
     <ResourceEditingTerritory
       v-if="resourceStore.isSubMenuActive('territory')"
     />

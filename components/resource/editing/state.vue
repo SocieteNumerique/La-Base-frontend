@@ -7,12 +7,14 @@
       :options="options"
       :required="true"
       legend="Le statut de la ressource est"
+      class="fr-mb-2w fr-mt-11v"
       @update:model-value="onChange"
     />
+    <p class="fr-mb-4w">{{ stateHint }}</p>
     <div v-if="!canGoPublicOnMounted">
       <div v-if="!canGoPublic" class="fr-alert fr-alert--info">
         <p class="fr-alert__title">
-          La ressource ne peut être publiée en public
+          La ressource ne peut être publiée publiquement
         </p>
         <p>
           Pour passer la ressource en public, il manque les informations
@@ -55,6 +57,18 @@ const focusCategory = (categoryName: string) => {
 const radioValue = ref("")
 let missingCategoriesToGoPublicOnMounted = ref<TagCategory[]>([])
 let canGoPublicOnMounted = ref(true)
+
+const hintByState: { [key: string]: string } = {
+  public:
+    "La ressource peut être consultée par tous les visiteurs, qu’ils disposent ou non d’un compte utilisateur. Elle ne peut cependant être modifiée que par les administrateurs de la base sur laquelle elle a été publiée.",
+  private:
+    "Cette fiche ressource n’est accessible qu’aux administrateurs et contributeurs de votre base, ainsi qu’à un nombre réduit d’autres utilisateurs, sélectionnés par vous.",
+  draft:
+    "Cette ressource est au format “brouillon”. Elle n’est accessible que par les administrateurs et contributeurs de votre base et apparaitra dans l’onglet “Brouillons” de votre base.",
+}
+const stateHint = computed<string>(
+  () => hintByState[resourceStore?.current?.state] || ""
+)
 
 onMounted(() => {
   if (!resourceStore.current) {

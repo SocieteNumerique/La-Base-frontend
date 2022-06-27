@@ -1,9 +1,6 @@
 <template>
   <DsfrModal :opened="true" :actions="actions" title="Ajouter un tag">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl, duis ac
-      egestas donec tincidunt lorem. Sodales risus am
-    </p>
+    <p>Ce tag apparaîtra pour l’ensemble des utilisateurs.</p>
     <DsfrInput
       :model-value="inputValue"
       label="Nom du nouveau tag"

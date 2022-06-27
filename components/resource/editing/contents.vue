@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h6>Contenu</h6>
+    <h2 class="fr-h6">Ressource</h2>
+    <p>Organiser vos contenus en liste et/ou en grille</p>
     <ContentGridViewSwitcher
       v-model="isGridView"
       :is-editing-mode="true"

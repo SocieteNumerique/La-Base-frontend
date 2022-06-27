@@ -12,11 +12,13 @@
     <div>
       <div class="fr-grid-row fr-mb-5w" style="justify-content: space-between">
         <div class="fr-col-6">
+          <p>
+            La Base regroupe les ressources des professionnels du numérique
+            d’intérêt général dont l’inclusion et la médiation numériques.
+          </p>
           <p class="fr-mb-0">
-            Cette base regroupent les ressources des professionnels du secteur
-            de l’inclusion et de la médiation numérique. Vous pourrez naviguer
-            au travers des bases des différents acteurs qui partagent leurs
-            ressources et vous pourrez vous même créer votre propre base.
+            Vous pouvez naviguer au travers des bases des différents acteurs qui
+            partagent leurs ressources et créer votre propre base.
           </p>
           <div>
             <NuxtLink to="/a-propos" style="background: none">
@@ -30,7 +32,7 @@
         </div>
         <div v-if="!userStore.isLoggedIn" class="fr-col-5">
           <p class="fr-mb-0">
-            Pour pouvoir créer une base, renseigner, publier et enregister des
+            Pour pouvoir créer une base, renseigner, publier et enregistrer des
             fiches ressources vous devez bénéficier d’un compte.
           </p>
           <div>
@@ -54,7 +56,7 @@
           <div>
             <VIcon scale="3" name="ri-file-line" />
           </div>
-          <h3 class="fr-h6">Les fiches ressources</h3>
+          <h3 class="fr-h6">Les Fiches ressources</h3>
           <p>
             Parcourez les fiches ressources créées par les acteurs de la
             plateforme.
@@ -124,7 +126,7 @@
         :inline="true"
         :options="[
           { label: 'Tous les tags sélectionnés', value: 'AND' },
-          { label: 'Au moins un tag sélectionné ', value: 'OR' },
+          { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
         ]"
         :required="true"
         legend="Les résultats comportent"

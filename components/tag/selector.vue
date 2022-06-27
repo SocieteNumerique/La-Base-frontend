@@ -123,7 +123,7 @@ const ownSelectedTags = ref<number[]>(props.initTags)
 const hintTextLines = computed(() => {
   const toShow: string[] = []
   if (props.category.requiredToBePublic) {
-    toShow.push("requis")
+    toShow.push("Requis")
   }
   if (props.category.maximumTagCount) {
     toShow.push(`${props.category.maximumTagCount} maximum`)
