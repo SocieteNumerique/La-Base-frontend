@@ -42,6 +42,7 @@ import {
   RiFolder3Line,
   RiArrowLeftLine,
   RiMapPinLine,
+  RiAlertLine,
 } from "oh-vue-icons/icons"
 
 export const icons = [
@@ -88,4 +89,5 @@ export const icons = [
   RiFolder3Line,
   RiArrowLeftLine,
   RiMapPinLine,
+  RiAlertLine,
 ]
