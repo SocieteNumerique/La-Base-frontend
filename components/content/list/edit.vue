@@ -39,13 +39,13 @@
                   />
                 </div>
               </div>
-              <div class="header-section">
-                <ContentInputSection
-                  v-if="currentEditingSectionId === section.id"
-                  v-model="contentsBySection[sectionIndex]"
-                  @exit="currentEditingSectionId = null"
-                />
-                <h3 v-else>{{ section.title }}</h3>
+              <ContentInputSection
+                v-if="currentEditingSectionId === section.id"
+                v-model="contentsBySection[sectionIndex]"
+                @exit="currentEditingSectionId = null"
+              />
+              <div v-else class="header-section">
+                <h3>{{ section.title }}</h3>
                 <button
                   class="fr-btn--tertiary-no-outline"
                   @click="

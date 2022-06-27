@@ -85,9 +85,10 @@ const link = computed(
 <style lang="sass" scoped>
 .miniature-container
   .description-text
-    max-height: 80px
     overflow: hidden
-    text-overflow: ellipsis
+    display: -webkit-box
+    -webkit-line-clamp: 4
+    -webkit-box-orient: vertical
 
 
 .green-bg
