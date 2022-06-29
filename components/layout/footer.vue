@@ -2,14 +2,12 @@
   <footer id="footer" class="fr-footer" role="contentinfo">
     <div class="fr-container">
       <div class="fr-footer__body">
-        <div class="fr-footer__brand fr-enlarge-link">
-          <LayoutLogo />
-        </div>
+        <img alt="logo du site" src="/logos/ANCT.png" style="height: 80px" />
         <img
           alt="logo du site"
           class="fr-ml-6w"
-          style="width: 88px; height: 88px"
-          src="/logos/france_relance.jpg"
+          src="/logos/financeUE.jpg"
+          style="height: 80px"
         />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
@@ -50,9 +48,9 @@
           <!--            <a class="fr-footer__bottom-link" href="#">Plan du site</a>-->
           <!--          </li>-->
           <li class="fr-footer__bottom-item">
-            <span class="fr-footer__bottom-link"
-              >Accessibilité: partiellement conforme</span
-            >
+            <span class="fr-footer__bottom-link">
+              Accessibilité : partiellement conforme
+            </span>
           </li>
           <li class="fr-footer__bottom-item">
             <NuxtLink to="/mentions-legales" class="fr-footer__bottom-link">
