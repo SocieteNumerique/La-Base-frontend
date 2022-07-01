@@ -79,28 +79,54 @@
     <div class="fr-header__body fr-header__nav">
       <div class="fr-container">
         <div class="fr-header__body-row">
-          <div>
-            <ul class="fr-links-group">
-              <li>
-                <NuxtLink to="/">
+          <ul class="fr-links-group">
+            <li>
+              <NuxtLink to="/">
+                <button>
+                  Recherche
+                  <VIcon class="fr-ml-1w" name="ri-search-line" />
+                </button>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/label">
+                <button>Label</button>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/a-propos">
+                <button>À propos</button>
+              </NuxtLink>
+            </li>
+            <template v-if="userStore.isCnfs">
+              <li class="fr-ml-auto">
+                <NuxtLink to="/ressource/3">
                   <button>
-                    Recherche
-                    <VIcon class="fr-ml-1w" name="ri-search-line" />
+                    <img
+                      alt="icone CNFS"
+                      class="fr-mr-1w fr-mb-n1v"
+                      src="/logos/cnfs.png"
+                      height="19"
+                    />
+                    CNFS
                   </button>
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink to="/label">
-                  <button>Label</button>
+                <NuxtLink to="/ressource/34">
+                  <button>
+                    <img
+                      alt="icone CNFS"
+                      class="fr-mr-1w fr-mb-n1v"
+                      src="/logos/cnfs.png"
+                      height="19"
+                    />
+                    CNFS - Contributeurs
+                  </button>
                 </NuxtLink>
               </li>
-              <li>
-                <NuxtLink to="/a-propos">
-                  <button>À propos</button>
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
+            </template>
+          </ul>
         </div>
       </div>
     </div>
@@ -150,6 +176,9 @@ onFocusOut(
 
     .fr-header__body-row
       padding: 0
+
+    .fr-links-group
+      justify-content: start
 
     button
       padding: 16px 12px

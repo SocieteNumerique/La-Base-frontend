@@ -2,6 +2,7 @@ export type User = {
   id?: number
   email: string
   isAdmin?: boolean
+  isCnfs?: boolean
   firstName: string
   lastName: string
   password?: string
