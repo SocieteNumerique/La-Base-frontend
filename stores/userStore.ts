@@ -18,6 +18,7 @@ export const useUserStore = defineStore("user", {
     lastName: "",
     prefillEmail: "",
     showSignupModal: false,
+    isCnfs: false,
   }),
   actions: {
     async login(email: string, password: string) {
@@ -60,7 +61,7 @@ export const useUserStore = defineStore("user", {
       }
     },
     async refreshProfile() {
-      const { data, error } = await useApiGet<User>("auth/profile")
+      const { data, error } = await useApiGet<User>("users/me/")
       if (!error.value) {
         this.updateState(data.value)
       }
@@ -97,6 +98,7 @@ export const useUserStore = defineStore("user", {
       this.email = data.email
       this.firstName = data.firstName
       this.lastName = data.lastName
+      this.isCnfs = data?.isCnfs || false
     },
   },
   getters: {
