@@ -7,22 +7,7 @@
   >
     <UserSelector v-model="admins" label="Ajouter" />
     <label class="fr-label fr-pt-3w">Les administrateurs</label>
-    <ul class="fr-text--xs fr-px-0">
-      <li
-        v-for="admin of admins"
-        :key="admin.id"
-        class="item has-children-space-between"
-      >
-        <div>{{ admin.firstName }} {{ admin.lastName }}</div>
-        <button
-          class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-text-title--blue-france action"
-          @click="removeUserId(admin.id)"
-        >
-          <VIcon class="fr-mr-2v" name="ri-close-line" />
-          Retirer
-        </button>
-      </li>
-    </ul>
+    <UserList :list="admins" @remove="removeUserId" />
   </DsfrModal>
 </template>
 
@@ -57,20 +42,3 @@ const actions = [
   },
 ]
 </script>
-
-<style lang="sass" scoped>
-.item
-  border-bottom: 1px solid var(--border-default-grey)
-  padding: 12px
-  display: flex
-  align-items: center
-  width: 100%
-  height: 44px
-
-  .action
-    display: none
-    margin-left: auto
-
-  &:hover .action
-    display: block
-</style>

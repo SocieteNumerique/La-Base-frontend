@@ -33,11 +33,11 @@
       @close="openStep = ''"
       @save="updateBase"
     />
-    <!-- <BaseEditContributors
+    <BaseEditContributors
       v-if="openStep === 'contributors'"
       @close="openStep = ''"
       @save="updateBase"
-    />-->
+    />
     <BaseEditState
       v-if="openStep === 'status'"
       @close="openStep = ''"
@@ -80,10 +80,10 @@ const menuOptions = [
     label: "Administrateurs",
     step: "admin",
   },
-  /*  {
-      label: "Contributeurs",
-      step: "contributors",
-    },*/
+  {
+    label: "Contributeurs",
+    step: "contributors",
+  },
   {
     label: "Statut de la base",
     step: "status",

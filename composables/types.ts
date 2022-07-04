@@ -21,6 +21,8 @@ export type PinStatus = { id: number; isPinned: boolean }
 
 export type Resource = {
   accessRequiresUserAccount?: boolean
+  authorizedUsers?: User[]
+  authorizedUserTags?: number[]
   basesPinnedIn?: PinStatus[]
   contents?: Content[]
   canWrite?: boolean
@@ -121,11 +123,14 @@ export type BaseCreate = {
 }
 export type Base = {
   admins?: User[]
+  authorizedUsers?: User[]
+  authorizedUserTags?: number[]
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]
   contact?: string
-  contributor_tags?: number[]
+  contributors?: User[]
+  contributorTags?: number[]
   description?: string
   profileImage?: FullFile
   id: number

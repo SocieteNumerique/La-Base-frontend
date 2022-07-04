@@ -11,6 +11,29 @@
       @update:model-value="onChange"
     />
     <p class="fr-mb-4w">{{ stateHint }}</p>
+    <div v-if="radioValue === 'private'" class="fr-mb-4w">
+      <UserSelector
+        v-model="resourceStore.current.authorizedUsers"
+        label="Autoriser uniquement ces utilisateurs à consulter cette ressource"
+      />
+      <UserList
+        :users="resourceStore.current.authorizedUsers"
+        @remove="removeUserId"
+      />
+
+      <TagSelector
+        v-if="tagStore.categoryBySlug(participantTypeCategoryName)"
+        :category="tagStore.categoryBySlug(participantTypeCategoryName)"
+        :init-tags="resourceStore.current.authorizedUserTags"
+        :is-focused="focusedCategory === participantTypeCategoryName"
+        label="Autoriser pour une typologie d’acteurs"
+        source="own"
+        mode="filter"
+        @blur="focusCategory('')"
+        @change="authorizedUserTags = $event"
+        @focus="focusCategory(participantTypeCategoryName)"
+      />
+    </div>
     <div v-if="!canGoPublicOnMounted">
       <div v-if="!canGoPublic" class="fr-alert fr-alert--info">
         <p class="fr-alert__title">
@@ -39,11 +62,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { useResourceStore } from "~/stores/resourceStore"
 import { computed, onMounted } from "vue"
 import { useTagStore } from "~/stores/tagStore"
-import { TagCategory } from "~/composables/types"
+import { Tag, TagCategory, User } from "~/composables/types"
+import { participantTypeCategoryName } from "~/composables/strUtils"
 
 const resourceStore = useResourceStore()
 const tagStore = useTagStore()
@@ -52,6 +75,23 @@ const focusedCategory = ref("")
 
 const focusCategory = (categoryName: string) => {
   focusedCategory.value = categoryName
+}
+
+const authorizedUserTags = ref<Tag[]>(
+  (resourceStore.current.authorizedUserTags || [])?.map(
+    (id: number) => tagStore.tagsById[id]
+  ) || []
+)
+watch(authorizedUserTags, () => {
+  resourceStore.current.authorizedUserTags = authorizedUserTags.value.map(
+    (tag) => tag.id
+  )
+})
+
+const removeUserId = (userId: number) => {
+  resourceStore.current.authorizedUsers = (
+    resourceStore.current.authorizedUsers || []
+  ).filter((user: User) => user.id !== userId)
 }
 
 const radioValue = ref("")
