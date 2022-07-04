@@ -100,7 +100,7 @@
             </li>
             <template v-if="userStore.isCnfs">
               <li class="fr-ml-auto">
-                <NuxtLink to="/ressource/3">
+                <NuxtLink to="/base/3">
                   <button>
                     <img
                       alt="icone CNFS"
@@ -113,7 +113,7 @@
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink to="/ressource/34">
+                <NuxtLink to="/base/34">
                   <button>
                     <img
                       alt="icone CNFS"
