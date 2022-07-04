@@ -1,6 +1,6 @@
 <template>
   <div :id="id">
-    <label class="fr-label" for="user-selector">{{ props.label }}</label>
+    <label class="fr-label search" for="user-selector">{{ props.label }}</label>
     <div class="fr-search-bar fr-input-group fr-mb-0">
       <input
         id="user-selector"
