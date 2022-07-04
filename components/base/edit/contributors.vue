@@ -14,7 +14,7 @@
     <TagSelector
       v-if="tagStore.categoryBySlug(participantTypeCategoryName)"
       :category="tagStore.categoryBySlug(participantTypeCategoryName)"
-      :init-tags="contributorTags"
+      :init-tags="baseStore.current.contributorTags"
       :is-focused="focusedInput === 'tags'"
       label="Ajouter des contributeurs par typologie d’acteurs"
       source="own"
