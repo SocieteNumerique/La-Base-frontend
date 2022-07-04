@@ -87,6 +87,10 @@ import { useBaseStore } from "~/stores/baseStore"
 import { Base, BaseCreate, Tag } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
+import {
+  participantTypeCategoryName,
+  territoryCategoryName,
+} from "~/composables/strUtils"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
@@ -115,8 +119,6 @@ const base = ref<Base | BaseCreate>(
     : { ...baseStore.current }
 )
 
-const participantTypeCategoryName = "externalProducer_00occupation"
-const territoryCategoryName = "territory_00city"
 const participantTags = ref<Tag[]>(
   base.value?.participantTypeTags?.map((id: number) => tagStore.tagsById[id]) ||
     []

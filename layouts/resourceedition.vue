@@ -59,7 +59,6 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { stateLabel } from "~/composables/strUtils"
 
 const resourceStore = useResourceStore()
 
@@ -67,5 +66,12 @@ const goToState = () => {
   console.log("### go to state")
   resourceStore.navigation.activeMenu = "parameters"
   resourceStore.navigation.activeSubMenu = "state"
+}
+
+const stateLabel = {
+  public: "Public",
+  private: "Privé",
+  draft: "Brouillon",
+  restricted: "Restreint",
 }
 </script>

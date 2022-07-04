@@ -114,7 +114,6 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
-import { stateLabel } from "~/composables/strUtils"
 
 definePageMeta({
   layout: false,
@@ -203,6 +202,13 @@ const mailToHref = computed(() => {
   }
   return `${toReturn}?subject=${subject}&body=${body}`
 })
+
+const stateLabel = {
+  public: "Public",
+  private: "Privé",
+  draft: "Invisible",
+  restricted: "Restreint",
+}
 </script>
 
 <style lang="sass" scoped>

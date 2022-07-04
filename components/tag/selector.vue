@@ -3,7 +3,7 @@
     <div class="fr-input-group fr-mb-0">
       <label
         v-if="props.category.name"
-        class="fr-label"
+        class="fr-label search"
         :for="'category-input-' + props.category.id"
       >
         {{ props.label || props.category.name }}
@@ -117,6 +117,7 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  mode: { type: String as PropType<"filter" | "set">, default: "set" },
 })
 const ownSelectedTags = ref<number[]>(props.initTags)
 
@@ -125,7 +126,7 @@ const hintTextLines = computed(() => {
   if (props.category.requiredToBePublic) {
     toShow.push("Requis")
   }
-  if (props.category.maximumTagCount) {
+  if (props.category.maximumTagCount && props.mode === "set") {
     toShow.push(`${props.category.maximumTagCount} maximum`)
   }
 
@@ -203,6 +204,7 @@ const filteredTags = computed(() => {
 const selectTag = (tagId: number) => {
   if (
     props.category.maximumTagCount &&
+    props.mode === "set" &&
     selectedTags.value.length >= props.category.maximumTagCount
   ) {
     alertStore.alert(
@@ -224,7 +226,7 @@ const selectTag = (tagId: number) => {
   }
 
   // if we've already select the maximum number of tags, close the menu
-  if (nTags >= props.category.maximumTagCount) {
+  if (nTags >= props.category.maximumTagCount && props.mode === "set") {
     emit("blur")
   }
   emit("change", selectedTags.value)
