@@ -1,4 +1,3 @@
-import { NuxtApp } from "nuxt/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { Alert } from "~/composables/types"
 import { useAlertStore } from "~/stores/alertStore"
@@ -36,14 +35,13 @@ const makeLoadingKey = (path: string) => {
   return words.join("")
 }
 
-const getCsrfCookie = (ctx: NuxtApp) => {
-  let cookie = ""
-  if (ctx.ssrContext?.req?.headers.cookie) {
-    cookie = ctx?.ssrContext.req.headers.cookie
-  } else if (process.client) {
+const getCsrfCookie = () => {
+  let cookie: string
+  if (process.server) {
+    cookie = useRequestHeaders(["cookie"])["cookie"]
+  } else {
     cookie = document.cookie
   }
-  console.log("### getCsrfCookie", cookie)
   if (!cookie) {
     return null
   }
@@ -54,11 +52,10 @@ const getCsrfCookie = (ctx: NuxtApp) => {
   return csrfRow.split("=")[1]
 }
 
-const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
+const getHeaders = (includeCsrf = false): MyHeaders => {
   const headers: MyHeaders = useRequestHeaders(["cookie"])
-  console.log("### get headers", headers, "includecsrf", includeCsrf)
   if (includeCsrf) {
-    const csrfToken = getCsrfCookie(ctx)
+    const csrfToken = getCsrfCookie()
     if (csrfToken) {
       headers["X-CSRFTOKEN"] = csrfToken
     }
@@ -67,17 +64,6 @@ const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
 }
 
 export const BASE_URL = base_url
-
-function makeId(length: number) {
-  let result = ""
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  const charactersLength = characters.length
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-  }
-  return result
-}
 
 export async function useApiRequest<Type>(
   method: string,
@@ -93,15 +79,14 @@ export async function useApiRequest<Type>(
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
-  console.log("### useApiRequest", key, path)
   const { data, error } = await useAsyncData<Type>(
     key,
-    (ctx) =>
+    () =>
       $fetch(BASE_URL + "/api/" + path, {
         method: method,
         body: payload,
         credentials: "include",
-        headers: getHeaders(ctx!, method != "GET"),
+        headers: getHeaders(method != "GET"),
         params: params,
       }),
     { initialCache: false }
