@@ -3,7 +3,7 @@
     <div class="fr-grid-row fr-grid-row--right fr-p-2w">
       <ShareButton :link="link" class="fr-mr-3w" />
       <PinMenu
-        v-model="basesPinnedIn"
+        v-model="pinnedInBases"
         :instance-id="resource?.id"
         :root-base-id="resource?.rootBase"
         instance-type="resource"
@@ -63,7 +63,7 @@ const props = defineProps({
   modelValue: { type: Array as PropType<PinStatus[]>, required: true },
 })
 
-const basesPinnedIn = useModel("modelValue", { type: "array" })
+const pinnedInBases = useModel("modelValue", { type: "array" })
 const tagStore = useTagStore()
 
 const supportTags = computed<{ label: string }[]>(

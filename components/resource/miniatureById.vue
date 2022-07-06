@@ -1,5 +1,5 @@
 <template>
-  <ResourceMiniature v-model="basesPinnedIn" :resource="resource" />
+  <ResourceMiniature v-model="pinnedInBases" :resource="resource" />
 </template>
 
 <script lang="ts" setup>
@@ -16,7 +16,7 @@ const resource = computed<Resource>(
   () => resourceStore.resourcesById[props.resourceId]
 )
 const basesPinnedIn = computed<PinStatus[]>({
-  get: () => resource.value?.basesPinnedIn || [],
+  get: () => resource.value?.pinnedInBases || [],
   set(value: PinStatus[]) {
     resourceStore.refreshPinStatus(value, resource.value.id)
   },

@@ -70,7 +70,7 @@ export type CollectionCreate = {
 export type Collection = {
   id: number
   base: number
-  basesPinnedIn?: PinStatus[]
+  pinnedInBases?: PinStatus[]
   name: string
   nbResources?: number
   resources?: number[]
