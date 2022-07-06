@@ -113,6 +113,7 @@ watch(
 )
 
 const atLeastOnePin = computed<boolean>(() => {
+  if (iControlRootBase) return true
   if (!pinStatuses.value) return false
   return pinStatuses.value.some((pinStatus: PinStatus) => pinStatus.isPinned)
 })

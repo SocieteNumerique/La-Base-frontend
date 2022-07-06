@@ -15,9 +15,9 @@ const props = defineProps({
 const resource = computed<Resource>(
   () => resourceStore.resourcesById[props.resourceId]
 )
-const basesPinnedIn = computed<PinStatus[]>({
+const pinnedInBases = computed<number[]>({
   get: () => resource.value?.pinnedInBases || [],
-  set(value: PinStatus[]) {
+  set(value: number[]) {
     resourceStore.refreshPinStatus(value, resource.value.id)
   },
 })
