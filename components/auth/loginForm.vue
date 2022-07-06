@@ -37,11 +37,20 @@
           @update:model-value="onPasswordUpdate"
         />
         <div style="text-align: right" class="fr-mt-2w">
-          <DsfrButton
-            label="Mot de passe oublié ?"
-            class="fr-btn--tertiary-no-outline"
-            @click="isForgottenEmailScreen = true"
-          />
+          <template v-if="isEmailNotValidated">
+            <DsfrButton
+              label="Renvoyer le lien de confirmation"
+              class="fr-btn--tertiary-no-outline"
+              @click="resendConfirmationEmail"
+            />
+          </template>
+          <template v-else>
+            <DsfrButton
+              label="Mot de passe oublié ?"
+              class="fr-btn--tertiary-no-outline"
+              @click="isForgottenEmailScreen = true"
+            />
+          </template>
         </div>
       </template>
       <div class="is-flex fr-mt-3w" style="flex-direction: row-reverse">
@@ -70,6 +79,7 @@ const passwordErrorMessage = ref("")
 const password = ref("")
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
+const isEmailNotValidated = ref(false)
 
 const emit = defineEmits(["close", "done"])
 
@@ -138,10 +148,26 @@ const isFormDisabled = computed(() => {
 const submit = async () => {
   console.log("submit", email.value, password.value)
   if (isForgottenEmailScreen.value) {
-    await userStore.resetPassword(email.value)
+    const { data, error } = await userStore.resetPassword(email.value)
+    if (!error.value) {
+      emit("done")
+    }
   } else {
-    await userStore.login(email.value, password.value)
+    const { data, error } = await userStore.login(email.value, password.value)
+    if (error.value) {
+      const statusCode = error.value.message.substring(0, 3)
+      if (statusCode == "403") {
+        isEmailNotValidated.value = true
+      }
+    } else {
+      emit("done")
+    }
   }
-  emit("done")
+}
+
+const resendConfirmationEmail = () => {
+  if (email.value) {
+    userStore.resendConfirmationEmail(email.value)
+  }
 }
 </script>
