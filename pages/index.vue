@@ -254,6 +254,7 @@ const tagCategories = computed(() => {
   )
 })
 const doSearch = debounce(async () => {
+  console.log("### do search")
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult
   >(

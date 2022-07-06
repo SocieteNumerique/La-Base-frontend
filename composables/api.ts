@@ -1,4 +1,4 @@
-import { NuxtApp } from "nuxt3/dist/app/nuxt"
+import { NuxtApp } from "nuxt/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { Alert } from "~/composables/types"
 import { useAlertStore } from "~/stores/alertStore"
@@ -38,11 +38,12 @@ const makeLoadingKey = (path: string) => {
 
 const getCsrfCookie = (ctx: NuxtApp) => {
   let cookie = ""
-  if (ctx?.ssrContext?.req.headers.cookie) {
+  if (ctx.ssrContext?.req?.headers.cookie) {
     cookie = ctx?.ssrContext.req.headers.cookie
   } else if (process.client) {
     cookie = document.cookie
   }
+  console.log("### getCsrfCookie", cookie)
   if (!cookie) {
     return null
   }
@@ -55,6 +56,7 @@ const getCsrfCookie = (ctx: NuxtApp) => {
 
 const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
   const headers: MyHeaders = useRequestHeaders(["cookie"])
+  console.log("### get headers", headers, "includecsrf", includeCsrf)
   if (includeCsrf) {
     const csrfToken = getCsrfCookie(ctx)
     if (csrfToken) {
@@ -65,6 +67,17 @@ const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
 }
 
 export const BASE_URL = base_url
+
+function makeId(length: number) {
+  let result = ""
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  const charactersLength = characters.length
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+  }
+  return result
+}
 
 export async function useApiRequest<Type>(
   method: string,
@@ -80,14 +93,18 @@ export async function useApiRequest<Type>(
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
-  const { data, error } = await useAsyncData<Type>(key, (ctx) =>
-    $fetch(BASE_URL + "/api/" + path, {
-      method: method,
-      body: payload,
-      credentials: "include",
-      headers: getHeaders(ctx!, method != "GET"),
-      params: params,
-    })
+  console.log("### useApiRequest", key, path)
+  const { data, error } = await useAsyncData<Type>(
+    key,
+    (ctx) =>
+      $fetch(BASE_URL + "/api/" + path, {
+        method: method,
+        body: payload,
+        credentials: "include",
+        headers: getHeaders(ctx!, method != "GET"),
+        params: params,
+      }),
+    { initialCache: false }
   )
 
   // handle alerts and loading status
