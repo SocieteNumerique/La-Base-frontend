@@ -18,7 +18,7 @@
       <div class="is-flex">
         <ShareButton :link="link" class="fr-mr-3w" />
         <PinMenu
-          v-model="basesPinnedIn"
+          v-model="pinnedInBases"
           :instance-id="collection?.id"
           :root-base-id="collection?.base"
           class="fr-ml-auto"
@@ -73,8 +73,8 @@ const nbResources = computed<number>(
 )
 const collection = ref<Collection>({ ...savedCollection.value })
 
-const basesPinnedIn = computed<PinStatus[]>({
-  get: () => collection.value?.basesPinnedIn || [],
+const pinnedInBases = computed<PinStatus[]>({
+  get: () => collection.value?.pinnedInBases || [],
   set(value: PinStatus[]) {
     collectionStore.refreshPinStatus(value, collection.value.id)
   },

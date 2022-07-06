@@ -188,7 +188,7 @@
           <ResourceMiniature
             v-for="(resource, index) of results"
             :key="resource.id"
-            v-model="results[index].basesPinnedIn"
+            v-model="results[index].pinnedInBases"
             :resource="resource"
           />
         </div>

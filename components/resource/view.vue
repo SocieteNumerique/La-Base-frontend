@@ -94,7 +94,7 @@
 
             <PinMenu
               v-if="resource"
-              v-model="resource.basesPinnedIn"
+              v-model="resource.pinnedInBases"
               :instance-id="resource?.id"
               :root-base-id="resource?.rootBase"
               class="fr-ml-2w"

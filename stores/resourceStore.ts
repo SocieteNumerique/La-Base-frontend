@@ -256,9 +256,9 @@ export const useResourceStore = defineStore("resource", {
       resource.isGridViewEnabled = isGridViewEnabled
       this.markDirty(resourceId)
     },
-    refreshPinStatus(basesPinnedIn: PinStatus[], resourceId: number) {
+    refreshPinStatus(pinnedInBases: number[], resourceId: number) {
       const resource = this.resourcesById[resourceId]
-      resource.basesPinnedIn = basesPinnedIn
+      resource.pinnedInBases = pinnedInBases
     },
   },
   getters: {
