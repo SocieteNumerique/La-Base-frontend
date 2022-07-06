@@ -30,7 +30,7 @@ export const useUserStore = defineStore("user", {
         },
         {},
         { title: "Connexion réussie" },
-        true
+        { title: "Connexion impossible", text: "_responseBody" }
       )
       if (!error.value) {
         this.updateState(data.value)
@@ -38,6 +38,8 @@ export const useUserStore = defineStore("user", {
         resetPerUserData()
         baseStore.refreshBases()
       }
+
+      return { data, error }
     },
     async logout() {
       const { error } = await useApiPost<User>(
@@ -65,6 +67,14 @@ export const useUserStore = defineStore("user", {
       if (!error.value) {
         this.updateState(data.value)
       }
+    },
+    async resendConfirmationEmail(email: string) {
+      return useApiGet(
+        `auth/send-email-confirmation/${email}/`,
+        {},
+        "Email de confirmation envoyé",
+        true
+      )
     },
     async resetPassword(email: string) {
       return useApiGet(

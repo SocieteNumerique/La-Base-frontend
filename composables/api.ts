@@ -107,6 +107,9 @@ export async function useApiRequest<Type>(
       } else {
         title = onError.title
         text = onError.text || ""
+        if (text === "_responseBody") {
+          text = error.value.data
+        }
       }
       alertStore.alert(title, text, "error")
     }
