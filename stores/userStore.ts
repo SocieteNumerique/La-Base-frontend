@@ -90,17 +90,12 @@ export const useUserStore = defineStore("user", {
         payload,
         {},
         {
-          title: "Création réussie",
-          text: "Vous êtes dès à présent connectés",
+          title: "Compte créé - vérification en attente",
+          text: "Vérifiez votre boite mail pour valider votre compte",
+          type: "info",
         },
         true
       )
-      if (!error.value) {
-        this.updateState(data.value)
-        await this.refreshProfile()
-        const baseStore = useBaseStore()
-        await baseStore.refreshBases()
-      }
 
       return { data, error }
     },

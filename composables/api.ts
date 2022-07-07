@@ -118,13 +118,15 @@ export async function useApiRequest<Type>(
     if (onSuccess) {
       let title: string
       let text = ""
+      let type = "success"
       if (typeof onSuccess === "string") {
         title = onSuccess
       } else {
         title = onSuccess.title
         text = onSuccess.text || ""
+        type = onSuccess.type || type
       }
-      alertStore.alert(title, text, "success")
+      alertStore.alert(title, text, type)
     }
   }
   return { data, error }
