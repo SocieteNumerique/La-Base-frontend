@@ -42,8 +42,8 @@ async function onChange() {
   error.value = ""
   const fileObject = await inputToFileObject(fileInput.value!)
   file.value = fileObject!
-  if (props.requireImage) {
-    if (isImage.value) error.value = "Le fichier uploadé n'est pas une image"
+  if (props.requireImage && fileObject) {
+    if (!isImage.value) error.value = "Le fichier uploadé n'est pas une image"
   }
 }
 </script>
