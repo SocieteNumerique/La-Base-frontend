@@ -32,19 +32,19 @@
         maxlength="100"
         required="true"
       />
-      <label class="fr-label" for="new-base-from-header-state">
-        Le statut de la base est<span class="required">&nbsp;*</span>
-      </label>
-      <DsfrRadioButtonSet
-        v-if="props.new"
-        id="new-base-from-header-state"
-        v-model="base.state"
-        :inline="true"
-        :options="baseStateOptions"
-        :required="true"
-        label="Le statut de la base est"
-        name="baseState"
-      />
+      <template v-if="props.new">
+        <label class="fr-label" for="new-base-from-header-state">
+          Le statut de la base est<span class="required">&nbsp;*</span>
+        </label>
+        <DsfrRadioButtonSet
+          id="new-base-from-header-state"
+          v-model="base.state"
+          :inline="true"
+          :options="baseStateOptions"
+          :required="true"
+          label="Le statut de la base est"
+          name="baseState"
+      /></template>
       <!-- <DsfrRadioButtonSet
         v-model="base.contactStatus"
         :inline="true"
