@@ -23,7 +23,7 @@ export type Resource = {
   accessRequiresUserAccount?: boolean
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
-  basesPinnedIn?: PinStatus[]
+  pinnedInBases?: number[]
   contents?: Content[]
   canWrite?: boolean
   coverImage?: FullFile
@@ -70,7 +70,7 @@ export type CollectionCreate = {
 export type Collection = {
   id: number
   base: number
-  basesPinnedIn?: PinStatus[]
+  pinnedInBases?: number[]
   name: string
   nbResources?: number
   resources?: number[]

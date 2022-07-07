@@ -28,18 +28,17 @@
       v-show="isMenuShown"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
+      <div v-if="iControlRootBase" class="item fr-text-default--grey">
+        <BaseLabel :base="baseStore.basesById[rootBaseId]" class="fr-mr-2v">
+          <div>
+            {{ baseStore.basesById[rootBaseId]?.title }}
+            <div class="fr-text-mention--grey">Base propriétaire</div>
+          </div>
+        </BaseLabel>
+        <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
+      </div>
       <template v-for="{ id, isPinned } of pinStatuses" :key="id">
-        <div v-if="id === rootBaseId" class="item fr-text-default--grey">
-          <BaseLabel :base="baseStore.basesById[id]" class="fr-mr-2v">
-            <div>
-              {{ baseStore.basesById[id]?.title }}
-              <div class="fr-text-mention--grey">Base propriétaire</div>
-            </div>
-          </BaseLabel>
-          <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
-        </div>
         <div
-          v-else
           :class="isPinned ? '-checked' : ''"
           class="item"
           @click="togglePin({ id, isPinned: isPinned })"
@@ -60,13 +59,14 @@
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
 import { PropType } from "vue"
-import { PinStatus } from "~/composables/types"
+import { Base, PinStatus } from "~/composables/types"
 import { useUserStore } from "~/stores/userStore"
 
 const userStore = useUserStore()
+const baseStore = useBaseStore()
 
 const props = defineProps({
-  modelValue: { type: Array as PropType<PinStatus[]>, required: true },
+  modelValue: { type: Array as PropType<number[]>, required: true },
   instanceId: { type: Number, required: true },
   rootBaseId: { type: Number, default: null },
   instanceType: {
@@ -91,15 +91,29 @@ onFocusOut(
   newBaseContainerId.value,
   () => showAddBaseModal.value
 )
-const baseStore = useBaseStore()
 
-const savedPinStatuses = useModel<PinStatus[]>("modelValue", {
+const savedPinStatuses = useModel<number[]>("modelValue", {
   type: "array",
 })
-const pinStatuses = ref<PinStatus[]>(props.modelValue)
-watch(savedPinStatuses, (value) => (pinStatuses.value = value))
+const iControlRootBase =
+  baseStore.baseOptions.filter((base) => base.id === props.rootBaseId).length >
+  0
+
+function convertToPinStatuses(pinnedInBases: number[]) {
+  return baseStore.baseOptions.map((base) => ({
+    ...base,
+    isPinned: pinnedInBases.includes(base.id),
+  }))
+}
+
+const pinStatuses = ref(convertToPinStatuses(savedPinStatuses.value))
+watch(
+  savedPinStatuses,
+  (value) => (pinStatuses.value = convertToPinStatuses(value))
+)
 
 const atLeastOnePin = computed<boolean>(() => {
+  if (iControlRootBase) return true
   if (!pinStatuses.value) return false
   return pinStatuses.value.some((pinStatus: PinStatus) => pinStatus.isPinned)
 })
@@ -120,7 +134,7 @@ async function togglePin(pinStatus: PinStatus) {
   pinStatus.isPinned = !pinStatus.isPinned
   const actionName = pinStatus.isPinned ? "enregistrée à" : "retirée de"
   const baseName = baseStore.basesById[pinStatus.id].title
-  const { data, error } = await useApiPatch<PinStatus[]>(
+  const { data, error } = await useApiPatch<number[]>(
     `${endpoint.value}/${props.instanceId}/pin/`,
     pinStatus,
     {},
@@ -129,7 +143,7 @@ async function togglePin(pinStatus: PinStatus) {
     },
     true
   )
-  if (error.value) return (pinStatuses.value = savedPinStatuses.value)
+  if (error.value) return convertToPinStatuses(savedPinStatuses.value)
   savedPinStatuses.value = data.value
 }
 </script>
