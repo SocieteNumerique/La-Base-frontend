@@ -26,11 +26,12 @@ const url = computed<string>(() => {
 })
 
 const style = computed(() => {
-  const size = props.resizableImage
-    ? `${100 * (props.resizableImage.scaleX || 1)}% ${
-        100 * (props.resizableImage.scaleY || 1)
-      }%`
-    : "cover"
+  const size =
+    props.resizableImage?.scaleX && props.resizableImage?.scaleY
+      ? `${100 * (props.resizableImage.scaleX || 1)}% ${
+          100 * (props.resizableImage.scaleY || 1)
+        }%`
+      : "cover"
 
   const positionX = props.resizableImage?.relativePositionX
     ? `left -${
