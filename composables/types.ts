@@ -134,7 +134,7 @@ export type Base = {
   contributors?: User[]
   contributorTags?: number[]
   description?: string
-  profileImage?: FullFile
+  profileImage?: ResizableImage
   id: number
   isShort?: boolean
   owner: User | number

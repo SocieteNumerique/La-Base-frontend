@@ -73,9 +73,11 @@
         @change="territoryTags = $event"
         @focus="focusCategory(territoryCategoryName)"
       />
-      <FileUpload
+      <ImageResizableUpload
         v-model="base.profileImage"
         :label="`${fileActionWord}image de profil pour la base`"
+        crop-circle
+        :desired-ratio="1"
       />
       <!--    cover -->
     </div>
