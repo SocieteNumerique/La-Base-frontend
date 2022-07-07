@@ -1,3 +1,4 @@
+import { NuxtApp } from "nuxt3/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { Alert } from "~/composables/types"
 import { useAlertStore } from "~/stores/alertStore"
@@ -35,11 +36,11 @@ const makeLoadingKey = (path: string) => {
   return words.join("")
 }
 
-const getCsrfCookie = () => {
-  let cookie: string
-  if (process.server) {
-    cookie = useRequestHeaders(["cookie"])["cookie"]
-  } else {
+const getCsrfCookie = (ctx: NuxtApp) => {
+  let cookie = ""
+  if (ctx?.ssrContext?.req.headers.cookie) {
+    cookie = ctx?.ssrContext.req.headers.cookie
+  } else if (process.client) {
     cookie = document.cookie
   }
   if (!cookie) {
@@ -52,10 +53,10 @@ const getCsrfCookie = () => {
   return csrfRow.split("=")[1]
 }
 
-const getHeaders = (includeCsrf = false): MyHeaders => {
+const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
   const headers: MyHeaders = useRequestHeaders(["cookie"])
   if (includeCsrf) {
-    const csrfToken = getCsrfCookie()
+    const csrfToken = getCsrfCookie(ctx)
     if (csrfToken) {
       headers["X-CSRFTOKEN"] = csrfToken
     }
@@ -79,17 +80,14 @@ export async function useApiRequest<Type>(
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
-  const { data, error } = await useAsyncData<Type>(
-    key,
-    () =>
-      $fetch(BASE_URL + "/api/" + path, {
-        method: method,
-        body: payload,
-        credentials: "include",
-        headers: getHeaders(method != "GET"),
-        params: params,
-      }),
-    { initialCache: false }
+  const { data, error } = await useAsyncData<Type>(key, (ctx) =>
+    $fetch(BASE_URL + "/api/" + path, {
+      method: method,
+      body: payload,
+      credentials: "include",
+      headers: getHeaders(ctx!, method != "GET"),
+      params: params,
+    })
   )
 
   // handle alerts and loading status

@@ -1,4 +1,4 @@
-import { defineNuxtConfig } from "nuxt"
+import { defineNuxtConfig } from "nuxt3"
 
 export default defineNuxtConfig({
   css: ["~/assets/dsfr-imports.css", "@/css/moine.sass"],
