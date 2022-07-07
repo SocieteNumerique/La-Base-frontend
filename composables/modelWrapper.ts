@@ -17,7 +17,9 @@ export function useModel<Type>(
 
   return computed<Type>({
     get() {
-      return vm!.$props[propName]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore typing is unknown because it is dynamic
+      return vm!.$props[propName] as Type
     },
     set(value) {
       vm!.$emit(`update:${propName}`, valueToSet(value))
