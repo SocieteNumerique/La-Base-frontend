@@ -213,6 +213,7 @@ import {
   ResourcesSearchResult,
   Base,
   Resource,
+  TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
@@ -250,7 +251,7 @@ const updateDataType = (newDataType: "resources" | "bases") => {
 const tagCategories = computed(() => {
   const filterKey = dataType.value === "resources" ? "Resource" : "Base"
   return tagStore.categories.filter(
-    (category) => category.relatesTo === filterKey
+    (category: TagCategory) => category.relatesTo === filterKey
   )
 })
 const doSearch = debounce(async () => {
