@@ -117,6 +117,7 @@ const base = ref<Base | BaseCreate>(
         contact: userStore.email,
         state: "private",
         tags: [],
+        profileImage: { image: undefined },
       }
     : { ...baseStore.current }
 )

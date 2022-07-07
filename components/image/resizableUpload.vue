@@ -9,7 +9,7 @@
     <ImageProfileRound :resizable-image="file" size="medium" />
   </div>
   <DsfrButton
-    v-if="file.image && !showResizeModal"
+    v-if="file.image?.link && !showResizeModal"
     class="fr-my-3v"
     @click="showResizeModal = true"
   >

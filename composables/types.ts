@@ -120,6 +120,7 @@ export type TagCategoryWithFullTags = {
 export type BaseCreate = {
   contact?: string
   description?: string
+  profileImage?: ResizableImage
   tags?: number[]
   title: string
 }
