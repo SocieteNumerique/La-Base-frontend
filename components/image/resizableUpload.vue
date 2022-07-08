@@ -36,7 +36,7 @@
       secondary
       @click="showResizeModal = false"
     >
-      Fermer l'outil de recadrage
+      Annuler le recadrage
     </DsfrButton>
   </div>
 </template>
