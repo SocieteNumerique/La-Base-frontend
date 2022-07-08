@@ -101,7 +101,7 @@ export async function useApiRequest<Type>(
       )
     } else if (onError) {
       let title: string
-      let text = ""
+      let text: string | object = ""
       if (typeof onError === "string") {
         title = onError
       } else {
@@ -109,7 +109,10 @@ export async function useApiRequest<Type>(
         text = onError.text || ""
         if (text === "_responseBody") {
           text = error.value.data
-          if (typeof text !== "string") {
+          if (typeof text == "string") {
+          } else if (Array.isArray(text)) {
+            text = text.join(". ")
+          } else {
             text = JSON.stringify(text)
           }
         }
