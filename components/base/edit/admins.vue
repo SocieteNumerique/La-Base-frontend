@@ -7,7 +7,7 @@
   >
     <UserSelector v-model="admins" label="Ajouter" />
     <label class="fr-label fr-pt-3w">Les administrateurs</label>
-    <UserList :list="admins" @remove="removeUserId" />
+    <UserList :users="admins" @remove="removeUserId" />
   </DsfrModal>
 </template>
 
