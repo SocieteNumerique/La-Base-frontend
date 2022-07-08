@@ -5,6 +5,7 @@
       require-image
       :max-size="maxSize"
       :label="label"
+      @update:model-value="file = { image: $event }"
     />
     <ImageProfileRound :resizable-image="file" size="medium" />
   </div>
