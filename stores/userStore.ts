@@ -94,7 +94,7 @@ export const useUserStore = defineStore("user", {
           text: "Vérifiez votre boite mail pour valider votre compte",
           type: "info",
         },
-        true
+        { title: "Impossible de créer le compte", text: "_responseBody" }
       )
 
       return { data, error }

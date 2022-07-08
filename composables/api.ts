@@ -109,6 +109,9 @@ export async function useApiRequest<Type>(
         text = onError.text || ""
         if (text === "_responseBody") {
           text = error.value.data
+          if (typeof text !== "string") {
+            text = JSON.stringify(text)
+          }
         }
       }
       alertStore.alert(title, text, "error")
