@@ -220,6 +220,8 @@ import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
 import { useUserStore } from "~/stores/userStore"
+import { useRoute, useRouter } from "vue-router"
+import { useAlertStore } from "~/stores/alertStore"
 
 definePageMeta({
   layout: false,
@@ -300,7 +302,16 @@ const onRadioChange = (value: "OR" | "AND") => {
   doSearch()
 }
 
-onMounted(() => doSearch())
+onMounted(() => {
+  doSearch()
+
+  // display email confirmation when appropriate
+  const route = useRoute()
+  if (route.query.emailConfirmed) {
+    const alertStore = useAlertStore()
+    alertStore.alert("Email confirmé")
+  }
+})
 
 // pagination
 const currentPage = ref(0)

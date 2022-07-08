@@ -102,11 +102,13 @@ export async function useApiRequest<Type>(
     } else if (onError) {
       let title: string
       let text: string | object = ""
+      let type = "error"
       if (typeof onError === "string") {
         title = onError
       } else {
         title = onError.title
         text = onError.text || ""
+        type = onError.type || type
         if (text === "_responseBody") {
           text = error.value.data
           if (typeof text == "string") {
@@ -117,7 +119,7 @@ export async function useApiRequest<Type>(
           }
         }
       }
-      alertStore.alert(title, text, "error")
+      alertStore.alert(title, text, type)
     }
   } else {
     loadingStore.markDone(key)
