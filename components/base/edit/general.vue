@@ -117,9 +117,11 @@ const base = ref<Base | BaseCreate>(
         contact: userStore.email,
         state: "private",
         tags: [],
-        profileImage: { image: undefined },
       }
-    : { ...baseStore.current }
+    : {
+        ...baseStore.current,
+        profileImage: { ...baseStore.current?.profileImage },
+      }
 )
 
 const participantTags = ref<Tag[]>(

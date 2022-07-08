@@ -34,12 +34,10 @@ const style = computed(() => {
       : "cover"
 
   const positionX = props.resizableImage?.relativePositionX
-    ? `left -${
-        props.resizableImage.relativePositionX * diameters[props.size]
-      }px`
+    ? `-${props.resizableImage.relativePositionX * diameters[props.size]}px`
     : "left"
   const positionY = props.resizableImage?.relativePositionY
-    ? `top -${props.resizableImage.relativePositionY * diameters[props.size]}px`
+    ? `-${props.resizableImage.relativePositionY * diameters[props.size]}px`
     : "top"
   return {
     "background-image": url.value
