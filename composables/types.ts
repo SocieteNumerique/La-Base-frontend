@@ -1,3 +1,5 @@
+import { Coordinates } from "vue-advanced-cropper"
+
 export type User = {
   id?: number
   email: string
@@ -118,6 +120,7 @@ export type TagCategoryWithFullTags = {
 export type BaseCreate = {
   contact?: string
   description?: string
+  profileImage?: ResizableImage
   tags?: number[]
   title: string
 }
@@ -132,7 +135,7 @@ export type Base = {
   contributors?: User[]
   contributorTags?: number[]
   description?: string
-  profileImage?: FullFile
+  profileImage?: ResizableImage
   id: number
   isShort?: boolean
   owner: User | number
@@ -180,6 +183,15 @@ export type FullFile = {
   name: string
   mimeType?: string
   link?: string
+}
+
+export type ResizableImage = {
+  image?: FullFile
+  scaleX?: number
+  scaleY?: number
+  relativePositionY?: number
+  relativePositionX?: number
+  coordinates?: Coordinates
 }
 
 export interface FileContent extends BaseContent {
