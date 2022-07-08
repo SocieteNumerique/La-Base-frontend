@@ -117,7 +117,9 @@ const atLeastOnePin = computed<boolean>(() => {
   if (!pinStatuses.value) return false
   return pinStatuses.value.some((pinStatus: PinStatus) => pinStatus.isPinned)
 })
-const endpoint = computed<string>(() => `${props.instanceType}s`)
+const endpoint = computed<"resources" | "collections">(
+  () => `${props.instanceType}s`
+)
 const frenchInstanceNames: { [key: string]: string } = {
   resource: "ressource",
   collection: "collection",
@@ -145,6 +147,10 @@ async function togglePin(pinStatus: PinStatus) {
   )
   if (error.value) return convertToPinStatuses(savedPinStatuses.value)
   savedPinStatuses.value = data.value
+  const instances = baseStore.basesById[pinStatus.id][endpoint.value]
+  if (pinStatus.isPinned && instances?.indexOf(props.instanceId) === -1)
+    baseStore.basesById[pinStatus.id].resources?.push(props.instanceId)
+  if (!pinStatus.isPinned) instances?.filter((id) => id != props.instanceId)
 }
 </script>
 
