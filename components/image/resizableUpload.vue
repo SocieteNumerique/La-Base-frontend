@@ -9,13 +9,23 @@
     />
     <ImageProfileRound :resizable-image="file" size="medium" />
   </div>
-  <DsfrButton
-    v-if="file.image?.link && !showResizeModal"
-    class="fr-my-3v"
-    @click="showResizeModal = true"
-  >
-    Ouvrir l'outil de recadrage
-  </DsfrButton>
+  <div class="fr-btns-group fr-btns-group--inline">
+    <DsfrButton
+      v-if="file.image?.link && !showResizeModal"
+      class="fr-my-3v"
+      @click="showResizeModal = true"
+    >
+      Ouvrir l'outil de recadrage
+    </DsfrButton>
+    <DsfrButton
+      v-if="file.image && !showResizeModal"
+      class="fr-my-3v"
+      secondary
+      @click="file = null"
+    >
+      Retirer l'image de profil
+    </DsfrButton>
+  </div>
   <div v-if="showResizeModal">
     <client-only>
       <Cropper
@@ -71,7 +81,7 @@ const file = computed<ResizableImage>({
     return props["modelValue"]
   },
   set(value) {
-    emits(`update:modelValue`, { ...value })
+    emits(`update:modelValue`, value === null ? null : { ...value })
   },
 })
 const cropper = ref()

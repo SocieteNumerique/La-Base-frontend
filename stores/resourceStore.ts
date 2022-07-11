@@ -8,6 +8,7 @@ import {
   SubMenuByKey,
 } from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
+import { useBaseStore } from "~/stores/baseStore"
 
 export const navigationMenus: Menu[] = [
   {
@@ -121,9 +122,13 @@ export const useResourceStore = defineStore("resource", {
       this.markDirty(resourceId)
     },
     async createResource(resource: ResourceCreate) {
+      const baseStore = useBaseStore()
       const { data, error } = await useApiPost<Resource>("resources/", resource)
       if (!error.value) {
         this.resourcesById[data.value.id!] = data.value
+        baseStore.basesById[data.value.rootBase!]?.resources?.push(
+          data.value.id!
+        )
         return data.value
       }
     },

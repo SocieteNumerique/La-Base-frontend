@@ -59,11 +59,13 @@
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
 import { PropType } from "vue"
-import { Base, PinStatus } from "~/composables/types"
+import { PinStatus } from "~/composables/types"
 import { useUserStore } from "~/stores/userStore"
+import { useResourceStore } from "~/stores/resourceStore"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
+const resourceStore = useResourceStore()
 
 const props = defineProps({
   modelValue: { type: Array as PropType<number[]>, required: true },
@@ -100,10 +102,12 @@ const iControlRootBase =
   0
 
 function convertToPinStatuses(pinnedInBases: number[]) {
-  return baseStore.baseOptions.map((base) => ({
-    ...base,
-    isPinned: pinnedInBases.includes(base.id),
-  }))
+  return baseStore.baseOptions
+    .filter(({ id }) => id !== props.rootBaseId)
+    .map((base) => ({
+      ...base,
+      isPinned: pinnedInBases.includes(base.id),
+    }))
 }
 
 const pinStatuses = ref(convertToPinStatuses(savedPinStatuses.value))
@@ -149,7 +153,12 @@ async function togglePin(pinStatus: PinStatus) {
   savedPinStatuses.value = data.value
   const instances = baseStore.basesById[pinStatus.id][endpoint.value]
   if (pinStatus.isPinned && instances?.indexOf(props.instanceId) === -1)
-    baseStore.basesById[pinStatus.id].resources?.push(props.instanceId)
+    instances.push(props.instanceId)
+  if (
+    props.instanceType === "resource" &&
+    !resourceStore.resourcesById[props.instanceId]
+  )
+    await resourceStore.getResource(props.instanceId, true)
   if (!pinStatus.isPinned) instances?.filter((id) => id != props.instanceId)
 }
 </script>
