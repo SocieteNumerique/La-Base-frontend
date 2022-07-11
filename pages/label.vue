@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fr-col-7">
     <h3 id="label-num-rique-en-commun-s-nec-">
       Label Numérique en Commun[s] (NEC)
     </h3>
@@ -42,7 +42,7 @@
     <h3 id="quels-dispositifs-peuvent-tre-labellis-s-">
       Quels dispositifs peuvent être labellisés ?
     </h3>
-    <p><strong>Qui peut demander une labellisation ?</strong></p>
+    <h4>Qui peut demander une labellisation ?</h4>
     <ul>
       <li>Les associations</li>
       <li>Les établissements publics</li>
@@ -51,7 +51,7 @@
       <li>Les collectivités territoriales et leurs groupements</li>
       <li>Les entreprises</li>
     </ul>
-    <p><strong>Quels dispositifs peuvent être labellisés ?</strong></p>
+    <h4>Quels dispositifs peuvent être labellisés ?</h4>
     <p>
       Les dispositifs qui concourent à des objectifs d’inclusion numérique et à
       des missions d’intérêt général.
@@ -73,18 +73,25 @@
         >
       </li>
     </ul>
-    <p><img src="/img/label/img1.png" alt="" /></p>
-    <p><strong>Quels sont les critères du label ?</strong></p>
+    <div class="callout">
+      <h4>Attention</h4>
+      <p>
+        Les organisations porteuses de ces dispositifs ne sont pas labellisées
+        en tant que telles.
+        <strong>
+          Seuls les dispositifs portées par celles-ci font l’objet d’une
+          labellisation.
+        </strong>
+      </p>
+    </div>
+    <!--    <p><img src="/img/label/img1.png" alt="Nota bene" style="width: 100%" /></p>-->
+    <h4>Quels sont les critères du label ?</h4>
     <p>Peut être labellisé un dispositif ...</p>
-    <p><img src="/img/label/img2.png" alt="" /></p>
+    <p><img src="/img/label/img2.png" alt="critères du label" width="754" /></p>
     <h3 id="apports-et-engagements-li-s-au-label">
       Apports et engagements liés au label
     </h3>
-    <p>
-      <strong
-        >Que m’apporte le label, en tant que porteur de dispositif ?</strong
-      >
-    </p>
+    <h4>Que m’apporte le label, en tant que porteur de dispositif ?</h4>
     <ul>
       <li>
         L’identification publique de votre dispositif comme un dispositif de
@@ -108,7 +115,7 @@
         réseau national).
       </li>
     </ul>
-    <p><strong>À quoi engage l’obtention du label ?</strong></p>
+    <h4>À quoi engage l’obtention du label ?</h4>
     <p>
       Chaque porteur de dispositif labellisé ou en cours de labellisations
       s’engage à :
@@ -127,7 +134,7 @@
       </li>
     </ol>
     <h3 id="la-labellisation">La labellisation</h3>
-    <p><strong>Étape 1 – Auto-évaluation</strong></p>
+    <h4>Étape 1 – Auto-évaluation</h4>
     <p>
       Il existe <strong>deux niveaux de labellisation</strong>, le niveau 2
       présentant des exigences de conformité plus importantes que le niveau 1.
@@ -144,13 +151,23 @@
       de preuves seront demandés en cas de demande de labellisation (voir étape
       2).
     </p>
-    <p><strong>Pour un dispositif numérique</strong></p>
-    <p><img src="/img/label/img3.png" alt="" /></p>
-    <p><strong>Pour un dispositif tangible (physique)</strong></p>
-    <p><img src="/img/label/img4.png" alt="" /></p>
-    <p><strong>Pour un dispositif méthodologique (ingénierie)</strong></p>
-    <p><img src="/img/label/img5.png" alt="" /></p>
-    <p><strong>Etape 2 – Demande de labellisation à l’ANCT</strong></p>
+    <h5>Pour un dispositif numérique</h5>
+    <p>
+      <img src="/img/label/img3.png" alt="dispositif numériques" width="835" />
+    </p>
+    <h5>Pour un dispositif tangible (physique)</h5>
+    <p>
+      <img src="/img/label/img4.png" alt="dispositifs physiques" width="835" />
+    </p>
+    <h5>Pour un dispositif méthodologique (ingénierie)</h5>
+    <p>
+      <img
+        src="/img/label/img5.png"
+        alt="dispositifs méthodologiques"
+        width="835"
+      />
+    </p>
+    <h4>Etape 2 – Demande de labellisation à l’ANCT</h4>
     <p>
       Vous pouvez candidater via
       <a href="https://tripetto.app/run/FQ5DYIXR3J">ce lien</a> .
@@ -170,12 +187,28 @@
       accompagnement pour vous permettre d’améliorer l’atteinte d’un ou
       plusieurs critère(s) de labellisation.
     </p>
-    <p><img src="/img/label/img6.png" alt="" /></p>
+    <div class="callout">
+      <p>
+        L’accompagnement qui peut dans certains cas être proposé par l’ANCT,
+        consiste en :
+      </p>
+      <ul>
+        <li>
+          Un premier rendez-vous permettant d’apprécier l’écart entre la
+          situation actuelle et les attendus en matière de labellisation sur
+          chacun des critères (sur la base des premiers éléments fournis) ;
+        </li>
+        <li>
+          L’élaboration d’un plan d’accompagnement pour permettre d’atteindre
+          les objectifs en matière de conformité aux critères de labellisation ;
+        </li>
+        <li>L’accompagnement par divers experts, mandatés par l’ANCT.</li>
+      </ul>
+
+      <p>
+        Cet accompagnement fait alors partie intégrante du processus de
+        labellisation.
+      </p>
+    </div>
   </div>
 </template>
-
-<style scoped>
-img {
-  max-width: 100%;
-}
-</style>
