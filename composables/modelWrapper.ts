@@ -9,10 +9,14 @@ export function useModel<Type>(
   let valueToSet: any
   if (options.type === "object") {
     valueToSet = (value: object) => {
+      if (valueToSet === null) return null
       return { ...value }
     }
   } else if (options.type === "array") {
-    valueToSet = (value: any[]) => [...value]
+    valueToSet = (value: any[]) => {
+      if (valueToSet === null) return null
+      return [...value]
+    }
   } else valueToSet = (value: any) => value
 
   return computed<Type>({
