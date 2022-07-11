@@ -100,10 +100,12 @@ const iControlRootBase =
   0
 
 function convertToPinStatuses(pinnedInBases: number[]) {
-  return baseStore.baseOptions.map((base) => ({
-    ...base,
-    isPinned: pinnedInBases.includes(base.id),
-  }))
+  return baseStore.baseOptions
+    .filter(({ id }) => id !== props.rootBaseId)
+    .map((base) => ({
+      ...base,
+      isPinned: pinnedInBases.includes(base.id),
+    }))
 }
 
 const pinStatuses = ref(convertToPinStatuses(savedPinStatuses.value))
