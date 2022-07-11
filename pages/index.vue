@@ -132,7 +132,11 @@
 
     <ul class="fr-px-2w fr-pt-1w fr-tags-group">
       <li v-for="tagId in selectedTags" :key="tagId">
-        <button class="fr-tag--dismiss fr-tag" @click="removeTag(tagId)">
+        <button
+          class="fr-tag--dismiss fr-tag"
+          :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
+          @click="removeTag(tagId)"
+        >
           {{ tagStore.tagsById[tagId].name }}
         </button>
       </li>
