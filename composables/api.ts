@@ -101,27 +101,40 @@ export async function useApiRequest<Type>(
       )
     } else if (onError) {
       let title: string
-      let text = ""
+      let text: string | object = ""
+      let type = "error"
       if (typeof onError === "string") {
         title = onError
       } else {
         title = onError.title
         text = onError.text || ""
+        type = onError.type || type
+        if (text === "_responseBody") {
+          text = error.value.data
+          if (typeof text == "string") {
+          } else if (Array.isArray(text)) {
+            text = text.join(". ")
+          } else {
+            text = JSON.stringify(text)
+          }
+        }
       }
-      alertStore.alert(title, text, "error")
+      alertStore.alert(title, text, type)
     }
   } else {
     loadingStore.markDone(key)
     if (onSuccess) {
       let title: string
       let text = ""
+      let type = "success"
       if (typeof onSuccess === "string") {
         title = onSuccess
       } else {
         title = onSuccess.title
         text = onSuccess.text || ""
+        type = onSuccess.type || type
       }
-      alertStore.alert(title, text, "success")
+      alertStore.alert(title, text, type)
     }
   }
   return { data, error }

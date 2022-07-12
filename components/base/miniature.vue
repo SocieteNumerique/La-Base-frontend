@@ -5,7 +5,7 @@
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div v-if="base.profileImage" class="banner fr-p-1w">
-        <ImageProfileRound :image-url="base.profileImage?.link" size="medium" />
+        <ImageProfileRound :resizable-image="base.profileImage" size="medium" />
       </div>
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">{{ base.title }}</h3>

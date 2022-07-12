@@ -28,18 +28,17 @@
       v-show="isMenuShown"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
+      <div v-if="iControlRootBase" class="item fr-text-default--grey">
+        <BaseLabel :base="baseStore.basesById[rootBaseId]" class="fr-mr-2v">
+          <div>
+            {{ baseStore.basesById[rootBaseId]?.title }}
+            <div class="fr-text-mention--grey">Base propriétaire</div>
+          </div>
+        </BaseLabel>
+        <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
+      </div>
       <template v-for="{ id, isPinned } of pinStatuses" :key="id">
-        <div v-if="id === rootBaseId" class="item fr-text-default--grey">
-          <BaseLabel :base="baseStore.basesById[id]" class="fr-mr-2v">
-            <div>
-              {{ baseStore.basesById[id]?.title }}
-              <div class="fr-text-mention--grey">Base propriétaire</div>
-            </div>
-          </BaseLabel>
-          <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
-        </div>
         <div
-          v-else
           :class="isPinned ? '-checked' : ''"
           class="item"
           @click="togglePin({ id, isPinned: isPinned })"
@@ -62,11 +61,14 @@ import { useBaseStore } from "~/stores/baseStore"
 import { PropType } from "vue"
 import { PinStatus } from "~/composables/types"
 import { useUserStore } from "~/stores/userStore"
+import { useResourceStore } from "~/stores/resourceStore"
 
 const userStore = useUserStore()
+const baseStore = useBaseStore()
+const resourceStore = useResourceStore()
 
 const props = defineProps({
-  modelValue: { type: Array as PropType<PinStatus[]>, required: true },
+  modelValue: { type: Array as PropType<number[]>, required: true },
   instanceId: { type: Number, required: true },
   rootBaseId: { type: Number, default: null },
   instanceType: {
@@ -91,19 +93,37 @@ onFocusOut(
   newBaseContainerId.value,
   () => showAddBaseModal.value
 )
-const baseStore = useBaseStore()
 
-const savedPinStatuses = useModel<PinStatus[]>("modelValue", {
+const savedPinStatuses = useModel<number[]>("modelValue", {
   type: "array",
 })
-const pinStatuses = ref<PinStatus[]>(props.modelValue)
-watch(savedPinStatuses, (value) => (pinStatuses.value = value))
+const iControlRootBase =
+  baseStore.baseOptions.filter((base) => base.id === props.rootBaseId).length >
+  0
+
+function convertToPinStatuses(pinnedInBases: number[]) {
+  return baseStore.baseOptions
+    .filter(({ id }) => id !== props.rootBaseId)
+    .map((base) => ({
+      ...base,
+      isPinned: pinnedInBases.includes(base.id),
+    }))
+}
+
+const pinStatuses = ref(convertToPinStatuses(savedPinStatuses.value))
+watch(
+  savedPinStatuses,
+  (value) => (pinStatuses.value = convertToPinStatuses(value))
+)
 
 const atLeastOnePin = computed<boolean>(() => {
+  if (iControlRootBase) return true
   if (!pinStatuses.value) return false
   return pinStatuses.value.some((pinStatus: PinStatus) => pinStatus.isPinned)
 })
-const endpoint = computed<string>(() => `${props.instanceType}s`)
+const endpoint = computed<"resources" | "collections">(
+  () => `${props.instanceType}s`
+)
 const frenchInstanceNames: { [key: string]: string } = {
   resource: "ressource",
   collection: "collection",
@@ -120,7 +140,7 @@ async function togglePin(pinStatus: PinStatus) {
   pinStatus.isPinned = !pinStatus.isPinned
   const actionName = pinStatus.isPinned ? "enregistrée à" : "retirée de"
   const baseName = baseStore.basesById[pinStatus.id].title
-  const { data, error } = await useApiPatch<PinStatus[]>(
+  const { data, error } = await useApiPatch<number[]>(
     `${endpoint.value}/${props.instanceId}/pin/`,
     pinStatus,
     {},
@@ -129,8 +149,17 @@ async function togglePin(pinStatus: PinStatus) {
     },
     true
   )
-  if (error.value) return (pinStatuses.value = savedPinStatuses.value)
+  if (error.value) return convertToPinStatuses(savedPinStatuses.value)
   savedPinStatuses.value = data.value
+  const instances = baseStore.basesById[pinStatus.id][endpoint.value]
+  if (pinStatus.isPinned && instances?.indexOf(props.instanceId) === -1)
+    instances.push(props.instanceId)
+  if (
+    props.instanceType === "resource" &&
+    !resourceStore.resourcesById[props.instanceId]
+  )
+    await resourceStore.getResource(props.instanceId, true)
+  if (!pinStatus.isPinned) instances?.filter((id) => id != props.instanceId)
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <span class="base-label">
     <ImageProfileRound
-      :image-url="base.profileImage?.link"
+      :resizable-image="base.profileImage"
       size="small"
       class="fr-mr-2v"
     />

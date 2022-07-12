@@ -9,15 +9,21 @@ export function useModel<Type>(
   let valueToSet: any
   if (options.type === "object") {
     valueToSet = (value: object) => {
+      if (valueToSet === null) return null
       return { ...value }
     }
   } else if (options.type === "array") {
-    valueToSet = (value: any[]) => [...value]
+    valueToSet = (value: any[]) => {
+      if (valueToSet === null) return null
+      return [...value]
+    }
   } else valueToSet = (value: any) => value
 
   return computed<Type>({
     get() {
-      return vm!.$props[propName]
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore typing is unknown because it is dynamic
+      return vm!.$props[propName] as Type
     },
     set(value) {
       vm!.$emit(`update:${propName}`, valueToSet(value))

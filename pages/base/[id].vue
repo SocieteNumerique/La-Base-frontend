@@ -4,7 +4,7 @@
       <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
         <div class="fr-container">
           <ImageProfileRound
-            :image-url="base?.profileImage?.link"
+            :resizable-image="base?.profileImage"
             class="fr-mb-3v"
             size="large"
           />

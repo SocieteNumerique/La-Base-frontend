@@ -53,8 +53,8 @@
     </ul>
     <p><strong>Quels dispositifs peuvent être labellisés ?</strong></p>
     <p>
-      Les dispositifs qui concourent des objectifs d’inclusion numérique et à
-      des missions d’intérêt général
+      Les dispositifs qui concourent à des objectifs d’inclusion numérique et à
+      des missions d’intérêt général.
     </p>
     <ul>
       <li>

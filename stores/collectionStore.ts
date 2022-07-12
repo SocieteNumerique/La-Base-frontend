@@ -74,9 +74,9 @@ export const useCollectionStore = defineStore("collection", {
         return true
       }
     },
-    refreshPinStatus(basesPinnedIn: PinStatus[], collectionId: number) {
+    refreshPinStatus(pinnedInBases: PinStatus[], collectionId: number) {
       const collection = this.collectionsById[collectionId]
-      collection.basesPinnedIn = basesPinnedIn
+      collection.pinnedInBases = pinnedInBases
     },
   },
 })

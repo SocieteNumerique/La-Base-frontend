@@ -26,7 +26,6 @@ const props = defineProps({
 
 const file = useModel<FullFile>("modelValue", { type: "object" })
 const hint = `Taille maximale : ${props.maxSize}.`
-const error = ref<string>("")
 
 const inputContainer = ref()
 const fileInput = ref<HTMLInputElement>()
@@ -34,16 +33,19 @@ onMounted(() => {
   fileInput.value = inputContainer.value.$el.getElementsByTagName("input")[0]
 })
 
-const isImage = computed<boolean>(
-  () => file.value?.mimeType?.includes("image") || false
+const isImage = computed<boolean>(() => {
+  return file.value?.mimeType?.includes("image") || false
+})
+const touched = ref<boolean>(false)
+const error = computed<string>(() =>
+  props.requireImage && file.value && !isImage.value && touched.value
+    ? "Le fichier uploadé n'est pas une image"
+    : ""
 )
 
 async function onChange() {
-  error.value = ""
+  touched.value = true
   const fileObject = await inputToFileObject(fileInput.value!)
   file.value = fileObject!
-  if (props.requireImage) {
-    if (isImage.value) error.value = "Le fichier uploadé n'est pas une image"
-  }
 }
 </script>

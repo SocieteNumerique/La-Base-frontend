@@ -17,6 +17,7 @@ export async function inputToFileObject(
   if (nbFiles > 1) return /* TODO */
   const file = fileInput.files![0]
   const base64 = await fileToBase64(file)
+  const link = URL.createObjectURL(file)
   fileInput.files = null
-  return { base64, name: file.name, mimeType: file.type }
+  return { base64, name: file.name, mimeType: file.type, link }
 }

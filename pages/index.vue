@@ -11,7 +11,7 @@
     </template>
     <div>
       <div class="fr-grid-row fr-mb-5w" style="justify-content: space-between">
-        <div class="fr-col-6">
+        <div class="fr-col-6" style="color: var(--text-action-high-grey)">
           <p>
             La Base regroupe les ressources des professionnels du numérique
             d’intérêt général dont l’inclusion et la médiation numériques.
@@ -30,19 +30,32 @@
             </NuxtLink>
           </div>
         </div>
-        <div v-if="!userStore.isLoggedIn" class="fr-col-5">
-          <p class="fr-mb-0">
-            Pour pouvoir créer une base, renseigner, publier et enregister des
-            fiches ressources vous devez bénéficier d’un compte.
-          </p>
-          <div>
-            <DsfrButton
-              class="fr-btn--tertiary-no-outline fr-pl-0 fr-btn--sm"
-              label="Inscrivez-vous"
-              icon="ri-arrow-right-line"
-              @click="userStore.showSignUpModal = true"
-            />
+        <div class="fr-col-5 fr-text-mention--grey">
+          <div class="fr-mb-9v">
+            <p class="fr-mb-3v">
+              La Base est une plateforme en amélioration continue grâce à vos
+              retours et contributions. Vous pouvez nous écrire pour nous
+              transmettre vos idées et vos remarques quant à l’évolution de La
+              Base.
+            </p>
+            <a href="mailto:labase@anct-gouv.fr">
+              <DsfrButton class="fr-btn--sm" label="Nous contacter" />
+            </a>
           </div>
+
+          <template v-if="!userStore.isLoggedIn">
+            <p class="fr-mb-3v">
+              Pour pouvoir créer une base, renseigner, publier et enregistrer
+              des fiches ressources vous devez bénéficier d’un compte.
+            </p>
+            <div>
+              <DsfrButton
+                class="fr-btn--sm"
+                label="S'inscrire"
+                @click="userStore.showSignUpModal = true"
+              />
+            </div>
+          </template>
         </div>
       </div>
 
@@ -188,7 +201,7 @@
           <ResourceMiniature
             v-for="(resource, index) of results"
             :key="resource.id"
-            v-model="results[index].basesPinnedIn"
+            v-model="results[index].pinnedInBases"
             :resource="resource"
           />
         </div>
@@ -220,6 +233,8 @@ import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
 import { useUserStore } from "~/stores/userStore"
+import { useRoute, useRouter } from "vue-router"
+import { useAlertStore } from "~/stores/alertStore"
 
 definePageMeta({
   layout: false,
@@ -300,7 +315,16 @@ const onRadioChange = (value: "OR" | "AND") => {
   doSearch()
 }
 
-onMounted(() => doSearch())
+onMounted(() => {
+  doSearch()
+
+  // display email confirmation when appropriate
+  const route = useRoute()
+  if (route.query.emailConfirmed) {
+    const alertStore = useAlertStore()
+    alertStore.alert("Email confirmé")
+  }
+})
 
 // pagination
 const currentPage = ref(0)

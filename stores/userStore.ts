@@ -30,7 +30,7 @@ export const useUserStore = defineStore("user", {
         },
         {},
         { title: "Connexion réussie" },
-        true
+        { title: "Connexion impossible", text: "_responseBody" }
       )
       if (!error.value) {
         this.updateState(data.value)
@@ -38,6 +38,8 @@ export const useUserStore = defineStore("user", {
         resetPerUserData()
         baseStore.refreshBases()
       }
+
+      return { data, error }
     },
     async logout() {
       const { error } = await useApiPost<User>(
@@ -66,6 +68,14 @@ export const useUserStore = defineStore("user", {
         this.updateState(data.value)
       }
     },
+    async resendConfirmationEmail(email: string) {
+      return useApiGet(
+        `auth/send-email-confirmation/${email}/`,
+        {},
+        "Email de confirmation envoyé",
+        true
+      )
+    },
     async resetPassword(email: string) {
       return useApiGet(
         `password/reset?email=${email}`,
@@ -80,17 +90,12 @@ export const useUserStore = defineStore("user", {
         payload,
         {},
         {
-          title: "Création réussie",
-          text: "Vous êtes dès à présent connectés",
+          title: "Compte créé - vérification en attente",
+          text: "Vérifiez votre boite mail pour valider votre compte",
+          type: "info",
         },
-        true
+        { title: "Impossible de créer le compte", text: "_responseBody" }
       )
-      if (!error.value) {
-        this.updateState(data.value)
-        await this.refreshProfile()
-        const baseStore = useBaseStore()
-        await baseStore.refreshBases()
-      }
 
       return { data, error }
     },
