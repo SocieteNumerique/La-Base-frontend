@@ -1,7 +1,7 @@
 <template>
   <div class="nuxt-body" data-fr-theme>
     <LayoutHeader />
-    <div class="fr-container" style="height: 0">
+    <div class="fr-container alert-container" style="height: 0">
       <LayoutAlert
         v-for="alert of alertStore.getAlerts"
         :key="alert.id"
@@ -46,6 +46,18 @@ const closeAlert = (alertId: string) => {
   display: flex
   flex-flow: column
   min-height: 100vh
+
+  .alert-container
+    top: 168px
+    z-index: 10000000
+    position: fixed
+    width: 100vw
+    transform: translateX(-50%)
+    left: 50%
+    display: flex
+    flex-direction: column
+    justify-content: start
+    align-items: end
 
   footer
     margin-top: auto

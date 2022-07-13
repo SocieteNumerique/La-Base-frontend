@@ -31,7 +31,7 @@ export const useAlertStore = defineStore("alerts", {
   },
   getters: {
     getAlerts: (state): Alert[] => {
-      return Object.values(state.alerts)
+      return Object.values(state.alerts).reverse()
     },
   },
 })

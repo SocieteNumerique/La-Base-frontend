@@ -1,8 +1,8 @@
 <template>
   <DsfrAlert
     class="alert-display"
-    :title="alert.title"
-    :description="small ? alert.text : alert.title"
+    :title="small ? undefined : alert.title"
+    :description="small ? alert.text || alert.title : alert.text"
     :type="alert.type"
     :small="small"
     closeable
@@ -18,19 +18,18 @@ const props = defineProps({
   alert: { type: Object as PropType<Alert>, required: true },
 })
 defineEmits(["close"])
-const small = computed<boolean>(() => !!(props.alert.text && props.alert.title))
+const small = computed<boolean>(() => !(props.alert.text && props.alert.title))
 </script>
 
 <style scoped lang="sass">
 @keyframes slidein
   from
-    margin-left: 100vh
+    margin-right: -100vh
   to
-    margin-left: auto
+    margin-right: 0
 .alert-display
   background: white
-  width: 345px
-  margin-left: 100vh
-  z-index: 10000000
-  animation: 300ms ease-in-out slidein
+  width: fit-content
+  max-width: 500px
+  animation: 300ms ease-in-out slidein forwards
 </style>
