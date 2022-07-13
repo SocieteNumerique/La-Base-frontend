@@ -1,14 +1,25 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-grid-row--right fr-p-2w">
-      <ShareButton :link="link" class="fr-mr-3w" />
-      <PinMenu
-        v-model="pinnedInBases"
-        :instance-id="resource?.id"
-        :root-base-id="resource?.rootBase"
-        instance-type="resource"
-        :small="true"
-      />
+    <div class="fr-grid-row fr-p-2w toolbar">
+      <nuxt-link
+        v-if="resource.canWrite"
+        :to="`/ressource/${resource.id}/edition`"
+        class="no-underline"
+      >
+        <button class="fr-btn--tertiary-no-outline">
+          <VIcon name="ri-edit-line" />
+        </button>
+      </nuxt-link>
+      <div class="is-flex fr-ml-auto">
+        <ShareButton :link="link" class="fr-mr-3w" />
+        <PinMenu
+          v-model="pinnedInBases"
+          :instance-id="resource?.id"
+          :root-base-id="resource?.rootBase"
+          instance-type="resource"
+          :small="true"
+        />
+      </div>
     </div>
     <NuxtLink :to="`/ressource/${resource.id}`" class="no-underline">
       <div
@@ -84,6 +95,9 @@ const link = computed(
 
 <style lang="sass" scoped>
 .miniature-container
+  .toolbar
+    align-items: center
+
   .description-text
     overflow: hidden
     display: -webkit-box

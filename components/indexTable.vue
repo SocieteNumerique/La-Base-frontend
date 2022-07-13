@@ -3,7 +3,9 @@
     <table>
       <tbody>
         <tr v-for="category in categories" :key="category.id">
-          <th>{{ category.name }}</th>
+          <th>
+            <span>{{ category.name }}</span>
+          </th>
           <td><DsfrTags :tags="tagsForCategory(category, props.element)" /></td>
         </tr>
       </tbody>
@@ -40,15 +42,28 @@ const categories = computed(() =>
 )
 </script>
 
-<style scoped>
-th,
-td,
-tr,
-tbody {
-  background: none !important;
-}
-th,
-td {
-  padding: 10px;
-}
+<style scoped lang="sass">
+th, td, tr, tbody
+  background: none !important
+
+th, td
+  padding: 10px
+
+th
+  vertical-align: top
+  span
+    display: inline-block
+    padding: 4px 0
+
+tr
+  // safari display
+  position: relative
+  &:not(:first-child)::after
+    content: ""
+    width: 100%
+    height: 1px
+    background: var(--border-default-grey)
+    display: block
+    position: absolute
+    left: 0
 </style>

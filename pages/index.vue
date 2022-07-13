@@ -132,7 +132,11 @@
 
     <ul class="fr-px-2w fr-pt-1w fr-tags-group">
       <li v-for="tagId in selectedTags" :key="tagId">
-        <button class="fr-tag--dismiss fr-tag" @click="removeTag(tagId)">
+        <button
+          class="fr-tag--dismiss fr-tag"
+          :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
+          @click="removeTag(tagId)"
+        >
           {{ tagStore.tagsById[tagId].name }}
         </button>
       </li>
@@ -233,7 +237,7 @@ import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
 import { useUserStore } from "~/stores/userStore"
-import { useRoute, useRouter } from "vue-router"
+import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
 
 definePageMeta({
@@ -257,10 +261,10 @@ const textInput = ref("")
 const searchedText = ref("")
 const possibleTags = ref<number[]>([])
 const dataType = ref<"resources" | "bases">("resources")
+
 const updateDataType = (newDataType: "resources" | "bases") => {
   dataType.value = newDataType
-  currentPage.value = 0
-  doSearch()
+  reset()
 }
 const tagCategories = computed(() => {
   const filterKey = dataType.value === "resources" ? "Resource" : "Base"

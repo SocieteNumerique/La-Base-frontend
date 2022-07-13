@@ -24,7 +24,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@gouvfr/dsfr": "^1.5.1",
+    "@gouvfr/dsfr": "1.4.1",
     "@laruiss/vue-dsfr": "^1.0.0",
     "@pinia/nuxt": "^0.1.8",
     "@tiptap/extension-link": "^2.0.0-beta.38",
