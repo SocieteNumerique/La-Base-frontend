@@ -92,6 +92,7 @@ export type TagCategory = {
   acceptsFreeTags: boolean
   baseId: number
   description: string
+  displayRadio: number
   id: number
   isDraft: boolean
   isMultiSelect: boolean

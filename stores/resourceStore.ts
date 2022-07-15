@@ -2,13 +2,13 @@ import { defineStore } from "pinia"
 import {
   Menu,
   MenuByKey,
-  PinStatus,
   Resource,
   ResourceCreate,
   SubMenuByKey,
 } from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
+import { useTagStore } from "~/stores/tagStore"
 
 export const navigationMenus: Menu[] = [
   {
@@ -111,16 +111,6 @@ export const useResourceStore = defineStore("resource", {
       resourcesById: {},
     },
   actions: {
-    addTagToResource(tagId: number, resourceId: number) {
-      const resource = this.resourcesById[resourceId]
-      if (resource.tags == null) {
-        resource.tags = []
-      }
-      if (resource.tags.indexOf(tagId) === -1) {
-        resource.tags.push(tagId)
-      }
-      this.markDirty(resourceId)
-    },
     async createResource(resource: ResourceCreate) {
       const baseStore = useBaseStore()
       const { data, error } = await useApiPost<Resource>("resources/", resource)
@@ -226,12 +216,39 @@ export const useResourceStore = defineStore("resource", {
       }
       this.navigation.activeSubMenu = subMenus[currentSubMenuIx - 1].key
     },
+    addTagToResource(tagId: number, resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      if (resource.tags == null) {
+        resource.tags = []
+      }
+      if (resource.tags.indexOf(tagId) === -1) {
+        resource.tags.push(tagId)
+      }
+      this.markDirty(resourceId)
+    },
     removeTagFromResource(tagId: number, resourceId: number) {
       const resource = this.resourcesById[resourceId]
       if (resource.tags == null) {
         resource.tags = []
       }
       resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
+      this.markDirty(resourceId)
+    },
+    setTagOfCategory(
+      tagId: number | undefined,
+      categoryId: number,
+      resourceId: number
+    ) {
+      const tagStore = useTagStore()
+      const resource = this.resourcesById[resourceId]
+      if (resource.tags == null) {
+        resource.tags = tagId ? [tagId] : []
+      }
+      const tagIdsInCategory = tagStore.tagCategoriesById[categoryId].tags
+      resource.tags.filter(
+        (tagIdToTest) => !tagIdsInCategory.includes(tagIdToTest)
+      )
+      if (tagId) resource.tags.push(tagId)
       this.markDirty(resourceId)
     },
     resetNavigation() {
