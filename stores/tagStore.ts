@@ -15,6 +15,7 @@ type TagCategoryIdsBySlug = {
 
 type TagState = {
   tagsById: TagsById
+  tagIdsBySlug: { [slig: string]: number }
   tagCategoriesById: TagCategoriesById
   tagCategoriesOrder: number[]
   tagCategoryIdsBySlug: TagCategoryIdsBySlug
@@ -24,6 +25,7 @@ export const useTagStore = defineStore("tag", {
   state: () =>
     <TagState>{
       tagsById: {},
+      tagIdsBySlug: {},
       tagCategoriesById: {},
       tagCategoriesOrder: [],
       tagCategoryIdsBySlug: {},
@@ -74,6 +76,7 @@ export const useTagStore = defineStore("tag", {
         const tagIds = category.tags!.map((tag) => tag.id)
         for (const tag of category.tags!) {
           this.tagsById[tag.id] = tag
+          if (tag.slug) this.tagIdsBySlug[tag.slug] = tag.id
         }
         this.tagCategoriesById[category.id] = { ...category, tags: tagIds }
         this.tagCategoryIdsBySlug[category.slug] = category.id
