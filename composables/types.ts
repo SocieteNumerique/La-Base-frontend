@@ -33,6 +33,7 @@ export type Resource = {
   created?: string
   creator?: number
   dirty?: boolean
+  hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
   isDraft?: boolean
@@ -86,18 +87,20 @@ export type Tag = {
   isDraft: boolean
   isFree: boolean
   name: string
+  slug?: string
 }
 
 export type TagCategory = {
   acceptsFreeTags: boolean
   baseId: number
   description: string
-  displayRadio: number
+  groupTagsByFamily: boolean
   id: number
   isDraft: boolean
   isMultiSelect: boolean
   maximumTagCount: number
   name: string
+  radioDisplay: boolean
   relatesTo: string
   requiredToBePublic: boolean
   slug: string
@@ -108,16 +111,19 @@ export type TagCategoryWithFullTags = {
   acceptsFreeTags: boolean
   baseId: number
   description: string
+  groupTagsByFamily: boolean
   id: number
   isDraft: boolean
   isMultiSelect: boolean
   maximumTagCount: number
   name: string
+  radioDisplay: boolean
   relatesTo: string
   requiredToBePublic: boolean
   slug: string
   tags: Tag[]
 }
+
 export type BaseCreate = {
   contact?: string
   description?: string
@@ -160,12 +166,15 @@ export type BaseWithDetailedResources = {
 type BaseContent = {
   annotation?: string
   id?: number
-  licence?: string
+  licenseText?: LicenseText
   nbCol: number
   order?: number
   section: number
+  // for now content tags ar only for licence. If that changes, the license modals need to be updated
+  tags?: number[]
   title?: string
   type: string
+  useResourceLicense: boolean
 }
 
 export interface LinkContent extends BaseContent {
@@ -205,6 +214,12 @@ export type Content =
   | LinkContent
   | TextContent
   | LinkedResourceContent
+
+export type LicenseText = {
+  file?: FullFile
+  link?: string
+  propertyToUse: "link" | "file"
+}
 
 export type ContentOrder = {
   [key: number]: { section: number; order: number }
