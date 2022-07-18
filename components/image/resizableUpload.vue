@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex has-children-space-between flex-center">
-    <FileUpload
+    <FormFileUpload
       v-model="file.image"
       require-image
       :max-size="maxSize"
