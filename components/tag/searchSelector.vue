@@ -106,7 +106,7 @@ const props = defineProps({
     default: false,
   },
   source: {
-    type: String as PropType<"CurrentResource" | "own" | "ownFull">,
+    type: String as PropType<"CurrentResource" | "own" | "ownId">,
     default: "CurrentResource",
   },
   initTags: {
@@ -228,7 +228,7 @@ const selectTag = (tagId: number) => {
   }
   emit(
     "change",
-    props.source === "ownFull" ? sourceTags.value : selectedTags.value
+    props.source === "ownId" ? sourceTags.value : selectedTags.value
   )
 }
 const removeTag = (tagId: number) => {
@@ -239,7 +239,7 @@ const removeTag = (tagId: number) => {
   }
   emit(
     "change",
-    props.source === "ownFull" ? sourceTags.value : selectedTags.value
+    props.source === "ownId" ? sourceTags.value : selectedTags.value
   )
 }
 

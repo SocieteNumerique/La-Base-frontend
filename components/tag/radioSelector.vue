@@ -126,6 +126,9 @@ function chooseTag(tagId?: number) {
       ownSelectedTags.value
     )
   }
-  emit("change", selectedTags.value)
+  emit(
+    "change",
+    props.source === "ownId" ? sourceTags.value : selectedTags.value
+  )
 }
 </script>
