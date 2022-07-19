@@ -119,7 +119,7 @@ const props = defineProps({
   },
   mode: { type: String as PropType<"filter" | "set">, default: "set" },
 })
-const ownSelectedTags = ref<number[]>(props.initTags)
+const ownSelectedTags = ref<number[]>([...props.initTags])
 
 const hintTextLines = computed(() => {
   const toShow: string[] = []
