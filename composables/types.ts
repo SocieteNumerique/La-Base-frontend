@@ -218,7 +218,7 @@ export type Content =
 export type LicenseText = {
   file?: FullFile
   link?: string
-  propertyToUse: "link" | "file"
+  propertyToUse?: "link" | "file"
 }
 
 export type ContentOrder = {
