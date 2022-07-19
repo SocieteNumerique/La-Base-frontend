@@ -22,7 +22,7 @@ const link = computed<string>({
     return props.modelValue
   },
   set(value) {
-    if (/^https?:\/\/.*/.test(value)) emits("update:modelValue", value)
+    if (/^https?:\/\/.*/.test(value)) return emits("update:modelValue", value)
     emits("update:modelValue", `http://${value}`)
   },
 })
