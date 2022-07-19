@@ -70,6 +70,21 @@ export const useTagStore = defineStore("tag", {
         this.saveTagCategoriesToState(data.value)
       }
     },
+    setTagOfCategory(
+      tagId: number | undefined,
+      categoryId: number,
+      tagIds: number[]
+    ) {
+      if (tagIds == null) {
+        tagIds = tagId ? [tagId] : []
+      }
+      const tagIdsInCategory = this.tagCategoriesById[categoryId].tags
+      const res = tagIds.filter(
+        (tagIdToTest) => !tagIdsInCategory.includes(tagIdToTest)
+      )
+      if (tagId) res.push(tagId)
+      return res
+    },
     saveTagCategoriesToState(categories: TagCategoryWithFullTags[]) {
       this.tagCategoriesOrder = categories.map((category) => category.id)
       for (const category of categories) {

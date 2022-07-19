@@ -6,7 +6,7 @@
     :source="source"
     :label="label"
     :mode="mode"
-    @change="$emit('change')"
+    @change="$emit('change', $event)"
   />
   <TagSearchSelector
     v-else
@@ -17,7 +17,7 @@
     :label="label"
     :mode="mode"
     @blur="$emit('blur')"
-    @change="$emit('change')"
+    @change="$emit('change', $event)"
     @focus="$emit('focus')"
   />
 </template>

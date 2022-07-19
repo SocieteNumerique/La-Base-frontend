@@ -120,7 +120,11 @@ function chooseTag(tagId?: number) {
       resourceStore.currentId!
     )
   } else {
-    ownSelectedTags.value = tagId ? [tagId] : []
+    ownSelectedTags.value = tagStore.setTagOfCategory(
+      tagId,
+      props.category.id,
+      ownSelectedTags.value
+    )
   }
   emit("change", selectedTags.value)
 }
