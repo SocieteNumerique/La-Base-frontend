@@ -39,7 +39,7 @@
       :content="content"
       :is-editing-view="true"
     />
-    <DsfrModal :opened="isEditing" title="" @close="$emit('exit-edition')">
+    <DsfrModal v-if="isEditing" title="" opened @close="$emit('exit-edition')">
       <ContentInput v-model="content" @exit="$emit('exit-edition')" />
     </DsfrModal>
 
