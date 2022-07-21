@@ -20,7 +20,6 @@
   <template v-if="isEditingLicense">
     <TagLicenseExit
       v-if="isExiting"
-      @confirm="save()"
       @back="isExiting = false"
       @close="resetAndExit"
     />
@@ -115,6 +114,7 @@ function resetData() {
   tags.value = props.modelValue.tags || []
   licenseText.value = props.modelValue.licenseText || {}
   step.value = "radio"
+  isExiting.value = false
 }
 function resetAndExit() {
   resetData()

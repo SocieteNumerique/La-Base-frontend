@@ -11,14 +11,8 @@
 </template>
 
 <script setup lang="ts">
-const emits = defineEmits(["save", "exit", "back"])
+const emits = defineEmits(["close", "back"])
 const discardActions = [
-  {
-    label: "Enregistrer",
-    onClick() {
-      emits("save")
-    },
-  },
   {
     label: "Retour",
     onClick() {
