@@ -37,7 +37,10 @@ const tagStore = useTagStore()
 const resourceStore = useResourceStore()
 
 const selectedValue = computed<number | undefined>({
-  get: () => (sourceTags.value?.length ? sourceTags.value[0] : undefined),
+  get: () =>
+    sourceTags.value?.length
+      ? sourceTags.value?.find((id) => props.category.tags.includes(id))
+      : undefined,
   set(value: number | undefined) {
     chooseTag(value)
   },
