@@ -17,7 +17,7 @@ import ContentInputFile from "~/components/content/input/file.vue"
 import { PropType } from "vue"
 import { Content } from "~/composables/types"
 
-defineEmits(["exit"])
+const emits = defineEmits(["exit"])
 defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
@@ -35,6 +35,7 @@ async function saveContent() {
   const updatedContent = await updateContent(content.value)
   if (!updatedContent) return
   content.value = updatedContent!
+  emits("exit")
 }
 </script>
 
