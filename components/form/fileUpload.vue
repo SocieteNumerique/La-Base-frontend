@@ -2,6 +2,7 @@
   <slot>
     <DsfrFileUpload
       ref="inputContainer"
+      class="fr-form-group"
       :error="error"
       :hint="hint"
       :label="label"

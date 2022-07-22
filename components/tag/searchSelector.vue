@@ -1,5 +1,8 @@
 <template>
-  <div :id="'tag-selector-' + props.category.id" class="tag-selector">
+  <div
+    :id="'tag-selector-' + props.category.id"
+    class="fr-form-group tag-selector"
+  >
     <div class="fr-input-group fr-mb-0">
       <label
         v-if="props.label !== null || props.category.name"
