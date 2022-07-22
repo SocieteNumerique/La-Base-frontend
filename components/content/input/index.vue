@@ -5,7 +5,7 @@
     @save="saveContent"
   >
     <component :is="component" v-model="content" />
-    <TagLicenseModalBase v-model="content" />
+    <ContentLicenseEdition v-model="content" />
   </ContentInputBase>
 </template>
 

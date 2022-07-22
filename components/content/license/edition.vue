@@ -18,13 +18,13 @@
     Renseigner licence et accès
   </DsfrButton>
   <template v-if="isEditingLicense">
-    <TagLicenseExit
+    <ContentLicenseExit
       v-if="isExiting"
       @back="isExiting = false"
       @close="resetAndExit"
     />
     <template v-else>
-      <TagLicenseGeneral
+      <ContentLicenseGeneral
         v-if="step === 'radio'"
         v-model="tags"
         :full-tags="fullTags"
@@ -32,7 +32,7 @@
         @close="isExiting = true"
       />
       <template v-if="step === 'details'">
-        <TagLicenseDetailsFree
+        <ContentLicenseDetailsFree
           v-if="isFreeLicense"
           v-model="tags"
           :full-tags="fullTags"
@@ -40,7 +40,7 @@
           @close="isExiting = true"
           @previous="step = 'radio'"
         />
-        <TagLicenseDetailsText
+        <ContentLicenseDetailsText
           v-else
           v-model:tags="tags"
           v-model:license-text="licenseText"
@@ -52,7 +52,7 @@
           @previous="step = 'radio'"
         />
       </template>
-      <TagLicenseAccess
+      <ContentLicenseAccess
         v-if="step === 'access'"
         v-model="tags"
         :full-tags="fullTags"
