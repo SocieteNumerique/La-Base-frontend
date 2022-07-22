@@ -217,9 +217,9 @@ export type Content =
   | LinkedResourceContent
 
 export type LicenseText = {
+  name?: string
   file?: FullFile
   link?: string
-  propertyToUse?: "link" | "file"
 }
 
 export type ContentOrder = {
