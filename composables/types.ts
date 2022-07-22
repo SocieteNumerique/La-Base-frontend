@@ -45,6 +45,7 @@ export type Resource = {
   externalProducers?: ExternalProducer[]
   labelDetails?: string
   labelState: string
+  licenseText?: LicenseText | null
   linkedResourceIds?: number[]
   modified: string
   producerState: string
@@ -166,7 +167,7 @@ export type BaseWithDetailedResources = {
 type BaseContent = {
   annotation?: string
   id?: number
-  licenseText?: LicenseText
+  licenseText?: LicenseText | null
   nbCol: number
   order?: number
   section: number

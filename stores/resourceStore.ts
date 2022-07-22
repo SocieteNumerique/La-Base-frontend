@@ -39,8 +39,9 @@ export const navigationMenus: Menu[] = [
       },
       {
         key: "license",
-        name: "Licence",
-        description: "Description de la licence",
+        name: "Licence et accès",
+        description:
+          "Conditions d'accès, de mise à disposition et modalités d'utilisation de la ressource. Veuillez vous assurer que vous disposez bien de l'accord de l'ensemble des auteurs ou détenteurs des droits de la ressource avant de publier la fiche. ",
       },
       {
         key: "label",
