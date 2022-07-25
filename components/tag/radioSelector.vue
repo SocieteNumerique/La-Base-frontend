@@ -38,10 +38,9 @@ const resourceStore = useResourceStore()
 
 const selectedValue = computed<number | undefined>({
   get: () =>
-    sourceTags.value?.length
-      ? sourceTags.value?.find((id) => props.category.tags.includes(id))
-      : undefined,
+    sourceTags.value?.find((id) => props.category.tags.includes(id)) || 0,
   set(value: number | undefined) {
+    if (!value) return chooseTag(undefined)
     chooseTag(value)
   },
 })
@@ -65,6 +64,8 @@ const props = defineProps({
     default: null,
   },
   mode: { type: String as PropType<"filter" | "set">, default: "set" },
+  allowsUnknown: { type: Boolean, default: false },
+  labelUnknown: { type: String, default: "Inconnu" },
 })
 const ownSelectedTags = ref<number[]>([...props.initTags])
 
@@ -105,7 +106,7 @@ const selectedTags = computed((): Tag[] => {
 })
 
 const tagOptions = computed(() => {
-  return props.category?.tags.map((tagId: number) => {
+  let options = props.category?.tags.map((tagId: number) => {
     const tag = tagStore.tagsById[tagId]
     return {
       label: tag.name,
@@ -113,6 +114,16 @@ const tagOptions = computed(() => {
       hint: tag.definition,
     }
   })
+  if (props.allowsUnknown)
+    options = [
+      {
+        label: props.labelUnknown,
+        value: 0,
+        hint: undefined,
+      },
+      ...options,
+    ]
+  return options
 })
 
 function chooseTag(tagId?: number) {

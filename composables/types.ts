@@ -168,14 +168,16 @@ type BaseContent = {
   annotation?: string
   id?: number
   licenseText?: LicenseText | null
+  licenseKnowledge?: LicenseKnowledge
   nbCol: number
   order?: number
   section: number
-  // for now content tags ar only for licence. If that changes, the license modals need to be updated
+  // for now content tags ar only for license.
+  // If that changes, the license modals need to be updated
   tags?: number[]
   title?: string
   type: string
-  useResourceLicense: boolean
+  useResourceLicenseAndAccess?: boolean
 }
 
 export interface LinkContent extends BaseContent {
@@ -221,6 +223,7 @@ export type LicenseText = {
   file?: FullFile
   link?: string
 }
+export type LicenseKnowledge = "specific" | "resource" | "unknown"
 
 export type ContentOrder = {
   [key: number]: { section: number; order: number }

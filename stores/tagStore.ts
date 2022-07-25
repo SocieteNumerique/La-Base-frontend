@@ -15,7 +15,7 @@ type TagCategoryIdsBySlug = {
 
 type TagState = {
   tagsById: TagsById
-  tagIdsBySlug: { [slig: string]: number }
+  tagIdsBySlug: { [slug: string]: number }
   tagCategoriesById: TagCategoriesById
   tagCategoriesOrder: number[]
   tagCategoryIdsBySlug: TagCategoryIdsBySlug
@@ -84,6 +84,20 @@ export const useTagStore = defineStore("tag", {
       )
       if (tagId) res.push(tagId)
       return res
+    },
+    setTagsOfCategory(
+      updatedTags: number[],
+      categoryId: number,
+      tags: number[]
+    ) {
+      const category = this.tagCategoriesById[categoryId]
+      const tagsOfCategory = updatedTags.filter((tagIdToTest) =>
+        category.tags.includes(tagIdToTest)
+      )
+      const tagsOfOtherCategory = tags.filter(
+        (tagIdToTest: number) => !category.tags.includes(tagIdToTest)
+      )
+      Object.assign(tags, [...tagsOfOtherCategory, ...tagsOfCategory])
     },
     saveTagCategoriesToState(categories: TagCategoryWithFullTags[]) {
       this.tagCategoriesOrder = categories.map((category) => category.id)

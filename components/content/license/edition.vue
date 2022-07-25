@@ -5,13 +5,13 @@
     merci de le renseigner.
   </p>
   <DsfrCheckbox
-    v-model="content.useResourceLicense"
+    v-model="content.useResourceLicenseAndAccess"
     label="Utiliser les conditions d'accès générales de la ressource"
     name="use-resource-licence"
     @update="updateCheckbox"
   />
   <DsfrButton
-    :disabled="content.useResourceLicense"
+    :disabled="content.useResourceLicenseAndAccess"
     secondary
     @click="isEditingLicense = true"
   >
@@ -24,41 +24,25 @@
       @close="resetAndExit"
     />
     <template v-else>
-      <ContentLicenseGeneral
-        v-if="step === 'radio'"
+      <ContentLicenseGeneralAccess
+        v-if="step === 'general'"
         v-model="tags"
+        v-model:license-knowledge="content.licenseKnowledge"
         :full-tags="fullTags"
         @next="step = 'details'"
         @close="isExiting = true"
+        @save="save"
       />
-      <template v-if="step === 'details'">
-        <ContentLicenseDetailsFree
-          v-if="isFreeLicense"
-          v-model="tags"
-          :full-tags="fullTags"
-          @next="step = 'access'"
-          @close="isExiting = true"
-          @previous="step = 'radio'"
-        />
-        <ContentLicenseDetailsText
-          v-else
-          v-model:tags="tags"
-          v-model:license-text="licenseText"
-          :full-tags="fullTags"
-          :proprietary="isProprietaryLicense"
-          @update:license-text="licenseText = $event"
-          @next="step = 'access'"
-          @close="isExiting = true"
-          @previous="step = 'radio'"
-        />
-      </template>
-      <ContentLicenseAccess
-        v-if="step === 'access'"
-        v-model="tags"
+      <ContentLicenseDetails
+        v-if="step === 'details'"
+        v-model:tags="tags"
+        v-model:license-text="licenseText"
         :full-tags="fullTags"
+        :license-type="licenseType"
+        @update:license-text="licenseText = $event"
         @save="save"
         @close="isExiting = true"
-        @previous="step = 'details'"
+        @previous="step = 'general'"
       />
     </template>
   </template>
@@ -68,6 +52,7 @@
 import { PropType } from "vue"
 import { Content, LicenseText, Tag } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
+import { licenseTagBySlug } from "~/composables/licenseUtils"
 
 const tagStore = useTagStore()
 
@@ -76,7 +61,7 @@ const props = defineProps({
 })
 const emits = defineEmits(["close", "update:model-value"])
 
-const step = ref<"radio" | "details" | "access">("radio")
+const step = ref<"general" | "details">("general")
 const isExiting = ref<boolean>(false)
 const isEditingLicense = ref<boolean>(false)
 
@@ -85,12 +70,12 @@ const content = useModel("modelValue", { type: "object" })
 const licenseText = ref<LicenseText>({})
 resetData()
 
-const isFreeLicense = computed(() =>
-  tags.value?.includes(tagStore.tagIdsBySlug["main_00free"]!)
-)
-const isProprietaryLicense = computed(() =>
-  tags.value?.includes(tagStore.tagIdsBySlug["main_01proprietary"]!)
-)
+const licenseType = computed(() => {
+  for (const [slug, licenseType] of Object.entries(licenseTagBySlug)) {
+    if (tags.value?.includes(tagStore.tagIdsBySlug[slug]!)) return licenseType
+  }
+})
+
 const fullTags = computed<Tag[]>(() =>
   tags.value.map((id) => tagStore.tagsById[id])
 )
@@ -98,14 +83,14 @@ const fullTags = computed<Tag[]>(() =>
 function updateCheckbox(value: boolean) {
   emits("update:model-value", {
     ...props.modelValue,
-    useResourceLicense: value,
+    useResourceLicenseAndAccess: value,
   })
 }
 function save() {
   emits("update:model-value", {
     ...props.modelValue,
     tags: tags.value,
-    licenseText: isFreeLicense.value ? undefined : licenseText.value,
+    licenseText: licenseType.value === "free" ? undefined : licenseText.value,
   })
   resetAndExit()
 }
@@ -113,7 +98,7 @@ function save() {
 function resetData() {
   tags.value = props.modelValue.tags || []
   licenseText.value = props.modelValue.licenseText || {}
-  step.value = "radio"
+  step.value = "general"
   isExiting.value = false
 }
 function resetAndExit() {
