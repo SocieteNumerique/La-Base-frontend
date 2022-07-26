@@ -32,11 +32,14 @@
       <TagRadioSelector
         :category="accessTagCategory"
         label="L’accès à la ressource nécessite la création d’un compte utilisateur"
+        allows-unknown
       />
-      <TagSelector
+      <TagRadioSelector
         :category="licenseTypeCategory"
         :is-focused="focusedCategory === licenseTypeCategory.slug"
         label="Licence de la ressource"
+        allows-unknown
+        label-unknown="Inconnue"
         @focus="focusCategory(licenseTypeCategory.slug)"
         @blur="focusCategory('')"
       />
