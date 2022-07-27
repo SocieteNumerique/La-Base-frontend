@@ -2,6 +2,7 @@
   <div
     :id="'tag-selector-' + props.category.id"
     class="fr-form-group tag-selector"
+    :class="{ focused: isFocused }"
   >
     <div class="fr-input-group fr-mb-0">
       <label
@@ -30,45 +31,46 @@
         </button>
       </div>
     </div>
-    <ul class="fr-px-2w fr-pt-1w fr-tags-group">
-      <li v-for="tag in selectedTags" :key="tag.id">
-        <button class="fr-tag" @click="removeTag(tag.id)">
-          {{ tag.name }}
-          <VIcon name="ri-close-line" />
-        </button>
-      </li>
-    </ul>
-    <div
-      style="
-        transition: max-height 0.4s ease-in-out 0s;
-        overflow-y: auto;
-        height: 100%;
-        margin-top: -8px;
-      "
-      :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
-    >
-      <template v-if="isFocused">
-        <TagLine
-          v-for="tag in filteredTags"
-          :key="tag.id"
-          :tag="tag"
-          @select="selectTag(tag.id)"
-        />
-      </template>
-    </div>
-    <div
-      v-if="isFocused && props.category.acceptsFreeTags"
-      class="fr-px-2w fr-py-1w"
-      style="border-bottom: 1px solid #e5e5e5"
-    >
-      <button
-        class="fr-m-0 fr-text--md fr-text-label--blue-france"
-        @click="onSuggestAddingTag"
+    <div class="tag-sub-input">
+      <ul v-if="selectedTags.length" class="fr-px-2w fr-pt-1w fr-tags-group">
+        <li v-for="tag in selectedTags" :key="tag.id">
+          <button class="fr-tag" @click="removeTag(tag.id)">
+            {{ tag.name }}
+            <VIcon name="ri-close-line" />
+          </button>
+        </li>
+      </ul>
+      <div class="tag-line-container">
+        <template v-if="isFocused">
+          <slot
+            name="tag-lines"
+            :on-select="selectTag"
+            :filtered-tags="filteredTags"
+          >
+            <TagLine
+              v-for="tag in filteredTags"
+              :key="tag.id"
+              :tag="tag"
+              @select="selectTag(tag.id)"
+            />
+          </slot>
+        </template>
+      </div>
+      <div
+        v-if="isFocused && props.category.acceptsFreeTags"
+        class="fr-px-2w fr-py-1w"
+        style="border-top: 1px solid #e5e5e5"
       >
-        <VIcon name="ri-add-circle-line" />
-        Ajouter un nouveau tag
-      </button>
+        <button
+          class="fr-m-0 fr-text--md fr-text-label--blue-france"
+          @click="onSuggestAddingTag"
+        >
+          <VIcon name="ri-add-circle-line" />
+          Ajouter un nouveau tag
+        </button>
+      </div>
     </div>
+
     <TagAddModal
       v-if="showAddModal"
       :tag-category-id="props.category.id"
@@ -258,3 +260,25 @@ const onTagCreated = (tagId: number) => {
   emit("blur")
 }
 </script>
+
+<style lang="sass" scoped>
+.tag-sub-input
+  border: 1px solid transparent
+  transition: border-color 0.4s ease-in-out 0s
+  background-color: white
+
+.fr-tags-group
+  border-bottom: 1px solid transparent
+
+.tag-line-container
+  transition: max-height 0.4s ease-in-out 0s
+  overflow-y: auto
+  height: 100%
+  max-height: 0
+
+.tag-selector.focused
+  .tag-sub-input, .fr-tags-group
+    border-color: var(--grey-975-75-active)
+  .tag-line-container
+    max-height: 300px
+</style>

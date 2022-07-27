@@ -24,7 +24,7 @@
           :scale="0.9"
           @click="showDefinition = !showDefinition"
         />
-        <span v-else class="no-information" />
+        <span v-else class="no-information">-</span>
       </div>
     </div>
     <p v-if="showDefinition" class="fr-mb-1w fr-text--xs fr-text-default--grey">

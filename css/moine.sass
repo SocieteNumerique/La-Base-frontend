@@ -98,7 +98,8 @@
 .result-line
   color: var(--text-default-grey)
   padding: 0 1rem
-  border-bottom: 1px solid #e5e5e5
+  &:not(:last-of-type)
+    border-bottom: 1px solid #e5e5e5
 .result-line > *
   padding: 0.5rem 0
 .result-line-holder
