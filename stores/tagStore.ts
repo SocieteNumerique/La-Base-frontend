@@ -111,6 +111,21 @@ export const useTagStore = defineStore("tag", {
         this.tagCategoryIdsBySlug[category.slug] = category.id
       }
     },
+    groupTags(
+      tags: Tag[],
+      customLabel = "Non classé"
+    ): { [group: string]: Tag[] } {
+      const res: { [group: string]: Tag[] } = {}
+      let categories
+      for (const tag of tags) {
+        categories = tag.slug?.split("_")[0].split(",") || [customLabel]
+        for (const category of categories) {
+          if (!Object.hasOwn(res, category)) res[category] = []
+          res[category].push(tag)
+        }
+      }
+      return res
+    },
   },
   getters: {
     categories: (state) => {

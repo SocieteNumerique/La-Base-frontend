@@ -9,7 +9,7 @@
   >
     <template #tag-lines="{ onSelect, filteredTags }">
       <template
-        v-for="(tagsOfGroup, group) in filteredTagsByGroup(filteredTags)"
+        v-for="(tagsOfGroup, group) in tagStore.groupTags(filteredTags)"
         :key="group"
       >
         <div class="result-line fr-mt-3v">
@@ -34,19 +34,6 @@
 <script setup lang="ts">
 import { Tag, TagCategory } from "~/composables/types"
 import { PropType } from "vue"
-
-function filteredTagsByGroup(tags: Tag[]): { [group: string]: Tag[] } {
-  const res: { [group: string]: Tag[] } = {}
-  let categories
-  for (const tag of tags) {
-    categories = tag.slug?.split("_")[0].split(",") || ["Non classé"]
-    for (const category of categories) {
-      if (!Object.hasOwn(res, category)) res[category] = []
-      res[category].push(tag)
-    }
-  }
-  return res
-}
 
 defineProps({
   category: {
