@@ -44,7 +44,7 @@
         @blur="focusCategory('')"
       />
       <template v-if="knowsLicenseType">
-        <TagSelector
+        <TagGroupedSelector
           v-if="isFreeLicense"
           :category="freeLicenseCategory"
           :is-focused="focusedCategory === freeLicenseCategory.slug"
