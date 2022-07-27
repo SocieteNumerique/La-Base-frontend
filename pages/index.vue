@@ -146,10 +146,19 @@
         v-for="category of tagCategories"
         :key="category.id"
         :category="category"
-        :is-focused="focusedCategory == category.id"
+        :is-focused="focusedCategory === category.id"
         :selected-tags="selectedTags"
-        :enabled-tags="tagOperator == 'AND' ? possibleTags : null"
+        :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
         @focus="focusedCategory = category.id"
+        @blur="focusedCategory = 0"
+        @select="onSelect"
+      />
+      <TagLicenseDropdown
+        :is-focused="focusedCategory === licenseTypeCategoryId.id"
+        :selected-tags="selectedTags"
+        :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
+        :tag-operator="tagOperator"
+        @focus="focusedCategory = licenseTypeCategoryId.id"
         @blur="focusedCategory = 0"
         @select="onSelect"
       />
@@ -230,6 +239,7 @@ import {
   ResourcesSearchResult,
   Base,
   Resource,
+  TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
@@ -266,12 +276,18 @@ const updateDataType = (newDataType: "resources" | "bases") => {
   dataType.value = newDataType
   reset()
 }
-const tagCategories = computed(() => {
+const tagCategories = computed<TagCategory[]>(() => {
   const filterKey = dataType.value === "resources" ? "Resource" : "Base"
   return tagStore.categories.filter(
-    (category) => category.relatesTo === filterKey
+    (category) =>
+      category.relatesTo?.includes(filterKey) &&
+      !hiddenCategorySlugs.includes(category.slug)
   )
 })
+
+const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
+const hiddenCategorySlugs = ["license_02free", "license_01license"]
+
 const doSearch = debounce(async () => {
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult

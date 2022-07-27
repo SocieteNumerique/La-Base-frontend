@@ -1,14 +1,13 @@
 <template>
-  <div
-    :id="'tag-dropdown-' + props.category.id"
-    class="tag-dropdown fr-text-label--blue-france"
-  >
+  <div :id="'tag-dropdown-' + props.category.id" class="tag-dropdown">
     <div
-      class="cursor--pointer dropdown-title"
+      class="cursor--pointer dropdown-title fr-text-label--blue-france"
       :class="isFocused ? 'underlined' : null"
       @click="onTitleClick"
     >
-      {{ props.category.name }}
+      <slot name="label">
+        {{ props.category.name }}
+      </slot>
       <VIcon name="ri-arrow-down-s-line" />
     </div>
     <div
@@ -16,13 +15,19 @@
       :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
     >
       <template v-if="isFocused">
-        <TagLine
-          v-for="tag in possibleTags"
-          :key="tag.id"
-          :tag="tag"
-          :disabled="!isTagEnabled(tag.id)"
-          @select="selectTag(tag.id)"
-        />
+        <slot
+          name="tag-lines"
+          :on-select="selectTag"
+          :is-tag-enabled="isTagEnabled"
+        >
+          <TagLine
+            v-for="tag in possibleTags"
+            :key="tag.id"
+            :tag="tag"
+            :disabled="!isTagEnabled(tag.id)"
+            @select="selectTag(tag.id)"
+          />
+        </slot>
       </template>
     </div>
   </div>
@@ -30,7 +35,7 @@
 
 <script setup lang="ts">
 import { TagCategory } from "~/composables/types"
-import { computed, PropType } from "vue"
+import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 
 const tagStore = useTagStore()
@@ -44,7 +49,7 @@ const possibleTags = computed(() =>
     .map((tagId) => tagStore.tagsById[tagId])
 )
 const isTagEnabled = (tagId: number) => {
-  if (props.enabledTags == null) {
+  if (props.enabledTags === undefined) {
     return true
   }
   return props.enabledTags.indexOf(tagId) !== -1
@@ -65,7 +70,7 @@ const props = defineProps({
   },
   enabledTags: {
     type: Array as PropType<number[]>,
-    default: null,
+    default: undefined,
   },
 })
 
