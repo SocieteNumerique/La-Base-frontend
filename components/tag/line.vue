@@ -14,8 +14,8 @@
       <div class="fr-text--sm fr-m-0 grid-tag-icons">
         <VIcon v-if="!props.tag.isFree" name="official-line" :scale="0.9" />
         <div v-else />
-        <span v-if="props.tag.count" class="tag-count">
-          {{ props.tag.count }}
+        <span class="tag-count">
+          {{ props.tag?.count || 0 }}
         </span>
         <VIcon
           v-if="props.tag.definition"
