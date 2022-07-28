@@ -93,11 +93,4 @@ tr
 
 td > *
   margin-bottom: -0.5rem
-  &.is-flex
-    align-items: center
-    span, a
-      padding-top: 4px
-      padding-bottom: 4px
-      margin-bottom: 0.5rem
-      margin-right: 0.5rem
 </style>

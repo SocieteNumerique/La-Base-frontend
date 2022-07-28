@@ -1,5 +1,5 @@
 <template>
-  <div class="is-flex">
+  <div class="license-tag-rows is-flex">
     <DsfrTags :tags="tags" />
     <span v-if="licenseText?.name">
       {{ licenseText.name }}
@@ -43,4 +43,12 @@ defineProps({
 })
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="sass">
+.license-tag-rows
+  align-items: center
+  span, a
+    padding-top: 4px
+    padding-bottom: 4px
+    margin-bottom: 0.5rem
+    margin-right: 0.5rem
+</style>
