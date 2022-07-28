@@ -170,12 +170,9 @@ export const useResourceStore = defineStore("resource", {
       }
     },
     markDirty(resourceId: number | null = null) {
-      if (resourceId == null && this.currentId == null) {
-        return
-      }
-      if (resourceId == null) {
-        resourceId = this.currentId!
-      }
+      if (resourceId == null && this.currentId == null) return
+      if (resourceId == null) resourceId = this.currentId!
+      if (!this.resourcesById[resourceId]) return
       this.resourcesById[resourceId].dirty = true
     },
     navigationNext() {
