@@ -32,8 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { Tag, TagCategory } from "~/composables/types"
+import { TagCategory } from "~/composables/types"
 import { PropType } from "vue"
+import { useTagStore } from "~/stores/tagStore"
+
+const tagStore = useTagStore()
 
 defineProps({
   category: {

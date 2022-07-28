@@ -104,7 +104,7 @@ const licenseText = computed<LicenseText | null>({
 
 const hasGlobalLicense = computed<string | undefined>({
   get() {
-    if (!resourceStore.current?.hasGlobalLicense) return
+    if (resourceStore.current?.hasGlobalLicense === undefined) return
     return resourceStore.current.hasGlobalLicense ? "1" : "0"
   },
   set(value) {

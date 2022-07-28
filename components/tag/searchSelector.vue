@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { Tag, TagCategory } from "~/composables/types"
-import { computed, PropType, onMounted, onBeforeUnmount } from "vue"
+import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useAlertStore } from "~/stores/alertStore"
