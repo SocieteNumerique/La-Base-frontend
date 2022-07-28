@@ -22,7 +22,10 @@ import { useTagStore } from "~/stores/tagStore"
 const tagStore = useTagStore()
 
 const props = defineProps({
-  tagCategories: { type: Array as PropType<TagCategory[]>, required: true },
+  tagCategories: {
+    type: Array as PropType<TagCategory[]>,
+    default: () => [...useTagStore().categories],
+  },
   element: { type: Object as PropType<Resource>, required: true },
 })
 
