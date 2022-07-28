@@ -43,6 +43,8 @@ import {
   RiArrowLeftLine,
   RiMapPinLine,
   RiAlertLine,
+  RiFileTextLine,
+  RiExternalLinkLine,
 } from "oh-vue-icons/icons"
 
 const officialLine = {
@@ -102,4 +104,6 @@ export const icons = [
   RiArrowLeftLine,
   RiMapPinLine,
   RiAlertLine,
+  RiExternalLinkLine,
+  RiFileTextLine,
 ]

@@ -2,11 +2,17 @@
   <div class="fr-table fr-table--bordered">
     <table>
       <tbody>
-        <tr v-for="category in categories" :key="category.id">
+        <tr v-for="({ label, tags, specific }, id) in tagsByCategory" :key="id">
           <th>
-            <span>{{ category.name }}</span>
+            <span>{{ label }}</span>
           </th>
-          <td><DsfrTags :tags="tagsForCategory(category, props.element)" /></td>
+          <td v-if="!specific"><DsfrTags :tags="tags" /></td>
+          <td v-else-if="id === 'license'">
+            <TagDisplayRowLicense
+              :tags="tags"
+              :license-text="element?.licenseText"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -29,20 +35,35 @@ const props = defineProps({
   element: { type: Object as PropType<Resource>, required: true },
 })
 
-const tagsForCategory = computed(
-  () => (category: TagCategory, element: Resource) => {
-    return element
-      .tags!.map((tagId) => tagStore.tagsById[tagId])
-      .filter((tag) => tag?.category === category.id)
-      .map((tag) => ({ label: tag.name }))
-  }
-)
+function getLabelAndId(category: TagCategory) {
+  if (["license_01license", "license_02free"].includes(category.slug))
+    return { label: "Licence", id: "license", specific: true }
+  if (["license_04access", "license_00price"].includes(category.slug))
+    return { label: "Prix et accès", id: "accessPrice", specific: false }
+  return { label: category.name, id: category.id, specific: false }
+}
 
-const categories = computed(() =>
-  props.tagCategories.filter(
-    (category) => tagsForCategory.value(category, props.element).length
-  )
-)
+type GroupedDisplayTags = {
+  [key: number | string]: {
+    label: string
+    specific?: boolean
+    tags: { label: string }[]
+  }
+}
+const tagsByCategory = computed<GroupedDisplayTags>(() => {
+  const res: GroupedDisplayTags = {}
+  const tags = props.element
+    .tags!.map((tagId) => tagStore.tagsById[tagId])
+    .filter((tag) => tag !== undefined)
+  for (const tag of tags) {
+    const { label, id, specific } = getLabelAndId(
+      tagStore.tagCategoriesById[tag.category]
+    )
+    if (!(label in res)) res[id] = { label, specific, tags: [] }
+    res[id].tags.push({ label: tag.name })
+  }
+  return res
+})
 </script>
 
 <style scoped lang="sass">
@@ -69,4 +90,14 @@ tr
     display: block
     position: absolute
     left: 0
+
+td > *
+  margin-bottom: -0.5rem
+  &.is-flex
+    align-items: center
+    span, a
+      padding-top: 4px
+      padding-bottom: 4px
+      margin-bottom: 0.5rem
+      margin-right: 0.5rem
 </style>
