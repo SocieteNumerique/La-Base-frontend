@@ -108,8 +108,13 @@ const selectedTags = computed((): Tag[] => {
 const tagOptions = computed(() => {
   let options = props.category?.tags.map((tagId: number) => {
     const tag = tagStore.tagsById[tagId]
+    let name = tag.name
+    if (props.category.slug === "license_04access") {
+      if (tag.slug === "main_00yes") name = "Oui"
+      if (tag.slug === "main_01no") name = "Non"
+    }
     return {
-      label: tag.name,
+      label: name,
       value: tag.id,
       hint: tag.definition,
     }
