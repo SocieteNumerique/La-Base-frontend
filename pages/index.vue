@@ -38,7 +38,7 @@
               transmettre vos idées et vos remarques quant à l’évolution de La
               Base.
             </p>
-            <a href="mailto:labase@anct-gouv.fr">
+            <a href="mailto:labase@anct.gouv.fr">
               <DsfrButton class="fr-btn--sm" label="Nous contacter" />
             </a>
           </div>
