@@ -36,9 +36,21 @@
         class="fr-form-group"
         @update:model-value="refLicenseText = { ...licenseText, name: $event }"
       />
-      <!--    TODO show file if it is here-->
+      <p v-if="licenseText?.file?.link">
+        <a
+          :href="licenseText.file.link"
+          class="no-underline no-append-ico"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <VIcon name="ri-file-line" />
+          {{ licenseText.file.name }}
+        </a>
+      </p>
       <FormFileUpload
-        label="Ajouter le texte de la licence"
+        :label="`${
+          licenseText?.file?.link ? 'Changer' : 'Ajouter'
+        } le texte de la licence`"
         @update:model-value="
           refLicenseText = { ...refLicenseText, file: $event }
         "
