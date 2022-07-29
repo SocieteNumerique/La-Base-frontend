@@ -239,7 +239,7 @@ if (!process.server) window.addEventListener("dragover", onDrag)
 </script>
 
 <style>
-.content-item p:last-child {
+.content-item p:not(.fr-tag):last-child {
   margin-bottom: 0 !important;
 }
 </style>

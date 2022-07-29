@@ -175,6 +175,8 @@ type BaseContent = {
   // for now content tags ar only for license.
   // If that changes, the license modals need to be updated
   tags?: number[]
+  licenseTags?: number[]
+  accessPriceTags?: number[]
   title?: string
   type: string
   useResourceLicenseAndAccess?: boolean

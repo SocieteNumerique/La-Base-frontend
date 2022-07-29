@@ -1,6 +1,6 @@
 <template>
   <div class="license-tag-rows is-flex">
-    <DsfrTags :tags="tags" />
+    <DsfrTags :tags="tags" :small="small" />
     <span v-if="licenseText?.name">
       {{ licenseText.name }}
     </span>
@@ -39,6 +39,10 @@ defineProps({
   tags: {
     type: Array as PropType<{ label: string }[]>,
     default: () => [],
+  },
+  small: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>
