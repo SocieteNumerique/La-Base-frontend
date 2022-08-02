@@ -31,6 +31,7 @@
       <Cropper
         ref="cropper"
         class="cropper"
+        :canvas="false"
         :src="file.image.link"
         :stencil-component="stencilComponent"
         :stencil-props="stencilProps"
