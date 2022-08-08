@@ -165,7 +165,6 @@
               <h3 class="fr-h5 fr-my-9v">Indexation</h3>
               <IndexTable
                 v-if="resource && !resource.isShort"
-                :tag-categories="tagStore.categories"
                 :element="resource"
               />
             </div>

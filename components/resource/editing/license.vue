@@ -1,54 +1,165 @@
 <template>
   <div class="fr-mt-11v">
+    <div class="callout">
+      <p class="fr-text--bold">
+        Rappels sur les conditions de publication des fiches ressources.
+      </p>
+      <p>
+        Si dans le cadre de votre fiche ressource, vous réutilisez des
+        ressources produites par d’autres (par exemple, des extraits d’articles
+        de Wikipédia), assurez-vous d'avoir vérifié avant publication que
+        celles-ci sont mises à disposition sous des licences permettant cette
+        réutilisation.
+      </p>
+    </div>
     <DsfrRadioButtonSet
-      v-model="radioValue"
-      name="accessRequiresUserAccount"
+      v-model="hasGlobalLicense"
+      name="has-global-license"
       :inline="true"
       :options="options"
-      :required="true"
-      legend="L'accès à la ressource nécessite la création d'un compte utilisateur ?"
+      required
+      legend="Est-ce-que les conditions d’accès (prix / licences) sont générales à la fiche ou bien spécifiques à chaque élément ?"
       class="fr-text--regular"
-      @update:model-value="onChange"
     />
+    <template v-if="resourceStore.current.hasGlobalLicense">
+      <TagSelector
+        :category="priceTagCategory"
+        :is-focused="focusedCategory === priceTagCategory.slug"
+        label="Prix"
+        @focus="focusCategory(priceTagCategory.slug)"
+        @blur="focusCategory('')"
+      />
+      <TagRadioSelector
+        :category="accessTagCategory"
+        label="L’accès à la ressource nécessite la création d’un compte utilisateur"
+        allows-unknown
+      />
+      <TagRadioSelector
+        :category="licenseTypeCategory"
+        :is-focused="focusedCategory === licenseTypeCategory.slug"
+        label="Licence de la ressource"
+        allows-unknown
+        label-unknown="Inconnue"
+        @focus="focusCategory(licenseTypeCategory.slug)"
+        @blur="focusCategory('')"
+      />
+      <template v-if="knowsLicenseType">
+        <TagGroupedSelector
+          v-if="isFreeLicense"
+          :category="freeLicenseCategory"
+          :is-focused="focusedCategory === freeLicenseCategory.slug"
+          label="Licence libre exacte"
+          @focus="focusCategory(freeLicenseCategory.slug)"
+          @blur="focusCategory('')"
+        />
+        <template v-else>
+          <DsfrInput
+            v-if="!isProprietaryLicense"
+            :model-value="licenseText.name"
+            label="Nom de la licence"
+            label-visible
+            class="fr-form-group"
+            @update:model-value="licenseText = { ...licenseText, name: $event }"
+          />
+          <p v-if="licenseText?.file?.link">
+            <a
+              :href="licenseText.file.link"
+              class="no-underline no-append-ico"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <VIcon name="ri-file-line" />
+              {{ licenseText.file.name }}
+            </a>
+          </p>
+          <FormFileUpload
+            :label="`${
+              licenseText?.file?.link ? 'Changer' : 'Ajouter'
+            } le texte de la licence`"
+            @update:model-value="licenseText = { ...licenseText, file: $event }"
+          />
+          <FormInputLink
+            :model-value="licenseText.link"
+            label-visible
+            hint="max 50 caractères"
+            label="ou lien URL de la licence"
+            @update:model-value="licenseText = { ...licenseText, link: $event }"
+          />
+        </template>
+      </template>
+    </template>
+    <p v-else>
+      Vous pouvez renseigner les conditions d’accès individuellement lorsque
+      c’est nécessaire, directement sur vos contenus dans la partie Ressource.
+    </p>
   </div>
 </template>
 <script setup lang="ts">
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
 import { useResourceStore } from "~/stores/resourceStore"
-import { onMounted } from "vue"
+import { useTagStore } from "~/stores/tagStore"
+import { LicenseText } from "~/composables/types"
 
 const resourceStore = useResourceStore()
+const tagStore = useTagStore()
 
-const radioValue = ref("")
+const accessTagCategory = tagStore.categoryBySlug("license_04access")
+const priceTagCategory = tagStore.categoryBySlug("license_00price")
+const licenseTypeCategory = tagStore.categoryBySlug("license_01license")
+const freeLicenseCategory = tagStore.categoryBySlug("license_02free")
 
-onMounted(() => {
-  if (!resourceStore.current) {
-    return
-  }
-  if (resourceStore.current.accessRequiresUserAccount === false) {
-    radioValue.value = "0"
-  } else if (resourceStore.current.accessRequiresUserAccount === true) {
-    radioValue.value = "1"
-  } else {
-    radioValue.value = ""
-  }
+const licenseText = computed<LicenseText | null>({
+  get: () => resourceStore.current?.licenseText || {},
+  set(value) {
+    resourceStore.current.licenseText = value
+  },
 })
+
+const hasGlobalLicense = computed<string | undefined>({
+  get() {
+    if (resourceStore.current?.hasGlobalLicense === undefined) return
+    return resourceStore.current.hasGlobalLicense ? "1" : "0"
+  },
+  set(value) {
+    resourceStore.current.hasGlobalLicense =
+      value === undefined ? undefined : !!parseInt(value)
+  },
+})
+
+const isFreeLicense = computed(() =>
+  resourceStore.current.tags?.includes(tagStore.tagIdsBySlug["main_00free"]!)
+)
+const isProprietaryLicense = computed(() =>
+  resourceStore.current.tags?.includes(
+    tagStore.tagIdsBySlug["main_01proprietary"]!
+  )
+)
+const knowsLicenseType = computed(() =>
+  licenseTypeCategory?.tags.some((tagId) =>
+    resourceStore.current?.tags?.includes(tagId)
+  )
+)
+
+watch(isFreeLicense, () => (licenseText.value = null))
+watchEffect(() => resourceStore.markDirty())
 
 const options = [
   {
-    label: "Non",
-    value: "0",
-  },
-  {
-    label: "Oui",
+    label: "Générales",
     value: "1",
   },
+  {
+    label: "Spécifiques",
+    value: "0",
+  },
 ]
-const onChange = (newValue: string) => {
-  radioValue.value = newValue
-  resourceStore.resourcesById[
-    resourceStore.currentId!
-  ].accessRequiresUserAccount = !!parseInt(newValue)
-  resourceStore.markDirty()
+
+const focusedCategory = ref("")
+const focusCategory = (categoryName: string) => {
+  focusedCategory.value = categoryName
 }
 </script>
+
+<style lang="sass" scoped>
+.fr-form-group
+  margin-bottom: 44px
+</style>

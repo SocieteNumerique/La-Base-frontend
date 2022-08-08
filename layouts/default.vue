@@ -56,8 +56,8 @@ const closeAlert = (alertId: string) => {
     left: 50%
     display: flex
     flex-direction: column
-    justify-content: start
-    align-items: end
+    justify-content: flex-start
+    align-items: flex-end
 
   footer
     margin-top: auto

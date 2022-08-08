@@ -50,9 +50,9 @@ const subMenu = computed((): SubMenu => {
 })
 
 const showTagSelection = computed(() => {
-  if (subMenu.value.key === "territory") {
+  if (subMenu.value.key === "license") return false
+  if (subMenu.value.key === "territory")
     return resourceStore.current.isLinkedToATerritory
-  }
   return true
 })
 

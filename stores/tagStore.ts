@@ -15,6 +15,7 @@ type TagCategoryIdsBySlug = {
 
 type TagState = {
   tagsById: TagsById
+  tagIdsBySlug: { [slug: string]: number }
   tagCategoriesById: TagCategoriesById
   tagCategoriesOrder: number[]
   tagCategoryIdsBySlug: TagCategoryIdsBySlug
@@ -24,6 +25,7 @@ export const useTagStore = defineStore("tag", {
   state: () =>
     <TagState>{
       tagsById: {},
+      tagIdsBySlug: {},
       tagCategoriesById: {},
       tagCategoriesOrder: [],
       tagCategoryIdsBySlug: {},
@@ -68,16 +70,61 @@ export const useTagStore = defineStore("tag", {
         this.saveTagCategoriesToState(data.value)
       }
     },
+    setTagOfCategory(
+      tagId: number | undefined,
+      categoryId: number,
+      tagIds: number[]
+    ) {
+      if (tagIds == null) {
+        tagIds = tagId ? [tagId] : []
+      }
+      const tagIdsInCategory = this.tagCategoriesById[categoryId].tags
+      const res = tagIds.filter(
+        (tagIdToTest) => !tagIdsInCategory.includes(tagIdToTest)
+      )
+      if (tagId) res.push(tagId)
+      return res
+    },
+    setTagsOfCategory(
+      updatedTags: number[],
+      categoryId: number,
+      tags: number[]
+    ) {
+      const category = this.tagCategoriesById[categoryId]
+      const tagsOfCategory = updatedTags.filter((tagIdToTest) =>
+        category.tags.includes(tagIdToTest)
+      )
+      const tagsOfOtherCategory = tags.filter(
+        (tagIdToTest: number) => !category.tags.includes(tagIdToTest)
+      )
+      Object.assign(tags, [...tagsOfOtherCategory, ...tagsOfCategory])
+    },
     saveTagCategoriesToState(categories: TagCategoryWithFullTags[]) {
       this.tagCategoriesOrder = categories.map((category) => category.id)
       for (const category of categories) {
         const tagIds = category.tags!.map((tag) => tag.id)
         for (const tag of category.tags!) {
           this.tagsById[tag.id] = tag
+          if (tag.slug) this.tagIdsBySlug[tag.slug] = tag.id
         }
         this.tagCategoriesById[category.id] = { ...category, tags: tagIds }
         this.tagCategoryIdsBySlug[category.slug] = category.id
       }
+    },
+    groupTags(
+      tags: Tag[],
+      customLabel = "Non classé"
+    ): { [group: string]: Tag[] } {
+      const res: { [group: string]: Tag[] } = {}
+      let categories
+      for (const tag of tags) {
+        categories = tag.slug?.split("_")[0].split(",") || [customLabel]
+        for (const category of categories) {
+          if (!Object.hasOwn(res, category)) res[category] = []
+          res[category].push(tag)
+        }
+      }
+      return res
     },
   },
   getters: {

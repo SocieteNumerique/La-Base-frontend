@@ -41,7 +41,6 @@ const buttons = ref([
     icon: "ri-check-line",
     onClick: () => {
       emits("save")
-      emits("exit")
     },
   },
 ])

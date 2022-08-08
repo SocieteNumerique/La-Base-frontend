@@ -2,13 +2,13 @@ import { defineStore } from "pinia"
 import {
   Menu,
   MenuByKey,
-  PinStatus,
   Resource,
   ResourceCreate,
   SubMenuByKey,
 } from "~/composables/types"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
+import { useTagStore } from "~/stores/tagStore"
 
 export const navigationMenus: Menu[] = [
   {
@@ -39,8 +39,9 @@ export const navigationMenus: Menu[] = [
       },
       {
         key: "license",
-        name: "Licence",
-        description: "Description de la licence",
+        name: "Licence et accès",
+        description:
+          "Conditions d'accès, de mise à disposition et modalités d'utilisation de la ressource. Veuillez vous assurer que vous disposez bien de l'accord de l'ensemble des auteurs ou détenteurs des droits de la ressource avant de publier la fiche. ",
       },
       {
         key: "label",
@@ -111,16 +112,6 @@ export const useResourceStore = defineStore("resource", {
       resourcesById: {},
     },
   actions: {
-    addTagToResource(tagId: number, resourceId: number) {
-      const resource = this.resourcesById[resourceId]
-      if (resource.tags == null) {
-        resource.tags = []
-      }
-      if (resource.tags.indexOf(tagId) === -1) {
-        resource.tags.push(tagId)
-      }
-      this.markDirty(resourceId)
-    },
     async createResource(resource: ResourceCreate) {
       const baseStore = useBaseStore()
       const { data, error } = await useApiPost<Resource>("resources/", resource)
@@ -179,12 +170,9 @@ export const useResourceStore = defineStore("resource", {
       }
     },
     markDirty(resourceId: number | null = null) {
-      if (resourceId == null && this.currentId == null) {
-        return
-      }
-      if (resourceId == null) {
-        resourceId = this.currentId!
-      }
+      if (resourceId == null && this.currentId == null) return
+      if (resourceId == null) resourceId = this.currentId!
+      if (!this.resourcesById[resourceId]) return
       this.resourcesById[resourceId].dirty = true
     },
     navigationNext() {
@@ -226,12 +214,37 @@ export const useResourceStore = defineStore("resource", {
       }
       this.navigation.activeSubMenu = subMenus[currentSubMenuIx - 1].key
     },
+    addTagToResource(tagId: number, resourceId: number) {
+      const resource = this.resourcesById[resourceId]
+      if (resource.tags == null) {
+        resource.tags = []
+      }
+      if (resource.tags.indexOf(tagId) === -1) {
+        resource.tags.push(tagId)
+      }
+      this.markDirty(resourceId)
+    },
     removeTagFromResource(tagId: number, resourceId: number) {
       const resource = this.resourcesById[resourceId]
       if (resource.tags == null) {
         resource.tags = []
       }
       resource.tags = resource.tags.filter((tagId_: number) => tagId_ !== tagId)
+      this.markDirty(resourceId)
+    },
+    setTagOfCategory(
+      tagId: number | undefined,
+      categoryId: number,
+      resourceId: number
+    ) {
+      const tagStore = useTagStore()
+      const resource = this.resourcesById[resourceId]
+      if (!resource.tags) resource.tags = []
+      resource.tags = tagStore.setTagOfCategory(
+        tagId,
+        categoryId,
+        resource.tags
+      )
       this.markDirty(resourceId)
     },
     resetNavigation() {

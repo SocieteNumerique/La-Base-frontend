@@ -33,6 +33,7 @@ export type Resource = {
   created?: string
   creator?: number
   dirty?: boolean
+  hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
   isDraft?: boolean
@@ -44,6 +45,7 @@ export type Resource = {
   externalProducers?: ExternalProducer[]
   labelDetails?: string
   labelState: string
+  licenseText?: LicenseText | null
   linkedResourceIds?: number[]
   modified: string
   producerState: string
@@ -86,17 +88,20 @@ export type Tag = {
   isDraft: boolean
   isFree: boolean
   name: string
+  slug?: string
 }
 
 export type TagCategory = {
   acceptsFreeTags: boolean
   baseId: number
   description: string
+  groupTagsByFamily: boolean
   id: number
   isDraft: boolean
   isMultiSelect: boolean
   maximumTagCount: number
   name: string
+  radioDisplay: boolean
   relatesTo: string
   requiredToBePublic: boolean
   slug: string
@@ -107,16 +112,19 @@ export type TagCategoryWithFullTags = {
   acceptsFreeTags: boolean
   baseId: number
   description: string
+  groupTagsByFamily: boolean
   id: number
   isDraft: boolean
   isMultiSelect: boolean
   maximumTagCount: number
   name: string
+  radioDisplay: boolean
   relatesTo: string
   requiredToBePublic: boolean
   slug: string
   tags: Tag[]
 }
+
 export type BaseCreate = {
   contact?: string
   description?: string
@@ -159,12 +167,19 @@ export type BaseWithDetailedResources = {
 type BaseContent = {
   annotation?: string
   id?: number
-  licence?: string
+  licenseText?: LicenseText | null
+  licenseKnowledge?: LicenseKnowledge
   nbCol: number
   order?: number
   section: number
+  // for now content tags ar only for license.
+  // If that changes, the license modals need to be updated
+  tags?: number[]
+  licenseTags?: number[]
+  accessPriceTags?: number[]
   title?: string
   type: string
+  useResourceLicenseAndAccess?: boolean
 }
 
 export interface LinkContent extends BaseContent {
@@ -204,6 +219,13 @@ export type Content =
   | LinkContent
   | TextContent
   | LinkedResourceContent
+
+export type LicenseText = {
+  name?: string
+  file?: FullFile
+  link?: string
+}
+export type LicenseKnowledge = "specific" | "resource" | "unknown"
 
 export type ContentOrder = {
   [key: number]: { section: number; order: number }

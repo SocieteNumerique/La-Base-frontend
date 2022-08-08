@@ -131,7 +131,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import BaseSelector from "~/components/baseSelector.vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
 import { ExternalProducer, Tag } from "~/composables/types"

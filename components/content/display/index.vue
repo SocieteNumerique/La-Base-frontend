@@ -8,10 +8,26 @@
       :is-grid-view="isGridView"
       class="fr-text--sm"
     />
-    <div v-if="content.annotation" class="fr-text--xs fr-my-2w">
+    <div v-if="content.annotation" class="fr-text--xs fr-mt-2w">
       {{ content.annotation }}
     </div>
-    <DsfrTag v-if="content.licence" :label="content.licence" :small="true" />
+    <div
+      v-if="!content.useResourceLicenseAndAccess"
+      class="license-access-grid fr-text--xs fr-mt-3w"
+    >
+      <template v-if="accessPriceTags.length">
+        <span>Prix et accès</span>
+        <div class="license-tag-rows is-flex fr-mb-n1w">
+          <DsfrTags :tags="accessPriceTags" /></div
+      ></template>
+      <template v-if="licenseTags.length">
+        <span>Licence</span>
+        <TagDisplayRowLicense
+          :tags="licenseTags"
+          :license-text="content.licenseText"
+          class="fr-mb-n1w"
+      /></template>
+    </div>
   </div>
 </template>
 
@@ -22,6 +38,9 @@ import ContentDisplayText from "~/components/content/display/text.vue"
 import ContentDisplayLink from "~/components/content/display/link.vue"
 import ContentDisplayFile from "~/components/content/display/file.vue"
 import ContentDisplayLinkedResource from "~/components/content/display/linkedResource.vue"
+import { useTagStore } from "~/stores/tagStore"
+
+const tagStore = useTagStore()
 
 const props = defineProps({
   content: { type: Object as PropType<Content>, required: true },
@@ -36,9 +55,32 @@ const componentByType: { [key: string]: unknown } = {
   linkedResource: ContentDisplayLinkedResource,
 }
 const component = computed(() => componentByType[props.content.type])
+
+const licenseTags = computed<{ label: string }[]>(() =>
+  props.content
+    .licenseTags!.map((tagId) => tagStore.tagsById[tagId])
+    .filter((tag) => tag !== undefined)
+    .map((tag) => ({ label: tag.name, small: true }))
+)
+const accessPriceTags = computed<{ label: string }[]>(() =>
+  props.content
+    .accessPriceTags!.map((tagId) => tagStore.tagsById[tagId])
+    .filter((tag) => tag !== undefined)
+    .map((tag) => ({ label: tag.name, small: true }))
+)
 </script>
 
 <style lang="sass" scoped>
 .content-display-container
   overflow: hidden
+
+.license-access-grid
+  display: grid
+  grid-template-columns: fit-content(200px) auto
+  column-gap: 24px
+  margin: 0
+  align-items: center
+  span
+    padding-top: 4px
+    padding-bottom: 4px
 </style>

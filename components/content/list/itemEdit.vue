@@ -24,16 +24,12 @@
       </div>
     </div>
     <div class="fr-p-2w">
-      <ContentDisplay
-        v-show="!isEditing"
-        :content="content"
-        :is-editing-view="true"
-      />
       <ContentInput
-        v-show="isEditing"
+        v-if="isEditing"
         v-model="content"
         @exit="$emit('exit-edition')"
       />
+      <ContentDisplay v-else :content="content" :is-editing-view="true" />
     </div>
   </div>
 </template>
