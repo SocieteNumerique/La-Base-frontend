@@ -59,7 +59,7 @@ const tagsByCategory = computed<GroupedDisplayTags>(() => {
     const { label, id, specific } = getLabelAndId(
       tagStore.tagCategoriesById[tag.category]
     )
-    if (!(label in res)) res[id] = { label, specific, tags: [] }
+    if (!(id in res)) res[id] = { label, specific, tags: [] }
     res[id].tags.push({ label: tag.name })
   }
   return res
