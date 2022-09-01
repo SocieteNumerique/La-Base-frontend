@@ -215,7 +215,7 @@ onMounted(() => {
 
 <style lang="sass">
 .base-form-container
-  label
+  label, label.search
     margin-top: 24px
 
   textarea
