@@ -130,7 +130,7 @@
       Filtrer avec l'index officiel
     </h3>
 
-    <ul class="fr-px-2w fr-pt-1w fr-tags-group">
+    <ul class="fr-pt-1w fr-tags-group">
       <li v-for="tagId in selectedTags" :key="tagId">
         <button
           class="fr-tag--dismiss fr-tag"

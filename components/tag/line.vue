@@ -20,7 +20,7 @@
         <VIcon
           v-if="props.tag.definition"
           class="cursor--pointer"
-          :name="showDefinition ? 'ri-information-line' : 'ri-information-fill'"
+          :name="showDefinition ? 'ri-information-fill' : 'ri-information-line'"
           :scale="0.9"
           @click="showDefinition = !showDefinition"
         />

@@ -15,7 +15,7 @@
     secondary
     @click="isEditingLicense = true"
   >
-    Renseigner licence et accès
+    {{ hasSpecificLicenceData ? "Modifier" : "Renseigner" }} licence et accès
   </DsfrButton>
   <template v-if="isEditingLicense">
     <ContentLicenseExit
@@ -66,7 +66,7 @@ const isExiting = ref<boolean>(false)
 const isEditingLicense = ref<boolean>(false)
 
 const tags = ref<number[]>([])
-const content = useModel("modelValue", { type: "object" })
+const content = useModel<Content>("modelValue", { type: "object" })
 const licenseText = ref<LicenseText>({})
 resetData()
 
@@ -79,6 +79,9 @@ const licenseType = computed(() => {
 const fullTags = computed<Tag[]>(() =>
   tags.value.map((id) => tagStore.tagsById[id])
 )
+const hasSpecificLicenceData = computed<boolean>(
+  () => !!content.value?.tags?.length
+)
 
 function updateCheckbox(value: boolean) {
   emits("update:model-value", {
@@ -86,6 +89,7 @@ function updateCheckbox(value: boolean) {
     useResourceLicenseAndAccess: value,
   })
 }
+
 function save() {
   emits("update:model-value", {
     ...props.modelValue,
@@ -101,6 +105,7 @@ function resetData() {
   step.value = "general"
   isExiting.value = false
 }
+
 function resetAndExit() {
   resetData()
   isEditingLicense.value = false

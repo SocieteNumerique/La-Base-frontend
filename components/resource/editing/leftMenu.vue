@@ -253,8 +253,6 @@ const actions = [
   height: 100%
 
 .my-navigation
-  display: flex
-  flex-direction: column
-  height: 100%
-  justify-content: space-between
+  display: grid
+  grid-template-rows: 28rem auto
 </style>

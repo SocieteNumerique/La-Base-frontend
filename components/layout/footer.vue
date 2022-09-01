@@ -11,8 +11,8 @@
         />
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
-            Cette base regroupe les ressources des professionnels du secteur de
-            l’inclusion et de la médiation numérique.
+            La Base regroupe les ressources des professionnels du numérique
+            d’intérêt général dont l’inclusion et la médiation numériques.
           </p>
           <ul class="fr-footer__content-list">
             <li class="fr-footer__content-item">
@@ -73,6 +73,14 @@
           <!--          <li class="fr-footer__bottom-item">-->
           <!--            <a class="fr-footer__bottom-link" href="#">Gestion des cookies</a>-->
           <!--          </li>-->
+          <li class="fr-footer__bottom-item">
+            <a
+              href="https://github.com/SocieteNumerique/"
+              class="fr-footer__bottom-link"
+            >
+              Code source
+            </a>
+          </li>
         </ul>
         <div class="fr-footer__bottom-copy">
           <p>

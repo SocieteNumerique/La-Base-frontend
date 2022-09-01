@@ -75,7 +75,7 @@ export const useTagStore = defineStore("tag", {
       categoryId: number,
       tagIds: number[]
     ) {
-      if (tagIds == null) {
+      if (!tagIds?.length) {
         tagIds = tagId ? [tagId] : []
       }
       const tagIdsInCategory = this.tagCategoriesById[categoryId].tags
@@ -97,7 +97,9 @@ export const useTagStore = defineStore("tag", {
       const tagsOfOtherCategory = tags.filter(
         (tagIdToTest: number) => !category.tags.includes(tagIdToTest)
       )
-      Object.assign(tags, [...tagsOfOtherCategory, ...tagsOfCategory])
+      const res = [...tagsOfOtherCategory, ...tagsOfCategory]
+      if (res.length) return Object.assign(tags, res)
+      tags.length = 0
     },
     saveTagCategoriesToState(categories: TagCategoryWithFullTags[]) {
       this.tagCategoriesOrder = categories.map((category) => category.id)
