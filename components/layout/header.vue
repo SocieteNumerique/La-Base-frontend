@@ -170,6 +170,8 @@ onFocusOut(
 
   .fr-links-group li
     align-items: baseline
+    button
+      font-size: 1em //safari needs it
 
   .fr-header__nav
     border-top: 1px solid var(--border-default-grey)
