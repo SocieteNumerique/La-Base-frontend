@@ -29,9 +29,13 @@
         <li
           v-for="content of section.contents"
           :key="content.id"
-          class="fr-p-2w"
+          class="with-separation"
         >
-          <ContentDisplay :content="content" :is-editing-view="false" />
+          <ContentDisplay
+            :content="content"
+            :is-editing-view="false"
+            class="fr-p-2w"
+          />
         </li>
       </ul>
     </div>
@@ -60,4 +64,13 @@ const isSectionFoldedById = ref<{ [key: number]: boolean }>({})
 ul
   list-style: none
   padding: 0
+  .with-separation
+    &::before, &::after
+      content: ""
+      border-top: 1px solid var(--border-default-grey)
+      width: 100%
+      display: none
+      margin: 1rem 0
+    &:first-of-type::before, &::after
+      display: block
 </style>
