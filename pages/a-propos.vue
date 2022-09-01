@@ -83,7 +83,7 @@
         ></strong
       >
     </p>
-    <h2 id="pourquoi-une-base-du-num-rique-d-int-r-t-g-n-ral-">
+    <h2 id="pourquoi-une-base-du-numerique-d-interet-general-">
       Pourquoi une Base du numérique d&#39;intérêt général?
     </h2>
     <p>

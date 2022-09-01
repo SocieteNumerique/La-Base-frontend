@@ -1,18 +1,14 @@
 <template>
   <div>
     <div>
-      <a
-        href="https://numerique-en-communs.fr/a-propos-de-nec/"
-        target="_blank"
-        class="no-underline"
-      >
+      <nuxt-link to="/label" target="_blank" class="no-underline no-append-ico">
         <DsfrButton
           class="fr-btn--tertiary-no-outline"
           label="En savoir plus"
           :icon-right="true"
           icon="ri-arrow-right-line"
         />
-      </a>
+      </nuxt-link>
     </div>
     <h2 class="fr-mt-2w fr-h6">Statut</h2>
     <div>
