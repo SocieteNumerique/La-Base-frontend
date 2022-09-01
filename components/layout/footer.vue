@@ -73,6 +73,14 @@
           <!--          <li class="fr-footer__bottom-item">-->
           <!--            <a class="fr-footer__bottom-link" href="#">Gestion des cookies</a>-->
           <!--          </li>-->
+          <li class="fr-footer__bottom-item">
+            <a
+              href="https://github.com/SocieteNumerique/"
+              class="fr-footer__bottom-link"
+            >
+              Code source
+            </a>
+          </li>
         </ul>
         <div class="fr-footer__bottom-copy">
           <p>
