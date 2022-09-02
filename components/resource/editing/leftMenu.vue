@@ -102,7 +102,7 @@
           </div>
         </div>
         <div
-          class="fr-mt-6w"
+          class="fr-mt-7w"
           style="display: flex; flex-direction: column; max-width: 150px"
         >
           <DsfrButton
@@ -251,8 +251,4 @@ const actions = [
 
 .full-height
   height: 100%
-
-.my-navigation
-  display: grid
-  grid-template-rows: 28rem auto
 </style>
