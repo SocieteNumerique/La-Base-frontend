@@ -148,17 +148,22 @@ export type Base = {
   isShort?: boolean
   owner: User | number
   participantTypeTags?: number[]
-  resources?: number[]
+  resourcesInPage?: number[]
   state?: string
   tags?: number[]
   territoryTags?: number[]
   title: string
 }
+export type ResourcesWithPagination = {
+  count: number
+  pageCount: number
+  results: Resource[]
+}
 export type BaseWithDetailedResources = {
   id: number
   isShort?: boolean
   owner: User | number
-  resources?: Resource[]
+  resources?: ResourcesWithPagination
   title: string
   collections: Collection[]
   resourcesInPinnedCollections?: Resource[]

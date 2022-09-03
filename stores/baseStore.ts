@@ -5,6 +5,7 @@ import {
   Resource,
   Collection,
   BaseCreate,
+  ResourcesWithPagination,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
@@ -24,7 +25,9 @@ function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
 function simplifyBase(base: BaseWithDetailedResources): Base {
   const res = {
     ...base,
-    resources: base.resources!.map((resource: Resource) => resource.id),
+    resourcesInPage: base.resources!.results.map(
+      (resource: Resource) => resource.id
+    ),
     collections: base.collections!.map(
       (collection: Collection) => collection.id
     ),
@@ -38,6 +41,9 @@ export const useBaseStore = defineStore("base", {
     basesOrder: <number[]>[],
     basesById: <{ [key: number]: Base }>{},
     currentId: <number | undefined>undefined,
+    currentPage: 0,
+    pageCount: 1,
+    resourceCount: <number | undefined>undefined,
   }),
   actions: {
     async createBase(base: BaseCreate) {
@@ -60,7 +66,12 @@ export const useBaseStore = defineStore("base", {
       )
       if (!error.value && !data.value.isShort) {
         const resourceStore = useResourceStore()
-        saveInOtherStores(resourceStore.resourcesById, data.value.resources!)
+        saveInOtherStores(
+          resourceStore.resourcesById,
+          data.value.resources!.results
+        )
+        this.pageCount = data.value.resources!.pageCount
+        this.resourceCount = data.value.resources!.count
         saveInOtherStores(
           resourceStore.resourcesById,
           data.value.resourcesInPinnedCollections!
@@ -86,6 +97,20 @@ export const useBaseStore = defineStore("base", {
         this.basesById[data.value.id!] = simplifyBase(data.value)
       }
       return { data, error }
+    },
+    async updateResourcesInPage(pageOneBased: number) {
+      const { data, error } = await useApiGet<ResourcesWithPagination>(
+        `bases/${this.currentId}/resources/`,
+        { page: pageOneBased }
+      )
+      if (!error.value) {
+        const resourceStore = useResourceStore()
+        saveInOtherStores(resourceStore.resourcesById, data.value!.results)
+        this.pageCount = data.value!.pageCount
+        this.resourceCount = data.value!.count
+        this.basesById[this.currentId!].resourcesInPage =
+          data.value!.results.map((resource) => resource.id)
+      }
     },
     async delete(id: number) {
       const { error } = await useApiDelete(
