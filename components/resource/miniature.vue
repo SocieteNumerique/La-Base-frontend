@@ -32,6 +32,10 @@
           Fiche publiée par
           <div>{{ resource?.rootBaseTitle }}</div>
         </div>
+        <div v-if="resource.canWrite">
+          Fiche créée par {{ resource.creator.firstName }}
+          {{ resource.creator.lastName }}
+        </div>
         <!-- <div class="separator fr-my-1w" />
         <div v-if="resource.stats">stats</div>-->
       </div>
