@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="resources">
     <div class="is-flex flex-space-between fr-mb-4w">
       <div class="fr-btns-group--xs">
         <button
@@ -168,9 +168,10 @@ const pages = computed(() => {
     }))
   return toReturn
 })
-const onCurrentPageChange = (pageZeroBased: number) => {
-  baseStore.updateResourcesInPage(pageZeroBased + 1)
+const onCurrentPageChange = async (pageZeroBased: number) => {
+  await baseStore.updateResourcesInPage(pageZeroBased + 1)
   baseStore.currentPage = pageZeroBased
+  document.getElementById("resources")!.scrollIntoView({ behavior: "smooth" })
 }
 </script>
 
