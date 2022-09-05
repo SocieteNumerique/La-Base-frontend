@@ -77,6 +77,15 @@ export type CollectionCreate = {
   name: string
 }
 
+export type CollectionWithDetailedResources = {
+  id: number
+  base: number
+  pinnedInBases?: number[]
+  name: string
+  nbResources?: number
+  resources?: Resource[]
+}
+
 export type Collection = {
   id: number
   base: number
@@ -171,7 +180,7 @@ export type BaseWithDetailedResources = {
   owner: User | number
   resources?: ResourcesWithPagination
   title: string
-  collections: Collection[]
+  collections: CollectionWithDetailedResources[]
   resourcesInPinnedCollections?: Resource[]
 }
 

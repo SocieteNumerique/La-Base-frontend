@@ -72,14 +72,17 @@ export const useBaseStore = defineStore("base", {
         )
         this.pageCount = data.value.resources!.pageCount
         this.resourceCount = data.value.resources!.count
-        saveInOtherStores(
-          resourceStore.resourcesById,
-          data.value.resourcesInPinnedCollections!
-        )
-        saveInOtherStores(
-          useCollectionStore().collectionsById,
-          data.value.collections!
-        )
+
+        // save collections with list of resourceIds
+        const newCollections: Collection[] = []
+        for (const collection of data.value.collections) {
+          saveInOtherStores(resourceStore.resourcesById, collection.resources!)
+          newCollections.push({
+            ...collection,
+            resources: collection.resources!.map((collection) => collection.id),
+          })
+        }
+        saveInOtherStores(useCollectionStore().collectionsById, newCollections)
         const base = simplifyBase(data.value)
         this.basesById[base.id] = base
       }
