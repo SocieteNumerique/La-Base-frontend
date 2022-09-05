@@ -21,6 +21,12 @@ export type ExternalProducer = {
 
 export type PinStatus = { id: number; isPinned: boolean }
 
+export type Creator = {
+  id: number
+  firstName: string
+  lastName: string
+}
+
 export type Resource = {
   accessRequiresUserAccount?: boolean
   authorizedUsers?: User[]
@@ -31,7 +37,7 @@ export type Resource = {
   coverImage?: FullFile
   contentStats?: { links: number; files: number }
   created?: string
-  creator?: number
+  creator?: Creator
   dirty?: boolean
   hasGlobalLicense?: boolean
   id: number
