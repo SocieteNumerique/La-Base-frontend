@@ -57,10 +57,36 @@
     </template>
 
     <template v-if="view === 'resources'">
-      <div class="resource-grid">
-        <div v-for="resourceId of base?.resources" :key="resourceId">
-          <ResourceMiniatureById :resource-id="resourceId" />
+      <!-- loading spinner -->
+      <template
+        v-if="
+          loadingStore.isLoading('bases') ||
+          loadingStore.isLoading('basesResources')
+        "
+      >
+        <div class="fr-p-5w" style="text-align: center">
+          <div style="animation: spin 1.5s linear infinite">
+            <VIcon scale="10" name="ri-loader-5-line" />
+          </div>
         </div>
+      </template>
+
+      <!-- results -->
+      <template v-else>
+        <div class="resource-grid">
+          <div v-for="resourceId of base?.resourcesInPage" :key="resourceId">
+            <ResourceMiniatureById :resource-id="resourceId" />
+          </div>
+        </div>
+      </template>
+
+      <!-- pagination -->
+      <div v-if="baseStore.pageCount > 1" class="is-flex flex-center">
+        <DsfrPagination
+          v-model:current-page="baseStore.currentPage"
+          :pages="pages"
+          @update:current-page="onCurrentPageChange"
+        />
       </div>
     </template>
 
@@ -92,10 +118,14 @@ import { useRoute } from "vue-router"
 import { computed, PropType } from "vue"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { Base, Collection } from "~/composables/types"
+import { useBaseStore } from "~/stores/baseStore"
+import { useLoadingStore } from "~/stores/loadingStore"
 
 const route = useRoute()
 const router = useRouter()
+const baseStore = useBaseStore()
 const collectionStore = useCollectionStore()
+const loadingStore = useLoadingStore()
 
 defineProps({
   base: { type: Object as PropType<Base>, required: true },
@@ -122,6 +152,26 @@ const openCollection = computed<Collection | undefined>(() => {
     return collectionStore.collectionsById[openCollectionId.value]
   return undefined
 })
+
+const pages = computed(() => {
+  if (baseStore.pageCount <= 1) {
+    return []
+  }
+  let nPages = baseStore.pageCount
+  nPages = Math.min(nPages, 10) // maximum 10 pages
+  const toReturn = [...Array(nPages).keys()]
+    .map((number) => number + 1)
+    .map((page) => ({
+      label: String(page),
+      title: `Page ${page}`,
+      href: `?page=${page}`,
+    }))
+  return toReturn
+})
+const onCurrentPageChange = (pageZeroBased: number) => {
+  baseStore.updateResourcesInPage(pageZeroBased + 1)
+  baseStore.currentPage = pageZeroBased
+}
 </script>
 
 <style lang="sass" scoped></style>

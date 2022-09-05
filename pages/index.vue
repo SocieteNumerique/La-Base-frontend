@@ -364,7 +364,6 @@ const pages = computed(() => {
       title: `Page ${page}`,
       href: `?page=${page}`,
     }))
-  console.log("### pages", toReturn)
   return toReturn
 })
 const onCurrentPageChange = (page: number) => {
