@@ -190,7 +190,11 @@
 
     <!-- results -->
     <template v-else>
-      <div style="display: flex; align-items: baseline" class="fr-mb-2w">
+      <div
+        id="search-results"
+        style="display: flex; align-items: baseline"
+        class="fr-mb-2w"
+      >
         <div class="fr-text--bold">
           <template v-if="nResults">
             {{ nResults }}
@@ -288,7 +292,7 @@ const tagCategories = computed<TagCategory[]>(() => {
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
 
-const doSearch = debounce(async () => {
+const doSearch = debounce(async (scrollToTop = false) => {
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult
   >(
@@ -306,6 +310,11 @@ const doSearch = debounce(async () => {
     nResults.value = data.value.count
     searchedText.value = data.value.results.text
     possibleTags.value = data.value.results.possibleTags
+    if (scrollToTop) {
+      document
+        .getElementById("search-results")!
+        .scrollIntoView({ behavior: "smooth" })
+    }
   }
 }, 400)
 
@@ -369,7 +378,7 @@ const pages = computed(() => {
 const onCurrentPageChange = (page: number) => {
   console.log("### page change", page)
   currentPage.value = page
-  doSearch()
+  doSearch(true)
 }
 </script>
 
