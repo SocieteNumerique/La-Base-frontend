@@ -114,6 +114,7 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
+import { useRegisterVisit } from "~/composables/visits"
 
 definePageMeta({
   layout: false,
@@ -186,6 +187,8 @@ onBeforeMount(async () => {
       router.replace("/")
     }
   }
+
+  useRegisterVisit("base", baseStore.currentId!)
 })
 
 const mailToHref = computed(() => {
