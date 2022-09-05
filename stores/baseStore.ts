@@ -1,10 +1,10 @@
 import { defineStore } from "pinia"
 import {
   Base,
-  BaseWithDetailedResources,
-  Resource,
-  Collection,
   BaseCreate,
+  BaseWithDetailedResources,
+  Collection,
+  Resource,
   ResourcesWithPagination,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
@@ -22,18 +22,31 @@ function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   }
 }
 
-function simplifyBase(base: BaseWithDetailedResources): Base {
-  const res = {
+function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
+  const baseStore = useBaseStore()
+  const resourceStore = useResourceStore()
+  saveInOtherStores(resourceStore.resourcesById, base.resources!.results)
+  baseStore.pageCount = base.resources!.pageCount
+  baseStore.resourceCount = base.resources!.count
+
+  // save collections with list of resourceIds
+  const newCollections: Collection[] = []
+  for (const collection of base.collections) {
+    saveInOtherStores(resourceStore, collection.resources!)
+    newCollections.push({
+      ...collection,
+      resources: collection.resources!.map((collection) => collection.id),
+    })
+  }
+  saveInOtherStores(useCollectionStore().collectionsById, newCollections)
+
+  baseStore.basesById[base.id] = {
     ...base,
     resourcesInPage: base.resources!.results.map(
       (resource: Resource) => resource.id
     ),
-    collections: base.collections!.map(
-      (collection: Collection) => collection.id
-    ),
+    collections: newCollections.map((collection) => collection.id),
   }
-  delete res.resourcesInPinnedCollections
-  return res
 }
 
 export const useBaseStore = defineStore("base", {
@@ -65,23 +78,7 @@ export const useBaseStore = defineStore("base", {
         `bases/${baseId}/${short ? "short/" : ""}`
       )
       if (!error.value && !data.value.isShort) {
-        const resourceStore = useResourceStore()
-        saveInOtherStores(
-          resourceStore.resourcesById,
-          data.value.resources!.results
-        )
-        this.pageCount = data.value.resources!.pageCount
-        this.resourceCount = data.value.resources!.count
-        saveInOtherStores(
-          resourceStore.resourcesById,
-          data.value.resourcesInPinnedCollections!
-        )
-        saveInOtherStores(
-          useCollectionStore().collectionsById,
-          data.value.collections!
-        )
-        const base = simplifyBase(data.value)
-        this.basesById[base.id] = base
+        saveRelatedBaseInfosAndSimplify(data.value)
       }
       return { data, error }
     },
@@ -94,7 +91,7 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
-        this.basesById[data.value.id!] = simplifyBase(data.value)
+        saveRelatedBaseInfosAndSimplify(data.value)
       }
       return { data, error }
     },

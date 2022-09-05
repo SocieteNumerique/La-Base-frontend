@@ -50,7 +50,9 @@ const props = defineProps({
 })
 
 const textInput = ref("")
-const results = ref<number[]>(baseStore.basesById[props.baseId].resources || [])
+const results = ref<Resource[]>(
+  baseStore.basesById[props.baseId].resourceChoices || []
+)
 
 const selectedResources = useModel<Resource[]>("modelValue", {
   type: "array",
@@ -58,19 +60,16 @@ const selectedResources = useModel<Resource[]>("modelValue", {
 const resultsAsCheckboxOptions = computed<
   { label: string; id: number; name: number }[]
 >(() =>
-  results.value.map((resourceId) => {
-    const resource = resourceStore.resourcesById[resourceId]!
+  results.value.map((resource) => {
     return { label: resource.title, id: resource.id, name: resource.id }
   })
 )
 const onInput = debounce(async () => {
   const base = baseStore.basesById[props.baseId]
-  if (!textInput.value) return (results.value = base.resources || [])
+  if (!textInput.value) return (results.value = base.resourceChoices || [])
   results.value =
-    base.resources?.filter((resourceId: number) =>
-      resourceStore.resourcesById[resourceId].title
-        .toLowerCase()
-        .includes(textInput.value.toLowerCase())
+    base.resourceChoices?.filter((resource) =>
+      resource.title.toLowerCase().includes(textInput.value.toLowerCase())
     ) || []
 }, 200)
 </script>
