@@ -163,6 +163,7 @@ export type Base = {
   isShort?: boolean
   owner: User | number
   participantTypeTags?: number[]
+  resourceChoices?: Resource[]
   resourcesInPage?: number[]
   state?: string
   tags?: number[]
