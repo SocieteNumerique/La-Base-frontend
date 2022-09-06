@@ -32,15 +32,7 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
   // save collections with list of resourceIds
   const newCollections: Collection[] = []
   for (const collection of base.collections) {
-    console.log(
-      "### collection",
-      collection,
-      "saving resoruces",
-      collection.resources,
-      "in ",
-      resourceStore
-    )
-    saveInOtherStores(resourceStore, collection.resources!)
+    saveInOtherStores(resourceStore.resourcesById, collection.resources!)
     newCollections.push({
       ...collection,
       resources: collection.resources!.map((collection) => collection.id),
