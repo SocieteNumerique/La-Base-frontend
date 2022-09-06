@@ -79,6 +79,27 @@ export async function addContent(
   throw "error at creating Content"
 }
 
+export async function addContents(
+  order: number,
+  resourceId: number,
+  sectionId: number,
+  payload: any = null
+) {
+  const contents = payload.map((single: any, index: number) => {
+    const formedContent: FileContent = prepareContent(
+      single,
+      sectionId,
+      resourceId
+    )
+    formedContent.order = order + index
+    formedContent.resource = resourceId
+    return formedContent
+  })
+  const createdContents = await postContent(contents)
+  if (createdContents) return createdContents
+  throw "error at creating Contents"
+}
+
 export async function deleteContent(id: number, showSuccess = false) {
   const { error } = await useApiDelete(
     `contents/${id}/`,

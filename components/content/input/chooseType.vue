@@ -22,13 +22,14 @@
       ref="fileInput"
       class="input-file"
       type="file"
+      multiple
       @change="onAddFile"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inputToFileObject } from "~/composables/fileUpload"
+import { inputToFileObjects } from "~/composables/fileUpload"
 
 const emits = defineEmits(["new-content"])
 const fileInput = ref<HTMLInputElement>()
@@ -39,10 +40,9 @@ function onNewFileContent() {
 }
 
 async function onAddFile() {
-  const fileObject = await inputToFileObject(fileInput.value!)
+  const fileObjects = await inputToFileObjects(fileInput.value!)
   emits("new-content", {
-    type: "file",
-    file: fileObject,
+    many: fileObjects.map((file) => ({ type: "file", file })),
   })
 }
 
@@ -63,6 +63,7 @@ function addSimpleContent(type: string) {
     width: 170px
     box-shadow: 0 16px 16px -16px rgba(0, 0, 0, 0.32), 0 8px 16px rgba(0, 0, 0, 0.1)
     border-top: 2px solid var(--background-action-high-blue-france)
+
     .item
       border-bottom: 1px solid var(--border-default-grey)
       padding: 12px 0

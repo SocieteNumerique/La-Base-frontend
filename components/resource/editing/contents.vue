@@ -97,6 +97,9 @@ async function createContent(
   section: SectionWithContent,
   contentOrder = 0
 ) {
+  if ("many" in payload) {
+    return createContents(payload.many, section, contentOrder)
+  }
   const content = await addContent(
     payload.type,
     contentOrder,
@@ -107,6 +110,24 @@ async function createContent(
   section!.contents.push(content!)
   currentlyEditingContentId.value = content.id!
   return content
+}
+
+async function createContents(
+  payload: {
+    type: string
+    [key: string]: any
+  },
+  section: SectionWithContent,
+  contentOrder = 0
+) {
+  const contents: Content[] = await addContents(
+    contentOrder,
+    resourceStore.currentId!,
+    section!.id,
+    payload
+  )
+  section!.contents.push(...contents!)
+  return contents
 }
 
 async function newSoloContentInTheEnd(payload: {
