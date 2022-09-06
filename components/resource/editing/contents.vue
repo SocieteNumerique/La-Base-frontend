@@ -15,7 +15,7 @@
       @delete-section="onDeleteSection($event, true)"
       @auto-delete-section="onDeleteSection"
       @new-solo-content="newSoloContentInTheEnd"
-      @new-section="newSection"
+      @new-section="createSection"
       @new-content-in-section="newContentInSection"
       @new-adhoc-section="createAdHocSectionForContent"
       @reload-contents="reloadContents"
@@ -28,7 +28,7 @@
       @delete-section="onDeleteSection($event, true)"
       @auto-delete-section="onDeleteSection"
       @new-solo-content="newSoloContentInTheEnd"
-      @new-section="newSection"
+      @new-section="createSection"
       @new-content-in-section="newContentInSection"
       @reload-contents="reloadContents"
     />
@@ -48,6 +48,7 @@ import {
   updateSectionOrder,
   updateContent,
   checkAndMerge,
+  addContents,
 } from "~/composables/contentsHelper"
 import { useAlertStore } from "~/stores/alertStore"
 
@@ -78,13 +79,34 @@ function nextContentOrder(sectionIndex: number): number {
   return nextOrder(contentsBySection.value[sectionIndex].contents)
 }
 
-async function newSection(sectionTitle: string) {
+async function createSection(sectionTitle?: string) {
   const newSection = await addSection(
     resourceStore.currentId!,
     nextSectionOrder.value,
     sectionTitle
   )
   contentsBySection.value.push(newSection!)
+  return newSection
+}
+
+async function createContent(
+  payload: {
+    type: string
+    [key: string]: any
+  },
+  section: SectionWithContent,
+  contentOrder = 0
+) {
+  const content = await addContent(
+    payload.type,
+    contentOrder,
+    resourceStore.currentId!,
+    section!.id,
+    payload
+  )
+  section!.contents.push(content!)
+  currentlyEditingContentId.value = content.id!
+  return content
 }
 
 async function newSoloContentInTheEnd(payload: {
@@ -106,20 +128,8 @@ async function newContentInNewSection(payload: {
   type: string
   [key: string]: any
 }) {
-  const newSection = await addSection(
-    resourceStore.currentId!,
-    nextSectionOrder.value
-  )
-  const content = await addContent(
-    payload.type,
-    0,
-    resourceStore.currentId!,
-    newSection!.id,
-    payload
-  ) // TODO payload for files
-  newSection!.contents.push(content!)
-  contentsBySection.value.push(newSection!)
-  currentlyEditingContentId.value = content.id!
+  const newSection = await createSection()
+  return createContent(payload, newSection!)
 }
 
 async function newContentInSection(payload: {
@@ -128,15 +138,11 @@ async function newContentInSection(payload: {
   [key: string]: any
 }) {
   const sectionIndex = payload.sectionIndex
-  const content = await addContent(
-    payload.type,
-    nextContentOrder(sectionIndex),
-    resourceStore.currentId!,
-    contentsBySection.value[sectionIndex]!.id,
-    payload
+  return createContent(
+    payload,
+    contentsBySection.value[sectionIndex],
+    nextContentOrder(sectionIndex)
   )
-  contentsBySection.value[sectionIndex]!.contents.push(content!)
-  currentlyEditingContentId.value = content.id!
 }
 
 async function createAdHocSectionForContent({
