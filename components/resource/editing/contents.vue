@@ -85,8 +85,8 @@ async function createSection(sectionTitle?: string) {
     nextSectionOrder.value,
     sectionTitle
   )
-  contentsBySection.value.push(newSection!)
-  return newSection
+  const length = contentsBySection.value.push(newSection!)
+  return contentsBySection.value[length - 1]
 }
 
 async function createContent(
