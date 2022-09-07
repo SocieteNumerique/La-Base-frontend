@@ -26,9 +26,15 @@
           @click="onAddResourceClick"
         />
         <DsfrButton
-          v-show="view === 'collections'"
+          v-show="view === 'collections' && !openCollectionId"
           label="Ajouter une collection"
           @click="onAddCollectionClick"
+        />
+        <DsfrButton
+          v-show="view === 'collections' && openCollectionId"
+          label="Éditer une collection"
+          secondary
+          @click="showEditCollectionModal = true"
         />
         <ResourceCreationModal
           v-if="showAddResourceModal"
@@ -38,6 +44,11 @@
         <CollectionNew
           v-if="showAddCollectionModal"
           @close="showAddCollectionModal = false"
+        />
+        <CollectionEdit
+          v-if="showEditCollectionModal"
+          :collection="openCollection"
+          @exit="showEditCollectionModal = false"
         />
       </div>
     </div>
@@ -51,7 +62,7 @@
           />
         </div>
       </div>
-      <div v-if="!base.collections.length">
+      <div v-if="!base.collections?.length">
         Vous n’avez pas encore créé de collection de fiches ressources
       </div>
     </template>
@@ -133,6 +144,8 @@ defineProps({
 
 const showAddResourceModal = ref<boolean>(false)
 const showAddCollectionModal = ref<boolean>(false)
+const showEditCollectionModal = ref<boolean>(false)
+
 const onAddResourceClick = () => {
   showAddResourceModal.value = true
 }
@@ -168,6 +181,7 @@ const pages = computed(() => {
     }))
   return toReturn
 })
+
 const onCurrentPageChange = async (pageZeroBased: number) => {
   await baseStore.updateResourcesInPage(pageZeroBased + 1)
   baseStore.currentPage = pageZeroBased
