@@ -32,7 +32,7 @@
           Fiche publiée par
           <div>{{ resource?.rootBaseTitle }}</div>
         </div>
-        <div v-if="resource.canWrite">
+        <div v-if="resource.canWrite && resource?.creator">
           Fiche créée par {{ resource.creator.firstName }}
           {{ resource.creator.lastName }}
         </div>
