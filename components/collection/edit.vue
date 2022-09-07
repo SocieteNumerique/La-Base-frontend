@@ -79,7 +79,7 @@ const props = defineProps({
   collection: { type: Object as PropType<Collection>, required: true },
 })
 const savedResources = ref<number[]>([...(props.collection?.resources || [])])
-const tempCollection = ref<Collection>({ ...props.collection })
+const tempCollection = ref<Collection>({ ...props.collection }) // collection data until it is saved
 const artificialClose = ref<boolean>(false)
 const step = ref<string>("init")
 const isDirty = ref<boolean>(false)
