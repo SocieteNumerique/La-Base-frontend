@@ -7,7 +7,7 @@
   >
     <p>Une collection permet de regrouper des fiches ressources.</p>
     <DsfrInput
-      v-model="collection.name"
+      v-model="tempCollection.name"
       :label-visible="true"
       autofocus
       hint="max 100 caractères"
@@ -36,7 +36,7 @@
       ajouter à votre collection.
     </p>
     <ResourceSelector
-      v-model="collection.resources"
+      v-model="tempCollection.resources"
       :base-id="collection.base"
       label="Appliquer à"
       placeholder="Rechercher dans les ressources de la base"
@@ -76,10 +76,10 @@ const collectionStore = useCollectionStore()
 const emits = defineEmits(["exit", "new-collection", "discard"])
 const props = defineProps({
   isNew: { type: Boolean, default: false },
-  modelValue: { type: Object as PropType<Collection>, required: true },
+  collection: { type: Object as PropType<Collection>, required: true },
 })
-const collection = useModel<Collection>("modelValue", { type: "object" })
-const savedResources = ref<number[]>([...(collection.value?.resources || [])])
+const savedResources = ref<number[]>([...(props.collection?.resources || [])])
+const tempCollection = ref<Collection>({ ...props.collection })
 const artificialClose = ref<boolean>(false)
 const step = ref<string>("init")
 const isDirty = ref<boolean>(false)
@@ -88,30 +88,30 @@ const isDirtyResources = ref<boolean>(false)
 async function save() {
   if (props.isNew) {
     const createdCollection = await collectionStore.createCollection(
-      collection.value
+      tempCollection.value
     )
     if (createdCollection) emits("new-collection", createdCollection.id)
-  } else await collectionStore.update(collection.value.id, collection.value)
-  savedResources.value = collection.value.resources || []
+  } else await collectionStore.update(props.collection.id, tempCollection.value)
+  savedResources.value = tempCollection.value.resources || []
   isDirty.value = false
   toStep("init")
   emits("exit")
 }
 
 function resetResources() {
-  collection.value.resources = savedResources.value
+  tempCollection.value.resources = savedResources.value
   isDirtyResources.value = false
   toStep("init")
 }
 
 function discard() {
-  emits("discard")
+  tempCollection.value = { ...props.collection }
   isDirty.value = false
   exit()
 }
 
 async function deleteCollection() {
-  await collectionStore.delete(collection.value.id)
+  await collectionStore.delete(props.collection.id)
   exit()
 }
 
@@ -158,7 +158,7 @@ const addingActions = [
   {
     label: "Valider",
     onClick() {
-      savedResources.value = collection.value.resources || []
+      savedResources.value = tempCollection.value.resources || []
       isDirtyResources.value = false
       toStep("init")
     },
