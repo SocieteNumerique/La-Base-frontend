@@ -55,12 +55,12 @@
 
     <template v-if="view === 'collections' && openCollectionId === undefined">
       <div class="resource-grid">
-        <div v-for="collectionId of base?.collections" :key="collectionId">
-          <CollectionMiniatureById
-            :collection-id="collectionId"
-            :editable="true"
-          />
-        </div>
+        <CollectionMiniatureById
+          v-for="collectionId of base?.collections"
+          :key="collectionId"
+          :collection-id="collectionId"
+          :editable="true"
+        />
       </div>
       <div v-if="!base.collections?.length">
         Vous n’avez pas encore créé de collection de fiches ressources
@@ -85,9 +85,11 @@
       <!-- results -->
       <template v-else>
         <div class="resource-grid">
-          <div v-for="resourceId of base?.resourcesInPage" :key="resourceId">
-            <ResourceMiniatureById :resource-id="resourceId" />
-          </div>
+          <ResourceMiniatureById
+            v-for="resourceId of base?.resourcesInPage"
+            :key="resourceId"
+            :resource-id="resourceId"
+          />
         </div>
       </template>
 
