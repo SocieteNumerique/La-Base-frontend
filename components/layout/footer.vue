@@ -77,7 +77,6 @@
             <a
               href="https://github.com/SocieteNumerique/"
               class="fr-footer__bottom-link"
-              rel="noopener noreferrer"
               target="_blank"
             >
               Code source
