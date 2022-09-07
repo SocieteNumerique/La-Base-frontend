@@ -193,6 +193,7 @@ type BaseContent = {
   nbCol: number
   order?: number
   section: number
+  resource?: number
   // for now content tags ar only for license.
   // If that changes, the license modals need to be updated
   tags?: number[]

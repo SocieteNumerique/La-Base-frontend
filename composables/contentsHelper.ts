@@ -21,19 +21,26 @@ export async function getResourceContentsBySection(resourceId: number) {
   }
 }
 
-function getDefaultContent(type: string, sectionId: number): Content {
+function prepareContent(
+  payload: {
+    type: string
+    [key: string]: any
+  },
+  sectionId: number,
+  resourceId: number | undefined
+): Content {
+  const type = payload.type
   if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
-  if (type === "file") return { type, nbCol: 2, section: sectionId }
+  if (type === "file")
+    return { type, nbCol: 2, section: sectionId, file: payload.file }
   if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
-  if (type === "linkedResource") return { type, nbCol: 2, section: sectionId }
+  if (type === "linkedResource")
+    return { type, nbCol: 2, section: sectionId, linkedResource: resourceId }
   throw "unknown type"
 }
 
-async function createContent(resourceId: number, content: Content) {
-  const { data, error } = await useApiPost<Content>(`contents/`, {
-    ...content,
-    resource: resourceId,
-  })
+async function postContent(content: Content) {
+  const { data, error } = await useApiPost<Content>(`contents/`, content)
   if (!error.value) {
     return data.value
   }
@@ -62,13 +69,35 @@ export async function addContent(
   sectionId: number,
   payload: any = null
 ): Promise<Content> {
-  const content = getDefaultContent(type, sectionId)
-  if (type === "file") (content as FileContent).file = payload.file
-  if (type === "linkedResource")
-    (content as LinkedResourceContent).linkedResource = resourceId
-  const createdContent = await createContent(resourceId, { ...content, order })
+  const content = prepareContent(payload, sectionId, resourceId)
+  const createdContent = await postContent({
+    ...content,
+    order,
+    resource: resourceId,
+  })
   if (createdContent) return createdContent
   throw "error at creating Content"
+}
+
+export async function addContents(
+  order: number,
+  resourceId: number,
+  sectionId: number,
+  payload: any = null
+) {
+  const contents = payload.map((single: any, index: number) => {
+    const formedContent: FileContent = prepareContent(
+      single,
+      sectionId,
+      resourceId
+    )
+    formedContent.order = order + index
+    formedContent.resource = resourceId
+    return formedContent
+  })
+  const createdContents = await postContent(contents)
+  if (createdContents) return createdContents
+  throw "error at creating Contents"
 }
 
 export async function deleteContent(id: number, showSuccess = false) {
