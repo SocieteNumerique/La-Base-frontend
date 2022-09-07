@@ -26,9 +26,15 @@
           @click="onAddResourceClick"
         />
         <DsfrButton
-          v-show="view === 'collections'"
+          v-show="view === 'collections' && !openCollectionId"
           label="Ajouter une collection"
           @click="onAddCollectionClick"
+        />
+        <DsfrButton
+          v-show="view === 'collections' && openCollectionId"
+          label="Éditer une collection"
+          secondary
+          @click="showEditCollectionModal = true"
         />
         <ResourceCreationModal
           v-if="showAddResourceModal"
@@ -39,19 +45,24 @@
           v-if="showAddCollectionModal"
           @close="showAddCollectionModal = false"
         />
+        <CollectionEdit
+          v-if="showEditCollectionModal"
+          :collection="openCollection"
+          @exit="showEditCollectionModal = false"
+        />
       </div>
     </div>
 
     <template v-if="view === 'collections' && openCollectionId === undefined">
       <div class="resource-grid">
-        <div v-for="collectionId of base?.collections" :key="collectionId">
-          <CollectionMiniatureById
-            :collection-id="collectionId"
-            :editable="true"
-          />
-        </div>
+        <CollectionMiniatureById
+          v-for="collectionId of base?.collections"
+          :key="collectionId"
+          :collection-id="collectionId"
+          :editable="true"
+        />
       </div>
-      <div v-if="!base.collections.length">
+      <div v-if="!base.collections?.length">
         Vous n’avez pas encore créé de collection de fiches ressources
       </div>
     </template>
@@ -74,9 +85,11 @@
       <!-- results -->
       <template v-else>
         <div class="resource-grid">
-          <div v-for="resourceId of base?.resourcesInPage" :key="resourceId">
-            <ResourceMiniatureById :resource-id="resourceId" />
-          </div>
+          <ResourceMiniatureById
+            v-for="resourceId of base?.resourcesInPage"
+            :key="resourceId"
+            :resource-id="resourceId"
+          />
         </div>
       </template>
 
@@ -133,6 +146,8 @@ defineProps({
 
 const showAddResourceModal = ref<boolean>(false)
 const showAddCollectionModal = ref<boolean>(false)
+const showEditCollectionModal = ref<boolean>(false)
+
 const onAddResourceClick = () => {
   showAddResourceModal.value = true
 }
@@ -168,6 +183,7 @@ const pages = computed(() => {
     }))
   return toReturn
 })
+
 const onCurrentPageChange = async (pageZeroBased: number) => {
   await baseStore.updateResourcesInPage(pageZeroBased + 1)
   baseStore.currentPage = pageZeroBased

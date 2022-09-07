@@ -2,14 +2,14 @@
   <div class="miniature-container fr-text--xs">
     <CollectionEdit
       v-if="editable & isEditModalOpen"
-      v-model="collection"
-      @discard="collection = { ...savedCollection }"
+      :collection="savedCollection"
       @exit="isEditModalOpen = false"
     />
     <div class="fr-p-2w has-children-space-between">
       <button
         v-if="editable"
         class="fr-btn--tertiary-no-outline"
+        aria-label="éditer"
         @click="isEditModalOpen = true"
       >
         <VIcon :scale="0.85" name="ri-edit-line" />
@@ -19,15 +19,15 @@
         <ShareButton :link="link" class="fr-mr-3w" />
         <PinMenu
           v-model="pinnedInBases"
-          :instance-id="collection?.id"
-          :root-base-id="collection?.base"
+          :instance-id="savedCollection?.id"
+          :root-base-id="savedCollection?.base"
           class="fr-ml-auto"
           instance-type="collection"
         />
       </div>
     </div>
     <NuxtLink
-      :to="{ query: { ...route.query, collection: collection.id } }"
+      :to="{ query: { ...route.query, collection: savedCollection.id } }"
       class="preview bordered fr-p-4w"
     >
       <!-- insert snapshot here -->
@@ -71,12 +71,11 @@ const savedCollection = computed<Collection>(
 const nbResources = computed<number>(
   () => savedCollection.value.resources?.length || 0
 )
-const collection = ref<Collection>({ ...savedCollection.value })
 
 const pinnedInBases = computed<PinStatus[]>({
-  get: () => collection.value?.pinnedInBases || [],
+  get: () => savedCollection.value?.pinnedInBases || [],
   set(value: PinStatus[]) {
-    collectionStore.refreshPinStatus(value, collection.value.id)
+    collectionStore.refreshPinStatus(value, savedCollection.value.id)
   },
 })
 
@@ -84,7 +83,7 @@ const isEditModalOpen = ref<boolean>(false)
 
 watchOnce(isEditModalOpen, () => {
   const baseStore = useBaseStore()
-  const baseId = collection.value.base
+  const baseId = savedCollection.value.base
   if (!baseStore.basesById[baseId] || baseStore.basesById[baseId].isShort) {
     baseStore.getBase(baseId)
   }
