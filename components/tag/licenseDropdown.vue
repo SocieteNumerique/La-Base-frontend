@@ -16,18 +16,20 @@
           :disabled="
             !isTagEnabled(licenseTypePossibleTagsByKey['proprietary'].id)
           "
-          @select="$emit(licenseTypePossibleTagsByKey['proprietary'].id)"
+          @select="
+            $emit('select', licenseTypePossibleTagsByKey['proprietary'].id)
+          "
         />
         <TagLine
           :tag="licenseTypePossibleTagsByKey['other']"
           :disabled="!isTagEnabled(licenseTypePossibleTagsByKey['other'].id)"
-          @select="$emit(licenseTypePossibleTagsByKey['other'].id)"
+          @select="$emit('select', licenseTypePossibleTagsByKey['other'].id)"
         />
         <TagLine
           :tag="licenseTypePossibleTagsByKey['free']"
           :disabled="!isTagEnabled(licenseTypePossibleTagsByKey['free'].id)"
           class="result-line-free"
-          @select="$emit(licenseTypePossibleTagsByKey['free'].id)"
+          @select="$emit('select', licenseTypePossibleTagsByKey['free'].id)"
         />
 
         <div class="result-line">
@@ -48,7 +50,8 @@
               freeLicensePossibleTags
             )"
             :key="group"
-            ><div class="result-line fr-mt-3v">
+          >
+            <div class="result-line fr-mt-3v">
               <div class="tag-line fr-py-1w">
                 <p class="fr-m-0 fr-text--bold fr-text--sm" :title="group">
                   {{ group }}
@@ -102,13 +105,13 @@ const freeLicenseCategory = tagStore.categoryBySlug("license_02free")
 
 const showDetailedList = ref<boolean>(false)
 
-type TagBySlug = { [slug: string]: Tag }
-const licenseTypePossibleTagsByKey = computed<TagBySlug>(
+type TagByKey = { [key: string]: Tag }
+const licenseTypePossibleTagsByKey = computed<TagByKey>(
   () =>
     licenseTypeCategory?.tags
       .filter((tag) => props.selectedTags.indexOf(tag) === -1)
       .map((tagId) => tagStore.tagsById[tagId])
-      .reduce((tagsBySlug: TagBySlug, tag: Tag) => {
+      .reduce((tagsBySlug: TagByKey, tag: Tag) => {
         if (!tag.slug || !licenseTagBySlug[tag.slug]) return tagsBySlug
         tagsBySlug[licenseTagBySlug[tag.slug]] = tag
         return tagsBySlug
