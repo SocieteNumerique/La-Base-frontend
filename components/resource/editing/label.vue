@@ -1,13 +1,12 @@
 <template>
   <div>
     <div>
-      <nuxt-link to="/label" target="_blank" class="no-underline no-append-ico">
-        <DsfrButton
-          class="fr-btn--tertiary-no-outline"
-          label="En savoir plus"
-          :icon-right="true"
-          icon="ri-arrow-right-line"
-        />
+      <nuxt-link
+        to="/label"
+        target="_blank"
+        class="no-underline no-append-ico fr-link fr-fi-arrow-right-line fr-link--icon-right"
+      >
+        En savoir plus
       </nuxt-link>
     </div>
     <h2 class="fr-mt-2w fr-h6">Statut</h2>

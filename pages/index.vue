@@ -21,12 +21,11 @@
             partagent leurs ressources et créer votre propre base.
           </p>
           <div>
-            <NuxtLink to="/a-propos" style="background: none">
-              <DsfrButton
-                class="fr-btn--tertiary-no-outline fr-pl-0"
-                label="En savoir plus"
-                icon="ri-arrow-right-line"
-              />
+            <NuxtLink
+              to="/a-propos"
+              class="no-underline no-append-ico fr-link fr-fi-arrow-right-line fr-link--icon-left fr-mt-2w"
+            >
+              En savoir plus
             </NuxtLink>
           </div>
         </div>
