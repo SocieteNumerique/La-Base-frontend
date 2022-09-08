@@ -115,12 +115,11 @@
       </h3>
 
       <div class="resource-grid">
-        <div
+        <ResourceMiniatureById
           v-for="resourceId of openCollection?.resources || []"
           :key="resourceId"
-        >
-          <ResourceMiniatureById :resource-id="resourceId" />
-        </div>
+          :resource-id="resourceId"
+        />
       </div>
     </template>
   </div>
