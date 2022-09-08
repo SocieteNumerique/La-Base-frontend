@@ -9,6 +9,7 @@ import {
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
+import { RESOURCES_PER_PAGE } from "~/composables/constants"
 
 export const navigationMenus: Menu[] = [
   {
@@ -117,9 +118,19 @@ export const useResourceStore = defineStore("resource", {
       const { data, error } = await useApiPost<Resource>("resources/", resource)
       if (!error.value) {
         this.resourcesById[data.value.id!] = data.value
-        baseStore.basesById[data.value.rootBase!]?.resources?.push(
+        baseStore.basesById[data.value.rootBase!]!.resourcesInPage!.unshift(
           data.value.id!
         )
+        if (
+          baseStore.basesById[data.value.rootBase!]!.resourcesInPage!.length >
+          RESOURCES_PER_PAGE
+        ) {
+          baseStore.basesById[data.value.rootBase!]!.resourcesInPage =
+            baseStore.basesById[data.value.rootBase!]!.resourcesInPage!.slice(
+              0,
+              RESOURCES_PER_PAGE
+            )
+        }
         return data.value
       }
     },
