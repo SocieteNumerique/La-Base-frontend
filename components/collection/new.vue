@@ -1,10 +1,5 @@
 <template>
-  <CollectionEdit
-    v-model="collection"
-    :is-new="true"
-    @discard="collection = newCollectionInit"
-    @exit="onExit"
-  />
+  <CollectionEdit :collection="collection" :is-new="true" @exit="onExit" />
 </template>
 
 <script lang="ts" setup>
