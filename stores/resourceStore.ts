@@ -6,7 +6,12 @@ import {
   ResourceCreate,
   SubMenuByKey,
 } from "~/composables/types"
-import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
+import {
+  useApiDelete,
+  useApiGet,
+  useApiPatch,
+  useApiPost,
+} from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { RESOURCES_PER_PAGE } from "~/composables/constants"

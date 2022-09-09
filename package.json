@@ -34,7 +34,6 @@
     "pinia": "^2.0.11",
     "typescript": "^4.6.2",
     "vue-advanced-cropper": "^2.8.3",
-    "vue-matomo": "^4.2.0",
     "vuedraggable": "^4.1.0"
   }
 }
