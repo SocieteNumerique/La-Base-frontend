@@ -1,13 +1,15 @@
 import { defineNuxtPlugin } from "#app"
 
 export default defineNuxtPlugin((nuxtApp) => {
-  if (process.env.NODE_ENV == "development") {
-    console.log("no tracking in developement")
+  if (
+    process.env.NODE_ENV == "development" ||
+    window.location.host.startsWith("preprod")
+  ) {
+    console.log("no tracking in developement/preprod")
     return
   }
   // set up tracking
   const _paq = (window._paq = window._paq || [])
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
   _paq.push(["trackPageView"])
   _paq.push(["enableLinkTracking"])
   _paq.push(["enableHeartBeatTimer"])
