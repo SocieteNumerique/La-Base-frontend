@@ -153,11 +153,12 @@
         @select="onSelect"
       />
       <TagLicenseDropdown
-        :is-focused="focusedCategory === licenseTypeCategoryId.id"
+        v-if="dataType === 'resources'"
+        :is-focused="focusedCategory === licenseTypeCategoryId"
         :selected-tags="selectedTags"
         :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
         :tag-operator="tagOperator"
-        @focus="focusedCategory = licenseTypeCategoryId.id"
+        @focus="focusedCategory = licenseTypeCategoryId"
         @blur="focusedCategory = 0"
         @select="onSelect"
       />
