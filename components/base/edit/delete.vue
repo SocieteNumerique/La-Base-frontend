@@ -7,7 +7,8 @@
     title="Supprimer la base"
     @close="$emit('close')"
   >
-    Êtes-vous sûr de vouloir supprimer cette base ?
+    Êtes-vous sûr de vouloir supprimer cette base ? <br />
+    Toutes les ressources seront supprimées.
   </DsfrModal>
 
   <DsfrModal
