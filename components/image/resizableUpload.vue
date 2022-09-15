@@ -7,7 +7,11 @@
       :label="label"
       @update:model-value="file = { image: $event }"
     />
-    <ImageProfileRound :resizable-image="file" size="medium" />
+    <ImageResized
+      :resizable-image="file"
+      width="medium"
+      :ratio="desiredRatio"
+    />
   </div>
   <div class="fr-btns-group fr-btns-group--inline">
     <DsfrButton
@@ -131,6 +135,7 @@ function defaultSize({
 .cropper
   max-height: 60vh
   margin: 12px auto
+
 .cropper-background
   background: white
 </style>

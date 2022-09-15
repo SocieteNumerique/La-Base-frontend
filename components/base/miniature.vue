@@ -5,7 +5,11 @@
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div v-if="base.profileImage" class="banner fr-p-1w">
-        <ImageProfileRound :resizable-image="base.profileImage" size="medium" />
+        <ImageResized
+          :resizable-image="base.profileImage"
+          width="medium"
+          circle
+        />
       </div>
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">
