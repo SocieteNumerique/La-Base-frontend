@@ -125,6 +125,7 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
+        useRouter().push("/")
         delete this.basesById[id]
         this.basesOrder.filter((curr_id) => curr_id != id)
         return true

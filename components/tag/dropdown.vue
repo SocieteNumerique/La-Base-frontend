@@ -49,7 +49,7 @@ const possibleTags = computed(() =>
     .map((tagId) => tagStore.tagsById[tagId])
 )
 const isTagEnabled = (tagId: number) => {
-  if (props.enabledTags === undefined) {
+  if (!props.enabledTags) {
     return true
   }
   return props.enabledTags.indexOf(tagId) !== -1
