@@ -168,7 +168,7 @@ export const useBaseStore = defineStore("base", {
           return {
             title: base.title,
             id: base.id,
-            imageProfile: base.profileImage,
+            profileImage: base.profileImage,
           }
         })
     },
