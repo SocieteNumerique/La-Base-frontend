@@ -5,6 +5,7 @@
       require-image
       :max-size="maxSize"
       :label="label"
+      :hint="hint"
       @update:model-value="file = { image: $event }"
     />
     <ImageResized
@@ -77,6 +78,7 @@ const props = defineProps({
     default: false,
   },
   desiredRatio: { type: Number, default: null },
+  hint: { type: String, default: "" },
 })
 const emits = defineEmits(["update:modelValue"])
 
