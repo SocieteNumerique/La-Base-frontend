@@ -261,7 +261,6 @@ const isLastNameValid = computed(() => {
   return toReturn
 })
 const isFormValid = computed(() => {
-  console.log("### is form valid ?", isEmailUntouched.value)
   return (
     isMailValid.value &&
     isPasswordValid.value &&

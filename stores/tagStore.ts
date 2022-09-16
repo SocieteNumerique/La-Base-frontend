@@ -135,6 +135,13 @@ export const useTagStore = defineStore("tag", {
         (categoryId) => state.tagCategoriesById[categoryId]
       )
     },
+    categoriesByRelation: (state) => {
+      return (relation: string) =>
+        state.tagCategoriesOrder
+          .map((categoryId) => state.tagCategoriesById[categoryId])
+          .filter((category) => !!category.relatesTo)
+          .filter((category) => category.relatesTo.indexOf(relation) !== -1)
+    },
     categoryBySlug:
       (state) =>
       (name: string): TagCategory | undefined => {

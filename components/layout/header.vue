@@ -57,15 +57,60 @@
                     S'inscrire
                   </button>
                 </li>
-                <li>
-                  <button
-                    v-if="userStore.isLoggedIn"
-                    class="fr-link"
-                    :title="userStore.email"
-                    @click="userStore.logout"
-                  >
-                    Se déconnecter
-                  </button>
+                <li class="selector">
+                  <template v-if="userStore.isLoggedIn">
+                    <button
+                      :class="{ '-active': showProfileMenu }"
+                      class="fr-link btn-tab-activable"
+                      @click="showProfileMenu = !showProfileMenu"
+                    >
+                      Mon profil
+                      <VIcon
+                        :name="`ri-arrow-${
+                          showBasesList ? 'up' : 'down'
+                        }-s-line`"
+                        class="fr-ml-3v"
+                      />
+                    </button>
+                    <div
+                      v-show="showProfileMenu"
+                      id="profile-menu"
+                      class="selector__menu fr-px-2w fr-text--xs"
+                      style="overflow-x: hidden; overflow-y: auto"
+                    >
+                      <div
+                        class="item fr-link"
+                        style="
+                          padding-top: 11px !important;
+                          padding-bottom: 11px !important;
+                          height: initial;
+                          cursor: default;
+                        "
+                      >
+                        <div>
+                          <span class="fr-text--bold"
+                            >{{ userStore.firstName }}
+                            {{ userStore.lastName }}</span
+                          >
+                          <br />
+                          <span class="fr-text--sm fr-text--disabled">{{
+                            userStore.email
+                          }}</span>
+                        </div>
+                      </div>
+                      <NuxtLink to="/profil-informations" class="item fr-link">
+                        <button class="fr-p-0">Modifier le profil</button>
+                      </NuxtLink>
+                      <button
+                        v-if="userStore.isLoggedIn"
+                        class="fr-link item"
+                        :title="userStore.email"
+                        @click="onLogOutClick"
+                      >
+                        Se déconnecter
+                      </button>
+                    </div>
+                  </template>
                   <button v-else class="fr-link" @click="showLoginModal = true">
                     Se connecter
                   </button>
@@ -146,6 +191,7 @@
 <script lang="ts" setup>
 import { useUserStore } from "~/stores/userStore"
 import { useBaseStore } from "~/stores/baseStore"
+import { useRouter } from "vue-router"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
@@ -155,12 +201,23 @@ const logoTitle = ["La base du numérique", "d'intérêt général"]
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
 const showBasesList = ref(false)
+const showProfileMenu = ref(false)
 
 onFocusOut(
   () => (showBasesList.value = false),
   "header-bases-list",
   () => showBasesList.value
 )
+onFocusOut(
+  () => (showProfileMenu.value = false),
+  "profile-menu",
+  () => showProfileMenu.value
+)
+
+const onLogOutClick = () => {
+  userStore.logout()
+  useRouter().push("/")
+}
 </script>
 
 <style lang="sass" scoped>

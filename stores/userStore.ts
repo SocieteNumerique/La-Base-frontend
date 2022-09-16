@@ -3,6 +3,8 @@ import { User } from "~/composables/types"
 import { useBaseStore } from "~/stores/baseStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useResourceStore } from "~/stores/resourceStore"
+import { useApiDelete } from "~/composables/api"
+import { useAlertStore } from "~/stores/alertStore"
 
 function resetPerUserData() {
   useCollectionStore().collectionsById = {}
@@ -11,7 +13,7 @@ function resetPerUserData() {
 }
 
 export const useUserStore = defineStore("user", {
-  state: () => ({
+  state: (): User => ({
     email: "",
     firstName: "",
     id: 0,
@@ -19,8 +21,49 @@ export const useUserStore = defineStore("user", {
     prefillEmail: "",
     showSignupModal: false,
     isCnfs: false,
+    tags: [],
   }),
   actions: {
+    async changePassword(payload: {
+      oldPassword: string
+      newPassword: string
+    }) {
+      const { data, error } = await useApiPatch(
+        `users/${this.id}/password/`,
+        payload,
+        {},
+        "Le mot de passe a bien été modifié",
+        {
+          title: "Erreur lors de la modification du mot de passe",
+          text: "_responseBody",
+        }
+      )
+      if (!error.value) {
+        this.resetUserState()
+        useAlertStore().alert(
+          "Vous devez maintenant vous reconnecter",
+          "",
+          "warning"
+        )
+      }
+
+      return { data, error }
+    },
+    async deleteUser() {
+      const { data, error } = await useApiDelete<User>(
+        `users/${this.id}/`,
+        {},
+        "L'utilisateur a bien été supprimé",
+        {
+          title: "Erreur lors de la suppression de l'utilisateur",
+          text: "_responseBody",
+        }
+      )
+      if (!error.value) {
+        this.resetUserState()
+      }
+      return { data, error }
+    },
     async login(email: string, password: string) {
       const { data, error } = await useApiPost<User>(
         "auth/login",
@@ -54,12 +97,11 @@ export const useUserStore = defineStore("user", {
           firstName: "",
           lastName: "",
           email: "",
+          tags: [],
         })
-        const router = useRouter()
         const baseStore = useBaseStore()
-        baseStore.refreshBases()
+        await baseStore.refreshBases()
         resetPerUserData()
-        router.push("/")
       }
     },
     async refreshProfile() {
@@ -84,6 +126,18 @@ export const useUserStore = defineStore("user", {
         "Erreur lors de la réinitialisation du mot de passe"
       )
     },
+    resetUserState() {
+      this.$state = {
+        email: "",
+        firstName: "",
+        id: 0,
+        lastName: "",
+        prefillEmail: "",
+        showSignupModal: false,
+        isCnfs: false,
+        tags: [],
+      }
+    },
     async signup(payload: User) {
       const { data, error } = await useApiPost<User>(
         "users/",
@@ -99,11 +153,28 @@ export const useUserStore = defineStore("user", {
 
       return { data, error }
     },
+    async update(user: User) {
+      const { data, error } = await useApiPatch<User>(
+        `users/${this.id}/`,
+        user,
+        {},
+        "Les informations ont bien été enregistrées",
+        {
+          title: "Erreur lors de l'enregistrement des informations",
+          text: "_responseBody",
+        }
+      )
+      if (!error.value) {
+        this.updateState(data.value)
+      }
+      return { data, error }
+    },
     updateState(data: User) {
       this.email = data.email
       this.firstName = data.firstName
       this.lastName = data.lastName
       this.isCnfs = data?.isCnfs || false
+      this.tags = data!.tags
     },
   },
   getters: {

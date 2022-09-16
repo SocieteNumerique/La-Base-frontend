@@ -11,7 +11,6 @@ export default defineNuxtPlugin(() => {
         if (dateStr[dateStr.length - 1] === "Z") {
           dateStr = dateStr.substring(0, dateStr.length - 1)
         }
-        console.log("### input date", dateStr)
         const date = new Date(Date.parse(dateStr))
         return date.toLocaleString(["fr-FR"], {
           month: "short",
