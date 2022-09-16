@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-info-form">
+  <div class="form-with-margins">
     <div style="display: flex; align-items: baseline">
       <h2 class="fr-h6">Informations générales</h2>
     </div>
@@ -115,8 +115,3 @@ const onAddFile = async () => {
     await inputToFileObject(fileInput.value!)
 }
 </script>
-
-<style lang="sass">
-.resource-info-form .fr-label // not scoped on purpose
-  margin-top: 1.5rem
-</style>
