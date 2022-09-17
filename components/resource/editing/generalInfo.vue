@@ -52,39 +52,6 @@
       :desired-ratio="1.4"
       hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
     />
-    <!-- TODO re-add cover image -->
-    <template v-if="false">
-      <h3 class="fr-mb-0 fr-text--md fr-text--regular">Image de couverture</h3>
-      <div v-if="resourceStore.current?.coverImage?.link">
-        <div>
-          <img
-            style="max-width: 100%; max-height: 350px"
-            :alt="resourceStore.current?.coverImage?.name"
-            :src="resourceStore.current?.coverImage?.link"
-          />
-        </div>
-        <label for="imageCoverInput">Modifier l'image</label>
-      </div>
-      <div v-else>
-        <label for="imageCoverInput">
-          <template v-if="resourceStore.current?.coverImage">
-            ✓ image ajoutée, sauvegardez la ressource pour l'afficher
-          </template>
-          <template v-else>
-            Ajouter une image de couverture Formats supportés : jpg, png, gif
-          </template>
-        </label>
-      </div>
-      <input
-        id="imageCoverInput"
-        ref="fileInput"
-        class="input-file"
-        type="file"
-        accept="image/*"
-        hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
-        @change="onAddFile"
-      />
-    </template>
   </div>
 </template>
 
@@ -108,10 +75,5 @@ const onDescriptionUpdate = (value: string) => {
 
 const onDateUpdate = (value: string) => {
   resourceStore.current.resourceCreatedOn = value
-}
-
-const onAddFile = async () => {
-  resourceStore.resourcesById[resourceStore.currentId!].coverImage =
-    await inputToFileObject(fileInput.value!)
 }
 </script>

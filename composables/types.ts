@@ -34,7 +34,6 @@ export type Resource = {
   pinnedInBases?: number[]
   contents?: Content[]
   canWrite?: boolean
-  coverImage?: FullFile
   contentStats?: { links: number; files: number }
   created?: string
   creator?: Creator
