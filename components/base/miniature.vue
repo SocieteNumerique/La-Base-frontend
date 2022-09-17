@@ -8,7 +8,15 @@
         <ImageProfileRound :resizable-image="base.profileImage" size="medium" />
       </div>
       <div class="fr-p-2w">
-        <h3 class="fr-h6 fr-mb-0">{{ base.title }}</h3>
+        <h3 class="fr-h6 fr-mb-0">
+          {{ base.title }}
+          <img
+            v-if="base.isCertified"
+            alt="Base certifiée"
+            src="~/assets/svg/certifiedBase.svg"
+            style="position: relative; top: 4px"
+          />
+        </h3>
         <div
           v-if="participantTypes.length || territory.length"
           class="separator fr-my-1w"
