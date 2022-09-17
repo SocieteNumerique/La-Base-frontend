@@ -6,14 +6,22 @@
     @close="onClose"
   >
     <p>Une collection permet de regrouper des fiches ressources.</p>
-    <DsfrInput
+    <DsfrInputGroup
       v-model="tempCollection.name"
       :label-visible="true"
       autofocus
-      hint="max 100 caractères"
+      :hint="`${tempCollection.name?.length || 0} / 50 caractères`"
       label="Nom de la collection"
-      maxlength="100"
+      maxlength="50"
       @input="isDirty = true"
+    />
+    <DsfrInputGroup
+      v-model="tempCollection.description"
+      :label-visible="true"
+      autofocus
+      :hint="`${tempCollection.description?.length || 0} / 100 caractères`"
+      label="Description de la collection"
+      maxlength="100"
     />
     <div class="btn-group fr-mt-4w">
       <DsfrButton :secondary="true" class="fr-mr-4w" @click="toStep('adding')">
@@ -67,7 +75,7 @@
 
 <script lang="ts" setup>
 import { DsfrButton, DsfrInput } from "@laruiss/vue-dsfr"
-import { PropType } from "vue"
+import { onMounted, PropType } from "vue"
 import { Collection } from "~/composables/types"
 import { useCollectionStore } from "~/stores/collectionStore"
 

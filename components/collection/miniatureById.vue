@@ -32,9 +32,14 @@
     >
       <!-- insert snapshot here -->
       <div class="text">
-        <h6>{{ savedCollection.name }}</h6>
-        {{ nbResources }}
-        {{ pluralize(["Fiche ressource", "Fiches ressources"], nbResources) }}
+        <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
+        <p class="fr-m-0 fr-text--xs">
+          {{ nbResources }}
+          {{ pluralize(["Fiche ressource", "Fiches ressources"], nbResources) }}
+        </p>
+        <p v-if="savedCollection.description" class="fr-mt-2w fr-mb-0">
+          {{ savedCollection.description }}
+        </p>
       </div>
     </NuxtLink>
   </div>
