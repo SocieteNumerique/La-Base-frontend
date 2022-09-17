@@ -1,52 +1,50 @@
 <template>
   <DsfrModal
     :actions="settingsActions"
-    :opened="step === 'init'"
+    :opened="step === 'general'"
     :title="`${isNew ? 'Ajouter' : 'Éditer'} une collection`"
     @close="onClose"
   >
     <p>Une collection permet de regrouper des fiches ressources.</p>
-    <DsfrInputGroup
-      v-model="tempCollection.name"
-      :label-visible="true"
-      autofocus
-      :hint="`${tempCollection.name?.length || 0} / 50 caractères`"
-      label="Nom de la collection"
-      maxlength="50"
-      @input="isDirty = true"
-    />
-    <DsfrInputGroup
-      v-model="tempCollection.description"
-      :label-visible="true"
-      autofocus
-      :hint="`${tempCollection.description?.length || 0} / 100 caractères`"
-      label="Description de la collection"
-      maxlength="100"
-    />
+    <div class="form-with-margins">
+      <DsfrInputGroup
+        v-model="tempCollection.name"
+        :label-visible="true"
+        autofocus
+        :hint="`${tempCollection.name?.length || 0} / 50 caractères`"
+        label="Nom de la collection"
+        maxlength="50"
+        @input="isDirty = true"
+      />
+      <DsfrInputGroup
+        v-model="tempCollection.description"
+        :label-visible="true"
+        autofocus
+        :hint="`${tempCollection.description?.length || 0} / 100 caractères`"
+        label="Description de la collection"
+        maxlength="100"
+      />
 
-    <ImageResizableUpload
-      v-model="tempCollection.profileImage"
-      :label="`${
-        tempCollection?.profileImage?.image ? 'Changer l\'' : 'Ajouter une '
-      }image de miniature`"
-      :desired-ratio="1.7"
-      hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
-      class="fr-mt-2w"
-    />
+      <ImageResizableUpload
+        v-model="tempCollection.profileImage"
+        :label="`${
+          tempCollection?.profileImage?.image ? 'Changer l\'' : 'Ajouter une '
+        }image de miniature`"
+        :desired-ratio="1.7"
+        hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
+        class="fr-mt-2w"
+      />
+    </div>
 
     <div class="btn-group fr-mt-4w">
-      <DsfrButton :secondary="true" class="fr-mr-4w" @click="toStep('adding')">
-        Ajouter des fiches à la collection
-      </DsfrButton>
-
       <DsfrButton v-if="!isNew" class="btn-alert" @click="toStep('delete')">
-        Supprimer
+        Supprimer la collection
       </DsfrButton>
     </div>
   </DsfrModal>
   <DsfrModal
-    :actions="addingActions"
-    :opened="step === 'adding'"
+    :actions="resourcesActions"
+    :opened="step === 'resources'"
     title="Ajouter des fiches à la collection"
     @close="onClose"
   >
@@ -96,12 +94,16 @@ const emits = defineEmits(["exit", "new-collection", "discard"])
 const props = defineProps({
   isNew: { type: Boolean, default: false },
   collection: { type: Object as PropType<Collection>, required: true },
+  tab: {
+    type: String as PropType<"general" | "resources">,
+    required: true,
+  },
 })
 const savedResources = ref<number[]>([...(props.collection?.resources || [])])
 const tempCollection = ref<Collection>({ ...props.collection }) // collection data until it is saved
 const artificialClose = ref<boolean>(false)
-const step = ref<string>("init")
 const isDirty = ref<boolean>(false)
+const step = ref<string>(props.tab || "general")
 const isDirtyResources = ref<boolean>(false)
 
 async function save() {
@@ -113,14 +115,14 @@ async function save() {
   } else await collectionStore.update(props.collection.id, tempCollection.value)
   savedResources.value = tempCollection.value.resources || []
   isDirty.value = false
-  toStep("init")
+  toStep("general")
   emits("exit")
 }
 
 function resetResources() {
   tempCollection.value.resources = savedResources.value
   isDirtyResources.value = false
-  toStep("init")
+  toStep("general")
 }
 
 function discard() {
@@ -141,11 +143,11 @@ function toStep(newStep: string) {
 
 function onClose() {
   if (artificialClose.value) return (artificialClose.value = false)
-  if (step.value === "init") {
+  if (step.value === "general") {
     isDirty.value ? toStep("discard") : discard()
-  } else if (step.value === "adding") {
+  } else if (step.value === "resources") {
     if (isDirtyResources.value) toStep("discard")
-    else toStep("init")
+    else discard()
   } else if (step.value === "discard") {
     if (isDirtyResources.value) resetResources()
     else discard()
@@ -155,7 +157,7 @@ function onClose() {
 
 function exit() {
   emits("exit")
-  toStep("init")
+  toStep("general")
 }
 
 const settingsActions = ref<any[]>([
@@ -173,13 +175,13 @@ if (!props.isNew)
     onClick: () => toStep("discard"),
   })
 
-const addingActions = [
+const resourcesActions = [
   {
     label: "Valider",
     onClick() {
       savedResources.value = tempCollection.value.resources || []
       isDirtyResources.value = false
-      toStep("init")
+      save()
     },
   },
 ]
@@ -203,7 +205,7 @@ const deleteActions = [
   {
     label: "Annuler",
     onClick() {
-      toStep("init")
+      toStep("general")
     },
     secondary: true,
   },
