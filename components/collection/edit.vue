@@ -23,6 +23,17 @@
       label="Description de la collection"
       maxlength="100"
     />
+
+    <ImageResizableUpload
+      v-model="tempCollection.profileImage"
+      :label="`${
+        tempCollection?.profileImage?.image ? 'Changer l\'' : 'Ajouter une '
+      }image de miniature`"
+      :desired-ratio="1.7"
+      hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
+      class="fr-mt-2w"
+    />
+
     <div class="btn-group fr-mt-4w">
       <DsfrButton :secondary="true" class="fr-mr-4w" @click="toStep('adding')">
         Ajouter des fiches à la collection

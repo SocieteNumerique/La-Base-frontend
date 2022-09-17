@@ -28,7 +28,7 @@
       secondary
       @click="file = null"
     >
-      Retirer l'image de profil
+      Retirer l'image
     </DsfrButton>
   </div>
   <div v-if="showResizeModal">
@@ -79,6 +79,7 @@ const props = defineProps({
   },
   desiredRatio: { type: Number, default: null },
   hint: { type: String, default: "" },
+  imageQualifier: { type: String, default: "" },
 })
 const emits = defineEmits(["update:modelValue"])
 

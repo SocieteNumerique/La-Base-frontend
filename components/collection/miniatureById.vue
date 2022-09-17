@@ -30,7 +30,14 @@
       :to="{ query: { ...route.query, collection: savedCollection.id } }"
       class="preview bordered fr-p-4w"
     >
-      <!-- insert snapshot here -->
+      <ImageResized
+        v-if="savedCollection?.profileImage"
+        class="fr-mb-2w"
+        :resizable-image="savedCollection?.profileImage"
+        :width="320"
+        :ratio="1.7"
+      />
+
       <div class="text">
         <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
         <p class="fr-m-0 fr-text--xs">
@@ -102,6 +109,7 @@ watchOnce(isEditModalOpen, () => {
   display: flex
   flex-direction: column
   justify-content: center
+
   &:hover
     background: var(--background-alt-grey)
 
