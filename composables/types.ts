@@ -161,6 +161,7 @@ export type Base = {
   description?: string
   profileImage?: ResizableImage
   id: number
+  isCertified?: boolean
   isShort?: boolean
   owner: User | number
   participantTypeTags?: number[]
