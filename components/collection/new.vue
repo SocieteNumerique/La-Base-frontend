@@ -11,6 +11,7 @@ const emits = defineEmits(["close"])
 
 const newCollectionInit = {
   base: baseStore.currentId!,
+  description: "",
   name: "",
 }
 const collection = ref<CollectionCreate>(newCollectionInit)

@@ -89,6 +89,7 @@ export type CollectionWithDetailedResources = {
 export type Collection = {
   id: number
   base: number
+  description: string
   pinnedInBases?: number[]
   name: string
   nbResources?: number
