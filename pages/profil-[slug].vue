@@ -205,7 +205,7 @@ const passwordState = reactive({
   newPassword2: "",
 })
 const newPass = computed(() => passwordState.newPassword1)
-const userDatarules = {
+const userDataRules = {
   firstName: { required },
   lastName: { required },
   email: { required, email, minLength: minLength(3) },
@@ -215,7 +215,7 @@ const passwordRules = {
   newPassword1: { required },
   newPassword2: { required, sameAsPassword: sameAs(newPass) },
 }
-const v$ = useVuelidate(userDatarules, userDataState)
+const v$ = useVuelidate(userDataRules, userDataState)
 const vPass$ = useVuelidate(passwordRules, passwordState)
 
 const tagStore = useTagStore()
