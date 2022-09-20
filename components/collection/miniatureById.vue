@@ -28,7 +28,7 @@
     </div>
     <NuxtLink
       :to="{ query: { ...route.query, collection: savedCollection.id } }"
-      class="preview bordered fr-p-4w"
+      class="preview bordered fr-p-4w no-underline"
     >
       <!-- insert snapshot here -->
       <div class="text">

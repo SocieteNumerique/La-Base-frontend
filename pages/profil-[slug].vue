@@ -254,11 +254,13 @@ const updateUser = async () => {
   })
 }
 const changeUserPassword = async () => {
-  await userStore.changePassword({
+  const { error } = await userStore.changePassword({
     newPassword: passwordState.newPassword1,
     oldPassword: passwordState.oldPassword,
   })
-  await useRouter().push("/")
+  if (!error.value) {
+    await useRouter().push("/")
+  }
 }
 
 const deleteUser = async () => {

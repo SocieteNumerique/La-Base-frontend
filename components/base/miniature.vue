@@ -10,11 +10,11 @@
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">
           {{ base.title }}
-          <img
+          <VIcon
             v-if="base.isCertified"
-            alt="Base certifiée"
-            src="~/assets/svg/certifiedBase.svg"
-            style="position: relative; top: 4px"
+            name="official-line"
+            :scale="0.9"
+            style="position: relative; bottom: 2px"
           />
         </h3>
         <div
