@@ -18,6 +18,12 @@
   </div>
 </template>
 
+<script lang="ts">
+definePageMeta({
+  layout: false,
+})
+</script>
+
 <style scoped lang="sass">
 .fr-header
   border-bottom: var(--grey-925-125) 1px solid

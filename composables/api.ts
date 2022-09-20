@@ -18,8 +18,6 @@ if (process.env.NODE_ENV !== "production") {
   }
 }
 
-base_url = "http://localhost:8000"
-
 const makeLoadingKey = (path: string) => {
   // camel-case the path : auth/login -> authLogin
   if (path.endsWith("/")) {
