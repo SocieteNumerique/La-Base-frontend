@@ -313,7 +313,7 @@
   resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.5.2.tgz#32f0a62d32c7a20355af5f61f442709814ed2531"
   integrity sha512-VK2gR/eUlyNdP7fkRGN9xxi1E+5OjQT1oFNazCTItnPpyISXGAn8/HA+irhcpcWAck7YK5su0GL2opiKLAXzzQ==
 
-"@gouvminint/vue-dsfr@^1.1.0":
+"@gouvminint/vue-dsfr@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@gouvminint/vue-dsfr/-/vue-dsfr-1.5.0.tgz#7eae293df3342b7ec271f15133d739d95abbabeb"
   integrity sha512-0I3uUqDL0NUrtj2nHV+Clv+p+zzYyjHbmF9Fsn8qbh0CTqRbZKaLYfcCdaMebsyyz3hCKO/BcOBBiYIlsadIKA==
