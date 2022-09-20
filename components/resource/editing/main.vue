@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { useResourceStore } from "~/stores/resourceStore"
-import { DsfrButton } from "@laruiss/vue-dsfr"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const resourceStore = useResourceStore()
 </script>
@@ -56,6 +56,7 @@ const resourceStore = useResourceStore()
   flex-direction: column;
   height: 100%;
 }
+
 .navigation-buttons-holder {
   display: flex;
   justify-content: space-between;

@@ -1,10 +1,8 @@
-import { defineNuxtPlugin } from "#app"
-import VueDsfr from "@laruiss/vue-dsfr"
-
+import VueDsfr from "@gouvminint/vue-dsfr"
 import { icons } from "../icons"
 
 export default defineNuxtPlugin((nuxtApp) => {
   // @ts-ignore
-  nuxtApp.vueApp.use(VueDsfr, { icons })
+  nuxtApp.vueApp.use(VueDsfr, { icons: icons })
   return
 })

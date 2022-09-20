@@ -37,7 +37,7 @@
               transmettre vos idées et vos remarques quant à l’évolution de La
               Base.
             </p>
-            <a href="mailto:labase@anct.gouv.fr">
+            <a href="mailto:labase@anct.gouv.fr" class="no-underline">
               <DsfrButton class="fr-btn--sm" label="Nous contacter" />
             </a>
           </div>
@@ -119,7 +119,7 @@
         @input="doSearch"
       />
       <button class="fr-btn">
-        <VIcon name="ri-search-line" />
+        <VIcon class="fr-ml-1w" name="ri-search-line" />
       </button>
     </div>
 
@@ -238,6 +238,7 @@
 
 <script setup lang="ts">
 import { useApiPost } from "~/composables/api"
+import { debounce } from "../composables/debounce"
 import {
   BasesSearchResult,
   ResourcesSearchResult,
@@ -246,7 +247,7 @@ import {
   TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
+import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
@@ -293,6 +294,7 @@ const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
 
 const doSearch = debounce(async (scrollToTop = false) => {
+  console.log("### do search")
   const { data, error } = await useApiPost<
     BasesSearchResult | ResourcesSearchResult
   >(
@@ -305,6 +307,7 @@ const doSearch = debounce(async (scrollToTop = false) => {
     },
     { page: currentPage.value + 1 }
   )
+  console.log("### done search", data.value, error.value)
   if (!error.value) {
     results.value = data.value.results.objects
     nResults.value = data.value.count

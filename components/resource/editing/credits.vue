@@ -135,7 +135,7 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
 import { ExternalProducer, Tag } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
-import { DsfrButton } from "@laruiss/vue-dsfr"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const resourceStore = useResourceStore()

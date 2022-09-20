@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import { DsfrButton, DsfrInput } from "@laruiss/vue-dsfr"
+import { DsfrButton, DsfrInput } from "@gouvminint/vue-dsfr"
 import { onMounted, PropType } from "vue"
 import { Collection } from "~/composables/types"
 import { useCollectionStore } from "~/stores/collectionStore"

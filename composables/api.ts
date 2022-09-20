@@ -1,4 +1,3 @@
-import { NuxtApp } from "nuxt3/dist/app/nuxt"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { Alert } from "~/composables/types"
 import { useAlertStore } from "~/stores/alertStore"
@@ -19,6 +18,8 @@ if (process.env.NODE_ENV !== "production") {
   }
 }
 
+base_url = "http://localhost:8000"
+
 const makeLoadingKey = (path: string) => {
   // camel-case the path : auth/login -> authLogin
   if (path.endsWith("/")) {
@@ -36,11 +37,11 @@ const makeLoadingKey = (path: string) => {
   return words.join("")
 }
 
-const getCsrfCookie = (ctx: NuxtApp) => {
-  let cookie = ""
-  if (ctx?.ssrContext?.req.headers.cookie) {
-    cookie = ctx?.ssrContext.req.headers.cookie
-  } else if (process.client) {
+const getCsrfCookie = () => {
+  let cookie: string
+  if (process.server) {
+    cookie = useRequestHeaders(["cookie"])["cookie"]
+  } else {
     cookie = document.cookie
   }
   if (!cookie) {
@@ -53,10 +54,10 @@ const getCsrfCookie = (ctx: NuxtApp) => {
   return csrfRow.split("=")[1]
 }
 
-const getHeaders = (ctx: NuxtApp, includeCsrf = false): MyHeaders => {
+const getHeaders = (includeCsrf = false): MyHeaders => {
   const headers: MyHeaders = useRequestHeaders(["cookie"])
   if (includeCsrf) {
-    const csrfToken = getCsrfCookie(ctx)
+    const csrfToken = getCsrfCookie()
     if (csrfToken) {
       headers["X-CSRFTOKEN"] = csrfToken
     }
@@ -80,14 +81,17 @@ export async function useApiRequest<Type>(
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key)
-  const { data, error } = await useAsyncData<Type>(key, (ctx) =>
-    $fetch(BASE_URL + "/api/" + path, {
-      method: method,
-      body: payload,
-      credentials: "include",
-      headers: getHeaders(ctx!, method != "GET"),
-      params: params,
-    })
+  const { data, error } = await useAsyncData<Type>(
+    key,
+    () =>
+      $fetch(BASE_URL + "/api/" + path, {
+        method: method,
+        body: payload,
+        credentials: "include",
+        headers: getHeaders(method != "GET"),
+        params: params,
+      }),
+    { initialCache: false }
   )
 
   // handle alerts and loading status

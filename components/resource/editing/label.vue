@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { DsfrButton } from "@laruiss/vue-dsfr"
 import { useResourceStore } from "~/stores/resourceStore"
 
 const resourceStore = useResourceStore()

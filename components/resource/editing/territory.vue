@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
+import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { useResourceStore } from "~/stores/resourceStore"
 import { onMounted } from "vue"
 

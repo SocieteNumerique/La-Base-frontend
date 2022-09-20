@@ -151,10 +151,10 @@ import { useUserStore } from "~/stores/userStore"
 import { useTagStore } from "~/stores/tagStore"
 import { Tag, TagCategory } from "~/composables/types"
 import { computed, onMounted, reactive, ref } from "vue"
-import { useVuelidate } from "@vuelidate/core"
+import useVuelidate from "@vuelidate/core"
 import { email, minLength, required, sameAs } from "@vuelidate/validators"
 import { validationMessageFromErrors } from "~/composables/validation"
-import { DsfrButton, DsfrHighlight, DsfrSideMenu } from "@laruiss/vue-dsfr"
+import { DsfrButton, DsfrHighlight, DsfrSideMenu } from "@gouvminint/vue-dsfr"
 import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
 import { useRouter } from "#app"
@@ -246,7 +246,7 @@ const onTagsChange = (categoryId: number, tags: Tag[]) => {
 
 const updateUser = async () => {
   console.log("updateUser", selectedTags.value)
-  const { error } = await userStore.update({
+  await userStore.update({
     email: userDataState.email,
     firstName: userDataState.firstName,
     lastName: userDataState.lastName,

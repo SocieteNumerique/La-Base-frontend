@@ -64,7 +64,7 @@
       <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
       <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
       <!-- TODO should show the report modal on click-->
-      <a :href="mailToHref" style="background: none">
+      <a :href="mailToHref" class="no-underline">
         <RoundButton icon="ri-alert-line" label="Signaler" />
       </a>
       <ReportSimpleModal

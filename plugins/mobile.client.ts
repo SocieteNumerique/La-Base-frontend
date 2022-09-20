@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from "#app"
 import { useRouter } from "vue-router"
 
 // https://stackoverflow.com/a/11381730/3218806
