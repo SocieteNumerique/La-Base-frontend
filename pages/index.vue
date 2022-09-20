@@ -118,6 +118,9 @@
         placeholder="Rechercher sur toute la plateforme"
         @input="doSearch"
       />
+      <button class="fr-btn">
+        <VIcon name="ri-search-line" />
+      </button>
     </div>
 
     <hr />
