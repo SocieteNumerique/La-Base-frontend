@@ -1,16 +1,9 @@
-import { defineNuxtConfig } from "nuxt3"
-
+// https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  css: ["~/assets/dsfr-imports.css", "@/css/moine.sass"],
-
-  buildModules: ["@pinia/nuxt"],
+  css: ["@gouvminint/vue-dsfr/styles", "@/css/moine.sass"],
+  ignore: ["**/*.test.*", "**/*.spec.*", "**/*.cy.*"],
+  modules: ["@pinia/nuxt"],
   build: {
-    transpile: ["@laruiss/vue-dsfr"],
-  },
-  vue: {
-    config: {
-      productionTip: false,
-      devtools: true,
-    },
+    transpile: ["oh-vue-icons"],
   },
 })

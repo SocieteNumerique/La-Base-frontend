@@ -44,7 +44,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useBaseStore } from "~/stores/baseStore"
-import { DsfrInput } from "@laruiss/vue-dsfr"
+import { DsfrInput } from "@gouvminint/vue-dsfr"
 
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()

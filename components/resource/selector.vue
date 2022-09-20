@@ -34,12 +34,11 @@
 <script lang="ts" setup>
 import { Resource } from "~/composables/types"
 import { computed, PropType } from "vue"
-import { DsfrCheckboxSet } from "@laruiss/vue-dsfr"
+import { DsfrCheckboxSet } from "@gouvminint/vue-dsfr"
 import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
 
 const baseStore = useBaseStore()
-const resourceStore = useResourceStore()
 
 defineEmits(["update:modelValue"])
 const props = defineProps({

@@ -8,8 +8,7 @@
             Fiche créée par
             <NuxtLink
               :to="'/base/' + resource?.rootBase"
-              class="fr-text-label--blue-france"
-              style="background: none"
+              class="fr-text-label--blue-france no-underline"
             >
               {{ resource?.rootBaseTitle }}
             </NuxtLink>
@@ -60,7 +59,7 @@
               <RoundButton icon="ri-share-line" label="Partager" />
             </ShareButton>
             <!-- TODO should show the report modal on click-->
-            <a :href="mailToHref" style="background: none">
+            <a :href="mailToHref" class="no-underline">
               <RoundButton icon="ri-alert-line" label="Signaler" />
             </a>
 
@@ -87,7 +86,7 @@
             <NuxtLink
               v-if="resource?.canWrite"
               :to="editionLink"
-              style="background: none"
+              class="no-underline"
             >
               <DsfrButton label="Éditer" class="fr-btn--sm" secondary />
             </NuxtLink>
@@ -186,12 +185,11 @@ import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
 import { useTagStore } from "~/stores/tagStore"
 import { getResourceIfNotExists } from "~/composables/resource"
-import { DsfrButton } from "@laruiss/vue-dsfr"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
 })
-const tagStore = useTagStore()
 const resourceStore = useResourceStore()
 const route = useRoute()
 
@@ -290,9 +288,11 @@ onBeforeMount(async () => {
 .stat {
   margin-left: -12px;
 }
+
 .stat + .stat {
   margin-left: 12px;
 }
+
 .stat * {
   margin-left: 12px;
 }

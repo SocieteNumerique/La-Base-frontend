@@ -37,7 +37,7 @@
               transmettre vos idées et vos remarques quant à l’évolution de La
               Base.
             </p>
-            <a href="mailto:labase@anct.gouv.fr">
+            <a href="mailto:labase@anct.gouv.fr" class="no-underline">
               <DsfrButton class="fr-btn--sm" label="Nous contacter" />
             </a>
           </div>
@@ -118,9 +118,6 @@
         placeholder="Rechercher sur toute la plateforme"
         @input="doSearch"
       />
-      <button class="fr-btn">
-        <VIcon name="ri-search-line" />
-      </button>
     </div>
 
     <hr />
@@ -238,6 +235,7 @@
 
 <script setup lang="ts">
 import { useApiPost } from "~/composables/api"
+import { debounce } from "../composables/debounce"
 import {
   BasesSearchResult,
   ResourcesSearchResult,
@@ -246,7 +244,7 @@ import {
   TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
+import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
