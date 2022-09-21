@@ -1,8 +1,9 @@
 <template>
   <span class="base-label">
-    <ImageProfileRound
+    <ImageResized
       :resizable-image="base.profileImage"
-      size="small"
+      width="small"
+      circle
       class="fr-mr-2v"
     />
     <slot>

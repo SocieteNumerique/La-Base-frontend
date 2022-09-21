@@ -62,7 +62,7 @@
           :editable="true"
         />
       </div>
-      <div v-if="!base.collections?.length">
+      <div v-if="!base?.collections?.length">
         Vous n’avez pas encore créé de collection de fiches ressources
       </div>
     </template>

@@ -3,10 +3,11 @@
     <template #header>
       <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
         <div class="fr-container">
-          <ImageProfileRound
+          <ImageResized
             :resizable-image="base?.profileImage"
             class="fr-mb-3v"
-            size="large"
+            width="large"
+            circle
           />
           <div
             v-if="base?.canWrite"

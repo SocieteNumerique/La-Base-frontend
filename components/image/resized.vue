@@ -1,5 +1,5 @@
 <template>
-  <div :style="style" class="profile-image" />
+  <div :style="style" class="resized-image" />
 </template>
 
 <script lang="ts" setup>
@@ -8,8 +8,13 @@ import { ResizableImage } from "~/composables/types"
 
 const props = defineProps({
   resizableImage: { type: Object as PropType<ResizableImage>, default: null },
-  size: {
-    type: String as PropType<"small" | "medium" | "large">,
+  circle: {
+    type: Boolean,
+    default: false,
+  },
+  ratio: { type: Number, default: 1 },
+  width: {
+    type: [Number, String] as PropType<"small" | "medium" | "large" | number>,
     default: "medium",
   },
 })
@@ -25,42 +30,48 @@ const url = computed<string>(() => {
   return ""
 })
 
+const widthPx = computed<number>(() =>
+  typeof props.width === "number" ? props.width : diameters[props.width]
+)
+const heightPx = computed<number>(() => widthPx.value / props.ratio)
+
 const style = computed(() => {
   const size =
     props.resizableImage?.scaleX && props.resizableImage?.scaleY
-      ? `${100 * (props.resizableImage.scaleX || 1)}% ${
-          100 * (props.resizableImage.scaleY || 1)
-        }%`
+      ? `${widthPx.value * (props.resizableImage.scaleX || 1)}px ${
+          heightPx.value * (props.resizableImage.scaleY || 1)
+        }px`
       : "cover"
 
   const positionX = props.resizableImage?.relativePositionX
-    ? `-${props.resizableImage.relativePositionX * diameters[props.size]}px`
+    ? `-${props.resizableImage.relativePositionX * widthPx.value}px`
     : "left"
   const positionY = props.resizableImage?.relativePositionY
-    ? `-${props.resizableImage.relativePositionY * diameters[props.size]}px`
+    ? `-${props.resizableImage.relativePositionY * heightPx.value}px`
     : "top"
   return {
     "background-image": url.value
       ? `url('${url.value}')`
       : "var(--background-default-grey)",
-    "--diameter": `${diameters[props.size]}px`,
+    width: `${widthPx.value}px`,
+    height: `${heightPx.value}px`,
+
     "background-position-x": positionX,
     "background-position-y": positionY,
     "background-size": size,
+    "border-radius": props.circle ? "50%" : undefined,
   }
 })
 </script>
 
 <style lang="sass" scoped>
 /* Frame 1017 */
-.profile-image
+.resized-image
   box-sizing: border-box
-  width: var(--diameter)
-  height: var(--diameter)
+  flex-shrink: 0
 
   /* light/background/contrast-info */
   border: 0.847059px solid #E8EDFF
-  border-radius: 847.059px
   background-position: top
   background-size: cover
 </style>

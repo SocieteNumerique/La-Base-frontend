@@ -4,7 +4,7 @@
       ref="inputContainer"
       class="fr-form-group"
       :error="error"
-      :hint="hint"
+      :hint="computedHint"
       :label="label"
       :accept="requireImage ? 'image/*' : '*'"
       @change="onChange"
@@ -23,10 +23,11 @@ const props = defineProps({
   label: { type: String, default: "Ajouter un fichier" },
   requireImage: { type: Boolean, default: false },
   maxSize: { type: String, default: "15 Mo" },
+  hint: { type: String, default: "" },
 })
 
 const file = useModel<FullFile>("modelValue", { type: "object" })
-const hint = `Taille maximale : ${props.maxSize}.`
+const computedHint = props.hint || `Taille maximale : ${props.maxSize}.`
 
 const inputContainer = ref()
 const fileInput = ref<HTMLInputElement>()

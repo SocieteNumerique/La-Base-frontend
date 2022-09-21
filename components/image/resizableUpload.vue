@@ -5,9 +5,14 @@
       require-image
       :max-size="maxSize"
       :label="label"
+      :hint="hint"
       @update:model-value="file = { image: $event }"
     />
-    <ImageProfileRound :resizable-image="file" size="medium" />
+    <ImageResized
+      :resizable-image="file"
+      width="medium"
+      :ratio="desiredRatio"
+    />
   </div>
   <div class="fr-btns-group fr-btns-group--inline">
     <DsfrButton
@@ -23,7 +28,7 @@
       secondary
       @click="file = null"
     >
-      Retirer l'image de profil
+      Retirer l'image
     </DsfrButton>
   </div>
   <div v-if="showResizeModal">
@@ -73,6 +78,8 @@ const props = defineProps({
     default: false,
   },
   desiredRatio: { type: Number, default: null },
+  hint: { type: String, default: "" },
+  imageQualifier: { type: String, default: "" },
 })
 const emits = defineEmits(["update:modelValue"])
 
@@ -131,6 +138,7 @@ function defaultSize({
 .cropper
   max-height: 60vh
   margin: 12px auto
+
 .cropper-background
   background: white
 </style>

@@ -48,6 +48,13 @@
             </div>
           </template>
         </div>
+        <ImageResized
+          v-if="resource?.profileImage"
+          class="fr-mt-2w"
+          :resizable-image="resource?.profileImage"
+          :width="352"
+          :ratio="1.4"
+        />
         <!-- <div class="separator fr-my-1w" />
         <div v-if="resource.stats">stats</div>-->
       </div>

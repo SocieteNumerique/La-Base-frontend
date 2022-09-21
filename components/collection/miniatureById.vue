@@ -1,19 +1,28 @@
 <template>
   <div class="miniature-container fr-text--xs">
     <CollectionEdit
-      v-if="editable & isEditModalOpen"
+      v-if="editable && openedTab"
       :collection="savedCollection"
-      @exit="isEditModalOpen = false"
+      :tab="openedTab"
+      @exit="openedTab = null"
     />
     <div class="fr-p-2w has-children-space-between">
-      <button
-        v-if="editable"
-        class="fr-btn--tertiary-no-outline"
-        aria-label="éditer"
-        @click="isEditModalOpen = true"
-      >
-        <VIcon :scale="0.85" name="ri-edit-line" />
-      </button>
+      <div v-if="editable" class="fr-my-auto">
+        <button
+          class="fr-btn--tertiary-no-outline fr-mr-3v"
+          aria-label="éditer"
+          @click="openedTab = 'general'"
+        >
+          <VIcon :scale="0.85" name="ri-edit-line" />
+        </button>
+        <button
+          class="fr-btn--tertiary-no-outline"
+          aria-label="gérer les fiches"
+          @click="openedTab = 'resources'"
+        >
+          <VIcon :scale="0.85" name="ri-file-line" />
+        </button>
+      </div>
       <div v-else />
       <div class="is-flex">
         <ShareButton :link="link" class="fr-mr-3w" />
@@ -30,7 +39,14 @@
       :to="{ query: { ...route.query, collection: savedCollection.id } }"
       class="preview bordered fr-p-4w no-underline"
     >
-      <!-- insert snapshot here -->
+      <ImageResized
+        v-if="savedCollection?.profileImage"
+        class="fr-mb-2w"
+        :resizable-image="savedCollection?.profileImage"
+        :width="320"
+        :ratio="1.7"
+      />
+
       <div class="text">
         <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
         <p class="fr-m-0 fr-text--xs">
@@ -84,9 +100,9 @@ const pinnedInBases = computed<PinStatus[]>({
   },
 })
 
-const isEditModalOpen = ref<boolean>(false)
+const openedTab = ref<"general" | "resources" | null>(null)
 
-watchOnce(isEditModalOpen, () => {
+watchOnce(openedTab, () => {
   const baseStore = useBaseStore()
   const baseId = savedCollection.value.base
   if (!baseStore.basesById[baseId] || baseStore.basesById[baseId].isShort) {
@@ -102,6 +118,7 @@ watchOnce(isEditModalOpen, () => {
   display: flex
   flex-direction: column
   justify-content: center
+
   &:hover
     background: var(--background-alt-grey)
 
