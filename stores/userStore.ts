@@ -33,12 +33,21 @@ export const useUserStore = defineStore("user", {
         payload,
         {},
         "Le mot de passe a bien été modifié",
-        {
-          title: "Erreur lors de la modification du mot de passe",
-          text: "_responseBody",
-        }
+        false
       )
-      if (!error.value) {
+      if (error.value) {
+        let text = ""
+        if (Object.keys(error.value?.data).indexOf("oldPassword")) {
+          text = "L'ancien mot de passe n'est pas le bon"
+        } else {
+          text = JSON.stringify(error.value.data)
+        }
+        useAlertStore().alert(
+          "Erreur lors de la modification du mot de passe",
+          text,
+          "danger"
+        )
+      } else {
         this.resetUserState()
         useAlertStore().alert(
           "Vous devez maintenant vous reconnecter",
