@@ -6,7 +6,9 @@
           <th>
             <span>{{ label }}</span>
           </th>
-          <td v-if="!specific"><DsfrTags :tags="tags" /></td>
+          <td v-if="!specific">
+            <DsfrTags :tags="tags" />
+          </td>
           <td v-else-if="id === 'license'">
             <TagDisplayRowLicense
               :tags="tags"
@@ -22,7 +24,7 @@
 <script setup lang="ts">
 import { computed, PropType } from "vue"
 import { Resource, TagCategory } from "~/composables/types"
-import { DsfrTags } from "@laruiss/vue-dsfr"
+import { DsfrTags } from "@gouvminint/vue-dsfr"
 import { useTagStore } from "~/stores/tagStore"
 
 const tagStore = useTagStore()

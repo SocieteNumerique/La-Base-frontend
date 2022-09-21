@@ -28,13 +28,25 @@
       >
         <h3 class="fr-h6 fr-mb-0">{{ resource.title }}</h3>
         <div class="separator fr-my-1w" />
-        <div>
-          Fiche publiée par
-          <div>{{ resource?.rootBaseTitle }}</div>
-        </div>
-        <div v-if="resource.canWrite && resource?.creator">
-          Fiche créée par {{ resource.creator.firstName }}
-          {{ resource.creator.lastName }}
+        <div class="credits-grid">
+          <div>Publiée dans</div>
+          <div>
+            <nuxt-link :to="`/base/${resource?.rootBase}`" class="blue-link">
+              {{ resource?.rootBaseTitle }}
+            </nuxt-link>
+          </div>
+          <template
+            v-if="
+              resource?.canWrite &&
+              (resource?.creator?.firstName || resource?.creator?.lastName)
+            "
+          >
+            <div>Créée par</div>
+            <div>
+              {{ resource.creator.firstName }}
+              {{ resource.creator.lastName }}
+            </div>
+          </template>
         </div>
         <ImageResized
           v-if="resource?.profileImage"
@@ -126,4 +138,13 @@ const link = computed(
   border-top: 1px solid var(--grey-975-75-active)
   border-bottom: 1px solid var(--grey-975-75-active)
   color: var(--text-action-high-grey)
+
+.credits-grid
+  display: grid
+  grid-template-columns: 4.6rem auto
+  grid-column-gap: 0.75rem
+
+  a.blue-link
+    color: var(--text-action-high-blue-france)
+    background: none
 </style>

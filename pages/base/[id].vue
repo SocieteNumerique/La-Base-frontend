@@ -16,7 +16,15 @@
             <div>Statut : {{ stateLabel[base?.state] }}</div>
             <BaseSettings />
           </div>
-          <h1 style="max-width: 800px">{{ base?.title }}</h1>
+          <h1 style="max-width: 800px">
+            {{ base?.title }}
+            <VIcon
+              v-if="base.isCertified"
+              name="official-line"
+              :scale="1.8"
+              style="position: relative; bottom: 14px"
+            />
+          </h1>
           <div class="is-flex base-meta">
             <DsfrTags
               v-if="participantTypes.length"
@@ -65,7 +73,7 @@
       <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
       <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
       <!-- TODO should show the report modal on click-->
-      <a :href="mailToHref" style="background: none">
+      <a :href="mailToHref" class="no-underline">
         <RoundButton icon="ri-alert-line" label="Signaler" />
       </a>
       <ReportSimpleModal

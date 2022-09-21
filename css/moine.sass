@@ -113,6 +113,7 @@
 a
   &.no-underline
     background: none !important
+    text-decoration: none !important
 
   &.no-append-ico::after
     content: none
@@ -159,6 +160,11 @@ a
       width: 100%
       height: var(--item-height)
       text-align: left
+
+.selector
+  .selector__menu
+    .item:last-child
+      border-bottom: none !important
 
 .tag-selector + .tag-selector
   margin-top: 24px

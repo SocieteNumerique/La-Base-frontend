@@ -23,8 +23,9 @@
           <div>
             <NuxtLink
               to="/a-propos"
-              class="no-underline no-append-ico fr-link fr-fi-arrow-right-line fr-link--icon-left fr-mt-2w"
+              class="no-underline no-append-ico fr-link fr-mt-2w"
             >
+              <VIcon name="ri-arrow-right-line" class="fr-mr-1w" scale="0.8 " />
               En savoir plus
             </NuxtLink>
           </div>
@@ -37,7 +38,7 @@
               transmettre vos idées et vos remarques quant à l’évolution de La
               Base.
             </p>
-            <a href="mailto:labase@anct.gouv.fr">
+            <a href="mailto:labase@anct.gouv.fr" class="no-underline">
               <DsfrButton class="fr-btn--sm" label="Nous contacter" />
             </a>
           </div>
@@ -238,6 +239,7 @@
 
 <script setup lang="ts">
 import { useApiPost } from "~/composables/api"
+import { debounce } from "../composables/debounce"
 import {
   BasesSearchResult,
   ResourcesSearchResult,
@@ -246,7 +248,7 @@ import {
   TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
-import { DsfrRadioButtonSet } from "@laruiss/vue-dsfr"
+import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted } from "vue"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"

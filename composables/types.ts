@@ -8,6 +8,8 @@ export type User = {
   firstName: string
   lastName: string
   password?: string
+  prefillEmail?: string
+  showSignupModal?: boolean
   tags?: number[]
 }
 

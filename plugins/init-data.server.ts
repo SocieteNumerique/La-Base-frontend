@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from "#app"
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useMainStore } from "~/stores/mainStore"
