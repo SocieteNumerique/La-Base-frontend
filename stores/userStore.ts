@@ -38,7 +38,7 @@ export const useUserStore = defineStore("user", {
       if (error.value) {
         let text = ""
         if (Object.keys(error.value?.data).indexOf("oldPassword") !== -1) {
-          text = "L'ancien mot de passe ne corespond pas à celui du compte"
+          text = "L'ancien mot de passe ne correspond pas à celui du compte"
         } else {
           text = JSON.stringify(error.value.data)
         }

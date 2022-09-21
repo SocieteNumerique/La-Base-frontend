@@ -19,7 +19,7 @@
           <h1 style="max-width: 800px">
             {{ base?.title }}
             <VIcon
-              v-if="base.isCertified"
+              v-if="base?.isCertified"
               name="official-line"
               :scale="1.8"
               style="position: relative; bottom: 14px"
