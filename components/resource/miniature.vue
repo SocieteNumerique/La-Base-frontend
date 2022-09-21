@@ -59,13 +59,14 @@
           :ratio="1.4"
         />
         <div class="separator fr-my-1w" />
-        <div v-if="resource.stats">
+        <div
+          v-if="resource.stats"
+          title="nombre de vues depuis le 9 septembre 2022"
+        >
           <p class="fr-m-0">
-            <span
-              class="fr-text--xl fr-text--bold"
-              title="depuis le 9 septembre"
-              >{{ resource.stats.visitCount }}</span
-            >
+            <span class="fr-text--xl fr-text--bold">
+              {{ resource.stats.visitCount }}
+            </span>
             vues
           </p>
         </div>

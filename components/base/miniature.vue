@@ -22,11 +22,12 @@
           />
         </h3>
         <div class="separator fr-my-1w" />
-        <div v-if="base.visitCount != null">
+        <div
+          v-if="base.visitCount != null"
+          title="nombre de vues depuis le 9 septembre 2022"
+        >
           <p class="fr-m-0">
-            <span
-              class="fr-text--xl fr-text--bold"
-              title="depuis le 9 septembre"
+            <span class="fr-text--xl fr-text--bold"
               >{{ base.visitCount }}
             </span>
             {{ pluralize(["vue"], base.visitCount) }}
