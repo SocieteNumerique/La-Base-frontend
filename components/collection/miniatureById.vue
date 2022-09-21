@@ -38,6 +38,7 @@
     <NuxtLink
       :to="{ query: { ...route.query, collection: savedCollection.id } }"
       class="preview bordered fr-p-4w no-underline"
+      style="border-bottom: none"
     >
       <ImageResized
         v-if="savedCollection?.profileImage"
@@ -114,7 +115,7 @@ watchOnce(openedTab, () => {
 <style lang="sass" scoped>
 .preview
   background: var(--background-alt-grey)
-  height: 320px
+  min-height: 320px
   display: flex
   flex-direction: column
   justify-content: center
