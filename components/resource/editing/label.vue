@@ -4,9 +4,10 @@
       <nuxt-link
         to="/label"
         target="_blank"
-        class="no-underline no-append-ico fr-link fr-fi-arrow-right-line fr-link--icon-right"
+        class="no-underline no-append-ico fr-link"
       >
         En savoir plus
+        <VIcon name="ri-arrow-right-line" class="fr-ml-1w" scale="0.8 " />
       </nuxt-link>
     </div>
     <h2 class="fr-mt-2w fr-h6">Statut</h2>
