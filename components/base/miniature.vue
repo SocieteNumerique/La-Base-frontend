@@ -21,6 +21,17 @@
             style="position: relative; bottom: 2px"
           />
         </h3>
+        <div class="separator fr-my-1w" />
+        <div v-if="base.visitCount != null">
+          <p class="fr-m-0">
+            <span
+              class="fr-text--xl fr-text--bold"
+              title="depuis le 9 septembre"
+              >{{ base.visitCount }}
+            </span>
+            {{ pluralize(["vue"], base.visitCount) }}
+          </p>
+        </div>
         <div
           v-if="participantTypes.length || territory.length"
           class="separator fr-my-1w"
@@ -46,6 +57,7 @@
 import { computed, PropType } from "vue"
 import { Base } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
+import { pluralize } from "~/composables/strUtils"
 
 const tagStore = useTagStore()
 

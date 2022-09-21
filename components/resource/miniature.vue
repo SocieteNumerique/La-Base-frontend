@@ -31,12 +31,12 @@
         <div class="credits-grid">
           <div>Publiée dans</div>
           <div>
-            <nuxt-link
+            <NuxtLink
               :to="`/base/${resource?.rootBase}`"
               class="blue-link no-underline"
             >
               {{ resource?.rootBaseTitle }}
-            </nuxt-link>
+            </NuxtLink>
           </div>
           <template
             v-if="
@@ -58,8 +58,17 @@
           :width="352"
           :ratio="1.4"
         />
-        <!-- <div class="separator fr-my-1w" />
-        <div v-if="resource.stats">stats</div>-->
+        <div class="separator fr-my-1w" />
+        <div v-if="resource.stats">
+          <p class="fr-m-0">
+            <span
+              class="fr-text--xl fr-text--bold"
+              title="depuis le 9 septembre"
+              >{{ resource.stats.visitCount }}</span
+            >
+            vues
+          </p>
+        </div>
       </div>
       <div class="fr-p-2w">
         <div>

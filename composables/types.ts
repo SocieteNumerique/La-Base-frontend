@@ -60,7 +60,7 @@ export type Resource = {
   rootBase?: number
   rootBaseTitle?: string
   state: string
-  stats?: { pinned: number; views: number }
+  stats?: { pinned: number; visitCount: number }
   supportTags?: number[]
   tags?: number[]
   title: string
@@ -172,6 +172,7 @@ export type Base = {
   tags?: number[]
   territoryTags?: number[]
   title: string
+  visitCount?: number
 }
 export type ResourcesWithPagination = {
   count: number

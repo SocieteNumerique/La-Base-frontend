@@ -47,14 +47,6 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
     ),
     collections: newCollections.map((collection) => collection.id),
   }
-  console.log(
-    "### done, baseStore",
-    baseStore.basesById,
-    "collectionStore",
-    useCollectionStore().collectionsById,
-    "resourceStore",
-    resourceStore.resourcesById
-  )
 }
 
 export const useBaseStore = defineStore("base", {

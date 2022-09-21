@@ -48,7 +48,7 @@
         :ratio="1.7"
       />
 
-      <div class="text">
+      <div class="text" style="overflow-x: hidden">
         <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
         <p class="fr-m-0 fr-text--xs">
           {{ nbResources }}
