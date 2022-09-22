@@ -1,7 +1,7 @@
 <template>
   <div class="miniature-container fr-text--xs">
     <div class="fr-grid-row fr-grid-row--right fr-p-2w toolbar">
-      <ShareButton :link="link" class="fr-mr-3w" />
+      <ShareButton :link="link" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div v-if="base.profileImage" class="banner fr-p-1w">
@@ -16,8 +16,10 @@
           {{ base.title }}
           <VIcon
             v-if="base.isCertified"
-            name="official-line"
-            :scale="0.9"
+            title="Cette base est certifiée"
+            aria-label="Cette base est certifiée"
+            name="official-line-colored"
+            :scale="0.8"
             style="position: relative; bottom: 2px"
           />
         </h3>
@@ -27,7 +29,7 @@
           title="nombre de vues depuis le 9 septembre 2022"
         >
           <p class="fr-m-0">
-            <span class="fr-text--xl fr-text--bold"
+            <span class="fr-text--lg fr-text--bold"
               >{{ base.visitCount }}
             </span>
             {{ pluralize(["vue"], base.visitCount) }}
@@ -42,12 +44,9 @@
           :tags="participantTypes"
           class="fr-mr-3w participant-tags"
         />
-        <div v-if="territory.length" class="territory">
-          <VIcon
-            class="fr-mr-2v fr-text-title--blue-france"
-            name="ri-map-pin-line"
-          />
-          {{ territory }}
+        <div v-if="territory.length" class="is-flex">
+          <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
+          <div>{{ territory }}</div>
         </div>
       </div>
     </NuxtLink>

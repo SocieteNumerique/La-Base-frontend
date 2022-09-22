@@ -180,10 +180,7 @@ export const useResourceStore = defineStore("resource", {
         "La ressource a bien été supprimée",
         true
       )
-      if (!error.value) {
-        delete this.resourcesById[id]
-        return true
-      }
+      return { error, id }
     },
     markDirty(resourceId: number | null = null) {
       if (resourceId == null && this.currentId == null) return

@@ -8,7 +8,7 @@
         </div>
       </div>
 
-      <div class="fr-mb-11v">
+      <div class="fr-mb-15w">
         <div class="fr-grid-row">
           <div class="fr-col-3 fr-pr-3w">
             <DsfrSideMenu heading-title="" :menu-items="leftMenuItems" />

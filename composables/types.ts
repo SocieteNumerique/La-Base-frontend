@@ -165,7 +165,7 @@ export type Base = {
   isCertified?: boolean
   isShort?: boolean
   owner: User | number
-  participantTypeTags?: number[]
+  asparticipantTypeTags?: number[]
   resourceChoices?: Resource[]
   resourcesInPage?: number[]
   state?: string

@@ -1,6 +1,6 @@
 <template>
   <button class="fr-btn fr-btn--secondary btn--no-border fr-btn--icon-left">
-    <span class="fr-mr-1w">
+    <span class="fr-mr-3v">
       <VIcon :scale="0.9" :name="props.icon" />
     </span>
     {{ props.label }}

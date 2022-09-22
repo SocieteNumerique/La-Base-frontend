@@ -171,9 +171,15 @@ const save = () => {
   resourceStore.save()
 }
 const deleteResource = async () => {
-  const success = await resourceStore.delete()
   ongoingDeletion.value = false
-  if (success) useRouter().push("/")
+  const baseId = resourceStore.current.rootBase
+  const { error, id } = await resourceStore.delete()
+  if (!error.value) {
+    setTimeout(() => {
+      delete resourceStore.resourcesById[id]
+    }, 200)
+    useRouter().push(`/base/${baseId}`)
+  }
 }
 const doShowPreview = () => {
   showPreview.value = true
@@ -241,14 +247,6 @@ const actions = [
 </script>
 
 <style lang="sass">
-.full-width-modal
-  .fr-container--fluid
-    max-width: 100% !important
-  .fr-col-12
-    width: 90% !important
-    flex: 0 0 90% !important
-    max-width: 90% !important
-
 .full-height
   height: 100%
 </style>

@@ -2,16 +2,23 @@
   <div class="miniature-container fr-text--xs">
     <div class="fr-grid-row fr-p-2w toolbar">
       <nuxt-link
-        v-if="resource.canWrite"
+        v-if="resource?.canWrite"
         :to="`/ressource/${resource.id}/edition`"
         class="no-underline"
       >
-        <button class="fr-btn--tertiary-no-outline">
+        <button
+          class="fr-btn--tertiary-no-outline"
+          title="Éditer la fiche"
+          aria-label="Éditer la fiche"
+        >
           <VIcon name="ri-edit-line" />
         </button>
       </nuxt-link>
       <div class="is-flex fr-ml-auto">
-        <ShareButton :link="link" class="fr-mr-3w" />
+        <ShareButton
+          :link="link"
+          :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
+        />
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -21,12 +28,12 @@
         />
       </div>
     </div>
-    <NuxtLink :to="`/ressource/${resource.id}`" class="no-underline">
+    <NuxtLink :to="`/ressource/${resource?.id}`" class="no-underline">
       <div
-        :class="resource.isLabeled ? 'green-bg' : 'grey-bg'"
+        :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
         class="bordered fr-p-2w"
       >
-        <h3 class="fr-h6 fr-mb-0">{{ resource.title }}</h3>
+        <h3 class="fr-h6 fr-mb-0">{{ resource?.title }}</h3>
         <div class="separator fr-my-1w" />
         <div class="credits-grid">
           <div>Publiée dans</div>
@@ -46,8 +53,8 @@
           >
             <div>Créée par</div>
             <div>
-              {{ resource.creator.firstName }}
-              {{ resource.creator.lastName }}
+              {{ resource?.creator?.firstName }}
+              {{ resource?.creator?.lastName }}
             </div>
           </template>
         </div>
@@ -58,13 +65,14 @@
           :width="352"
           :ratio="1.4"
         />
-        <div class="separator fr-my-1w" />
+        <div v-if="!resource?.profileImage" class="separator fr-my-1w" />
         <div
           v-if="resource.stats"
           title="nombre de vues depuis le 9 septembre 2022"
+          :class="resource?.profileImage ? 'fr-mt-1w' : ''"
         >
           <p class="fr-m-0">
-            <span class="fr-text--xl fr-text--bold">
+            <span class="fr-text--lg fr-text--bold">
               {{ resource.stats.visitCount }}
             </span>
             vues
@@ -73,13 +81,23 @@
       </div>
       <div class="fr-p-2w">
         <div>
-          <h4 class="fr-text--xs fr-mb-3v">Description</h4>
+          <h4
+            class="fr-text--xs"
+            :class="resource?.description ? 'fr-mb-3v' : 'fr-mb-0'"
+          >
+            Description
+          </h4>
           <div class="description-text">{{ resource?.description }}</div>
         </div>
         <div class="separator fr-my-3v" />
         <div>
-          <h4 class="fr-text--xs fr-mb-3v">Type de support</h4>
-          <DsfrTags :tags="supportTags" />
+          <h4
+            class="fr-text--xs"
+            :class="supportTags.length ? 'fr-mb-3v' : 'fr-mb-0'"
+          >
+            Type de support
+          </h4>
+          <DsfrTags :tags="supportTags" style="margin-bottom: -8px" />
         </div>
         <div class="separator fr-my-3v" />
         <div class="fr-grid-row fr-text-mention--grey">
@@ -104,12 +122,14 @@ import { pluralize } from "~/composables/strUtils"
 import { PinStatus, Resource } from "~/composables/types"
 import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
+import { useUserStore } from "~/stores/userStore"
 
 const props = defineProps({
   resource: { type: Object as PropType<Resource>, required: true },
   modelValue: { type: Array as PropType<PinStatus[]>, required: true },
 })
 
+const userStore = useUserStore()
 const pinnedInBases = useModel("modelValue", { type: "array" })
 const tagStore = useTagStore()
 

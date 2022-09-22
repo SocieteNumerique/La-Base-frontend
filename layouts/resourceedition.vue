@@ -17,7 +17,7 @@
               </div>
             </template>
           </div>
-          <div class="fr-col-9 fr-pr-3w" style="min-height: 140px">
+          <div class="fr-col-6 fr-pr-3w" style="min-height: 140px">
             <h1>
               <template
                 v-if="
@@ -36,6 +36,18 @@
                 </template>
               </template>
             </h1>
+          </div>
+          <div class="fr-col-3 fr-pl-5w" style="min-height: 140px">
+            <NuxtLink
+              :to="`/base/${resourceStore.current?.rootBase}`"
+              class="no-underline"
+            >
+              <DsfrButton
+                icon="ri-arrow-go-back-line"
+                class="fr-btn--tertiary-no-outline"
+                label="Retour à la base"
+              />
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -59,6 +71,7 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const resourceStore = useResourceStore()
 

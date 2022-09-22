@@ -9,7 +9,7 @@
         class="fr-text-title--blue-france fr-mr-2v"
         name="ri-settings-3-line"
       />
-      <span>Paramètres</span>
+      <span>Paramètres de la base</span>
     </button>
 
     <div v-show="isMenuShown" class="selector__menu fr-px-2w fr-text--xs">

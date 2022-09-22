@@ -152,16 +152,9 @@ const newExternalProducer = ref<ExternalProducer>({
 
 const isAddExternalProducerDisabled = computed(() => {
   newExternalProducer.value.name
-  newExternalProducer.value.emailContact
   newExternalProducer.value.occupation
   const extProd = newExternalProducer.value
-  console.log(
-    "### is disabled ?",
-    !extProd.name,
-    !extProd.emailContact,
-    !extProd.occupation
-  )
-  return !extProd.name || !extProd.emailContact || !extProd.occupation
+  return !extProd.name || !extProd.occupation
 })
 
 const removeProducer = (producerEmail: string) => {
