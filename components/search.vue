@@ -123,7 +123,6 @@ const route = useRoute()
 
 const results = ref<Base[] | Resource[]>([])
 const textInput = ref<string>(<string>route.query.text || "")
-console.log("### textInput", textInput.value, route.query.text)
 const possibleTags = ref<number[]>([])
 
 const emit = defineEmits(["results", "searchedText"])
