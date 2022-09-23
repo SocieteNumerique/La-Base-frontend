@@ -251,13 +251,6 @@ const onRadioChange = (value: "OR" | "AND") => {
 
 onMounted(() => {
   doSearch()
-
-  // display email confirmation when appropriate
-  const route = useRoute()
-  if (route.query.emailConfirmed) {
-    const alertStore = useAlertStore()
-    alertStore.alert("Email confirmé")
-  }
 })
 </script>
 
