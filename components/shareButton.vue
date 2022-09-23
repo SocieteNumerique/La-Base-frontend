@@ -3,6 +3,8 @@
     <slot>
       <button
         class="fr-btn fr-btn--secondary btn--no-border fr-btn--sm fr-py-0"
+        title="Partager"
+        aria-label="Partager"
       >
         <VIcon :scale="0.9" name="ri-share-line" />
       </button>
@@ -34,7 +36,7 @@ function copyLink() {
   align-items: center
   justify-content: center
   border-radius: 100%
-  width: 30px
+  width: 32px
   height: 30px
   padding-top: 1px
 

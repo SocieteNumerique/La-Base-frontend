@@ -33,8 +33,12 @@
     </div>
     <div class="tag-sub-input">
       <ul v-if="selectedTags.length" class="fr-px-2w fr-pt-1w fr-tags-group">
-        <li v-for="tag in selectedTags" :key="tag.id">
-          <button class="fr-tag" @click="removeTag(tag.id)">
+        <li v-for="(tag, tagIx) in selectedTags" :key="tag.id">
+          <button
+            class="fr-tag"
+            :style="tagIx === 0 ? 'margin-left: -16px' : null"
+            @click="removeTag(tag.id)"
+          >
             {{ tag.name }}
             <VIcon name="ri-close-line" />
           </button>
@@ -263,6 +267,7 @@ const onTagCreated = (tagId: number) => {
 
 <style lang="sass" scoped>
 .tag-sub-input
+  margin-bottom: -12px
   border: 1px solid transparent
   transition: border-color 0.4s ease-in-out 0s
   background-color: white

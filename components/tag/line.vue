@@ -2,7 +2,10 @@
   <div class="result-line">
     <div
       class="tag-line fr-py-1w"
-      :class="disabled ? 'fr-text--disabled' : null"
+      :class="{
+        'fr-text--disabled': !!disabled,
+        'white-space-no-wrap': !showDefinition,
+      }"
     >
       <p
         class="fr-m-0 cursor--pointer fr-text--sm"
@@ -53,10 +56,11 @@ const showDefinition = ref(false)
   justify-content: space-between
   p
     text-overflow: ellipsis
-    white-space: nowrap
-    max-width: 270px
+    max-width: 260px
     overflow: hidden
 
+.white-space-no-wrap
+  white-space: nowrap
 
 .grid-tag-icons
   display: grid

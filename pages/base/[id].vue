@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
+      <div class="fr-background-alt--grey fr-pb-3w fr-pt-6w">
         <div class="fr-container">
           <ImageResized
             :resizable-image="base?.profileImage"
@@ -11,106 +11,94 @@
           />
           <div
             v-if="base?.canWrite"
-            class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2w pre-header"
+            class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2v pre-header"
           >
-            <div>Statut : {{ stateLabel[base?.state] }}</div>
+            <div>
+              <div>Statut : {{ stateLabel[base?.state] }}</div>
+            </div>
             <BaseSettings />
           </div>
-          <h1 style="max-width: 800px">
+          <h1 style="max-width: 800px" class="fr-h2 fr-mb-4w">
             {{ base?.title }}
             <VIcon
               v-if="base?.isCertified"
-              name="official-line"
-              :scale="1.8"
-              style="position: relative; bottom: 14px"
+              title="Cette base est certifiée"
+              aria-label="Cette base est certifiée"
+              name="official-line-colored"
+              :scale="1.1"
+              style="position: relative; bottom: 7px"
             />
           </h1>
           <div class="is-flex base-meta">
+            <button
+              class="fr-btn--tertiary-no-outline fr-text-title--blue-france fr-mr-3w"
+              @click="showAboutModal = true"
+            >
+              À propos
+            </button>
             <DsfrTags
               v-if="participantTypes.length"
               :tags="participantTypes"
               class="fr-mr-3w participant-tags"
             />
             <div v-if="territory" class="territory">
-              <VIcon
-                class="fr-mr-2v fr-text-title--blue-france"
-                name="ri-map-pin-line"
-              />
-              {{ territory }}
+              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />{{ territory }}
             </div>
           </div>
-          <!-- <div
+          <div
             style="border-bottom: 1px solid var(--border-default-grey)"
             class="fr-my-3w"
           />
           <div class="has-children-space-between">
-            <div class="is-flex">
+            <div class="is-flex" style="align-items: center">
               <div class="stat">
-                <span class="fr-h5">45</span>
-                <span class="fr-text-label--blue-france">enregistrements</span>
-              </div>
-              <div class="stat">
-                <span class="fr-h5">45</span>
-                <span class="fr-text-label--blue-france">mentions</span>
-              </div>
-              <div class="stat">
-                <span class="fr-h5">45</span>
+                <span class="fr-text--xl fr-text--bold">{{
+                  base?.visitCount
+                }}</span>
                 <span class="fr-text-label--blue-france">vues</span>
               </div>
             </div>
-            <div v-if="base?.reports" class="is-flex">
-              <DsfrBadge label="2 signalements erreur type 3" type="warning" />
+            <div>
+              <a
+                v-if="base?.contact"
+                :href="mailToHrefContact"
+                class="no-underline"
+              >
+                <RoundButton icon="ri-mail-line" label="Contacter" />
+              </a>
+              <ShareButton :link="route.fullPath">
+                <RoundButton icon="ri-share-line" label="Partager" />
+              </ShareButton>
+              <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
+              <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
+              <!-- TODO should show the report modal on click-->
+              <a :href="mailToHrefReport" class="no-underline">
+                <RoundButton icon="ri-alert-line" label="Signaler" />
+              </a>
+              <ReportSimpleModal
+                v-if="showReportModal"
+                :id="base.id"
+                instance-type="Base"
+                @close="showReportModal = false"
+              />
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </template>
 
-    <div>
-      <ShareButton :link="route.fullPath">
-        <RoundButton icon="ri-share-line" label="Partager" />
-      </ShareButton>
-      <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
-      <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
-      <!-- TODO should show the report modal on click-->
-      <a :href="mailToHref" class="no-underline">
-        <RoundButton icon="ri-alert-line" label="Signaler" />
-      </a>
-      <ReportSimpleModal
-        v-if="showReportModal"
-        :id="base.id"
-        instance-type="Base"
-        @close="showReportModal = false"
-      />
-    </div>
     <div
       style="border-bottom: 1px solid var(--border-default-grey)"
       class="fr-my-3w"
     ></div>
 
-    <div class="fr-btns-group fr-mb-9v">
-      <button
-        :class="{ '-active': tab === 'resources' }"
-        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-mb-0 fr-text-title--blue-france fr-h4 fr-mr-5w"
-        @click="tab = 'resources'"
-      >
-        Ressources
-      </button>
-      <button
-        :class="{ '-active': tab === 'about' }"
-        class="btn-tab-activable fr-btn--tertiary-no-outline fr-px-1v fr-pt-2v fr-pb-3v fr-mb-0 fr-text-title--blue-france fr-h4"
-        @click="tab = 'about'"
-      >
-        À propos
-      </button>
-    </div>
-
-    <BaseResources v-show="tab === 'resources'" :base="base" />
+    <BaseResources :base="base" />
     <BaseAbout
-      v-show="tab === 'about'"
+      v-if="showAboutModal"
       :participant-types="participantTypes"
       :base="base"
       :territory="territory"
+      @close="showAboutModal = false"
     />
   </NuxtLayout>
 </template>
@@ -133,8 +121,8 @@ const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
+const showAboutModal = ref(false)
 
-const tab = ref<string>("resources")
 const showReportModal = ref<boolean>(false)
 
 const participantTypes = computed<{ label: string }[]>(
@@ -200,7 +188,16 @@ onBeforeMount(async () => {
   useRegisterVisit("base", baseStore.currentId!)
 })
 
-const mailToHref = computed(() => {
+const mailToHrefContact = computed(() => {
+  if (!base.value?.contact) {
+    return ""
+  }
+  let toReturn = `mailto:${base.value.contact}`
+  const subject = `[La Base] Contact à propos de la base "${base.value.title}" (id ${base.value.id})`
+  return `${toReturn}?subject=${subject}`
+})
+
+const mailToHrefReport = computed(() => {
   let toReturn = "mailto:labase@anct.gouv.fr"
   if (!base.value) {
     return toReturn

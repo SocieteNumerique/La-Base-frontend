@@ -5,7 +5,7 @@
     </div>
     <p>Vous pouvez ré-éditer ces informations à tout moment.</p>
 
-    <DsfrInput
+    <DsfrInputGroup
       :model-value="resourceStore.current?.title"
       label="Nom de la ressource"
       maxlength="100"
@@ -18,6 +18,7 @@
       :model-value="resourceStore.current?.description"
       label-visible
       :is-textarea="true"
+      class="fr-mb-3w"
       @update:model-value="onDescriptionUpdate"
     >
       <template #label>
@@ -39,6 +40,7 @@
       hint="Au format mois/année"
       placeholder="MM/AAAA"
       :label-visible="true"
+      class="fr-mb-3w"
       @update:model-value="onDateUpdate"
     />
 

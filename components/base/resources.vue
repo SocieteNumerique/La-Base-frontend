@@ -22,7 +22,8 @@
       <div v-if="base?.canWrite || base?.canAddResources">
         <DsfrButton
           v-show="view === 'resources'"
-          label="Ajouter une ressource"
+          icon="ri-add-line"
+          label="Ajouter une fiche"
           @click="onAddResourceClick"
         />
         <DsfrButton

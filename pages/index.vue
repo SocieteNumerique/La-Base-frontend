@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <h2 class="fr-h4">Découvrir</h2>
+      <h2 class="fr-h4">Rechercher</h2>
       <div class="fr-grid-row fr-grid-row--gutters">
         <div class="fr-col-6">
           <div
@@ -108,78 +108,98 @@
         </div>
       </div>
     </div>
-    <h2 class="fr-h4 fr-my-4w">Rechercher</h2>
-    <div class="fr-search-bar fr-input-group">
-      <input
-        id="search"
-        v-model="textInput"
-        class="fr-input"
-        type="text"
-        style="max-width: 586px"
-        placeholder="Rechercher sur toute la plateforme"
-        @input="doSearch"
-      />
-      <button class="fr-btn">
-        <VIcon name="ri-search-line" />
+    <div class="fr-grid-row fr-grid-row--gutters">
+      <div class="fr-col-6 fr-pt-0">
+        <div class="fr-search-bar fr-input-group fr-mt-4w">
+          <input
+            id="search"
+            v-model="textInput"
+            class="fr-input"
+            type="text"
+            placeholder="Rechercher sur toute la plateforme"
+            @input="doSearch"
+          />
+          <button class="fr-btn">
+            <VIcon name="ri-search-line" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="fr-mt-4w">
+      <button
+        class="fr-btn fr-btn--tertiary-no-outline fr-pl-0"
+        :class="showFilters ? 'toggleButton fr-text--bold' : null"
+        @click="showFilters = !showFilters"
+      >
+        Filtrer
+        <span style="padding-left: 3px">
+          <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
+          <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
+        </span>
+      </button>
+      <button
+        class="fr-btn fr-btn--tertiary-no-outline"
+        style="margin-left: 12px"
+        @click="reset"
+      >
+        Réinitialiser la rechercher
       </button>
     </div>
 
-    <hr />
+    <template v-if="showFilters">
+      <ul v-if="selectedTags.length" class="fr-pt-1w fr-mt-2w fr-tags-group">
+        <li v-for="tagId in selectedTags" :key="tagId">
+          <button
+            class="fr-tag--dismiss fr-tag"
+            :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
+            @click="removeTag(tagId)"
+          >
+            {{ tagStore.tagsById[tagId].name }}
+          </button>
+        </li>
+      </ul>
+      <div class="dropdown-holder">
+        <TagDropdown
+          v-for="category of tagCategories"
+          :key="category.id"
+          :category="category"
+          :is-focused="focusedCategory === category.id"
+          :selected-tags="selectedTags"
+          :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
+          @focus="focusedCategory = category.id"
+          @blur="focusedCategory = 0"
+          @select="onSelect"
+        />
+        <TagLicenseDropdown
+          v-if="dataType === 'resources'"
+          :is-focused="focusedCategory === licenseTypeCategoryId"
+          :selected-tags="selectedTags"
+          :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
+          :tag-operator="tagOperator"
+          @focus="focusedCategory = licenseTypeCategoryId"
+          @blur="focusedCategory = 0"
+          @select="onSelect"
+        />
+      </div>
+      <div class="fr-mt-1w small-radio-buttons">
+        <DsfrRadioButtonSet
+          v-model="tagOperator"
+          name="tagOperator"
+          :inline="true"
+          :options="[
+            { label: 'Tous les tags sélectionnés', value: 'AND' },
+            { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
+          ]"
+          :required="true"
+          legend="Les résultats comportent"
+          @update:model-value="onRadioChange"
+        />
+      </div>
+    </template>
 
-    <h3 class="fr-mb-0 fr-text--regular fr-text--md">
-      Filtrer avec l'index officiel
-    </h3>
+    <hr style="margin-bottom: -24px; margin-top: 24px" />
 
-    <ul class="fr-pt-1w fr-tags-group">
-      <li v-for="tagId in selectedTags" :key="tagId">
-        <button
-          class="fr-tag--dismiss fr-tag"
-          :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
-          @click="removeTag(tagId)"
-        >
-          {{ tagStore.tagsById[tagId].name }}
-        </button>
-      </li>
-    </ul>
-    <div class="dropdown-holder">
-      <TagDropdown
-        v-for="category of tagCategories"
-        :key="category.id"
-        :category="category"
-        :is-focused="focusedCategory === category.id"
-        :selected-tags="selectedTags"
-        :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
-        @focus="focusedCategory = category.id"
-        @blur="focusedCategory = 0"
-        @select="onSelect"
-      />
-      <TagLicenseDropdown
-        v-if="dataType === 'resources'"
-        :is-focused="focusedCategory === licenseTypeCategoryId"
-        :selected-tags="selectedTags"
-        :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
-        :tag-operator="tagOperator"
-        @focus="focusedCategory = licenseTypeCategoryId"
-        @blur="focusedCategory = 0"
-        @select="onSelect"
-      />
-    </div>
-    <div class="fr-mt-4w">
-      <DsfrRadioButtonSet
-        v-model="tagOperator"
-        name="tagOperator"
-        :inline="true"
-        :options="[
-          { label: 'Tous les tags sélectionnés', value: 'AND' },
-          { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
-        ]"
-        :required="true"
-        legend="Les résultats comportent"
-        @update:model-value="onRadioChange"
-      />
-    </div>
-
-    <hr />
     <!-- is loading -->
     <template v-if="loadingStore.isLoading('search')">
       <div class="fr-p-5w" style="text-align: center">
@@ -194,20 +214,15 @@
       <div
         id="search-results"
         style="display: flex; align-items: baseline"
-        class="fr-mb-2w"
+        class="fr-mb-2w fr-mt-3w"
       >
-        <div class="fr-text--bold">
+        <div>
           <template v-if="nResults">
             {{ nResults }}
             {{ pluralize(["résultat"], nResults, true) }}
           </template>
           <template v-else> aucun résultat correspondant </template>
           <span v-if="searchedText"> pour {{ searchedText }}</span>
-        </div>
-        <div>
-          <button class="fr-btn fr-btn--tertiary-no-outline" @click="reset">
-            Réinitialiser la rechercher
-          </button>
         </div>
       </div>
 
@@ -264,6 +279,7 @@ definePageMeta({
 const tagOperator = ref<"OR" | "AND">("AND")
 const focusedCategory = ref(0)
 const selectedTags = ref<number[]>([])
+const showFilters = ref(false)
 
 const tagStore = useTagStore()
 const userStore = useUserStore()
@@ -385,6 +401,9 @@ const onCurrentPageChange = (page: number) => {
 </script>
 
 <style scoped lang="sass">
+.toggleButton
+  border-bottom: 2px solid var(--text-title-blue-france)
+
 .dataTypeChooser
   display: flex
   cursor: pointer
@@ -406,11 +425,12 @@ const onCurrentPageChange = (page: number) => {
 
 .dropdown-holder
   display: flex
-  margin-left: -40px
+  margin-left: -32px
   flex-wrap: wrap
+  margin-top: 16px
   *
-    margin-left: 40px
-    margin-top: 12px
+    margin-left: 32px
+    margin-top: 0
 </style>
 
 <style>
@@ -418,5 +438,9 @@ const onCurrentPageChange = (page: number) => {
   to {
     transform: rotate(360deg);
   }
+}
+.small-radio-buttons .fr-fieldset__content {
+  transform: scale(0.875);
+  transform-origin: left;
 }
 </style>

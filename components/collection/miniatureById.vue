@@ -10,7 +10,8 @@
       <div v-if="editable" class="fr-my-auto">
         <button
           class="fr-btn--tertiary-no-outline fr-mr-3v"
-          aria-label="éditer"
+          aria-label="Éditer la collection"
+          title="Éditer la collection"
           @click="openedTab = 'general'"
         >
           <VIcon :scale="0.85" name="ri-edit-line" />
@@ -18,6 +19,7 @@
         <button
           class="fr-btn--tertiary-no-outline"
           aria-label="gérer les fiches"
+          title="Gérer les fiches"
           @click="openedTab = 'resources'"
         >
           <VIcon :scale="0.85" name="ri-file-line" />

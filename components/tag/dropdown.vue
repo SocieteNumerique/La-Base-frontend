@@ -1,5 +1,8 @@
 <template>
-  <div :id="'tag-dropdown-' + props.category.id" class="tag-dropdown">
+  <div
+    :id="'tag-dropdown-' + props.category.id"
+    class="tag-dropdown fr-text--sm"
+  >
     <div
       class="cursor--pointer dropdown-title fr-text-label--blue-france"
       :class="isFocused ? 'underlined' : null"
@@ -8,7 +11,10 @@
       <slot name="label">
         {{ props.category.name }}
       </slot>
-      <VIcon name="ri-arrow-down-s-line" />
+      <VIcon
+        style="padding-left: 4px; position: relative; top: 3px"
+        name="ri-arrow-down-s-line"
+      />
     </div>
     <div
       class="dropdown-tags"

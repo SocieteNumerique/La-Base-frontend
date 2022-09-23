@@ -123,6 +123,7 @@ a
   display: flex
   margin-left: -$gap
   flex-wrap: wrap
+  align-items: flex-start
   > *
     margin-left: $gap
     width: 384px
@@ -131,6 +132,7 @@ a
   display: flex
   flex-wrap: wrap
   margin-left: -16px
+  align-items: flex-start
   > *
     margin-left: 16px
     margin-top: 24px
@@ -191,3 +193,11 @@ a
 // form utils
 .form-with-margins > :not(:first-child) .fr-label
   margin-top: 1.5rem
+
+.full-width-modal
+  .fr-container--fluid
+    max-width: 100% !important
+  .fr-col-12
+    width: 90% !important
+    flex: 0 0 90% !important
+    max-width: 90% !important

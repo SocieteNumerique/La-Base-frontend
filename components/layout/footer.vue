@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer" class="fr-footer" role="contentinfo">
+  <footer id="footer" class="fr-footer fr-mt-15w" role="contentinfo">
     <div class="fr-container">
       <div class="fr-footer__body">
         <img alt="logo du site" src="/logos/ANCT.png" style="height: 80px" />
