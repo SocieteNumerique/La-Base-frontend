@@ -140,10 +140,13 @@
       </div>
 
       <div class="fr-mb-4w">
-        <div v-if="resultType === 'bases'" class="bases-holder">
+        <div v-if="dataTypeFromSearchResponse === 'bases'" class="bases-holder">
           <BaseMiniature v-for="base of results" :key="base.id" :base="base" />
         </div>
-        <div v-if="resultType === 'resources'" class="resource-grid">
+        <div
+          v-if="dataTypeFromSearchResponse === 'resources'"
+          class="resource-grid"
+        >
           <ResourceMiniature
             v-for="(resource, index) of results"
             :key="resource?.id"
@@ -197,7 +200,7 @@ const dataType = computed<string>({
   },
 })
 
-const resultType = ref(dataType.value)
+const dataTypeFromSearchResponse = ref(dataType.value)
 
 const updateDataType = (newDataType: "resources" | "bases") => {
   router.replace({ query: { ...route.query, dataType: newDataType } })
@@ -211,7 +214,7 @@ const currentPage = computed<number>({
 })
 
 const updateResults = (newResults: GenericSearchResult) => {
-  resultType.value = newResults.results.dataType
+  dataTypeFromSearchResponse.value = newResults.results.dataType
   results.value = newResults.results.objects
   nResults.value = newResults.count
 }
