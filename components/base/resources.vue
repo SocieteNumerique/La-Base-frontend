@@ -68,12 +68,30 @@
       </div>
     </template>
 
-    <template v-if="view === 'resources'">
+    <template v-if="view === 'resources' && base?.canWrite">
+      <div style="text-align: center" class="fr-mb-4w">
+        <button
+          class="fr-btn fr-btn--tertiary-no-outline"
+          :class="showLliveResources ? 'fr-btn--tertiary--active' : null"
+          @click="showLliveResources = true"
+        >
+          Publiées
+        </button>
+        <button
+          class="fr-btn fr-btn--tertiary-no-outline fr-ml-1w"
+          :class="!showLliveResources ? 'fr-btn--tertiary--active' : null"
+          @click="showLliveResources = false"
+        >
+          Brouillons
+        </button>
+      </div>
+
       <!-- loading spinner -->
       <template
         v-if="
           loadingStore.isLoading('bases') ||
-          loadingStore.isLoading('basesResources')
+          loadingStore.isLoading('basesResources') ||
+          loadingStore.isLoading('search')
         "
       >
         <div class="fr-p-5w" style="text-align: center">
@@ -85,19 +103,22 @@
 
       <!-- results -->
       <template v-else>
-        <div class="resource-grid">
-          <ResourceMiniatureById
-            v-for="resourceId of base?.resourcesInPage"
-            :key="resourceId"
-            :resource-id="resourceId"
+        <div v-if="resourcesResult.count" class="resource-grid">
+          <!-- eslint-disable vue/no-mutating-props -->
+          <ResourceMiniature
+            v-for="(resource, index) of resourcesResult.results.objects"
+            :key="resource?.id"
+            v-model="resourcesResult.results.objects[index].pinnedInBases"
+            :resource="resource"
           />
         </div>
+        <div v-else>Aucun résultat correspondant</div>
       </template>
 
       <!-- pagination -->
-      <div v-if="baseStore.pageCount > 1" class="is-flex flex-center">
+      <div v-if="pages.length" class="is-flex flex-center">
         <DsfrPagination
-          v-model:current-page="baseStore.currentPage"
+          v-model:current-page="currentPage"
           :pages="pages"
           @update:current-page="onCurrentPageChange"
         />
@@ -130,18 +151,20 @@
 import { useRoute } from "vue-router"
 import { computed, PropType } from "vue"
 import { useCollectionStore } from "~/stores/collectionStore"
-import { Base, Collection } from "~/composables/types"
-import { useBaseStore } from "~/stores/baseStore"
+import { Base, Collection, Resource, SearchResult } from "~/composables/types"
 import { useLoadingStore } from "~/stores/loadingStore"
 
 const route = useRoute()
 const router = useRouter()
-const baseStore = useBaseStore()
 const collectionStore = useCollectionStore()
 const loadingStore = useLoadingStore()
 
-defineProps({
+const props = defineProps({
   base: { type: Object as PropType<Base>, required: true },
+  resourcesResult: {
+    type: Object as PropType<SearchResult<Resource>>,
+    required: true,
+  },
 })
 
 const showAddResourceModal = ref<boolean>(false)
@@ -157,7 +180,12 @@ const onAddCollectionClick = () => {
 
 const view = computed<string>({
   get: () => (route.query.view as string) || "resources",
-  set: (value) => router.push({ query: { view: value } }),
+  set: (value) => router.push({ query: { ...route.query, view: value } }),
+})
+const showLliveResources = computed<boolean>({
+  get: () => Boolean(Number(((<string>route.query.live) as string) || "1")),
+  set: (value) =>
+    router.push({ query: { ...route.query, live: String(Number(value)) } }),
 })
 const openCollectionId = computed<number | undefined>(
   () => route.query.collection as unknown as number
@@ -168,26 +196,20 @@ const openCollection = computed<Collection | undefined>(() => {
   return undefined
 })
 
+// pagination
 const pages = computed(() => {
-  if (baseStore.pageCount <= 1) {
-    return []
-  }
-  let nPages = baseStore.pageCount
-  nPages = Math.min(nPages, 10) // maximum 10 pages
-  const toReturn = [...Array(nPages).keys()]
-    .map((number) => number + 1)
-    .map((page) => ({
-      label: String(page),
-      title: `Page ${page}`,
-      href: `?page=${page}`,
-    }))
-  return toReturn
+  return paginationFromNResults(props.resourcesResult.count)
+})
+
+const currentPage = computed<number>({
+  get: () => Number(route.query.page) || 0,
+  set(page: number) {
+    router.replace({ query: { ...route.query, page: page } })
+  },
 })
 
 const onCurrentPageChange = async (pageZeroBased: number) => {
-  await baseStore.updateResourcesInPage(pageZeroBased + 1)
-  baseStore.currentPage = pageZeroBased
-  document.getElementById("resources")!.scrollIntoView({ behavior: "smooth" })
+  currentPage.value = pageZeroBased
 }
 </script>
 

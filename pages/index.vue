@@ -108,95 +108,8 @@
         </div>
       </div>
     </div>
-    <div class="fr-grid-row fr-grid-row--gutters">
-      <div class="fr-col-6 fr-pt-0">
-        <div class="fr-search-bar fr-input-group fr-mt-4w">
-          <input
-            id="search"
-            v-model="textInput"
-            class="fr-input"
-            type="text"
-            placeholder="Rechercher sur toute la plateforme"
-            @input="doSearch"
-          />
-          <button class="fr-btn">
-            <VIcon name="ri-search-line" />
-          </button>
-        </div>
-      </div>
-    </div>
 
-    <div class="fr-mt-4w">
-      <button
-        class="fr-btn fr-btn--tertiary-no-outline fr-pl-0"
-        :class="showFilters ? 'toggleButton fr-text--bold' : null"
-        @click="showFilters = !showFilters"
-      >
-        Filtrer
-        <span style="padding-left: 3px">
-          <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
-          <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
-        </span>
-      </button>
-      <button
-        class="fr-btn fr-btn--tertiary-no-outline"
-        style="margin-left: 12px"
-        @click="reset"
-      >
-        Réinitialiser la rechercher
-      </button>
-    </div>
-
-    <template v-if="showFilters">
-      <ul v-if="selectedTags.length" class="fr-pt-1w fr-mt-2w fr-tags-group">
-        <li v-for="tagId in selectedTags" :key="tagId">
-          <button
-            class="fr-tag--dismiss fr-tag"
-            :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
-            @click="removeTag(tagId)"
-          >
-            {{ tagStore.tagsById[tagId].name }}
-          </button>
-        </li>
-      </ul>
-      <div class="dropdown-holder">
-        <TagDropdown
-          v-for="category of tagCategories"
-          :key="category.id"
-          :category="category"
-          :is-focused="focusedCategory === category.id"
-          :selected-tags="selectedTags"
-          :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
-          @focus="focusedCategory = category.id"
-          @blur="focusedCategory = 0"
-          @select="onSelect"
-        />
-        <TagLicenseDropdown
-          v-if="dataType === 'resources'"
-          :is-focused="focusedCategory === licenseTypeCategoryId"
-          :selected-tags="selectedTags"
-          :enabled-tags="tagOperator === 'AND' ? possibleTags : null"
-          :tag-operator="tagOperator"
-          @focus="focusedCategory = licenseTypeCategoryId"
-          @blur="focusedCategory = 0"
-          @select="onSelect"
-        />
-      </div>
-      <div class="fr-mt-1w small-radio-buttons">
-        <DsfrRadioButtonSet
-          v-model="tagOperator"
-          name="tagOperator"
-          :inline="true"
-          :options="[
-            { label: 'Tous les tags sélectionnés', value: 'AND' },
-            { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
-          ]"
-          :required="true"
-          legend="Les résultats comportent"
-          @update:model-value="onRadioChange"
-        />
-      </div>
-    </template>
+    <Search @results="updateResults" />
 
     <hr style="margin-bottom: -24px; margin-top: 24px" />
 
@@ -227,13 +140,13 @@
       </div>
 
       <div class="fr-mb-4w">
-        <div v-if="dataType === 'bases'" class="bases-holder">
+        <div v-if="resultType === 'bases'" class="bases-holder">
           <BaseMiniature v-for="base of results" :key="base.id" :base="base" />
         </div>
-        <div v-if="dataType === 'resources'" class="resource-grid">
+        <div v-if="resultType === 'resources'" class="resource-grid">
           <ResourceMiniature
             v-for="(resource, index) of results"
-            :key="resource.id"
+            :key="resource?.id"
             v-model="results[index].pinnedInBases"
             :resource="resource"
           />
@@ -253,118 +166,57 @@
 </template>
 
 <script setup lang="ts">
-import { useApiPost } from "~/composables/api"
-import { debounce } from "../composables/debounce"
-import {
-  BasesSearchResult,
-  ResourcesSearchResult,
-  Base,
-  Resource,
-  TagCategory,
-} from "~/composables/types"
-import { useTagStore } from "~/stores/tagStore"
-import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
+import { Base, GenericSearchResult, Resource } from "~/composables/types"
 import { computed, onMounted } from "vue"
-import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
-import { useUserStore } from "~/stores/userStore"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
+import { useUserStore } from "~/stores/userStore"
+import { useLoadingStore } from "~/stores/loadingStore"
+import { paginationFromNResults } from "~/composables/pagination"
 
 definePageMeta({
   layout: false,
   title: "Base",
 })
 
-const tagOperator = ref<"OR" | "AND">("AND")
-const focusedCategory = ref(0)
-const selectedTags = ref<number[]>([])
-const showFilters = ref(false)
-
-const tagStore = useTagStore()
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 
-const pageSize = 12
+const router = useRouter()
+const route = useRoute()
 
 const results = ref<Base[] | Resource[]>([])
-const nResults = ref<null | number>(null)
-const textInput = ref("")
 const searchedText = ref("")
-const possibleTags = ref<number[]>([])
-const dataType = ref<"resources" | "bases">("resources")
+const pageSize = 12
 
-const updateDataType = (newDataType: "resources" | "bases") => {
-  dataType.value = newDataType
-  reset()
-}
-const tagCategories = computed<TagCategory[]>(() => {
-  const filterKey = dataType.value === "resources" ? "Resource" : "Base"
-  return tagStore.categories.filter(
-    (category) =>
-      category.relatesTo?.includes(filterKey) &&
-      !hiddenCategorySlugs.includes(category.slug)
-  )
+const dataType = computed<string>({
+  get: () => <string>route.query.dataType || "resources",
+  set(newDataType: string) {
+    router.replace({ query: { ...route.query, dataType: newDataType } })
+  },
 })
 
-const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
-const hiddenCategorySlugs = ["license_02free", "license_01license"]
+const resultType = ref(dataType.value)
 
-const doSearch = debounce(async (scrollToTop = false) => {
-  const { data, error } = await useApiPost<
-    BasesSearchResult | ResourcesSearchResult
-  >(
-    "search/",
-    {
-      text: textInput.value,
-      dataType: dataType.value,
-      tags: selectedTags.value,
-      tagOperator: tagOperator.value,
-    },
-    { page: currentPage.value + 1 }
-  )
-  if (!error.value) {
-    results.value = data.value.results.objects
-    nResults.value = data.value.count
-    searchedText.value = data.value.results.text
-    possibleTags.value = data.value.results.possibleTags
-    if (scrollToTop) {
-      document
-        .getElementById("search-results")!
-        .scrollIntoView({ behavior: "smooth" })
-    }
-  }
-}, 400)
-
-const onSelect = (tagId: number) => {
-  selectedTags.value.push(tagId)
-  focusedCategory.value = 0
-  currentPage.value = 0
-  doSearch()
+const updateDataType = (newDataType: "resources" | "bases") => {
+  router.replace({ query: { ...route.query, dataType: newDataType } })
 }
-const removeTag = (tagId: number) => {
-  selectedTags.value = selectedTags.value.filter((tag) => tag !== tagId)
-  focusedCategory.value = 0
-  currentPage.value = 0
-  doSearch()
-}
+const nResults = ref(0)
+const currentPage = computed<number>({
+  get: () => Number(route.query.page) || 0,
+  set(page: number) {
+    router.replace({ query: { ...route.query, page: page } })
+  },
+})
 
-const reset = () => {
-  selectedTags.value = []
-  textInput.value = ""
-  currentPage.value = 0
-  doSearch()
-}
-
-const onRadioChange = (value: "OR" | "AND") => {
-  tagOperator.value = value
-  currentPage.value = 0
-  doSearch()
+const updateResults = (newResults: GenericSearchResult) => {
+  resultType.value = newResults.results.dataType
+  results.value = newResults.results.objects
+  nResults.value = newResults.count
 }
 
 onMounted(() => {
-  doSearch()
-
   // display email confirmation when appropriate
   const route = useRoute()
   if (route.query.emailConfirmed) {
@@ -374,36 +226,15 @@ onMounted(() => {
 })
 
 // pagination
-const currentPage = ref(0)
 const pages = computed(() => {
-  if (nResults.value == null) {
-    return []
-  }
-  if (nResults.value <= pageSize) {
-    return []
-  }
-  let nPages = Math.ceil(nResults.value / pageSize)
-  nPages = Math.min(nPages, 10) // maximum 10 pages
-  const toReturn = [...Array(nPages).keys()]
-    .map((number) => number + 1)
-    .map((page) => ({
-      label: String(page),
-      title: `Page ${page}`,
-      href: `?page=${page}`,
-    }))
-  return toReturn
+  return paginationFromNResults(nResults.value)
 })
 const onCurrentPageChange = (page: number) => {
-  console.log("### page change", page)
   currentPage.value = page
-  doSearch(true)
 }
 </script>
 
 <style scoped lang="sass">
-.toggleButton
-  border-bottom: 2px solid var(--text-title-blue-france)
-
 .dataTypeChooser
   display: flex
   cursor: pointer

@@ -165,7 +165,7 @@ export type Base = {
   isCertified?: boolean
   isShort?: boolean
   owner: User | number
-  asparticipantTypeTags?: number[]
+  participantTypeTags?: number[]
   resourceChoices?: Resource[]
   resourcesInPage?: number[]
   state?: string
@@ -301,15 +301,25 @@ export type Alert = {
   type?: string
 }
 
-type SearchResultResults<ResultType> = {
+export type SearchResultResults<ResultType> = {
   objects: ResultType[]
   possibleTags: number[]
   dataType: string
   text: string
 }
-type SearchResult<ResultType> = {
+export type GenericSearchResultResults = {
+  objects: Base[] | Resource[]
+  possibleTags: number[]
+  dataType: string
+  text: string
+}
+export type SearchResult<ResultType> = {
   count: number
   results: SearchResultResults<ResultType>
+}
+export type GenericSearchResult = {
+  count: number
+  results: GenericSearchResultResults
 }
 export type UsersSearchResult = SearchResult<User>
 export type BasesSearchResult = SearchResult<Base>
