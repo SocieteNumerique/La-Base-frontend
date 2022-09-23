@@ -159,7 +159,6 @@ const selectedTags = computed<number[]>({
 })
 
 const updateRouterQuery = (newQueryParams: any) => {
-  console.log("### updateRouterQuery", newQueryParams, router)
   router.replace({ query: { ...route.query, ...newQueryParams } })
 }
 
@@ -178,15 +177,12 @@ watch(
 watch(
   () => textInput.value,
   () => {
-    console.log("### textInputchange", textInput.value)
-    console.log("### updaterouterquery textInputchange")
     updateRouterQuery({ text: textInput.value })
   }
 )
 watch(
   () => isLiveResources.value,
   () => {
-    console.log("###live changed", isLiveResources.value)
     doSearch()
   }
 )

@@ -142,7 +142,6 @@ const resourcesResult = ref<SearchResult<Resource>>({
 const showReportModal = ref<boolean>(false)
 
 const updateResults = (newResults: SearchResult<Resource>) => {
-  console.log("### update results", newResults.results.objects)
   resourcesResult.value = newResults
 }
 
