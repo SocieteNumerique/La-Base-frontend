@@ -87,12 +87,23 @@
       </div>
     </template>
 
+    <Search
+      :style="
+        isSearchDeactivated
+          ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
+          : null
+      "
+      @results="updateResults"
+    />
+
     <div
+      id="search-results"
       style="border-bottom: 1px solid var(--border-default-grey)"
       class="fr-my-3w"
     ></div>
 
-    <BaseResources :base="base" />
+    <BaseResources :base="base" :resources-result="resourcesResult" />
+
     <BaseAbout
       v-if="showAboutModal"
       :participant-types="participantTypes"
@@ -112,6 +123,7 @@ import { useUserStore } from "~/stores/userStore"
 import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
+import { Resource, SearchResult } from "~/composables/types"
 
 definePageMeta({
   layout: false,
@@ -122,8 +134,16 @@ const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
 const showAboutModal = ref(false)
+const resourcesResult = ref<SearchResult<Resource>>({
+  count: 0,
+  results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
+})
 
 const showReportModal = ref<boolean>(false)
+
+const updateResults = (newResults: SearchResult<Resource>) => {
+  resourcesResult.value = newResults
+}
 
 const participantTypes = computed<{ label: string }[]>(
   () =>
@@ -136,6 +156,9 @@ const territory = computed<string>(() =>
     base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
   ).join(", ")
 )
+const isSearchDeactivated = computed(() => {
+  return route.query.view === "collections"
+})
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
