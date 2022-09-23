@@ -235,6 +235,9 @@ const onCurrentPageChange = (page: number) => {
 </script>
 
 <style scoped lang="sass">
+.toggleButton
+  border-bottom: 2px solid var(--text-title-blue-france)
+
 .dataTypeChooser
   display: flex
   cursor: pointer

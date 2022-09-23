@@ -103,6 +103,7 @@
     ></div>
 
     <BaseResources :base="base" :resources-result="resourcesResult" />
+
     <BaseAbout
       v-if="showAboutModal"
       :participant-types="participantTypes"
