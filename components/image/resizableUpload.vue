@@ -50,10 +50,9 @@
     <DsfrButton
       v-if="file.image && showResizeModal"
       class="fr-my-3v"
-      secondary
-      @click="showResizeModal = false"
+      @click="confirm"
     >
-      Annuler le recadrage
+      OK
     </DsfrButton>
   </div>
 </template>
@@ -69,6 +68,7 @@ import {
   Coordinates,
 } from "vue-advanced-cropper"
 import "vue-advanced-cropper/dist/style.css"
+import { useAlertStore } from "~/stores/alertStore"
 
 const props = defineProps({
   modelValue: { type: Object as PropType<ResizableImage>, required: true },
@@ -101,6 +101,13 @@ const stencilProps = computed(() => ({
 const stencilComponent = computed<Component>(() =>
   props.cropCircle ? CircleStencil : RectangleStencil
 )
+
+const confirm = () => {
+  showResizeModal.value = false
+  useAlertStore().alert(
+    "Le recadrage sera pris en compte une fois l'objet enregistré"
+  )
+}
 
 function defaultPosition({ imageSize }: { imageSize: Size }) {
   return {
