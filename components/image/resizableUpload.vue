@@ -11,6 +11,7 @@
     <ImageResized
       :resizable-image="file"
       width="medium"
+      :bordered="false"
       :ratio="desiredRatio"
     />
   </div>

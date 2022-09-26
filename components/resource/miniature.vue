@@ -34,18 +34,11 @@
         class="bordered fr-p-2w"
       >
         <ImageResized
-          v-if="resource?.profileImage"
           class="fr-mb-2w"
           :resizable-image="resource?.profileImage"
           :width="352"
           :ratio="1.4"
-        />
-        <img
-          v-else
-          src="/img/miniature/defaultResource.png"
-          alt=""
-          style="width: 352px; height: 251.429px"
-          class="fr-mb-2w"
+          default-image="resource"
         />
         <h3 class="fr-h6 fr-mb-0">{{ resource?.title }}</h3>
         <div class="separator fr-my-1w" />

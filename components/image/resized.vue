@@ -1,5 +1,14 @@
 <template>
-  <div :style="style" class="resized-image" />
+  <div>
+    <div v-if="resizableImage" :style="style" class="resized-image" />
+    <div v-else-if="defaultImage">
+      <img
+        :src="`/img/defaultImage/${defaultImage}.png`"
+        alt=""
+        :style="defaultImageStyle"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +25,11 @@ const props = defineProps({
   width: {
     type: [Number, String] as PropType<"small" | "medium" | "large" | number>,
     default: "medium",
+  },
+  bordered: { type: Boolean, default: true },
+  defaultImage: {
+    type: String as PropType<"" | "resource" | "collection" | "base">,
+    default: "",
   },
 })
 
@@ -34,6 +48,15 @@ const widthPx = computed<number>(() =>
   typeof props.width === "number" ? props.width : diameters[props.width]
 )
 const heightPx = computed<number>(() => widthPx.value / props.ratio)
+
+const defaultImageStyle = computed(() => {
+  return {
+    width: `${widthPx.value}px`,
+    height: `${heightPx.value}px`,
+    border: props.bordered ? "1px solid #E5E5E5" : undefined,
+    "border-radius": props.circle ? "100%" : undefined,
+  }
+})
 
 const style = computed(() => {
   const size =
@@ -60,6 +83,7 @@ const style = computed(() => {
     "background-position-y": positionY,
     "background-size": size,
     "border-radius": props.circle ? "50%" : undefined,
+    border: props.bordered ? "1px solid #E5E5E5" : undefined,
   }
 })
 </script>

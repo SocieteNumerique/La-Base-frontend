@@ -43,11 +43,11 @@
       style="border-bottom: none"
     >
       <ImageResized
-        v-if="savedCollection?.profileImage"
         class="fr-mb-2w"
         :resizable-image="savedCollection?.profileImage"
         :width="320"
         :ratio="1.7"
+        default-image="collection"
       />
 
       <div class="text" style="overflow-x: hidden">

@@ -8,6 +8,7 @@
             class="fr-mb-3v"
             width="large"
             circle
+            default-image="base"
           />
           <div
             v-if="base?.canWrite"

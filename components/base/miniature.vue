@@ -6,17 +6,10 @@
     <NuxtLink :to="link" class="no-underline link-container">
       <div class="banner fr-p-1w">
         <ImageResized
-          v-if="base?.profileImage"
           :resizable-image="base.profileImage"
           width="medium"
           circle
-        />
-        <img
-          v-else
-          src="/img/miniature/defaultResource.png"
-          alt=""
-          style="width: 100px; height: 100px; border-radius: 100%"
-          class="fr-mb-2w"
+          default-image="base"
         />
       </div>
       <div class="fr-p-2w">
