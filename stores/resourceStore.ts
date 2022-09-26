@@ -111,7 +111,6 @@ const navigateTopContentsTop = () => {
   if (process.client) {
     const el = document.getElementById("editing-contents")
     el?.scrollIntoView({ behavior: "smooth" })
-    console.log("### navigate to", el)
   }
 }
 
