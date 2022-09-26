@@ -4,11 +4,12 @@
       <ShareButton :link="link" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
-      <div v-if="base.profileImage" class="banner fr-p-1w">
+      <div class="banner fr-p-1w">
         <ImageResized
           :resizable-image="base.profileImage"
           width="medium"
           circle
+          default-image="base"
         />
       </div>
       <div class="fr-p-2w">

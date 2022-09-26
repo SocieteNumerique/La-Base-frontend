@@ -11,6 +11,7 @@
           <VIcon :name="button.icon" />
         </button>
       </div>
+      <hr class="fr-pb-2w" />
       <editor-content :editor="editor" />
     </client-only>
     <DsfrModal :opened="isAddingLink" title="" @close="closeLinkModal">

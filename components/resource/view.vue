@@ -88,7 +88,12 @@
               :to="editionLink"
               class="no-underline"
             >
-              <DsfrButton label="Éditer" class="fr-btn--sm" secondary />
+              <DsfrButton
+                icon="ri-edit-line"
+                label="Éditer"
+                class="fr-btn--sm"
+                secondary
+              />
             </NuxtLink>
 
             <PinMenu
@@ -148,7 +153,7 @@
           <div id="intersectionRoot" class="fr-col-9">
             <div id="informations">
               <h2 class="fr-mb-11v">Informations</h2>
-              <h3 class="fr-h5 fr-mb-9v">Général</h3>
+              <h3 class="fr-h6 fr-mb-8v">Général</h3>
               <div class="fr-grid-row" style="justify-content: space-between">
                 <div class="fr-col-8" style="white-space: pre-line">
                   {{ resource?.description }}
@@ -161,7 +166,7 @@
                 </div>
               </div>
 
-              <h3 class="fr-h5 fr-my-9v">Indexation</h3>
+              <h3 class="fr-h6 fr-mb-8v fr-mt-6w">Indexation</h3>
               <IndexTable
                 v-if="resource && !resource.isShort"
                 :element="resource"
@@ -183,7 +188,6 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { computed, onBeforeMount } from "vue"
 import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
-import { useTagStore } from "~/stores/tagStore"
 import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 

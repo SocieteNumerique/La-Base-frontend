@@ -10,7 +10,7 @@
       <div class="fr-btns-group--xs fr-ml-auto">
         <button
           :class="{ '-active': isEditing }"
-          class="btn-tab-activable fr-btn--tertiary-no-outline"
+          class="btn-tab-activable fr-btn--tertiary-no-outline fr-mr-3v"
           @click="$emit('open-edition')"
         >
           <VIcon name="ri-edit-line" />

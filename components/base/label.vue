@@ -5,6 +5,7 @@
       width="small"
       circle
       class="fr-mr-2v"
+      default-image="base"
     />
     <slot>
       {{ base.title }}

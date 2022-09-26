@@ -1,5 +1,5 @@
 <template>
-  <div class="fr-table fr-table--bordered">
+  <div class="fr-table fr-table--bordered fr-p-0">
     <table>
       <tbody>
         <tr v-for="({ label, tags, specific }, id) in tagsByCategory" :key="id">
@@ -7,7 +7,11 @@
             <span>{{ label }}</span>
           </th>
           <td v-if="!specific">
-            <DsfrTags :tags="tags" />
+            <DsfrTags
+              :tags="tags"
+              class="fr-tags-group--sm"
+              style="margin-bottom: -12px"
+            />
           </td>
           <td v-else-if="id === 'license'">
             <TagDisplayRowLicense

@@ -16,6 +16,30 @@
           </button>
         </div>
       </div>
+      <div
+        v-if="showResourceCollectionsToggle"
+        class="fr-col-6"
+        style="align-items: flex-end; display: flex; justify-content: center"
+      >
+        <div class="fr-btns-group--xs is-flex" style="width: 100%">
+          <button
+            :class="{ '-active': view === 'resources' }"
+            class="btn-tab-activable fr-btn--tertiary fr-p-2v fr-mr-3w"
+            @click="view = 'resources'"
+          >
+            <VIcon name="ri-file-line" />
+            Voir les fiches
+          </button>
+          <button
+            :class="{ '-active': view === 'collections' }"
+            class="btn-tab-activable fr-btn--tertiary fr-p-2v"
+            @click="view = 'collections'"
+          >
+            <VIcon name="ri-folder-3-line" />
+            Voir les collections
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="fr-mt-4w">
@@ -106,7 +130,6 @@ import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { useAlertStore } from "~/stores/alertStore"
 
 definePageMeta({
   layout: false,
@@ -131,6 +154,10 @@ const dataType = computed<"resources" | "bases">(() => {
   return <"resources" | "bases">route.query.dataType || "resources"
 })
 
+const view = computed<string>({
+  get: () => (route.query.view as string) || "resources",
+  set: (value) => router.push({ query: { ...route.query, view: value } }),
+})
 const currentPage = computed<number>({
   get: () => Number(route.query.page) || 0,
   set(page: number) {
@@ -195,6 +222,10 @@ const tagCategories = computed<TagCategory[]>(() => {
       !hiddenCategorySlugs.includes(category.slug)
   )
 })
+
+const showResourceCollectionsToggle = computed(() =>
+  route.path.startsWith("/base")
+)
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
@@ -263,6 +294,16 @@ onMounted(() => {
   *
     margin-left: 32px
     margin-top: 0
+.btn-tab-activable
+  flex-grow: 1
+  flex-basis: 0
+  font-size: 1rem
+  font-weight: bold
+  .ov-icon
+    margin-right: 18px
+.btn-tab-activable.-active
+  background: #F5F5FE
+  box-shadow: none
 </style>
 
 <style>

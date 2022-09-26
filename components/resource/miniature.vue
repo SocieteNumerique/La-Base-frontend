@@ -33,6 +33,13 @@
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
         class="bordered fr-p-2w"
       >
+        <ImageResized
+          class="fr-mb-2w"
+          :resizable-image="resource?.profileImage"
+          :width="352"
+          :ratio="1.4"
+          default-image="resource"
+        />
         <h3 class="fr-h6 fr-mb-0">{{ resource?.title }}</h3>
         <div class="separator fr-my-1w" />
         <div class="credits-grid">
@@ -58,14 +65,6 @@
             </div>
           </template>
         </div>
-        <ImageResized
-          v-if="resource?.profileImage"
-          class="fr-mt-2w"
-          :resizable-image="resource?.profileImage"
-          :width="352"
-          :ratio="1.4"
-        />
-        <div v-if="!resource?.profileImage" class="separator fr-my-1w" />
         <div
           v-if="resource.stats"
           title="nombre de vues depuis le 9 septembre 2022"
@@ -73,9 +72,9 @@
         >
           <p class="fr-m-0">
             <span class="fr-text--lg fr-text--bold">
-              {{ resource.stats.visitCount }}
+              {{ resource?.stats.visitCount }}
             </span>
-            vues
+            {{ pluralize(["vue"], resource?.stats.visitCount) }}
           </p>
         </div>
       </div>

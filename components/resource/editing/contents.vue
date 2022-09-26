@@ -1,12 +1,13 @@
 <template>
   <div>
     <h2 class="fr-h6">Ressource</h2>
-    <p>Organiser vos contenus en liste et/ou en grille</p>
+    <p class="fr-mb-5w">Organiser vos contenus en liste et/ou en grille</p>
     <ContentGridViewSwitcher
       v-model="isGridView"
       :is-editing-mode="true"
       class="fr-mb-3w"
     />
+    <hr class="fr-mt-5w" style="margin-bottom: -32px" />
     <ContentListEdit
       v-show="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"

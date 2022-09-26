@@ -8,6 +8,7 @@
             class="fr-mb-3v"
             width="large"
             circle
+            default-image="base"
           />
           <div
             v-if="base?.canWrite"
@@ -157,6 +158,9 @@ const territory = computed<string>(() =>
   ).join(", ")
 )
 const isSearchDeactivated = computed(() => {
+  // TODO search should be deactivated within the component with LB-148
+  //  keeping for now for the filters
+  return false
   return route.query.view === "collections"
 })
 
