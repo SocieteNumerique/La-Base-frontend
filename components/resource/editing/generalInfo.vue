@@ -19,12 +19,13 @@
       label-visible
       :is-textarea="true"
       class="fr-mb-3w"
+      rows="5"
       @update:model-value="onDescriptionUpdate"
     >
       <template #label>
         Description courte de la ressource
         <span class="fr-hint-text">
-          Requis - 560 caractères maximum
+          Requis
           <br />
           Décrivez en quelques mots votre ressource (nature, objectifs...).
           Cette description apparaîtra aussi dans les résultats du moteur de
@@ -59,11 +60,8 @@
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { inputToFileObject } from "~/composables/fileUpload"
 
 const resourceStore = useResourceStore()
-
-const fileInput = ref<HTMLInputElement>()
 
 const onTitleUpdate = (value: string) => {
   resourceStore.current.title = value

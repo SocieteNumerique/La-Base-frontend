@@ -107,6 +107,14 @@ type ResourceState = {
   resourcesById: ResourcesById
 }
 
+const navigateTopContentsTop = () => {
+  if (process.client) {
+    const el = document.getElementById("editing-contents")
+    el?.scrollIntoView({ behavior: "smooth" })
+    console.log("### navigate to", el)
+  }
+}
+
 export const useResourceStore = defineStore("resource", {
   state: () =>
     <ResourceState>{
@@ -203,9 +211,11 @@ export const useResourceStore = defineStore("resource", {
           this.navigation.activeSubMenu =
             navigationMenus[currentMenuIx + 1].subMenus[0].key
         }
+        navigateTopContentsTop()
         return
       }
       this.navigation.activeSubMenu = subMenus[currentSubMenuIx + 1].key
+      navigateTopContentsTop()
     },
     navigationPrevious() {
       if (this.isNavigationPreviousDisabled) {
@@ -223,9 +233,11 @@ export const useResourceStore = defineStore("resource", {
         if (subMenus.length) {
           this.navigation.activeSubMenu = subMenus[subMenus.length - 1].key
         }
+        navigateTopContentsTop()
         return
       }
       this.navigation.activeSubMenu = subMenus[currentSubMenuIx - 1].key
+      navigateTopContentsTop()
     },
     addTagToResource(tagId: number, resourceId: number) {
       const resource = this.resourcesById[resourceId]

@@ -1,6 +1,6 @@
 <template>
   <div class="content-display-container">
-    <h5 v-if="content.title">{{ content.title }}</h5>
+    <h4 v-if="content.title" class="fr-h6">{{ content.title }}</h4>
     <component
       :is="component"
       :content="content"

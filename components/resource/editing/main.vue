@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div id="editing-contents" class="page-container">
     <div>
       <div
         v-if="

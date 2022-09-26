@@ -19,7 +19,10 @@
     >
       <span v-show="atLeastOnePin">
         Enregistrée
-        <VIcon name="ri-arrow-down-s-line" />
+        <VIcon
+          name="ri-arrow-down-s-line"
+          style="position: relative; top: 2px"
+        />
       </span>
       <span v-show="!atLeastOnePin">Enregistrer</span>
     </button>

@@ -6,8 +6,8 @@
       :buttons="buttons"
       :inline="true"
       align="right"
-      class="fr-mt-4w"
-      size="medium"
+      class="fr-mt-4w fr-btns-group--sm"
+      size="large"
     />
   </div>
 </template>

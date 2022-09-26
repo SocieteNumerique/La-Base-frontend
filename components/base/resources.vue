@@ -1,23 +1,35 @@
 <template>
   <div id="resources">
     <div class="is-flex flex-space-between fr-mb-4w">
-      <div class="fr-btns-group--xs">
-        <button
-          :class="{ '-active': view === 'resources' }"
-          class="btn-tab-activable fr-btn--tertiary-no-outline fr-p-2v fr-mr-5w"
-          @click="view = 'resources'"
+      <div class="fr-mt-3v">
+        <span v-if="view === 'resources'"
+          >{{ resourcesResult.count }}
+          {{ pluralize(["fiche"], resourcesResult.count) }}</span
         >
-          <VIcon name="ri-file-line" />
-          Voir les fiches
-        </button>
-        <button
-          :class="{ '-active': view === 'collections' }"
-          class="btn-tab-activable fr-btn--tertiary-no-outline fr-p-2v"
-          @click="view = 'collections'"
-        >
-          <VIcon name="ri-folder-3-line" />
-          Voir les collections
-        </button>
+        <span v-else>
+          {{ base?.collections.length }}
+          {{ pluralize(["collection"], base?.collections.length) }}
+        </span>
+      </div>
+      <div v-if="view === 'resources'">
+        <div style="text-align: center" class="fr-mb-4w">
+          <button
+            class="fr-btn fr-btn--tertiary-no-outline"
+            style="font-weight: 400"
+            :class="showLliveResources ? 'fr-btn--tertiary--active' : null"
+            @click="showLliveResources = true"
+          >
+            Fiches publiées
+          </button>
+          <button
+            class="fr-btn fr-btn--tertiary-no-outline fr-ml-1w"
+            style="font-weight: 400"
+            :class="!showLliveResources ? 'fr-btn--tertiary--active' : null"
+            @click="showLliveResources = false"
+          >
+            Brouillons
+          </button>
+        </div>
       </div>
       <div v-if="base?.canWrite || base?.canAddResources">
         <DsfrButton
@@ -28,14 +40,23 @@
         />
         <DsfrButton
           v-show="view === 'collections' && !openCollectionId"
+          icon="ri-add-line"
           label="Ajouter une collection"
           @click="onAddCollectionClick"
         />
         <DsfrButton
           v-show="view === 'collections' && openCollectionId"
-          label="Éditer une collection"
           secondary
-          @click="showEditCollectionModal = true"
+          label="Éditer la collection"
+          icon="ri-edit-line"
+          class="fr-mr-3w"
+          @click="editCollectionModalTab = 'general'"
+        />
+        <DsfrButton
+          v-show="view === 'collections' && openCollectionId"
+          label="Gérer les fiches"
+          icon="ri-file-line"
+          @click="editCollectionModalTab = 'resources'"
         />
         <ResourceCreationModal
           v-if="showAddResourceModal"
@@ -47,9 +68,10 @@
           @close="showAddCollectionModal = false"
         />
         <CollectionEdit
-          v-if="showEditCollectionModal"
+          v-if="editCollectionModalTab !== ''"
           :collection="openCollection"
-          @exit="showEditCollectionModal = false"
+          :tab="editCollectionModalTab"
+          @exit="editCollectionModalTab = ''"
         />
       </div>
     </div>
@@ -69,23 +91,6 @@
     </template>
 
     <template v-if="view === 'resources' && base?.canWrite">
-      <div style="text-align: center" class="fr-mb-4w">
-        <button
-          class="fr-btn fr-btn--tertiary-no-outline"
-          :class="showLliveResources ? 'fr-btn--tertiary--active' : null"
-          @click="showLliveResources = true"
-        >
-          Publiées
-        </button>
-        <button
-          class="fr-btn fr-btn--tertiary-no-outline fr-ml-1w"
-          :class="!showLliveResources ? 'fr-btn--tertiary--active' : null"
-          @click="showLliveResources = false"
-        >
-          Brouillons
-        </button>
-      </div>
-
       <!-- loading spinner -->
       <template
         v-if="
@@ -153,6 +158,7 @@ import { computed, PropType } from "vue"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { Base, Collection, Resource, SearchResult } from "~/composables/types"
 import { useLoadingStore } from "~/stores/loadingStore"
+import { pluralize } from "~/composables/strUtils"
 
 const route = useRoute()
 const router = useRouter()
@@ -169,7 +175,7 @@ const props = defineProps({
 
 const showAddResourceModal = ref<boolean>(false)
 const showAddCollectionModal = ref<boolean>(false)
-const showEditCollectionModal = ref<boolean>(false)
+const editCollectionModalTab = ref<"resources" | "general" | "">("")
 
 const onAddResourceClick = () => {
   showAddResourceModal.value = true
@@ -213,4 +219,8 @@ const onCurrentPageChange = async (pageZeroBased: number) => {
 }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.fr-btn--tertiary--active
+  border-bottom-width: 1px !important
+  font-weight: 400
+</style>

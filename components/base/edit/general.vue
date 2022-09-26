@@ -21,7 +21,6 @@
         :is-textarea="true"
         :label-visible="true"
         :required="true"
-        hint="max 560 caractères"
         label="Présentation de la base"
         placeholder="Description de la base"
       />
@@ -161,11 +160,6 @@ const baseStateOptions = [
     value: "private",
   },
 ]*/
-
-const selectedTags = computed(() => [
-  ...participantTags.value.map((tag) => tag.id),
-  ...territoryTags.value.map((tag) => tag.id),
-])
 
 async function updateBase() {
   emits("save", {

@@ -157,6 +157,7 @@ const territory = computed<string>(() =>
   ).join(", ")
 )
 const isSearchDeactivated = computed(() => {
+  return false
   return route.query.view === "collections"
 })
 
