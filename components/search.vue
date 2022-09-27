@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="fr-grid-row fr-grid-row--gutters">
-      <div class="fr-col-6 fr-pt-0">
+      <div
+        :style="
+          isSearchDeactivated
+            ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
+            : null
+        "
+        class="fr-col-6 fr-pt-0"
+      >
         <div class="fr-search-bar fr-input-group fr-mt-4w">
           <input
             id="search"
@@ -42,7 +49,7 @@
       </div>
     </div>
 
-    <div class="fr-mt-4w">
+    <div v-if="!isSearchDeactivated" class="fr-mt-4w">
       <button
         class="fr-btn fr-btn--tertiary-no-outline fr-pl-0"
         :class="showFilters ? 'fr-btn--tertiary--active' : null"
@@ -213,6 +220,10 @@ watch(
     doSearch()
   }
 )
+
+const isSearchDeactivated = computed(() => {
+  return route.query.view === "collections"
+})
 
 const tagCategories = computed<TagCategory[]>(() => {
   const filterKey = dataType.value === "resources" ? "Resource" : "Base"

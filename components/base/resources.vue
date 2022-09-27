@@ -11,7 +11,7 @@
           {{ pluralize(["collection"], base?.collections.length) }}
         </span>
       </div>
-      <div v-if="view === 'resources'">
+      <div v-if="base?.canWrite && view === 'resources'">
         <div style="text-align: center" class="fr-mb-4w">
           <button
             class="fr-btn fr-btn--tertiary-no-outline"
@@ -90,7 +90,7 @@
       </div>
     </template>
 
-    <template v-if="view === 'resources' && base?.canWrite">
+    <template v-if="view === 'resources'">
       <!-- loading spinner -->
       <template
         v-if="

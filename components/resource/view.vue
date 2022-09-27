@@ -21,24 +21,18 @@
           </div>
         </div>
         <!-- TODO re-add this and next div -->
-        <div
-          v-if="false"
-          style="border-bottom: 1px solid var(--border-default-grey)"
-          class="fr-my-3w"
-        ></div>
-        <div v-if="false" class="has-children-space-between">
+        <hr />
+        <div class="has-children-space-between">
           <div class="is-flex">
+            <!--            <div class="stat">-->
+            <!--              <span class="fr-h5">45</span>-->
+            <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
+            <!--            </div>-->
             <div class="stat">
-              <span class="fr-h5">45</span>
-              <span class="fr-text-label--blue-france">enregistrements</span>
-            </div>
-            <div class="stat">
-              <span class="fr-h5">45</span>
-              <span class="fr-text-label--blue-france">mentions</span>
-            </div>
-            <div class="stat">
-              <span class="fr-h5">45</span>
-              <span class="fr-text-label--blue-france">vues</span>
+              <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
+              <span class="fr-text-label--blue-france">{{
+                pluralize(["vue"], resource?.stats.visitCount)
+              }}</span>
             </div>
           </div>
           <div v-if="resource?.reports" class="is-flex">
@@ -190,6 +184,7 @@ import RoundButton from "~/components/roundButton.vue"
 import IndexTable from "~/components/indexTable.vue"
 import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
+import { pluralize } from "~/composables/strUtils"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
