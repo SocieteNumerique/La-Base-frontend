@@ -172,7 +172,7 @@ const currentPage = computed<number>({
   },
 })
 const tagOperator = computed<string>({
-  get: () => <string>route.query.tagOperator || "OR",
+  get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
   },
