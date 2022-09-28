@@ -88,14 +88,7 @@
       </div>
     </template>
 
-    <Search
-      :style="
-        isSearchDeactivated
-          ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
-          : null
-      "
-      @results="updateResults"
-    />
+    <Search @results="updateResults" />
 
     <div
       id="search-results"
@@ -125,6 +118,7 @@ import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
+import { mobileOrTabletCheck } from "~/composables/mobileCheck"
 
 definePageMeta({
   layout: false,
@@ -157,12 +151,6 @@ const territory = computed<string>(() =>
     base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
   ).join(", ")
 )
-const isSearchDeactivated = computed(() => {
-  // TODO search should be deactivated within the component with LB-148
-  //  keeping for now for the filters
-  return false
-  return route.query.view === "collections"
-})
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
@@ -185,7 +173,7 @@ if (process.server) {
 }
 onBeforeMount(async () => {
   // prefill email if exists
-  if (route.query.email) {
+  if (route.query.email && !mobileOrTabletCheck()) {
     const userStore = useUserStore()
     userStore.prefillEmail = <string>route.query.email
     router.replace({ path: route.path, query: {} })
