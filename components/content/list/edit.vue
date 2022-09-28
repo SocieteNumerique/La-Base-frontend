@@ -105,7 +105,10 @@
         </div>
       </template>
     </draggable>
-    <div class="fr-btns-group fr-btns-group--inline">
+    <div
+      class="fr-btns-group fr-btns-group--inline"
+      style="align-items: flex-start"
+    >
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
