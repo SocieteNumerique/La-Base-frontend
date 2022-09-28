@@ -40,9 +40,9 @@
                 </div>
               </div>
               <ContentInputSection
-                v-if="currentEditingSectionId === section.id"
+                v-if="currentEditingSectionId === section.id || section.isNew"
                 v-model="contentsBySection[sectionIndex]"
-                @exit="currentEditingSectionId = null"
+                @exit="noLongerEditing(section)"
               />
               <div v-else class="header-section">
                 <h3>{{ section.title }}</h3>
@@ -261,6 +261,11 @@ function onDeleteContent(sectionIndex: number, contentIndex: number) {
     contentIndex,
     sectionIndex,
   })
+}
+
+function noLongerEditing(section: SectionWithContent) {
+  section.isNew = false
+  currentEditingSectionId.value = null
 }
 </script>
 
