@@ -128,16 +128,6 @@
             class="fr-btn--sm"
             @click="ongoingDeletion = true"
           />
-          <DsfrModal
-            v-if="ongoingDeletion"
-            :actions="actions"
-            :opened="true"
-            title="Supprimer la ressource"
-            @close="ongoingDeletion = false"
-          >
-            Confirmez-vous la suppression de la ressource ? <br />
-            Tous les contenus de la ressource seront supprimés avec elle.
-          </DsfrModal>
         </div>
       </nav>
     </div>
@@ -150,6 +140,16 @@
       @close="showPreview = false"
     >
       <ResourceView :is-preview="true" />
+    </DsfrModal>
+    <DsfrModal
+      v-if="ongoingDeletion"
+      :actions="actions"
+      :opened="true"
+      title="Supprimer la ressource"
+      @close="ongoingDeletion = false"
+    >
+      Confirmez-vous la suppression de la ressource ? <br />
+      Tous les contenus de la ressource seront supprimés avec elle.
     </DsfrModal>
   </div>
 </template>

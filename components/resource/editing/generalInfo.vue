@@ -46,6 +46,7 @@
     />
 
     <ImageResizableUpload
+      v-if="resourceStore.current?.profileImage"
       v-model="resourceStore.current.profileImage"
       :label="`${
         resourceStore.current?.profileImage?.image

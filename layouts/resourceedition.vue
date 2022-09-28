@@ -8,7 +8,7 @@
               class="cursor--pointer fr-text-label--blue-france"
               @click="goToState"
             >
-              Statut : {{ stateLabel[resourceStore.current.state] }}
+              Statut : {{ stateLabel[resourceStore.current?.state] }}
             </div>
             <template v-if="resourceStore.current">
               <div>Créée le : {{ $date(resourceStore.current.created) }}</div>
