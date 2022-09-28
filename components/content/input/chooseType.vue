@@ -10,7 +10,7 @@
       </span>
     </button>
     <div v-show="isMenuShown" class="selector__menu fr-px-2w">
-      <div class="item" @mousedown="onNewFileContent">Fichier</div>
+      <div class="item" @mousedown="onNewFileContent">Fichier ou image</div>
       <div class="item" @mousedown="addSimpleContent('link')">Lien</div>
       <div class="item" @mousedown="addSimpleContent('text')">Texte</div>
       <div class="item" @mousedown="addSimpleContent('linkedResource')">

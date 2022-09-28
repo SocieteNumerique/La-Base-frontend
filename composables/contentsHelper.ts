@@ -31,8 +31,15 @@ function prepareContent(
 ): Content {
   const type = payload.type
   if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
-  if (type === "file")
-    return { type, nbCol: 2, section: sectionId, file: payload.file }
+  if (type === "file") {
+    return {
+      type,
+      nbCol: 2,
+      section: sectionId,
+      file: payload.file,
+      withPreview: payload.file.mimeType?.startsWith("image/"),
+    }
+  }
   if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
   if (type === "linkedResource")
     return { type, nbCol: 2, section: sectionId, linkedResource: resourceId }
