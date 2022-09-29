@@ -144,6 +144,7 @@ export type TagCategoryWithFullTags = {
 
 export type BaseCreate = {
   contact?: string
+  coverImage?: ResizableImage
   description?: string
   profileImage?: ResizableImage
   tags?: number[]
@@ -159,6 +160,7 @@ export type Base = {
   contact?: string
   contributors?: User[]
   contributorTags?: number[]
+  coverImage?: ResizableImage
   description?: string
   profileImage?: ResizableImage
   id: number
