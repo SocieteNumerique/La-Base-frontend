@@ -259,8 +259,9 @@ export type ContentOrder = {
 
 export type Section = {
   id: number
-  order: number
+  isNew?: boolean
   isFoldable: boolean
+  order: number
   title?: string
 }
 

@@ -221,7 +221,7 @@ export async function addSection(
   }
   const { data, error } = await useApiPost<Section>("sections/", section)
   if (!error.value) {
-    return { ...data.value, contents: [] }
+    return { ...data.value, contents: [], isNew: true }
   }
 }
 
@@ -234,6 +234,7 @@ export async function updateSection(section: Section) {
     true
   )
   if (!error.value) {
+    section.isNew = false
     return data.value
   }
 }
