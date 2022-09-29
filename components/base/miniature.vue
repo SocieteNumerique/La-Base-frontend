@@ -4,12 +4,20 @@
       <ShareButton :link="link" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
-      <div class="banner fr-p-1w">
+      <div class="banner">
         <ImageResized
           :resizable-image="base.profileImage"
           width="medium"
           circle
           default-image="base"
+          class="profile"
+        />
+        <ImageResized
+          :resizable-image="base?.coverImage"
+          class="cover"
+          :width="384"
+          :ratio="3.3"
+          overlay
         />
       </div>
       <div class="fr-p-2w">
@@ -87,6 +95,12 @@ const territory = computed<string>(() =>
   .banner
     height: 116px
     background-color: var(--background-default-grey-active)
+    position: relative
+    .profile
+      position: absolute
+      top: 0.5rem
+      left: 0.5rem
+      z-index: 10
 
   .link-container
     display: flex
