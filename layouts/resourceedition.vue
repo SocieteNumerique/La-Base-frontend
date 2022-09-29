@@ -37,15 +37,23 @@
               </template>
             </h1>
           </div>
-          <div class="fr-col-3 fr-pl-5w" style="min-height: 140px">
-            <NuxtLink
-              :to="`/base/${resourceStore.current?.rootBase}`"
-              class="no-underline"
-            >
+          <div
+            v-if="resourceStore.currentId"
+            class="fr-col-3 fr-pl-5w"
+            style="min-height: 140px"
+          >
+            <NuxtLink :to="baseHref" class="no-underline">
               <DsfrButton
                 icon="ri-arrow-go-back-line"
                 class="fr-btn--tertiary-no-outline"
                 label="Retour à la base"
+              />
+            </NuxtLink>
+            <NuxtLink :to="resourceHref" class="no-underline">
+              <DsfrButton
+                icon="ri-arrow-go-back-line"
+                class="fr-btn--tertiary-no-outline"
+                label="Retour à la fiche"
               />
             </NuxtLink>
           </div>
@@ -87,4 +95,9 @@ const stateLabel = {
   draft: "Brouillon",
   restricted: "Restreint",
 }
+
+const baseHref = computed(() => {
+  return "/base/" + resourceStore.current?.rootBase
+})
+const resourceHref = computed(() => "/ressource/" + resourceStore.currentId)
 </script>
