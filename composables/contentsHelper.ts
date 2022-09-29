@@ -11,6 +11,7 @@ import {
   useApiPatch,
   useApiPost,
 } from "~/composables/api"
+import { useAlertStore } from "~/stores/alertStore"
 
 export async function getResourceContentsBySection(resourceId: number) {
   const { data, error } = await useApiGet<{
@@ -50,6 +51,13 @@ async function postContent(content: Content) {
   const { data, error } = await useApiPost<Content>(`contents/`, content)
   if (!error.value) {
     return data.value
+  }
+  if (error.value && error.value.message?.startsWith("413")) {
+    useAlertStore().alert(
+      "Le fichier est trop lourd",
+      "Veuillez ajouter un fichier de 20Mo maximum",
+      "warning"
+    )
   }
 }
 
