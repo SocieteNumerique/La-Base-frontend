@@ -15,10 +15,11 @@
         <ImageResized
           :resizable-image="base?.coverImage"
           class="cover"
-          :width="384"
-          :ratio="3.3"
+          :width="557"
+          :ratio="4.8"
           overlay
         />
+        <!-- sizing method is broken here TODO update with new django serving method -->
       </div>
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">
@@ -101,6 +102,8 @@ const territory = computed<string>(() =>
       top: 0.5rem
       left: 0.5rem
       z-index: 10
+    .cover
+      height: 116px
 
   .link-container
     display: flex
