@@ -6,8 +6,7 @@
           <div class="brand fr-mb-3v">
             <ImageResized
               :resizable-image="base?.profileImage"
-              class="profile"
-              :class="{ 'on-cover': base?.coverImage }"
+              :class="{ 'on-cover': base?.coverImage, profile: true }"
               width="large"
               circle
               default-image="base"
@@ -272,7 +271,7 @@ const stateLabel = {
   position: relative
 
   .profile
-    .on-cover
+    &.on-cover
       position: absolute
       top: 53px
       left: 68px
