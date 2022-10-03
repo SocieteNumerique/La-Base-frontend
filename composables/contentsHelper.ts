@@ -52,12 +52,20 @@ async function postContent(content: Content) {
   if (!error.value) {
     return data.value
   }
-  if (error.value && error.value.message?.startsWith("413")) {
-    useAlertStore().alert(
-      "Le fichier est trop lourd",
-      "Veuillez ajouter un fichier de 20Mo maximum",
-      "warning"
-    )
+  if (error.value) {
+    if (error.value.message?.startsWith("413")) {
+      useAlertStore().alert(
+        "Le fichier est trop lourd",
+        "Veuillez ajouter un fichier de 20Mo maximum",
+        "warning"
+      )
+    } else {
+      useAlertStore().alert(
+        "Erreur lors de l'ajout de contenu",
+        JSON.stringify(error.value.data),
+        "warning"
+      )
+    }
   }
 }
 
