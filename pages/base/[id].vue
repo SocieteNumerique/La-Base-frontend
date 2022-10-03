@@ -3,13 +3,22 @@
     <template #header>
       <div class="fr-background-alt--grey fr-pb-3w fr-pt-6w">
         <div class="fr-container">
-          <ImageResized
-            :resizable-image="base?.profileImage"
-            class="fr-mb-3v"
-            width="large"
-            circle
-            default-image="base"
-          />
+          <div class="brand fr-mb-3v">
+            <ImageResized
+              :resizable-image="base?.profileImage"
+              class="profile"
+              width="large"
+              circle
+              default-image="base"
+            />
+            <ImageResized
+              :resizable-image="base?.coverImage"
+              class="cover"
+              :width="1200"
+              :ratio="4.8"
+              overlay
+            />
+          </div>
           <div
             v-if="base?.canWrite"
             class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2v pre-header"
@@ -43,7 +52,8 @@
               class="fr-mr-3w participant-tags"
             />
             <div v-if="territory" class="territory">
-              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />{{ territory }}
+              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
+              {{ territory }}
             </div>
           </div>
           <div
@@ -256,4 +266,16 @@ const stateLabel = {
 <style lang="sass">
 .base-meta .participant-tags .fr-tag
   margin-bottom: 0
+
+.brand
+  position: relative
+
+  .profile
+    position: absolute
+    top: 53px
+    left: 68px
+    z-index: 10
+
+  .cover
+    height: 250px
 </style>

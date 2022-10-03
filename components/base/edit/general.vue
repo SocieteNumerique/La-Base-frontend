@@ -74,11 +74,15 @@
       />
       <ImageResizableUpload
         v-model="base.profileImage"
-        :label="`${fileActionWord}image de profil pour la base`"
+        :label="`${profileActionWord}image de profil pour la base`"
         crop-circle
         :desired-ratio="1"
       />
-      <!--    cover -->
+      <ImageResizableUpload
+        v-model="base.coverImage"
+        :label="`${coverActionWord}image de couverture pour la base`"
+        :desired-ratio="4.8"
+      />
     </div>
   </DsfrModal>
 </template>
@@ -106,7 +110,11 @@ const props = defineProps({
 const modalTitle = props.new
   ? "Création d'une base"
   : "Les informations de la base"
-const fileActionWord = props.new ? "Ajouter une " : "Changer l'"
+
+const fileActionWord = (attrName: "profileImage" | "coverImage") =>
+  base.value[attrName] ? "Ajouter une " : "Changer l'"
+const profileActionWord = computed<string>(() => fileActionWord("profileImage"))
+const coverActionWord = computed<string>(() => fileActionWord("coverImage"))
 
 const base = ref<Base | BaseCreate>(
   props.new
