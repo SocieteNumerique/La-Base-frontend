@@ -85,6 +85,7 @@ const style = computed(() => {
     "background-size": size,
     "border-radius": props.circle ? "50%" : undefined,
     border: props.bordered ? "1px solid #E5E5E5" : undefined,
+    "background-color": "white",
   }
 })
 </script>
