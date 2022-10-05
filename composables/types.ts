@@ -214,9 +214,11 @@ export interface LinkContent extends BaseContent {
   link: string
   withPreview?: boolean
 }
+
 export interface TextContent extends BaseContent {
   text: string
 }
+
 export interface LinkedResourceContent extends BaseContent {
   linkedResource: number
 }
@@ -230,11 +232,10 @@ export type FullFile = {
 
 export type ResizableImage = {
   image?: FullFile
-  scaleX?: number
-  scaleY?: number
-  relativePositionY?: number
-  relativePositionX?: number
-  coordinates?: Coordinates
+  relativeHeight?: number
+  relativeWidth?: number
+  relativeLeft?: number
+  relativeTop?: number
 }
 
 export interface FileContent extends BaseContent {
