@@ -2,17 +2,14 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useMainStore } from "~/stores/mainStore"
 import { useTagStore } from "~/stores/tagStore"
+import { usePageStore } from "~/stores/pageStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("vue:setup", () => {
-    const baseStore = useBaseStore()
-    const mainStore = useMainStore()
-    const tagStore = useTagStore()
-    const userStore = useUserStore()
-
-    baseStore.refreshBases()
-    mainStore.refreshVersion()
-    tagStore.refreshIndex()
-    userStore.refreshProfile()
+    useBaseStore().refreshBases()
+    useMainStore().refreshVersion()
+    useTagStore().refreshIndex()
+    useUserStore().refreshProfile()
+    usePageStore().getPages()
   })
 })

@@ -327,3 +327,14 @@ export type GenericSearchResult = {
 export type UsersSearchResult = SearchResult<User>
 export type BasesSearchResult = SearchResult<Base>
 export type ResourcesSearchResult = SearchResult<Resource>
+
+export type Page = {
+  htmlContent?: string
+  description: string
+  icon: string
+  isShort: string
+  order: number
+  showInMenu: boolean
+  slug: string
+  title: string
+}

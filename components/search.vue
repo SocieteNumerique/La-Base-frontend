@@ -66,7 +66,7 @@
         style="margin-left: 12px"
         @click="reset"
       >
-        Réinitialiser la rechercher
+        Réinitialiser la recherche
       </button>
     </div>
 
@@ -145,7 +145,7 @@ definePageMeta({
 
 const tagOperatorInput = ref<"OR" | "AND">("AND")
 const focusedCategory = ref(0)
-const showFilters = ref(false)
+const showFilters = ref(true)
 
 const tagStore = useTagStore()
 const router = useRouter()
