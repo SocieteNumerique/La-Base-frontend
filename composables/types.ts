@@ -329,7 +329,7 @@ export type BasesSearchResult = SearchResult<Base>
 export type ResourcesSearchResult = SearchResult<Resource>
 
 export type Page = {
-  htmlContent: string
+  htmlContent?: string
   description: string
   icon: string
   isShort: string
