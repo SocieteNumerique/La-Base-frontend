@@ -1,6 +1,8 @@
 <template>
-  <div v-if="page && !page.isShort">
-    <div v-html="page?.htmlContent"></div>
+  <div>
+    <div v-if="page && !page.isShort">
+      <div v-html="page?.htmlContent"></div>
+    </div>
   </div>
 </template>
 
