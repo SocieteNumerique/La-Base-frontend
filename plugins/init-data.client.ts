@@ -2,6 +2,7 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useMainStore } from "~/stores/mainStore"
 import { useTagStore } from "~/stores/tagStore"
+import { usePageStore } from "~/stores/pageStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("app:mounted", () => {
@@ -26,6 +27,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     const userStore = useUserStore()
     if (!userStore.email) {
       userStore.refreshProfile()
+    }
+
+    const pageStore = usePageStore()
+    if (!Object.keys(pageStore.pagesBySlug).length) {
+      pageStore.getPages()
     }
   })
 })
