@@ -45,8 +45,8 @@
       <ImageResized
         class="fr-mb-2w"
         :resizable-image="savedCollection?.profileImage"
-        :width="320"
-        :ratio="1.7"
+        :dimensions="{ width: '100%', height: '193px' }"
+        format="miniature"
         default-image="collection"
       />
 
