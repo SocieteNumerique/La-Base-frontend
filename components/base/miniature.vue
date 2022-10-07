@@ -7,7 +7,7 @@
       <div class="banner">
         <ImageResized
           :resizable-image="base.profileImage"
-          width="medium"
+          format="miniature"
           circle
           default-image="base"
           class="profile"

@@ -7,7 +7,7 @@
             <ImageResized
               :resizable-image="base?.profileImage"
               class="profile"
-              width="large"
+              format="index"
               circle
               default-image="base"
             />
