@@ -14,8 +14,8 @@
             <ImageResized
               :resizable-image="base?.coverImage"
               class="cover"
-              :width="1200"
-              :ratio="4.8"
+              :dimensions="{ width: '100%', height: '100%' }"
+              format="index"
               overlay
             />
           </div>
