@@ -10,9 +10,8 @@
     />
     <ImageResized
       :resizable-image="file"
-      width="medium"
+      format="miniature"
       :bordered="false"
-      :ratio="desiredRatio"
       :circle="cropCircle"
     />
   </div>

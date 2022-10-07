@@ -230,8 +230,16 @@ export type FullFile = {
   link?: string
 }
 
+export type CroppedImage = {
+  base64?: string
+  name: string
+  mimeType?: string
+  links?: { [key: string]: string }
+}
+
 export type ResizableImage = {
   image?: FullFile
+  croppedImage?: CroppedImage
   relativeHeight?: number
   relativeWidth?: number
   relativeLeft?: number
