@@ -15,7 +15,11 @@
             v-model="textInput"
             class="fr-input"
             type="text"
-            placeholder="Rechercher sur toute la plateforme"
+            :placeholder="
+              isInBaseIndex
+                ? 'Rechercher dans toute la base'
+                : 'Rechercher dans toute la plateforme'
+            "
             @input="doSearch()"
           />
           <button class="fr-btn">
@@ -24,7 +28,7 @@
         </div>
       </div>
       <div
-        v-if="showResourceCollectionsToggle"
+        v-if="isInBaseIndex"
         class="fr-col-6"
         style="align-items: flex-end; display: flex; justify-content: center"
       >
@@ -234,9 +238,7 @@ const tagCategories = computed<TagCategory[]>(() => {
   )
 })
 
-const showResourceCollectionsToggle = computed(() =>
-  route.path.startsWith("/base")
-)
+const isInBaseIndex = computed(() => route.path.startsWith("/base"))
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
