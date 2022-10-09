@@ -70,7 +70,7 @@
       </button>
     </div>
 
-    <template v-if="showFilters">
+    <template v-if="showFilters && !isSearchDeactivated">
       <ul v-if="selectedTags.length" class="fr-pt-1w fr-mt-2w fr-tags-group">
         <li v-for="tagId in selectedTags" :key="tagId">
           <button
