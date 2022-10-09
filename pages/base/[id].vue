@@ -134,6 +134,7 @@ definePageMeta({
   layout: false,
   title: "Base",
 })
+
 const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
@@ -142,6 +143,10 @@ const showAboutModal = ref(false)
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
+})
+
+const base = computed(() => {
+  return baseStore.current
 })
 
 const showReportModal = ref<boolean>(false)
@@ -173,10 +178,6 @@ const getBaseIfNotExists = async () => {
     data: ref(baseStore.basesById[baseId]),
   })
 }
-
-const base = computed(() => {
-  return baseStore.current
-})
 
 if (process.server) {
   getBaseIfNotExists()

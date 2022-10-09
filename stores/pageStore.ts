@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { Page } from "~/composables/types"
 import { useApiGet } from "~/composables/api"
+import { useRoute } from "vue-router"
 
 type PagesBySlug = {
   [slug: string]: Page
@@ -42,6 +43,13 @@ export const usePageStore = defineStore("page", {
     },
   },
   getters: {
+    current: (state): Page | null => {
+      const slug = <string>useRoute().params.slug
+      if (slug && state.pagesBySlug[slug]) {
+        return state.pagesBySlug[slug]
+      }
+      return null
+    },
     pages: (state) => {
       return Object.values(state.order).map(
         (pageSlug) => state.pagesBySlug[pageSlug]
