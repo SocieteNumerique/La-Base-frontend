@@ -272,7 +272,6 @@ const doSearch = debounce(async (scrollToTop = false) => {
 
 const onSelect = (tagId: number) => {
   selectedTags.value = [...selectedTags.value, tagId]
-  focusedCategory.value = 0
   doSearch()
 }
 const removeTag = (tagId: number) => {
