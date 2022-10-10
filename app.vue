@@ -51,9 +51,6 @@ const title = computed<string>(() => {
   if (route.path.startsWith("/ressource/") && resourceStore.current?.title) {
     return resourceStore.current.title
   }
-  if (route.path.startsWith("/ressource/") && resourceStore.current?.title) {
-    return resourceStore.current.title
-  }
   if (route.path.startsWith("/page/") && pageStore.current?.title) {
     return pageStore.current.title
   }
