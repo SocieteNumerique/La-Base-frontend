@@ -1,6 +1,10 @@
 <template>
   <div>
-    <ContentGridViewSwitcher v-model="isGridView" class="fr-mb-3w" />
+    <ContentGridViewSwitcher
+      v-if="isGridViewEnabled"
+      v-model="isGridView"
+      class="fr-mb-3w"
+    />
     <ContentList
       v-show="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
@@ -22,8 +26,12 @@ import {
 
 const resourceStore = useResourceStore()
 
-const isGridViewEnabled = ref<boolean>(true) // TODO is computed from resource
-const isGridView = ref<boolean>(false) // TODO
+const isGridViewEnabled = ref<boolean>(
+  resourceStore.current?.isGridViewEnabled == null
+    ? true
+    : resourceStore.current.isGridViewEnabled
+)
+const isGridView = ref<boolean>(false) // TODO compute from resource?
 
 const contentsBySection = ref<SectionWithContent[]>(
   (await getResourceContentsBySection(resourceStore.currentId!)) ||

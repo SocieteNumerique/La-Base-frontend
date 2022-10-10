@@ -96,6 +96,7 @@ import {
   participantTypeCategoryName,
   territoryCategoryName,
 } from "~/composables/strUtils"
+import { computed } from "vue"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
@@ -169,18 +170,20 @@ const baseStateOptions = [
   },
 ]*/
 
+const baseWithTags = computed(() => ({
+  ...base.value,
+  tags: [
+    ...participantTags.value.map((tag) => tag.id),
+    ...territoryTags.value.map((tag) => tag.id),
+  ],
+}))
+
 async function updateBase() {
-  emits("save", {
-    ...base.value,
-    tags: [
-      ...participantTags.value.map((tag) => tag.id),
-      ...territoryTags.value.map((tag) => tag.id),
-    ],
-  })
+  emits("save", baseWithTags.value)
 }
 
 async function createBase() {
-  const { data, error } = await baseStore.createBase(base.value)
+  const { data, error } = await baseStore.createBase(baseWithTags.value)
   if (!error.value) {
     emits("close")
     if (props.newStayOnPage) return emits("done", data.value.id)

@@ -112,7 +112,7 @@
           <DsfrInput
             :model-value="newExternalProducer.emailContact"
             label="Contact mail"
-            hint="Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
+            :hint="externalProducerHint"
             type="email"
             :label-visible="true"
             @update:model-value="onNewExternalProducerEmailContact"
@@ -264,4 +264,7 @@ const onNewExternalProducerModalClose = () => {
   }
   showExternalProducersModal.value = false
 }
+
+// const externalProducerHint = "Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
+const externalProducerHint = ""
 </script>

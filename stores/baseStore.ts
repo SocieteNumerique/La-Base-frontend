@@ -68,8 +68,9 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
-        this.basesById[data.value.id] = data.value
-        this.basesOrder.push(data.value.id)
+        const newBase = data.value!
+        this.basesById[newBase.id] = newBase
+        this.basesOrder.push(newBase.id)
       }
       return { data, error }
     },
@@ -77,8 +78,8 @@ export const useBaseStore = defineStore("base", {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
         `bases/${baseId}/${short ? "short/" : ""}`
       )
-      if (!error.value && !data.value.isShort) {
-        saveRelatedBaseInfosAndSimplify(data.value)
+      if (!error.value && !data.value!.isShort) {
+        saveRelatedBaseInfosAndSimplify(data.value!)
       }
       return { data, error }
     },
@@ -91,7 +92,7 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
-        saveRelatedBaseInfosAndSimplify(data.value)
+        saveRelatedBaseInfosAndSimplify(data.value!)
       }
       return { data, error }
     },
@@ -131,7 +132,7 @@ export const useBaseStore = defineStore("base", {
         "impossible de récupérer la liste des bases"
       )
       if (!error.value) {
-        const bases = data.value
+        const bases = data.value!
         for (const base of bases) {
           this.basesById[base.id] = base
         }
