@@ -170,7 +170,6 @@ export type Base = {
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
-  resourcesInPage?: number[]
   state?: string
   tags?: number[]
   territoryTags?: number[]

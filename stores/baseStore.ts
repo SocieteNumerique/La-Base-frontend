@@ -42,9 +42,6 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
 
   baseStore.basesById[base.id] = {
     ...base,
-    resourcesInPage: base.resources!.results.map(
-      (resource: Resource) => resource.id
-    ),
     collections: newCollections.map((collection) => collection.id),
   }
 }
@@ -95,20 +92,6 @@ export const useBaseStore = defineStore("base", {
         saveRelatedBaseInfosAndSimplify(data.value!)
       }
       return { data, error }
-    },
-    async updateResourcesInPage(pageOneBased: number) {
-      const { data, error } = await useApiGet<ResourcesWithPagination>(
-        `bases/${this.currentId}/resources/`,
-        { page: pageOneBased }
-      )
-      if (!error.value) {
-        const resourceStore = useResourceStore()
-        saveInOtherStores(resourceStore.resourcesById, data.value!.results)
-        this.pageCount = data.value!.pageCount
-        this.resourceCount = data.value!.count
-        this.basesById[this.currentId!].resourcesInPage =
-          data.value!.results.map((resource) => resource.id)
-      }
     },
     async delete(id: number) {
       const { error } = await useApiDelete(
