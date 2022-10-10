@@ -95,7 +95,6 @@ const territory = computed<string>(() =>
 
   .banner
     height: 116px
-    background-color: var(--background-default-grey-active)
     position: relative
     .profile
       position: absolute

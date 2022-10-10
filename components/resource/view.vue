@@ -30,9 +30,7 @@
             <!--            </div>-->
             <div class="stat">
               <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
-              <span class="fr-text-label--blue-france">{{
-                pluralize(["vue"], resource?.stats.visitCount)
-              }}</span>
+              <span>{{ pluralize(["vue"], resource?.stats.visitCount) }}</span>
             </div>
           </div>
           <div v-if="resource?.reports" class="is-flex">
@@ -153,7 +151,10 @@
                   {{ resource?.description }}
                 </div>
                 <div class="fr-col-3">
-                  <p class="fr-text--bold fr-mb-0">
+                  <p
+                    v-if="resource?.resourceCreatedOn"
+                    class="fr-text--bold fr-mb-0"
+                  >
                     Date de création de la ressource
                   </p>
                   <p>{{ resource?.resourceCreatedOn }}</p>

@@ -6,9 +6,9 @@
       :content="content"
       :is-editing-view="isEditingView"
       :is-grid-view="isGridView"
-      class="fr-text--sm"
+      class="fr-text--sm fr-mb-2w"
     />
-    <div v-if="content.annotation" class="fr-text--xs fr-mt-2w">
+    <div v-if="content.annotation" class="fr-text--sm fr-mt-0">
       {{ content.annotation }}
     </div>
     <div

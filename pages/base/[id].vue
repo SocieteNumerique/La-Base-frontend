@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div class="fr-background-alt--grey fr-pb-3w fr-pt-6w">
+      <div class="fr-background-alt--grey fr-pb-2w fr-pt-6w">
         <div class="fr-container">
           <div class="brand fr-mb-3v">
             <ImageResized
@@ -58,7 +58,7 @@
           </div>
           <div
             style="border-bottom: 1px solid var(--border-default-grey)"
-            class="fr-my-3w"
+            class="fr-my-2w"
           />
           <div class="has-children-space-between">
             <div class="is-flex" style="align-items: center">
@@ -66,7 +66,7 @@
                 <span class="fr-text--xl fr-text--bold">{{
                   base?.visitCount
                 }}</span>
-                <span class="fr-text-label--blue-france">vues</span>
+                <span>vues</span>
               </div>
             </div>
             <div>

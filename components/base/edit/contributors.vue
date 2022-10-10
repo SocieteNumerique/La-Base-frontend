@@ -5,6 +5,10 @@
     title="Contributeurs de la base"
     @close="$emit('close')"
   >
+    <p>
+      Les contributeurs ont un droit d’édition sur l’ensemble des fiches et
+      collections de la Base.
+    </p>
     <UserSelector
       v-model="contributors"
       label="Ajouter un contributeur en cherchant dans les utilisateurs"

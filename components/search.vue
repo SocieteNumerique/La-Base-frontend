@@ -149,7 +149,6 @@ definePageMeta({
 
 const tagOperatorInput = ref<"OR" | "AND">("AND")
 const focusedCategory = ref(0)
-const showFilters = ref(true)
 
 const tagStore = useTagStore()
 const router = useRouter()
@@ -239,6 +238,7 @@ const tagCategories = computed<TagCategory[]>(() => {
 })
 
 const isInBaseIndex = computed(() => route.path.startsWith("/base"))
+const showFilters = ref(!isInBaseIndex.value)
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]

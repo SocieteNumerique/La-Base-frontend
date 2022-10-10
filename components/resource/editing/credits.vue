@@ -108,16 +108,16 @@
           :label-visible="true"
           @update:model-value="onNewExternalProducerName"
         />
-        <div class="fr-mt-3w">
-          <DsfrInput
-            :model-value="newExternalProducer.emailContact"
-            label="Contact mail"
-            :hint="externalProducerHint"
-            type="email"
-            :label-visible="true"
-            @update:model-value="onNewExternalProducerEmailContact"
-          />
-        </div>
+        <!--        <div class="fr-mt-3w">-->
+        <!--          <DsfrInput-->
+        <!--            :model-value="newExternalProducer.emailContact"-->
+        <!--            label="Contact mail"-->
+        <!--            :hint="externalProducerHint"-->
+        <!--            type="email"-->
+        <!--            :label-visible="true"-->
+        <!--            @update:model-value="onNewExternalProducerEmailContact"-->
+        <!--          />-->
+        <!--        </div>-->
 
         <TagSelector
           v-if="tagStore.categoryBySlug('externalProducer_00occupation')"

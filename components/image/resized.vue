@@ -1,5 +1,9 @@
 <template>
-  <div :class="{ overlay: overlay, 'no-image': !url }" class="image-container">
+  <div
+    :class="{ overlay: overlay, 'no-image': !url }"
+    class="image-container"
+    :style="!url && overlay ? 'background: white' : null"
+  >
     <div v-if="resizableImage" :style="style" class="resized-image" />
     <div v-else-if="defaultImage">
       <img
@@ -114,7 +118,7 @@ const style = computed(() => {
     width: 100%
     height: 100%
     z-index: 5
-    background-color: change-color(#E3E3FD, $alpha: 0.33)
+    background-color: change-color(#E3E3FD, $alpha: 0.25)
   &.no-image::after
     background-color: change-color(#ede8ff, $alpha: 0.35)
 </style>
