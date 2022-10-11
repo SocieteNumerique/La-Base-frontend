@@ -235,6 +235,7 @@ const selectTag = (tagId: number) => {
     "change",
     props.source === "ownId" ? sourceTags.value : selectedTags.value
   )
+  inputValue.value = ""
 }
 const removeTag = (tagId: number) => {
   if (props.source === "CurrentResource") {

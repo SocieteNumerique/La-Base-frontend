@@ -15,7 +15,11 @@
             v-model="textInput"
             class="fr-input"
             type="text"
-            placeholder="Rechercher sur toute la plateforme"
+            :placeholder="
+              isInBaseIndex
+                ? 'Rechercher dans toute la base'
+                : 'Rechercher dans toute la plateforme'
+            "
             @input="doSearch()"
           />
           <button class="fr-btn">
@@ -24,7 +28,7 @@
         </div>
       </div>
       <div
-        v-if="showResourceCollectionsToggle"
+        v-if="isInBaseIndex"
         class="fr-col-6"
         style="align-items: flex-end; display: flex; justify-content: center"
       >
@@ -66,11 +70,11 @@
         style="margin-left: 12px"
         @click="reset"
       >
-        Réinitialiser la rechercher
+        Réinitialiser la recherche
       </button>
     </div>
 
-    <template v-if="showFilters">
+    <template v-if="showFilters && !isSearchDeactivated">
       <ul v-if="selectedTags.length" class="fr-pt-1w fr-mt-2w fr-tags-group">
         <li v-for="tagId in selectedTags" :key="tagId">
           <button
@@ -145,7 +149,6 @@ definePageMeta({
 
 const tagOperatorInput = ref<"OR" | "AND">("AND")
 const focusedCategory = ref(0)
-const showFilters = ref(false)
 
 const tagStore = useTagStore()
 const router = useRouter()
@@ -234,9 +237,8 @@ const tagCategories = computed<TagCategory[]>(() => {
   )
 })
 
-const showResourceCollectionsToggle = computed(() =>
-  route.path.startsWith("/base")
-)
+const isInBaseIndex = computed(() => route.path.startsWith("/base"))
+const showFilters = ref(!isInBaseIndex.value)
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
@@ -270,7 +272,6 @@ const doSearch = debounce(async (scrollToTop = false) => {
 
 const onSelect = (tagId: number) => {
   selectedTags.value = [...selectedTags.value, tagId]
-  focusedCategory.value = 0
   doSearch()
 }
 const removeTag = (tagId: number) => {

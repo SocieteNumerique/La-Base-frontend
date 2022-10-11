@@ -11,6 +11,7 @@ import {
   useApiPatch,
   useApiPost,
 } from "~/composables/api"
+import { useAlertStore } from "~/stores/alertStore"
 
 export async function getResourceContentsBySection(resourceId: number) {
   const { data, error } = await useApiGet<{
@@ -31,8 +32,15 @@ function prepareContent(
 ): Content {
   const type = payload.type
   if (type === "text") return { type, text: "", nbCol: 3, section: sectionId }
-  if (type === "file")
-    return { type, nbCol: 2, section: sectionId, file: payload.file }
+  if (type === "file") {
+    return {
+      type,
+      nbCol: 2,
+      section: sectionId,
+      file: payload.file,
+      withPreview: payload.file.mimeType?.startsWith("image/"),
+    }
+  }
   if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
   if (type === "linkedResource")
     return { type, nbCol: 2, section: sectionId, linkedResource: resourceId }
@@ -43,6 +51,21 @@ async function postContent(content: Content) {
   const { data, error } = await useApiPost<Content>(`contents/`, content)
   if (!error.value) {
     return data.value
+  }
+  if (error.value) {
+    if (error.value.message?.startsWith("413")) {
+      useAlertStore().alert(
+        "Le fichier est trop lourd",
+        "Veuillez ajouter un fichier de 20Mo maximum",
+        "warning"
+      )
+    } else {
+      useAlertStore().alert(
+        "Erreur lors de l'ajout de contenu",
+        JSON.stringify(error.value.data),
+        "warning"
+      )
+    }
   }
 }
 
@@ -214,7 +237,7 @@ export async function addSection(
   }
   const { data, error } = await useApiPost<Section>("sections/", section)
   if (!error.value) {
-    return { ...data.value, contents: [] }
+    return { ...data.value, contents: [], isNew: true }
   }
 }
 
@@ -227,6 +250,7 @@ export async function updateSection(section: Section) {
     true
   )
   if (!error.value) {
+    section.isNew = false
     return data.value
   }
 }

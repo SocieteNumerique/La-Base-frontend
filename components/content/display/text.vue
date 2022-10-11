@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <div v-html="content.text" />
+  <div class="contents-display-text" v-html="content.text" />
   <!-- eslint-enable -->
 </template>
 
@@ -12,5 +12,3 @@ defineProps({
   content: { type: Object as PropType<TextContent>, required: true },
 })
 </script>
-
-<style lang="sass" scoped></style>

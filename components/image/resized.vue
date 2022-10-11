@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div
+    :class="{ overlay: overlay, 'no-image': !url }"
+    class="image-container"
+    :style="!url && overlay ? 'background: white' : null"
+  >
     <div v-if="resizableImage" :style="style" class="resized-image" />
     <div v-else-if="defaultImage">
       <img
@@ -31,6 +35,7 @@ const props = defineProps({
     type: String as PropType<"" | "resource" | "collection" | "base">,
     default: "",
   },
+  overlay: { type: Boolean, default: false },
 })
 
 const diameters = {
@@ -84,11 +89,14 @@ const style = computed(() => {
     "background-size": size,
     "border-radius": props.circle ? "50%" : undefined,
     border: props.bordered ? "1px solid #E5E5E5" : undefined,
+    "background-color": "white",
   }
 })
 </script>
 
 <style lang="sass" scoped>
+.image-container
+  overflow: hidden
 /* Frame 1017 */
 .resized-image
   box-sizing: border-box
@@ -98,4 +106,19 @@ const style = computed(() => {
   border: 0.847059px solid #E8EDFF
   background-position: top
   background-size: cover
+
+
+.overlay
+  position: relative
+  &::after
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 5
+    background-color: change-color(#E3E3FD, $alpha: 0.25)
+  &.no-image::after
+    background-color: change-color(#ede8ff, $alpha: 0.35)
 </style>

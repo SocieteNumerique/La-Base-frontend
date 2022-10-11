@@ -143,6 +143,15 @@
                 <button>À propos</button>
               </NuxtLink>
             </li>
+            <li v-for="page of pages" :key="page.slug">
+              <NuxtLink :to="'/page/' + page.slug">
+                <button>
+                  {{ page.title }}
+                  <VIcon v-if="page.icon" class="fr-ml-1w" :name="page.icon" />
+                </button>
+              </NuxtLink>
+            </li>
+
             <template v-if="userStore.isCnfs">
               <li class="fr-ml-auto">
                 <NuxtLink to="/base/3">
@@ -192,11 +201,12 @@
 import { useUserStore } from "~/stores/userStore"
 import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
+import { computed } from "vue"
+import { usePageStore } from "~/stores/pageStore"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
-
-const logoTitle = ["La base du numérique", "d'intérêt général"]
+const pageStore = usePageStore()
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
@@ -218,6 +228,7 @@ const onLogOutClick = () => {
   userStore.logout()
   useRouter().push("/")
 }
+const pages = computed(() => pageStore.pages)
 </script>
 
 <style lang="sass" scoped>

@@ -130,17 +130,18 @@ a
 .bases-holder
   display: flex
   flex-wrap: wrap
-  margin-left: -16px
+  margin-left: -24px
   > *
-    margin-left: 16px
+    margin-left: 24px
     margin-top: 24px
+    margin-bottom: 0
 
 
 // selector
 .selector
   border-color: var(--background-open-blue-france)
   position: relative
-  --item-height: 44px
+  --item-height: 52px
 
   .selector__menu
     background-color: white
@@ -203,3 +204,12 @@ a
 .fr-btn--tertiary--active
   border-bottom: 2px solid var(--text-title-blue-france)
   font-weight: bold
+
+// class added by tip-tap, see LB-150
+.ProseMirror
+  min-height: 120px
+
+// text displayed from tip-tap content, in <ContentDisplayText/>
+.contents-display-text
+  a
+    color: var(--text-action-high-blue-france)

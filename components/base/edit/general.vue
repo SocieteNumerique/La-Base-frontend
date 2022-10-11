@@ -74,11 +74,15 @@
       />
       <ImageResizableUpload
         v-model="base.profileImage"
-        :label="`${fileActionWord}image de profil pour la base`"
+        :label="`${profileActionWord}image de profil pour la base`"
         crop-circle
         :desired-ratio="1"
       />
-      <!--    cover -->
+      <ImageResizableUpload
+        v-model="base.coverImage"
+        :label="`${coverActionWord}image de couverture pour la base`"
+        :desired-ratio="4.8"
+      />
     </div>
   </DsfrModal>
 </template>
@@ -92,6 +96,7 @@ import {
   participantTypeCategoryName,
   territoryCategoryName,
 } from "~/composables/strUtils"
+import { computed } from "vue"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
@@ -106,7 +111,11 @@ const props = defineProps({
 const modalTitle = props.new
   ? "Création d'une base"
   : "Les informations de la base"
-const fileActionWord = props.new ? "Ajouter une " : "Changer l'"
+
+const fileActionWord = (attrName: "profileImage" | "coverImage") =>
+  base.value[attrName] ? "Ajouter une " : "Changer l'"
+const profileActionWord = computed<string>(() => fileActionWord("profileImage"))
+const coverActionWord = computed<string>(() => fileActionWord("coverImage"))
 
 const base = ref<Base | BaseCreate>(
   props.new
@@ -161,18 +170,20 @@ const baseStateOptions = [
   },
 ]*/
 
+const baseWithTags = computed(() => ({
+  ...base.value,
+  tags: [
+    ...participantTags.value.map((tag) => tag.id),
+    ...territoryTags.value.map((tag) => tag.id),
+  ],
+}))
+
 async function updateBase() {
-  emits("save", {
-    ...base.value,
-    tags: [
-      ...participantTags.value.map((tag) => tag.id),
-      ...territoryTags.value.map((tag) => tag.id),
-    ],
-  })
+  emits("save", baseWithTags.value)
 }
 
 async function createBase() {
-  const { data, error } = await baseStore.createBase(base.value)
+  const { data, error } = await baseStore.createBase(baseWithTags.value)
   if (!error.value) {
     emits("close")
     if (props.newStayOnPage) return emits("done", data.value.id)

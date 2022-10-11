@@ -34,7 +34,16 @@
       <div v-if="iControlRootBase" class="item fr-text-default--grey">
         <BaseLabel :base="baseStore.basesById[rootBaseId]" class="fr-mr-2v">
           <div>
-            {{ baseStore.basesById[rootBaseId]?.title }}
+            <div
+              style="
+                text-overflow: ellipsis;
+                width: 230px;
+                overflow: hidden;
+                white-space: nowrap;
+              "
+            >
+              {{ baseStore.basesById[rootBaseId]?.title }}
+            </div>
             <div class="fr-text-mention--grey">Base propriétaire</div>
           </div>
         </BaseLabel>
@@ -46,7 +55,11 @@
           class="item"
           @click="togglePin({ id, isPinned: isPinned })"
         >
-          <BaseLabel :base="baseStore.basesById[id]" class="fr-mr-2v" />
+          <BaseLabel
+            style="width: 280px"
+            :base="baseStore.basesById[id]"
+            class="fr-mr-2v"
+          />
           <VIcon class="check fr-ml-auto" name="ri-check-line" />
           <VIcon class="cross fr-ml-auto" name="ri-close-line" />
         </div>
@@ -170,6 +183,7 @@ async function togglePin(pinStatus: PinStatus) {
 .selector .selector__menu
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll
+  width: 352px
   top: 40px
 
   .item

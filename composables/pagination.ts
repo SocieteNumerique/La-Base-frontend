@@ -14,8 +14,7 @@ export const paginationFromNResults = (
   if (nResults <= pageSize) {
     return []
   }
-  let nPages = Math.ceil(nResults / pageSize)
-  nPages = Math.min(nPages, 10) // maximum 10 pages
+  const nPages = Math.ceil(nResults / pageSize)
   return [...Array(nPages).keys()]
     .map((number) => number + 1)
     .map((page) => ({

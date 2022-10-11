@@ -12,7 +12,6 @@ if (process.env.NODE_ENV !== "production") {
   // production server
   if (process.server) {
     const port = process.env.API_PORT || "8000"
-    console.log("### api port", port)
     // server-side rendering
     base_url = `http://localhost:${port}`
   }

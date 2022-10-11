@@ -81,6 +81,7 @@ export type CollectionCreate = {
 export type CollectionWithDetailedResources = {
   id: number
   base: number
+  description: string
   pinnedInBases?: number[]
   name: string
   nbResources?: number
@@ -144,6 +145,7 @@ export type TagCategoryWithFullTags = {
 
 export type BaseCreate = {
   contact?: string
+  coverImage?: ResizableImage
   description?: string
   profileImage?: ResizableImage
   tags?: number[]
@@ -159,6 +161,7 @@ export type Base = {
   contact?: string
   contributors?: User[]
   contributorTags?: number[]
+  coverImage?: ResizableImage
   description?: string
   profileImage?: ResizableImage
   id: number
@@ -167,7 +170,6 @@ export type Base = {
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
-  resourcesInPage?: number[]
   state?: string
   tags?: number[]
   territoryTags?: number[]
@@ -259,8 +261,9 @@ export type ContentOrder = {
 
 export type Section = {
   id: number
-  order: number
+  isNew?: boolean
   isFoldable: boolean
+  order: number
   title?: string
 }
 
@@ -324,3 +327,14 @@ export type GenericSearchResult = {
 export type UsersSearchResult = SearchResult<User>
 export type BasesSearchResult = SearchResult<Base>
 export type ResourcesSearchResult = SearchResult<Resource>
+
+export type Page = {
+  htmlContent?: string
+  description: string
+  icon: string
+  isShort: string
+  order: number
+  showInMenu: boolean
+  slug: string
+  title: string
+}

@@ -5,6 +5,10 @@
     title="Administrateurs de la base"
     @close="$emit('close')"
   >
+    <p>
+      Les administrateurs ont tous les droits d’éditions et de réglages sur la
+      Base.
+    </p>
     <UserSelector v-model="admins" label="Ajouter" />
     <label class="fr-label fr-pt-3w">Les administrateurs</label>
     <UserList :users="admins" @remove="removeUserId" />

@@ -42,9 +42,6 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
 
   baseStore.basesById[base.id] = {
     ...base,
-    resourcesInPage: base.resources!.results.map(
-      (resource: Resource) => resource.id
-    ),
     collections: newCollections.map((collection) => collection.id),
   }
 }
@@ -68,8 +65,9 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
-        this.basesById[data.value.id] = data.value
-        this.basesOrder.push(data.value.id)
+        const newBase = data.value!
+        this.basesById[newBase.id] = newBase
+        this.basesOrder.push(newBase.id)
       }
       return { data, error }
     },
@@ -77,8 +75,8 @@ export const useBaseStore = defineStore("base", {
       const { data, error } = await useApiGet<BaseWithDetailedResources>(
         `bases/${baseId}/${short ? "short/" : ""}`
       )
-      if (!error.value && !data.value.isShort) {
-        saveRelatedBaseInfosAndSimplify(data.value)
+      if (!error.value && !data.value!.isShort) {
+        saveRelatedBaseInfosAndSimplify(data.value!)
       }
       return { data, error }
     },
@@ -91,23 +89,9 @@ export const useBaseStore = defineStore("base", {
         true
       )
       if (!error.value) {
-        saveRelatedBaseInfosAndSimplify(data.value)
+        saveRelatedBaseInfosAndSimplify(data.value!)
       }
       return { data, error }
-    },
-    async updateResourcesInPage(pageOneBased: number) {
-      const { data, error } = await useApiGet<ResourcesWithPagination>(
-        `bases/${this.currentId}/resources/`,
-        { page: pageOneBased }
-      )
-      if (!error.value) {
-        const resourceStore = useResourceStore()
-        saveInOtherStores(resourceStore.resourcesById, data.value!.results)
-        this.pageCount = data.value!.pageCount
-        this.resourceCount = data.value!.count
-        this.basesById[this.currentId!].resourcesInPage =
-          data.value!.results.map((resource) => resource.id)
-      }
     },
     async delete(id: number) {
       const { error } = await useApiDelete(
@@ -131,7 +115,7 @@ export const useBaseStore = defineStore("base", {
         "impossible de récupérer la liste des bases"
       )
       if (!error.value) {
-        const bases = data.value
+        const bases = data.value!
         for (const base of bases) {
           this.basesById[base.id] = base
         }

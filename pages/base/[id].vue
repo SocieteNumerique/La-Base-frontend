@@ -1,15 +1,24 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div class="fr-background-alt--grey fr-pb-3w fr-pt-6w">
+      <div class="fr-background-alt--grey fr-pb-2w fr-pt-6w">
         <div class="fr-container">
-          <ImageResized
-            :resizable-image="base?.profileImage"
-            class="fr-mb-3v"
-            width="large"
-            circle
-            default-image="base"
-          />
+          <div class="brand fr-mb-3v">
+            <ImageResized
+              :resizable-image="base?.profileImage"
+              class="profile"
+              width="large"
+              circle
+              default-image="base"
+            />
+            <ImageResized
+              :resizable-image="base?.coverImage"
+              class="cover"
+              :width="1200"
+              :ratio="4.8"
+              overlay
+            />
+          </div>
           <div
             v-if="base?.canWrite"
             class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2v pre-header"
@@ -43,12 +52,13 @@
               class="fr-mr-3w participant-tags"
             />
             <div v-if="territory" class="territory">
-              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />{{ territory }}
+              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
+              {{ territory }}
             </div>
           </div>
           <div
             style="border-bottom: 1px solid var(--border-default-grey)"
-            class="fr-my-3w"
+            class="fr-my-2w"
           />
           <div class="has-children-space-between">
             <div class="is-flex" style="align-items: center">
@@ -56,7 +66,7 @@
                 <span class="fr-text--xl fr-text--bold">{{
                   base?.visitCount
                 }}</span>
-                <span class="fr-text-label--blue-france">vues</span>
+                <span>vues</span>
               </div>
             </div>
             <div>
@@ -88,14 +98,7 @@
       </div>
     </template>
 
-    <Search
-      :style="
-        isSearchDeactivated
-          ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
-          : null
-      "
-      @results="updateResults"
-    />
+    <Search @results="updateResults" />
 
     <div
       id="search-results"
@@ -125,11 +128,13 @@ import { useAlertStore } from "~/stores/alertStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
+import { mobileOrTabletCheck } from "~/composables/mobileCheck"
 
 definePageMeta({
   layout: false,
   title: "Base",
 })
+
 const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
@@ -138,6 +143,10 @@ const showAboutModal = ref(false)
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
+})
+
+const base = computed(() => {
+  return baseStore.current
 })
 
 const showReportModal = ref<boolean>(false)
@@ -157,12 +166,6 @@ const territory = computed<string>(() =>
     base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
   ).join(", ")
 )
-const isSearchDeactivated = computed(() => {
-  // TODO search should be deactivated within the component with LB-148
-  //  keeping for now for the filters
-  return false
-  return route.query.view === "collections"
-})
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
@@ -176,16 +179,12 @@ const getBaseIfNotExists = async () => {
   })
 }
 
-const base = computed(() => {
-  return baseStore.current
-})
-
 if (process.server) {
   getBaseIfNotExists()
 }
 onBeforeMount(async () => {
   // prefill email if exists
-  if (route.query.email) {
+  if (route.query.email && !mobileOrTabletCheck()) {
     const userStore = useUserStore()
     userStore.prefillEmail = <string>route.query.email
     router.replace({ path: route.path, query: {} })
@@ -268,4 +267,16 @@ const stateLabel = {
 <style lang="sass">
 .base-meta .participant-tags .fr-tag
   margin-bottom: 0
+
+.brand
+  position: relative
+
+  .profile
+    position: absolute
+    top: 53px
+    left: 68px
+    z-index: 10
+
+  .cover
+    height: 250px
 </style>

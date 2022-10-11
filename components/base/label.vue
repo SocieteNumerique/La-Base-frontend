@@ -1,12 +1,14 @@
 <template>
   <span class="base-label">
-    <ImageResized
-      :resizable-image="base.profileImage"
-      width="small"
-      circle
-      class="fr-mr-2v"
-      default-image="base"
-    />
+    <div>
+      <ImageResized
+        :resizable-image="base.profileImage"
+        width="small"
+        circle
+        class="fr-mr-2v"
+        default-image="base"
+      />
+    </div>
     <slot>
       {{ base.title }}
     </slot>

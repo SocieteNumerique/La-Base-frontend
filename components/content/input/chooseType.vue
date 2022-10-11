@@ -10,7 +10,15 @@
       </span>
     </button>
     <div v-show="isMenuShown" class="selector__menu fr-px-2w">
-      <div class="item" @mousedown="onNewFileContent">Fichier</div>
+      <div
+        class="item"
+        style="line-height: 1rem !important"
+        @mousedown="onNewFileContent"
+      >
+        Fichier ou image
+        <br />
+        <span class="fr-text--xs fr-text--disabled">20Mo maximum</span>
+      </div>
       <div class="item" @mousedown="addSimpleContent('link')">Lien</div>
       <div class="item" @mousedown="addSimpleContent('text')">Texte</div>
       <div class="item" @mousedown="addSimpleContent('linkedResource')">

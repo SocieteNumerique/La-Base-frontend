@@ -12,7 +12,7 @@ export default defineNuxtPlugin(() => {
         }
         const date = new Date(Date.parse(dateStr))
         return date.toLocaleString(["fr-FR"], {
-          month: "short",
+          month: "2-digit",
           day: "2-digit",
           year: "numeric",
         })

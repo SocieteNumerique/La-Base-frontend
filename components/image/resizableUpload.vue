@@ -13,6 +13,7 @@
       width="medium"
       :bordered="false"
       :ratio="desiredRatio"
+      :circle="cropCircle"
     />
   </div>
   <div class="fr-btns-group fr-btns-group--inline">

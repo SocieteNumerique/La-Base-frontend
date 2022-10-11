@@ -108,16 +108,16 @@
           :label-visible="true"
           @update:model-value="onNewExternalProducerName"
         />
-        <div class="fr-mt-3w">
-          <DsfrInput
-            :model-value="newExternalProducer.emailContact"
-            label="Contact mail"
-            hint="Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
-            type="email"
-            :label-visible="true"
-            @update:model-value="onNewExternalProducerEmailContact"
-          />
-        </div>
+        <!--        <div class="fr-mt-3w">-->
+        <!--          <DsfrInput-->
+        <!--            :model-value="newExternalProducer.emailContact"-->
+        <!--            label="Contact mail"-->
+        <!--            :hint="externalProducerHint"-->
+        <!--            type="email"-->
+        <!--            :label-visible="true"-->
+        <!--            @update:model-value="onNewExternalProducerEmailContact"-->
+        <!--          />-->
+        <!--        </div>-->
 
         <TagSelector
           v-if="tagStore.categoryBySlug('externalProducer_00occupation')"
@@ -264,4 +264,7 @@ const onNewExternalProducerModalClose = () => {
   }
   showExternalProducersModal.value = false
 }
+
+// const externalProducerHint = "Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
+const externalProducerHint = ""
 </script>

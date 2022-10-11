@@ -40,9 +40,9 @@
                 </div>
               </div>
               <ContentInputSection
-                v-if="currentEditingSectionId === section.id"
+                v-if="currentEditingSectionId === section.id || section.isNew"
                 v-model="contentsBySection[sectionIndex]"
-                @exit="currentEditingSectionId = null"
+                @exit="noLongerEditing(section)"
               />
               <div v-else class="header-section">
                 <h3>{{ section.title }}</h3>
@@ -105,7 +105,10 @@
         </div>
       </template>
     </draggable>
-    <div class="fr-btns-group fr-btns-group--inline">
+    <div
+      class="fr-btns-group fr-btns-group--inline"
+      style="align-items: flex-start"
+    >
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
@@ -258,6 +261,11 @@ function onDeleteContent(sectionIndex: number, contentIndex: number) {
     contentIndex,
     sectionIndex,
   })
+}
+
+function noLongerEditing(section: SectionWithContent) {
+  section.isNew = false
+  currentEditingSectionId.value = null
 }
 </script>
 

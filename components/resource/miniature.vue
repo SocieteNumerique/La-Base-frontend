@@ -65,6 +65,7 @@
             </div>
           </template>
         </div>
+        <div class="separator fr-my-1w" />
         <div
           v-if="resource.stats"
           title="nombre de vues depuis le 9 septembre 2022"
