@@ -36,8 +36,8 @@
         <ImageResized
           class="fr-mb-2w"
           :resizable-image="resource?.profileImage"
-          :width="352"
-          :ratio="1.4"
+          :dimensions="{ width: '100%', height: '250px' }"
+          format="miniature"
           default-image="resource"
         />
         <h3 class="fr-h6 fr-mb-0">{{ resource?.title }}</h3>
