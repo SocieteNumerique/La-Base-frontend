@@ -6,7 +6,7 @@
       :error="error"
       :hint="computedHint"
       :label="label"
-      :accept="requireImage ? imageMimeTypes.join(', ') : '*'"
+      :accept="requireImage ? 'image/*' : '*'"
       @change="onChange"
     />
   </slot>
@@ -34,15 +34,6 @@ const fileInput = ref<HTMLInputElement>()
 onMounted(() => {
   fileInput.value = inputContainer.value.$el.getElementsByTagName("input")[0]
 })
-
-const imageMimeTypes = [
-  "image/gif",
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/mbp",
-  "image/tiff",
-]
 
 const isImage = computed<boolean>(() => {
   return file.value?.mimeType?.includes("image") || false

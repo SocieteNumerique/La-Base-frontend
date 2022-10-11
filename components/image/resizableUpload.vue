@@ -10,8 +10,9 @@
     />
     <ImageResized
       :resizable-image="file"
-      format="miniature"
+      width="medium"
       :bordered="false"
+      :ratio="desiredRatio"
       :circle="cropCircle"
     />
   </div>
@@ -44,7 +45,7 @@
         :default-position="defaultPosition"
         :default-size="defaultSize"
         background-class="cropper-background"
-        @change="updateCoordinates"
+        @change="file.coordinates = $event.coordinates"
       />
     </client-only>
     <DsfrButton
@@ -66,7 +67,6 @@ import {
   RectangleStencil,
   Size,
   Coordinates,
-  CropperResult,
 } from "vue-advanced-cropper"
 import "vue-advanced-cropper/dist/style.css"
 import { useAlertStore } from "~/stores/alertStore"
@@ -112,30 +112,33 @@ const confirm = () => {
 
 function defaultPosition({ imageSize }: { imageSize: Size }) {
   return {
-    left: Math.round((file.value.relativeLeft || 0) * imageSize.width),
-    top: Math.round((file.value.relativeTop || 0) * imageSize.height),
+    left: Math.round(
+      ((file.value.relativePositionX || 0) * imageSize.width) /
+        (file.value.scaleX || 1)
+    ),
+    top: Math.round(
+      ((file.value.relativePositionY || 0) * imageSize.height) /
+        (file.value.scaleY || 1)
+    ),
   }
 }
 
 function defaultSize({
   imageSize,
+  visibleArea,
 }: {
   imageSize: Size
   visibleArea: Coordinates
 }) {
   return {
-    width: Math.round(imageSize.width * (file.value.relativeWidth || 1)),
-    height: Math.round(imageSize.height * (file.value.relativeHeight || 1)),
-  }
-}
-
-function updateCoordinates({ coordinates, image }: CropperResult) {
-  file.value = {
-    ...file.value,
-    relativeWidth: coordinates.width / image.width,
-    relativeHeight: coordinates.height / image.height,
-    relativeLeft: coordinates.left / image.width,
-    relativeTop: coordinates.top / image.height,
+    width: Math.round(
+      imageSize.width / (file.value.scaleX || 1) ||
+        (visibleArea || imageSize).width
+    ),
+    height: Math.round(
+      imageSize.height / (file.value.scaleY || 1) ||
+        (visibleArea || imageSize).height
+    ),
   }
 }
 </script>

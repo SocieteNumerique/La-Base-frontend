@@ -214,11 +214,9 @@ export interface LinkContent extends BaseContent {
   link: string
   withPreview?: boolean
 }
-
 export interface TextContent extends BaseContent {
   text: string
 }
-
 export interface LinkedResourceContent extends BaseContent {
   linkedResource: number
 }
@@ -230,20 +228,13 @@ export type FullFile = {
   link?: string
 }
 
-export type CroppedImage = {
-  base64?: string
-  name: string
-  mimeType?: string
-  links?: { [key: string]: string }
-}
-
 export type ResizableImage = {
   image?: FullFile
-  croppedImage?: CroppedImage
-  relativeHeight?: number
-  relativeWidth?: number
-  relativeLeft?: number
-  relativeTop?: number
+  scaleX?: number
+  scaleY?: number
+  relativePositionY?: number
+  relativePositionX?: number
+  coordinates?: Coordinates
 }
 
 export interface FileContent extends BaseContent {

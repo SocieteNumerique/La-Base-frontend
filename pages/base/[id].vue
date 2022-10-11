@@ -7,15 +7,15 @@
             <ImageResized
               :resizable-image="base?.profileImage"
               class="profile"
-              format="index"
+              width="large"
               circle
               default-image="base"
             />
             <ImageResized
               :resizable-image="base?.coverImage"
               class="cover"
-              :dimensions="{ width: '100%', height: '100%' }"
-              format="index"
+              :width="1200"
+              :ratio="4.8"
               overlay
             />
           </div>

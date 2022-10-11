@@ -3,7 +3,7 @@
     <div>
       <ImageResized
         :resizable-image="base.profileImage"
-        format="option"
+        width="small"
         circle
         class="fr-mr-2v"
         default-image="base"

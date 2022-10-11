@@ -19,15 +19,16 @@
 import { PropType } from "vue"
 import { ResizableImage } from "~/composables/types"
 
-type Dimensions = { width: string; height: string }
-
 const props = defineProps({
   resizableImage: { type: Object as PropType<ResizableImage>, default: null },
-  circle: { type: Boolean, default: false },
-  format: { type: String, required: true },
-  dimensions: {
-    type: Object as PropType<Dimensions>,
-    default: null,
+  circle: {
+    type: Boolean,
+    default: false,
+  },
+  ratio: { type: Number, default: 1 },
+  width: {
+    type: [Number, String] as PropType<"small" | "medium" | "large" | number>,
+    default: "medium",
   },
   bordered: { type: Boolean, default: true },
   defaultImage: {
@@ -37,43 +38,58 @@ const props = defineProps({
   overlay: { type: Boolean, default: false },
 })
 
-const diameters: { [key: string]: Dimensions } = {
-  option: { width: "30px", height: "30px" },
-  miniature: { width: "100px", height: "100px" },
-  index: { width: "144px", height: "144px" },
+const diameters = {
+  small: 30,
+  medium: 100,
+  large: 144,
 }
 
-const url = computed<string>(() =>
-  props.resizableImage
-    ? props.resizableImage?.croppedImage?.links?.[props.format] || ""
-    : ""
-)
+const url = computed<string>(() => {
+  if (props.resizableImage) return props.resizableImage.image?.link || ""
+  return ""
+})
 
-const computedDimensions = computed<Dimensions>(
-  () =>
-    props.dimensions ||
-    diameters[props.format] || { width: "100px", height: "100px" }
+const widthPx = computed<number>(() =>
+  typeof props.width === "number" ? props.width : diameters[props.width]
 )
+const heightPx = computed<number>(() => widthPx.value / props.ratio)
 
 const defaultImageStyle = computed(() => {
   return {
+    width: `${widthPx.value}px`,
+    height: `${heightPx.value}px`,
     border: props.bordered ? "1px solid #E5E5E5" : undefined,
     "border-radius": props.circle ? "100%" : undefined,
-    width: computedDimensions.value.width,
-    height: computedDimensions.value.height,
   }
 })
 
 const style = computed(() => {
+  const size =
+    props.resizableImage?.scaleX && props.resizableImage?.scaleY
+      ? `${widthPx.value * (props.resizableImage.scaleX || 1)}px ${
+          heightPx.value * (props.resizableImage.scaleY || 1)
+        }px`
+      : "cover"
+
+  const positionX = props.resizableImage?.relativePositionX
+    ? `-${props.resizableImage.relativePositionX * widthPx.value}px`
+    : "left"
+  const positionY = props.resizableImage?.relativePositionY
+    ? `-${props.resizableImage.relativePositionY * heightPx.value}px`
+    : "top"
   return {
     "background-image": url.value
       ? `url('${url.value}')`
       : "var(--background-default-grey)",
+    width: `${widthPx.value}px`,
+    height: `${heightPx.value}px`,
+
+    "background-position-x": positionX,
+    "background-position-y": positionY,
+    "background-size": size,
     "border-radius": props.circle ? "50%" : undefined,
     border: props.bordered ? "1px solid #E5E5E5" : undefined,
     "background-color": "white",
-    width: computedDimensions.value.width,
-    height: computedDimensions.value.height,
   }
 })
 </script>
@@ -94,7 +110,6 @@ const style = computed(() => {
 
 .overlay
   position: relative
-
   &::after
     content: ""
     position: absolute

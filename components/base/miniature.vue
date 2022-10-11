@@ -7,7 +7,7 @@
       <div class="banner">
         <ImageResized
           :resizable-image="base.profileImage"
-          format="miniature"
+          width="medium"
           circle
           default-image="base"
           class="profile"
@@ -15,10 +15,11 @@
         <ImageResized
           :resizable-image="base?.coverImage"
           class="cover"
-          :dimensions="{ width: '100%', height: '100%' }"
-          format="miniature"
+          :width="557"
+          :ratio="4.8"
           overlay
         />
+        <!-- sizing method is broken here TODO update with new django serving method -->
       </div>
       <div class="fr-p-2w">
         <h3 class="fr-h6 fr-mb-0">
