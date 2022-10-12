@@ -10,7 +10,11 @@
     />
     <ImageResized
       :resizable-image="file"
-      format="miniature"
+      format="preview"
+      :dimensions="{
+        width: '100px',
+        height: `${Math.round(100 / desiredRatio)}px`,
+      }"
       :bordered="false"
       :circle="cropCircle"
     />
