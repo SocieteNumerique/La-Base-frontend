@@ -45,7 +45,9 @@ const diameters: { [key: string]: Dimensions } = {
 
 const url = computed<string>(() =>
   props.resizableImage
-    ? props.resizableImage?.croppedImage?.links?.[props.format] || ""
+    ? props.resizableImage?.croppedImage?.links?.[props.format] ||
+      props.resizableImage?.image?.link ||
+      ""
     : ""
 )
 
@@ -104,6 +106,7 @@ const style = computed(() => {
     height: 100%
     z-index: 5
     background-color: change-color(#E3E3FD, $alpha: 0.25)
+
   &.no-image::after
     background-color: change-color(#ede8ff, $alpha: 0.35)
 </style>
