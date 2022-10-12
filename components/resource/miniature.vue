@@ -36,7 +36,7 @@
         <ImageResized
           class="fr-mb-2w"
           :resizable-image="resource?.profileImage"
-          :dimensions="{ width: '100%', height: '250px' }"
+          :dimensions="{ width: '100%', height: '252px' }"
           format="miniature"
           default-image="resource"
         />
