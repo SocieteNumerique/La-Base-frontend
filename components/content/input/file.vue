@@ -26,12 +26,10 @@
       {{ content.file?.name }}
     </a>
   </div>
-  <DsfrFileUpload
+  <FormFileUpload
     :id="inputId"
-    ref="inputContainer"
-    :hint="hint"
+    v-model="content.value.file"
     label="Remplacer le fichier"
-    @change="onChange"
   />
   <DsfrCheckbox
     v-if="isImage"
@@ -45,28 +43,16 @@
 import { PropType } from "vue"
 import { FileContent } from "~/composables/types"
 import { useModel } from "~/composables/modelWrapper"
-import { inputToFileObject } from "~/composables/fileUpload"
 
 defineProps({
   modelValue: { type: Object as PropType<FileContent>, required: true },
 })
 
 const content = useModel<FileContent>("modelValue", { type: "object" })
-const hint = "Taille maximale de fichier : 15 Mo."
 
-const inputContainer = ref()
 const inputId = computed(() => `file-input-${content.value.id}`)
-const fileInput = ref<HTMLInputElement>()
-onMounted(() => {
-  fileInput.value = inputContainer.value.$el.getElementsByTagName("input")[0]
-})
 
 const isImage = computed<boolean>(
   () => content.value.file?.mimeType?.includes("image") || false
 )
-
-async function onChange() {
-  const fileObject = await inputToFileObject(fileInput.value!)
-  content.value.file = fileObject!
-}
 </script>
