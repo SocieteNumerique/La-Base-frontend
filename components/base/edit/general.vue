@@ -61,6 +61,7 @@
                 type="radio"
                 name="contact-state"
                 value="public"
+                :disabled="base.state === 'private'"
               />
               <label class="fr-label" for="contact-state-public">Public</label>
             </div>
@@ -71,13 +72,12 @@
                 type="radio"
                 name="contact-state"
                 value="private"
+                :disabled="base.state === 'private'"
               />
               <label class="fr-label" for="contact-state-private">Privé</label>
             </div>
           </div>
-          <div class="fr-hint-text fr-mt-2w">
-            Les personnes autorisées à consulter la base peuvent vous contacter
-          </div>
+          <div class="fr-hint-text fr-mt-2w">{{ contactStateHint }}</div>
         </fieldset>
       </div>
       <TagSelector
@@ -145,6 +145,11 @@ const fileActionWord = (attrName: "profileImage" | "coverImage") =>
   base.value[attrName] ? "Ajouter une " : "Changer l'"
 const profileActionWord = computed<string>(() => fileActionWord("profileImage"))
 const coverActionWord = computed<string>(() => fileActionWord("coverImage"))
+const contactStateHint = computed<string>(() =>
+  base.value?.contactState === "private"
+    ? "Seuls les contributeurs et administrateurs de la base peuvent vous contacter"
+    : "Les personnes autorisées à consulter la base peuvent vous contacter"
+)
 
 const base = ref<Base | BaseCreate>(
   props.new
