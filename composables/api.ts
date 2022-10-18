@@ -71,13 +71,14 @@ export async function useApiRequest<Type>(
   params = {},
   onSuccess: Alert | string | null = null,
   // if onError is true, the alert title and message is built from API response
-  onError: Alert | string | boolean = false
+  onError: Alert | string | boolean = false,
+  spinnerMessage: boolean | string = false
 ) {
   const loadingStore = useLoadingStore()
   const alertStore = useAlertStore()
 
   const key = makeLoadingKey(path)
-  loadingStore.markLoading(key)
+  loadingStore.markLoading(key, spinnerMessage)
   const { data, error } = await useAsyncData<Type>(
     key,
     () =>
@@ -145,9 +146,18 @@ export async function useApiGet<Type>(
   path: string,
   params = {},
   onSuccess: Alert | string | null = null,
-  onError: Alert | string | boolean = false
+  onError: Alert | string | boolean = false,
+  spinnerMessage: boolean | string = false
 ) {
-  return useApiRequest<Type>("GET", path, undefined, params, onSuccess, onError)
+  return useApiRequest<Type>(
+    "GET",
+    path,
+    undefined,
+    params,
+    onSuccess,
+    onError,
+    spinnerMessage
+  )
 }
 
 export async function useApiPost<Type>(
@@ -155,9 +165,18 @@ export async function useApiPost<Type>(
   payload = {},
   params = {},
   onSuccess: Alert | string | null = null,
-  onError: Alert | string | boolean = false
+  onError: Alert | string | boolean = false,
+  spinnerMessage: boolean | string = false
 ) {
-  return useApiRequest<Type>("POST", path, payload, params, onSuccess, onError)
+  return useApiRequest<Type>(
+    "POST",
+    path,
+    payload,
+    params,
+    onSuccess,
+    onError,
+    spinnerMessage
+  )
 }
 
 export async function useApiPatch<Type>(
@@ -165,16 +184,26 @@ export async function useApiPatch<Type>(
   payload = {},
   params = {},
   onSuccess: Alert | string | null = null,
-  onError: Alert | string | boolean = false
+  onError: Alert | string | boolean = false,
+  spinnerMessage: boolean | string = false
 ) {
-  return useApiRequest<Type>("PATCH", path, payload, params, onSuccess, onError)
+  return useApiRequest<Type>(
+    "PATCH",
+    path,
+    payload,
+    params,
+    onSuccess,
+    onError,
+    spinnerMessage
+  )
 }
 
 export async function useApiDelete<Type>(
   path: string,
   params = {},
   onSuccess: Alert | string | null = null,
-  onError: Alert | string | boolean = false
+  onError: Alert | string | boolean = false,
+  spinnerMessage: boolean | string = false
 ) {
   return useApiRequest<Type>(
     "DELETE",
@@ -182,6 +211,7 @@ export async function useApiDelete<Type>(
     undefined,
     params,
     onSuccess,
-    onError
+    onError,
+    spinnerMessage
   )
 }
