@@ -141,7 +141,7 @@ defineProps({
     type: Object as PropType<SectionWithContent>,
     required: true,
   },
-  editingContent: { type: Number, default: undefined },
+  editingContent: { type: Number, default: null },
 })
 const emits = defineEmits([
   "new-solo-content",
@@ -152,6 +152,7 @@ const emits = defineEmits([
   "auto-delete-section",
   "new-adhoc-section",
   "update:editingContent",
+  "update:modelValue",
   "reload-contents",
 ])
 

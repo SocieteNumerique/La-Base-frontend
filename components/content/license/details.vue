@@ -75,7 +75,7 @@ const emits = defineEmits([
   "close",
   "previous",
   "update:tag",
-  "update:license-text",
+  "update:licenseText",
 ])
 defineProps({
   licenseText: { type: Object as PropType<LicenseText>, required: true },

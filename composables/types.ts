@@ -55,6 +55,7 @@ export type Resource = {
   licenseText?: LicenseText | null
   linkedResourceIds?: number[]
   modified: string
+  profileImage?: ResizableImage
   producerState: string
   resourceCreatedOn: string
   rootBase?: number
@@ -76,6 +77,7 @@ export type ResourceCreate = {
 export type CollectionCreate = {
   base: number
   name: string
+  profileImage?: ResizableImage
 }
 
 export type CollectionWithDetailedResources = {
@@ -85,6 +87,7 @@ export type CollectionWithDetailedResources = {
   pinnedInBases?: number[]
   name: string
   nbResources?: number
+  profileImage?: ResizableImage
   resources?: Resource[]
 }
 
@@ -93,6 +96,7 @@ export type Collection = {
   base: number
   description: string
   pinnedInBases?: number[]
+  profileImage?: ResizableImage
   name: string
   nbResources?: number
   resources?: number[]

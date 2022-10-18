@@ -72,13 +72,16 @@ async function postContent(content: Content) {
 export async function updateContent(
   content: Content,
   showSuccess = true
-): Promise<Content | undefined> {
+): Promise<Content | undefined | null> {
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content,
     undefined,
     showSuccess ? "Mise à jour réussie du contenu" : null,
-    true
+    true,
+    content?.licenseText?.file?.base64 || content?.file?.base64
+      ? "Chargement du fichier"
+      : false
   )
   if (!error.value) {
     return data.value

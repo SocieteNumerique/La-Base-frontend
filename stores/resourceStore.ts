@@ -1,5 +1,7 @@
 import { defineStore } from "pinia"
 import {
+  Base,
+  BaseCreate,
   Menu,
   MenuByKey,
   Resource,
@@ -14,7 +16,6 @@ import {
 } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
-import { RESOURCES_PER_PAGE } from "~/composables/constants"
 
 export const navigationMenus: Menu[] = [
   {
@@ -161,7 +162,7 @@ export const useResourceStore = defineStore("resource", {
         `resources/${resourceId}/${short ? "short/" : ""}`
       )
       if (!error.value) {
-        const resource = data.value
+        const resource = data.value!
         this.resourcesById[resourceId] = resource
         return resource
       }
@@ -266,15 +267,26 @@ export const useResourceStore = defineStore("resource", {
         resourceId = this.currentId
       }
       const resource = this.resourcesById[resourceId!]
+      const loadingMessage =
+        resource?.licenseText?.file?.base64 &&
+        resource?.profileImage?.image?.base64
+          ? "Chargement des documents"
+          : resource?.licenseText?.file?.base64
+          ? "Chargement de l'image"
+          : resource?.licenseText?.file?.base64
+          ? "Chargement du texte de license"
+          : false
+
       const { data, error } = await useApiPatch<Resource>(
         `resources/${resourceId}/`,
         resource,
         {},
         { title: "La ressource a bien été sauvegardée" },
-        true
+        true,
+        loadingMessage
       )
       if (!error.value) {
-        this.resourcesById[data.value.id!] = data.value
+        this.resourcesById[data.value!.id!] = data.value!
       }
     },
     setCurrentId(resourceId: number) {

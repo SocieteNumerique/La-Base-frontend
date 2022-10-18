@@ -4,8 +4,6 @@ import {
   BaseCreate,
   BaseWithDetailedResources,
   Collection,
-  Resource,
-  ResourcesWithPagination,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
@@ -56,13 +54,22 @@ export const useBaseStore = defineStore("base", {
     resourceCount: <number | undefined>undefined,
   }),
   actions: {
+    loadingMessage(base: BaseCreate | Base) {
+      return base?.coverImage?.image?.base64 &&
+        base?.profileImage?.image?.base64
+        ? "Chargement des images"
+        : base?.coverImage?.image?.base64 || base?.profileImage?.image?.base64
+        ? "Chargement de l'image"
+        : false
+    },
     async createBase(base: BaseCreate) {
       const { data, error } = await useApiPost<Base>(
         "bases/",
         base,
         {},
         "La base a bien été créée",
-        true
+        true,
+        this.loadingMessage(base)
       )
       if (!error.value) {
         const newBase = data.value!
@@ -86,7 +93,8 @@ export const useBaseStore = defineStore("base", {
         partialBase,
         {},
         "La base a bien été modifiée",
-        true
+        true,
+        this.loadingMessage(partialBase)
       )
       if (!error.value) {
         saveRelatedBaseInfosAndSimplify(data.value!)

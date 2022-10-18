@@ -17,7 +17,7 @@ import ContentInputFile from "~/components/content/input/file.vue"
 import { PropType } from "vue"
 import { Content } from "~/composables/types"
 
-const emits = defineEmits(["exit"])
+const emits = defineEmits(["exit", "update:modelValue"])
 defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
