@@ -24,7 +24,10 @@ export const useCollectionStore = defineStore("collection", {
         collection,
         {},
         "La collection a bien été créée",
-        true
+        true,
+        collection?.profileImage?.image?.base64
+          ? "Chargement de l'image"
+          : false
       )
       if (!error.value) {
         this.collectionsById[data.value!.id!] = data.value!
@@ -56,7 +59,10 @@ export const useCollectionStore = defineStore("collection", {
         collection,
         {},
         "La collection a bien été sauvegardée",
-        true
+        true,
+        collection?.profileImage?.image?.base64
+          ? "Chargement de l'image"
+          : false
       )
       if (!error.value) {
         this.collectionsById[data.value!.id!] = data.value!

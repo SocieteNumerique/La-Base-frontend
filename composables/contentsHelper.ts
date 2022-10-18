@@ -78,7 +78,10 @@ export async function updateContent(
     content,
     undefined,
     showSuccess ? "Mise à jour réussie du contenu" : null,
-    true
+    true,
+    content?.licenseText?.file?.base64 || content?.file?.base64
+      ? "Chargement du fichier"
+      : false
   )
   if (!error.value) {
     return data.value
