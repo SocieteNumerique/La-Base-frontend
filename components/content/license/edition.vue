@@ -59,7 +59,7 @@ const tagStore = useTagStore()
 const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
-const emits = defineEmits(["close", "update:model-value"])
+const emits = defineEmits(["close", "update:modelValue"])
 
 const step = ref<"general" | "details">("general")
 const isExiting = ref<boolean>(false)
