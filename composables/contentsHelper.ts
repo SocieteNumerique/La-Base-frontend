@@ -72,7 +72,7 @@ async function postContent(content: Content) {
 export async function updateContent(
   content: Content,
   showSuccess = true
-): Promise<Content | undefined> {
+): Promise<Content | undefined | null> {
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content,

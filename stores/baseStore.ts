@@ -4,8 +4,6 @@ import {
   BaseCreate,
   BaseWithDetailedResources,
   Collection,
-  Resource,
-  ResourcesWithPagination,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"

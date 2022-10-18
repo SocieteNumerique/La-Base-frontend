@@ -1,5 +1,7 @@
 import { defineStore } from "pinia"
 import {
+  Base,
+  BaseCreate,
   Menu,
   MenuByKey,
   Resource,
@@ -14,7 +16,6 @@ import {
 } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
-import { RESOURCES_PER_PAGE } from "~/composables/constants"
 
 export const navigationMenus: Menu[] = [
   {
@@ -161,7 +162,7 @@ export const useResourceStore = defineStore("resource", {
         `resources/${resourceId}/${short ? "short/" : ""}`
       )
       if (!error.value) {
-        const resource = data.value
+        const resource = data.value!
         this.resourcesById[resourceId] = resource
         return resource
       }
@@ -274,7 +275,7 @@ export const useResourceStore = defineStore("resource", {
         true
       )
       if (!error.value) {
-        this.resourcesById[data.value.id!] = data.value
+        this.resourcesById[data.value!.id!] = data.value!
       }
     },
     setCurrentId(resourceId: number) {

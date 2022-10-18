@@ -27,8 +27,8 @@ export const useCollectionStore = defineStore("collection", {
         true
       )
       if (!error.value) {
-        this.collectionsById[data.value.id!] = data.value
-        useBaseStore().addCollectionIdToBase(data.value)
+        this.collectionsById[data.value!.id!] = data.value!
+        useBaseStore().addCollectionIdToBase(data.value!)
         return data.value
       }
     },
@@ -38,8 +38,8 @@ export const useCollectionStore = defineStore("collection", {
       )
       if (!error.value) {
         const collection = data.value
-        this.collectionsById[collection.id!] = collection
-        console.log("### got collection", collectionId, collection.id)
+        this.collectionsById[collection!.id!] = collection!
+        console.log("### got collection", collectionId, collection!.id)
         return collection
       }
     },
@@ -59,7 +59,7 @@ export const useCollectionStore = defineStore("collection", {
         true
       )
       if (!error.value) {
-        this.collectionsById[data.value.id!] = data.value
+        this.collectionsById[data.value!.id!] = data.value!
       }
     },
     async delete(collectionId: number) {
