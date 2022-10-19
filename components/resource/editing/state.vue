@@ -122,7 +122,10 @@ onMounted(() => {
 const missingCategoriesToGoPublic = computed((): TagCategory[] => {
   const toReturn: TagCategory[] = []
   for (const category of tagStore.categories) {
-    if (category.relatesTo !== "Resource" || !category.requiredToBePublic) {
+    if (
+      category.relatesTo?.indexOf("Resource") === -1 ||
+      !category.requiredToBePublic
+    ) {
       continue
     }
     // check if we have selected at least a tag in this category
