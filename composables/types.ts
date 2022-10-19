@@ -163,6 +163,7 @@ export type Base = {
   canWrite?: boolean
   collections?: number[]
   contact?: string
+  contactState?: string
   contributors?: User[]
   contributorTags?: number[]
   coverImage?: ResizableImage
