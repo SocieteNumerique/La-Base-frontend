@@ -253,7 +253,7 @@ const doSearch = debounce(async (scrollToTop = false) => {
       dataType: dataType.value,
       tags: selectedTags.value,
       tagOperator: tagOperator.value,
-      restrictToBase: route.params.id || null,
+      restrictToBase: (isInBaseIndex.value && route.params.id) || null,
       live: isLiveResources.value,
     },
     { page: currentPage.value + 1 }
