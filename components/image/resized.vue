@@ -5,7 +5,7 @@
     :style="!url && overlay ? 'background: white' : null"
   >
     <div v-if="resizableImage" :style="style" class="resized-image" />
-    <div v-else-if="defaultImage">
+    <div v-else-if="defaultImage" style="line-height: 0">
       <img
         :src="`/img/defaultImage/${defaultImage}.png`"
         alt=""
@@ -19,7 +19,7 @@
 import { PropType } from "vue"
 import { ResizableImage } from "~/composables/types"
 
-type Dimensions = { width: string; height: string }
+type Dimensions = { width?: string; height?: string }
 
 const props = defineProps({
   resizableImage: { type: Object as PropType<ResizableImage>, default: null },
@@ -38,9 +38,10 @@ const props = defineProps({
 })
 
 const diameters: { [key: string]: Dimensions } = {
-  option: { width: "30px", height: "30px" },
-  miniature: { width: "100px", height: "100px" },
   index: { width: "144px", height: "144px" },
+  miniature: { width: "100px", height: "100px" },
+  option: { width: "30px", height: "30px" },
+  resourceHeader: { width: "100%" },
 }
 
 const url = computed<string>(() =>
