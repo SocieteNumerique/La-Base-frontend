@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  css: ["@/css/moine.sass", "@gouvminint/vue-dsfr/styles"],
+  css: ["@gouvminint/vue-dsfr/styles", "@/css/moine.sass"],
   head: {
     title: "La Base du numérique d'intérêt général",
     meta: [
