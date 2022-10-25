@@ -39,7 +39,7 @@ const props = defineProps({
 
 const diameters: { [key: string]: Dimensions } = {
   index: { width: "144px", height: "144px" },
-  miniature: { width: "100px", height: "100px" },
+  miniature: { width: "85px", height: "85px" },
   option: { width: "30px", height: "30px" },
   resourceHeader: { width: "100%" },
 }

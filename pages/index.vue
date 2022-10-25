@@ -117,7 +117,7 @@
     <template v-if="loadingStore.isLoading('search')">
       <div class="fr-p-5w" style="text-align: center">
         <div style="animation: spin 1.5s linear infinite">
-          <VIcon scale="10" name="ri-loader-5-line" />
+          <VIcon scale="3" name="ri-loader-2-line" />
         </div>
       </div>
     </template>

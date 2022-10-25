@@ -13,6 +13,7 @@
   <DsfrButton
     :disabled="content.useResourceLicenseAndAccess"
     secondary
+    class="fr-btn--sm"
     @click="isEditingLicense = true"
   >
     {{ hasSpecificLicenceData ? "Modifier" : "Renseigner" }} licence et accès

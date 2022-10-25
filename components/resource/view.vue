@@ -14,14 +14,29 @@
             <h1 style="max-width: 800px" class="fr-mb-4w fr-h2">
               {{ resource?.title }}
             </h1>
-            <div class="fr-mb-2w">
-              Fiche publiée dans
-              <NuxtLink
-                :to="'/base/' + resource?.rootBase"
-                class="fr-text-label--blue-france no-underline"
-              >
-                {{ resource?.rootBaseTitle }}
-              </NuxtLink>
+            <div class="fr-mb-2w" style="display: flex; flex-direction: row">
+              <div>
+                Fiche publiée dans
+                <NuxtLink
+                  :to="'/base/' + resource?.rootBase"
+                  class="fr-text-label--blue-france no-underline"
+                >
+                  {{ resource?.rootBaseTitle }}
+                </NuxtLink>
+              </div>
+              <div class="fr-ml-3w">
+                <template
+                  v-if="
+                    resource?.canWrite &&
+                    (resource?.creator?.firstName ||
+                      resource?.creator?.lastName)
+                  "
+                >
+                  Créée par
+                  {{ resource?.creator?.firstName }}
+                  {{ resource?.creator?.lastName }}
+                </template>
+              </div>
             </div>
             <div class="has-children-space-between">
               <div class="is-flex">
@@ -151,7 +166,6 @@
           </div>
           <div class="fr-col-9">
             <div v-if="activeMenu == 'informations'" id="informations">
-              <h3 class="fr-h6 fr-mb-8v fr-mt-6w">Indexation</h3>
               <IndexTable
                 v-if="resource && !resource.isShort"
                 :element="resource"
@@ -162,16 +176,16 @@
                 <div class="fr-col-md-4">
                   <p
                     v-if="resource?.resourceCreatedOn"
-                    class="fr-text--bold fr-mb-0"
+                    class="fr-text--bold fr-mb-0 fr-text--sm"
                   >
                     Date de création de la ressource
                   </p>
-                  <p>{{ resource?.resourceCreatedOn }}</p>
+                  <p class="fr-text--sm">{{ resource?.resourceCreatedOn }}</p>
                 </div>
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
                     <h2 class="fr-text--md fr-text--bold">Description</h2>
-                    <div class="fr-col-8" style="white-space: pre-line">
+                    <div class="fr-col-11" style="white-space: pre-line">
                       {{ resource?.description }}
                     </div>
                     <hr class="fr-my-9v" style="padding-bottom: 1px" />
@@ -269,28 +283,8 @@ if (process.server && !props.isPreview) {
 }
 onBeforeMount(async () => {
   if (!props.isPreview) {
-    const isResourceOK = await getResourceIfNotExists()
-    // no need to observe if we're being redirected
-    if (!isResourceOK) {
-      return
-    }
+    await getResourceIfNotExists()
   }
-
-  // observe scroll to update left menu
-  // timeout to make sure elements actually exist
-  setTimeout(() => {
-    var options = {
-      root: null,
-      threshold: 0.1,
-    }
-
-    const observer = new IntersectionObserver(handleIntersect, options)
-    const sections = ["informations", "resource"]
-    sections.forEach((el: string) => {
-      console.log("### observing", el)
-      observer.observe(document.getElementById(el)!)
-    })
-  }, 1000)
 })
 </script>
 
