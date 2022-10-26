@@ -119,15 +119,21 @@ onMounted(() => {
   missingCategoriesToGoPublicOnMounted.value = missingCategoriesToGoPublic.value
 })
 
+const licenseTypeCategoryId = tagStore.categoryBySlug("license_01license")?.id
 const missingCategoriesToGoPublic = computed((): TagCategory[] => {
   const toReturn: TagCategory[] = []
   for (const category of tagStore.categories) {
     if (
       category.relatesTo?.indexOf("Resource") === -1 ||
       !category.requiredToBePublic
-    ) {
+    )
       continue
-    }
+    if (
+      category.id === licenseTypeCategoryId &&
+      !resourceStore.current.hasGlobalLicense
+    )
+      continue // allow no license if license is meant to be content-specific
+
     // check if we have selected at least a tag in this category
     let skipCategory = false
     for (const selectedTagId of resourceStore.current.tags!) {
