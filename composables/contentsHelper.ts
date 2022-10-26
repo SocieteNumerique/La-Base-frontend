@@ -41,7 +41,8 @@ function prepareContent(
       withPreview: payload.file.mimeType?.startsWith("image/"),
     }
   }
-  if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
+  if (type === "link")
+    return { type, link: "", nbCol: 2, section: sectionId, withPreview: true }
   if (type === "linkedResource")
     return { type, nbCol: 2, section: sectionId, linkedResource: resourceId }
   throw "unknown type"

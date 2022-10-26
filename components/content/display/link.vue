@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div v-if="content.withPreview && content.targetTitle" class="link-preview">
-      <div v-if="content.targetImage" style="display: flex">
-        <div class="fr-p-1w">
+    <div
+      v-if="content.withPreview && content.targetTitle"
+      class="link-preview fr-mb-2w"
+    >
+      <div style="display: flex">
+        <div class="fr-p-1w" style="flex-grow: 1">
           <p class="fr-text--bold fr-text--xs fr-m-0">
             {{ content.targetTitle }}
           </p>
@@ -14,20 +17,20 @@
           </p>
         </div>
         <div
-          class="fr-ml-1v"
+          v-if="content.targetImage"
+          class="fr-ml-1v right-image proper-image"
           :style="`background-image: url('${content.targetImage}')`"
-          style="
-            flex: 0 0 180px;
-            background-size: cover;
-            background-position: center;
-          "
         ></div>
+        <div v-else class="right-image default-image">
+          <VIcon
+            scale="1.3"
+            name="ri-link"
+            color="var(--text-action-high-blue-france)"
+          />
+        </div>
       </div>
-      <template v-else>
-        <p class="fr-text--bold">{{ content.targetTitle }}</p>
-        <p>{{ content.targetDescription }}</p>
-      </template>
     </div>
+
     <VIcon class="fr-mr-1w" name="ri-link" />
     <a
       :href="content.link"
@@ -37,7 +40,6 @@
     >
       {{ content.link }}
     </a>
-    <!-- TODO only host -->
   </div>
 </template>
 
@@ -60,4 +62,18 @@ const limitedDescription = (description: string) => {
 <style lang="sass" scoped>
 .link-preview
   border: 1px solid var(--border-default-grey)
+
+.right-image
+  flex: 0 0 180px
+  min-height: 60px
+
+.default-image
+  background: var(--background-open-blue-france)
+  display: flex
+  align-items: center
+  justify-content: center
+
+.proper-image
+  background-size: cover
+  background-position: center
 </style>
