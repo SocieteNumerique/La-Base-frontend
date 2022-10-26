@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fr-pt-5w" style="background: #f5f5fe">
+    <div class="fr-pt-5w" style="background: var(--background-alt-blue-france)">
       <div class="fr-container">
         <div class="fr-grid-row" style="align-items: flex-end">
           <div class="fr-col-md-3 fr-pr-3w">

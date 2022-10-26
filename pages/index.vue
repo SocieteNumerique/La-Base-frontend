@@ -247,7 +247,7 @@ const onCurrentPageChange = (page: number) => {
   text-align: center
   border: 1px solid #CECECE
   &.selected
-    background: #F5F5FE
+    background: var(--background-alt-blue-france)
     box-shadow: inset 0 0-2px 0 var(--border-action-high-blue-france)
     border: 1px solid transparent
   &:hover

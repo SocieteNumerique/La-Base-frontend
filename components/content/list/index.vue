@@ -10,7 +10,7 @@
         <h3>{{ section.title }}</h3>
         <button
           class="fr-btn--tertiary-no-outline"
-          @click="isSectionFoldedToggle(section.id)"
+          @click="toggleIsSectionFoldedToggle(section.id)"
         >
           <span v-show="!isSectionFoldedGetter(section.id)">
             <VIcon name="ri-arrow-up-s-line" /> Fermer
@@ -59,7 +59,7 @@ const contentsBySection = useModel<SectionWithContent[]>("modelValue", {
 const isSectionFoldedById = ref<{ [key: number]: boolean }>({})
 const isSectionFoldedGetter = (id: number): boolean =>
   isSectionFoldedById.value[id] == null ? true : !!isSectionFoldedById.value[id]
-const isSectionFoldedToggle = (id: number): boolean =>
+const toggleIsSectionFoldedToggle = (id: number): boolean =>
   (isSectionFoldedById.value[id] = !isSectionFoldedGetter(id))
 </script>
 
