@@ -1,27 +1,17 @@
 <template>
-  <div class="fr-table fr-table--bordered fr-p-0">
-    <table>
-      <tbody>
-        <tr v-for="({ label, tags, specific }, id) in tagsByCategory" :key="id">
-          <th>
-            <span>{{ label }}</span>
-          </th>
-          <td v-if="!specific">
-            <DsfrTags
-              :tags="tags"
-              class="fr-tags-group--sm"
-              style="margin-bottom: -12px"
-            />
-          </td>
-          <td v-else-if="id === 'license'">
-            <TagDisplayRowLicense
-              :tags="tags"
-              :license-text="element?.licenseText"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div>
+    <div v-for="({ label, tags, specific }, id) in tagsByCategory" :key="id">
+      <h2 class="fr-text--md fr-text--bold fr-mb-3v fr-mt-3w">{{ label }}</h2>
+      <template v-if="!specific">
+        <DsfrTags :tags="tags" class="fr-tags-group--md" />
+      </template>
+      <template v-else-if="id === 'license'">
+        <TagDisplayRowLicense
+          :tags="tags"
+          :license-text="element?.licenseText"
+        />
+      </template>
+    </div>
   </div>
 </template>
 

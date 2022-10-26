@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="page && !page.isShort">
+    <div v-if="page && !page.isShort" class="fr-col-md-7">
       <div v-html="page?.htmlContent"></div>
     </div>
   </div>

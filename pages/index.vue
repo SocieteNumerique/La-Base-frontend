@@ -117,7 +117,7 @@
     <template v-if="loadingStore.isLoading('search')">
       <div class="fr-p-5w" style="text-align: center">
         <div style="animation: spin 1.5s linear infinite">
-          <VIcon scale="10" name="ri-loader-5-line" />
+          <VIcon scale="3" name="ri-loader-2-line" />
         </div>
       </div>
     </template>
@@ -247,7 +247,7 @@ const onCurrentPageChange = (page: number) => {
   text-align: center
   border: 1px solid #CECECE
   &.selected
-    background: #F5F5FE
+    background: var(--background-alt-blue-france)
     box-shadow: inset 0 0-2px 0 var(--border-action-high-blue-france)
     border: 1px solid transparent
   &:hover

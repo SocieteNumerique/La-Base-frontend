@@ -1,52 +1,68 @@
 <template>
   <div>
-    <div class="fr-background-alt--grey fr-pb-4w fr-pt-10w">
+    <div class="fr-pt-5w" style="background: var(--background-alt-blue-france)">
       <div class="fr-container">
-        <h1 style="max-width: 800px" class="fr-mb-7w">{{ resource?.title }}</h1>
-        <div class="has-children-space-between">
+        <div class="fr-grid-row" style="align-items: flex-end">
+          <div class="fr-col-md-3 fr-pr-3w">
+            <ImageResized
+              :resizable-image="resource?.profileImage"
+              format="resourceHeader"
+              default-image="resource"
+            />
+          </div>
+          <div class="fr-col-md-9">
+            <h1 style="max-width: 800px" class="fr-mb-4w fr-h2">
+              {{ resource?.title }}
+            </h1>
+            <div class="fr-mb-2w" style="display: flex; flex-direction: row">
+              <div>
+                Fiche publiée dans
+                <NuxtLink
+                  :to="'/base/' + resource?.rootBase"
+                  class="fr-text-label--blue-france no-underline"
+                >
+                  {{ resource?.rootBaseTitle }}
+                </NuxtLink>
+              </div>
+              <div class="fr-ml-3w">
+                <template
+                  v-if="
+                    resource?.canWrite &&
+                    (resource?.creator?.firstName ||
+                      resource?.creator?.lastName)
+                  "
+                >
+                  Créée par
+                  {{ resource?.creator?.firstName }}
+                  {{ resource?.creator?.lastName }}
+                </template>
+              </div>
+            </div>
+            <div class="has-children-space-between">
+              <div class="is-flex">
+                <!--            <div class="stat">-->
+                <!--              <span class="fr-h5">45</span>-->
+                <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
+                <!--            </div>-->
+                <div class="stat">
+                  <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
+                  <span>{{
+                    pluralize(["vue"], resource?.stats.visitCount)
+                  }}</span>
+                </div>
+              </div>
+              <div class="is-flex fr-text--sm fr-m-0">
+                <div>Fiche créée le {{ $date(resource?.created) }}</div>
+                <div class="fr-ml-4w">
+                  Fiche modifiée le {{ $date(resource?.modified) }}
+                </div>
+              </div>
+            </div>
+            <hr style="padding-bottom: 1px" class="fr-mt-2w" />
+          </div>
+        </div>
+        <div class="has-children-space-between fr-py-3v">
           <div>
-            Fiche créée par
-            <NuxtLink
-              :to="'/base/' + resource?.rootBase"
-              class="fr-text-label--blue-france no-underline"
-            >
-              {{ resource?.rootBaseTitle }}
-            </NuxtLink>
-          </div>
-          <div class="is-flex fr-text--sm">
-            <div>Fiche créée le {{ $date(resource?.created) }}</div>
-            <div class="fr-ml-4w">
-              Fiche modifiée le {{ $date(resource?.modified) }}
-            </div>
-          </div>
-        </div>
-        <!-- TODO re-add this and next div -->
-        <hr />
-        <div class="has-children-space-between">
-          <div class="is-flex">
-            <!--            <div class="stat">-->
-            <!--              <span class="fr-h5">45</span>-->
-            <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
-            <!--            </div>-->
-            <div class="stat">
-              <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
-              <span>{{ pluralize(["vue"], resource?.stats.visitCount) }}</span>
-            </div>
-          </div>
-          <div v-if="resource?.reports" class="is-flex">
-            <DsfrBadge label="2 signalements erreur type 3" type="warning" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="fr-container fr-mt-2w">
-      <div class="fr-mb-11v">
-        <div
-          class="is-flex"
-          style="align-items: center; justify-content: space-between"
-        >
-          <div class="is-flex" style="align-items: center">
             <ShareButton :link="route.fullPath">
               <RoundButton icon="ri-share-line" label="Partager" />
             </ShareButton>
@@ -74,34 +90,40 @@
             </template>
           </div>
 
-          <div class="is-flex" style="align-items: center">
-            <NuxtLink
-              v-if="resource?.canWrite"
-              :to="editionLink"
-              class="no-underline"
-            >
-              <DsfrButton
-                icon="ri-edit-line"
-                label="Éditer"
-                class="fr-btn--sm"
-                secondary
-              />
-            </NuxtLink>
+          <div
+            class="is-flex"
+            style="align-items: center; justify-content: space-between"
+          >
+            <div class="is-flex" style="align-items: center">
+              <NuxtLink
+                v-if="resource?.canWrite"
+                :to="editionLink"
+                class="no-underline"
+              >
+                <DsfrButton
+                  icon="ri-edit-line"
+                  label="Éditer"
+                  class="fr-btn--sm"
+                  secondary
+                />
+              </NuxtLink>
 
-            <PinMenu
-              v-if="resource"
-              v-model="resource.pinnedInBases"
-              :instance-id="resource?.id"
-              :root-base-id="resource?.rootBase"
-              class="fr-ml-2w"
-              instance-type="resource"
-            />
+              <PinMenu
+                v-if="resource"
+                v-model="resource.pinnedInBases"
+                :instance-id="resource?.id"
+                :root-base-id="resource?.rootBase"
+                class="fr-ml-2w"
+                instance-type="resource"
+              />
+            </div>
           </div>
         </div>
-        <div
-          style="border-bottom: 1px solid var(--border-default-grey)"
-          class="fr-mt-1w fr-mb-5w"
-        ></div>
+      </div>
+    </div>
+
+    <div class="fr-container fr-mt-5w">
+      <div class="fr-mb-11v">
         <div class="fr-grid-row">
           <div class="fr-col-3">
             <nav
@@ -142,34 +164,36 @@
               </div>
             </nav>
           </div>
-          <div id="intersectionRoot" class="fr-col-9">
-            <div id="informations">
-              <h2 class="fr-mb-11v">Informations</h2>
-              <h3 class="fr-h6 fr-mb-8v">Général</h3>
-              <div class="fr-grid-row" style="justify-content: space-between">
-                <div class="fr-col-8" style="white-space: pre-line">
-                  {{ resource?.description }}
-                </div>
-                <div class="fr-col-3">
-                  <p
-                    v-if="resource?.resourceCreatedOn"
-                    class="fr-text--bold fr-mb-0"
-                  >
-                    Date de création de la ressource
-                  </p>
-                  <p>{{ resource?.resourceCreatedOn }}</p>
-                </div>
-              </div>
-
-              <h3 class="fr-h6 fr-mb-8v fr-mt-6w">Indexation</h3>
+          <div class="fr-col-9">
+            <div v-if="activeMenu == 'informations'" id="informations">
               <IndexTable
                 v-if="resource && !resource.isShort"
                 :element="resource"
               />
             </div>
-            <div id="resource">
-              <h2>Ressource</h2>
-              <ResourceContents />
+            <div v-if="activeMenu == 'resource'" id="resource">
+              <div class="fr-grid-row" style="flex-direction: row-reverse">
+                <div class="fr-col-md-4">
+                  <p
+                    v-if="resource?.resourceCreatedOn"
+                    class="fr-text--bold fr-mb-0 fr-text--sm"
+                  >
+                    Date de création de la ressource
+                  </p>
+                  <p class="fr-text--sm">{{ resource?.resourceCreatedOn }}</p>
+                </div>
+                <div class="fr-col-md-8">
+                  <template v-if="resource?.description">
+                    <h2 class="fr-text--md fr-text--bold">Description</h2>
+                    <div class="fr-col-11" style="white-space: pre-line">
+                      {{ resource?.description }}
+                    </div>
+                    <hr class="fr-my-9v" style="padding-bottom: 1px" />
+                  </template>
+
+                  <ResourceContents />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -193,7 +217,7 @@ const props = defineProps({
 const resourceStore = useResourceStore()
 const route = useRoute()
 
-const activeMenu = ref("informations")
+const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
@@ -223,12 +247,12 @@ const selectMenu = (key: string) => {
 
 const navigationMenus = [
   {
-    key: "informations",
-    name: "Informations",
-  },
-  {
     key: "resource",
     name: "Ressource",
+  },
+  {
+    key: "informations",
+    name: "Informations",
   },
 ]
 
@@ -259,28 +283,8 @@ if (process.server && !props.isPreview) {
 }
 onBeforeMount(async () => {
   if (!props.isPreview) {
-    const isResourceOK = await getResourceIfNotExists()
-    // no need to observe if we're being redirected
-    if (!isResourceOK) {
-      return
-    }
+    await getResourceIfNotExists()
   }
-
-  // observe scroll to update left menu
-  // timeout to make sure elements actually exist
-  setTimeout(() => {
-    var options = {
-      root: null,
-      threshold: 0.1,
-    }
-
-    const observer = new IntersectionObserver(handleIntersect, options)
-    const sections = ["informations", "resource"]
-    sections.forEach((el: string) => {
-      console.log("### observing", el)
-      observer.observe(document.getElementById(el)!)
-    })
-  }, 1000)
 })
 </script>
 

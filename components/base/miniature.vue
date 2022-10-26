@@ -15,7 +15,7 @@
         <ImageResized
           :resizable-image="base?.coverImage"
           class="cover"
-          :dimensions="{ width: '100%', height: '100%' }"
+          :dimensions="{ width: '100%', height: '80px' }"
           format="miniature"
           overlay
         />
@@ -93,15 +93,15 @@ const territory = computed<string>(() =>
   width: 384px
 
   .banner
-    height: 116px
+    height: 123px
     position: relative
     .profile
       position: absolute
-      top: 0.5rem
+      top: 37px
       left: 0.5rem
       z-index: 10
     .cover
-      height: 116px
+      height: 80px
 
   .link-container
     display: flex

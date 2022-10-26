@@ -37,9 +37,19 @@
               <div>
                 Modifiée le : {{ $date(resourceStore.current.modified) }}
               </div>
+              <div
+                v-if="
+                  resourceStore.current.canWrite &&
+                  (resourceStore.current.creator?.firstName ||
+                    resourceStore.current.creator?.lastName)
+                "
+              >
+                Créée par {{ resourceStore.current.creator?.firstName }}
+                {{ resourceStore.current.creator?.lastName }}
+              </div>
             </template>
           </div>
-          <div class="fr-col-6 fr-pr-3w" style="min-height: 120px">
+          <div class="fr-col-6 fr-pr-3w">
             <h1 class="fr-h2">
               <template
                 v-if="

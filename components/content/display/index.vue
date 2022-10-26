@@ -6,14 +6,14 @@
       :content="content"
       :is-editing-view="isEditingView"
       :is-grid-view="isGridView"
-      class="fr-text--sm fr-mb-2w"
+      class="fr-text--sm fr-m-0"
     />
     <div v-if="content.annotation" class="fr-text--sm fr-mt-0">
       {{ content.annotation }}
     </div>
     <div
       v-if="!content.useResourceLicenseAndAccess"
-      class="license-access-grid fr-text--xs fr-mt-3w"
+      class="license-access-grid fr-text--xs fr-m-0"
     >
       <template v-if="accessPriceTags.length">
         <span>Prix et accès</span>

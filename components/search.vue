@@ -314,7 +314,7 @@ onMounted(() => {
   .ov-icon
     margin-right: 18px
 .btn-tab-activable.-active
-  background: #F5F5FE
+  background: var(--background-alt-blue-france)
   box-shadow: none
 </style>
 
