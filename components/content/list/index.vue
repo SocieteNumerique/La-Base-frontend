@@ -21,7 +21,11 @@
         </button>
       </div>
       <ul
-        :class="isSectionFoldedGetter(section.id) ? '-folded' : ''"
+        :class="
+          section.isFoldable && isSectionFoldedGetter(section.id)
+            ? '-folded'
+            : ''
+        "
         class="hide-if-folded"
       >
         <li
