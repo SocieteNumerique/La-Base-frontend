@@ -41,7 +41,7 @@ const diameters: { [key: string]: Dimensions } = {
   index: { width: "144px", height: "144px" },
   miniature: { width: "85px", height: "85px" },
   option: { width: "30px", height: "30px" },
-  resourceHeader: { width: "100%" },
+  resourceHeader: { width: "278px", height: "200px" },
 }
 
 const url = computed<string>(() =>
