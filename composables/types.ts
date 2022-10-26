@@ -217,6 +217,9 @@ type BaseContent = {
 
 export interface LinkContent extends BaseContent {
   link: string
+  targetDescription?: string
+  targetImage?: string
+  targetTitle?: string
   withPreview?: boolean
 }
 
