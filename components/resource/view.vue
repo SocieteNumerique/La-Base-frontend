@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fr-pt-5w" style="background: var(--background-alt-blue-france)">
+    <div class="fr-pt-5w" style="background: var(--background-alt-grey)">
       <div class="fr-container">
         <div class="fr-grid-row" style="align-items: flex-end">
           <div class="fr-col-md-3 fr-pr-3w">
@@ -14,6 +14,7 @@
             <h1 style="max-width: 800px" class="fr-mb-4w fr-h2">
               {{ resource?.title }}
             </h1>
+
             <div class="fr-mb-2w" style="display: flex; flex-direction: row">
               <div>
                 Fiche publiée dans
@@ -38,6 +39,7 @@
                 </template>
               </div>
             </div>
+            <hr class="fr-pb-2w" />
             <div class="has-children-space-between">
               <div class="is-flex">
                 <!--            <div class="stat">-->
@@ -119,6 +121,7 @@
             </div>
           </div>
         </div>
+        <hr style="padding-bottom: 1px" />
       </div>
     </div>
 

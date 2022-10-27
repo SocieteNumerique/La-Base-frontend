@@ -98,7 +98,7 @@ const territory = computed<string>(() =>
     .profile
       position: absolute
       top: 37px
-      left: 0.5rem
+      left: 16px
       z-index: 10
     .cover
       height: 80px
