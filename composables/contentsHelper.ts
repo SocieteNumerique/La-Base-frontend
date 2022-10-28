@@ -49,7 +49,14 @@ function prepareContent(
 }
 
 async function postContent(content: Content) {
-  const { data, error } = await useApiPost<Content>(`contents/`, content)
+  const { data, error } = await useApiPost<Content>(
+    `contents/`,
+    content,
+    undefined,
+    undefined,
+    undefined,
+    "Chargement du fichier"
+  )
   if (!error.value) {
     return data.value
   }

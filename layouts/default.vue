@@ -17,7 +17,7 @@
       opened
     >
       <div class="loading-container fr-m-auto" tabindex="0">
-        <VIcon scale="10" name="ri-loader-2-line" animation="spin" />
+        <VIcon scale="3" name="ri-loader-2-line" animation="spin" />
       </div>
     </DsfrModal>
 
