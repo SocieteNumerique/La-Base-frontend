@@ -58,6 +58,15 @@
         @focus="focusCategory(category.name)"
         @blur="focusCategory('')"
       />
+
+      <div v-if="!resourceStore.current.description">
+        <div class="fr-alert fr-alert--warning fr-alert--sm">
+          <p class="fr-alert__title">
+            La description de la ressource doit être ajoutée dans l'onglet
+            "Informations" > "Général"
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -150,7 +159,9 @@ const missingCategoriesToGoPublic = computed((): TagCategory[] => {
 })
 
 const canGoPublic = computed(
-  () => missingCategoriesToGoPublic.value.length === 0
+  () =>
+    missingCategoriesToGoPublic.value.length === 0 &&
+    !!resourceStore.current.description
 )
 
 const options = computed(() => {

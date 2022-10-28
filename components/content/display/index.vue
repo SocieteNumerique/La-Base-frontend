@@ -13,7 +13,7 @@
     </div>
     <div
       v-if="!content.useResourceLicenseAndAccess"
-      class="license-access-grid fr-text--xs fr-m-0"
+      class="license-access-grid fr-text--xs fr-mt-3v"
     >
       <template v-if="accessPriceTags.length">
         <span>Prix et accès</span>
