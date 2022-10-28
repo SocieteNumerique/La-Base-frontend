@@ -28,7 +28,7 @@
   </div>
   <FormFileUpload
     :id="inputId"
-    v-model="content.value.file"
+    v-model="content.file"
     label="Remplacer le fichier"
   />
   <DsfrCheckbox
