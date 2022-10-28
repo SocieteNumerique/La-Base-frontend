@@ -66,7 +66,11 @@
         <div class="has-children-space-between fr-py-3v">
           <div>
             <ShareButton :link="route.fullPath">
-              <RoundButton icon="ri-share-line" label="Partager" />
+              <RoundButton
+                icon="ri-share-line"
+                class="fr-pl-0"
+                label="Partager"
+              />
             </ShareButton>
             <!-- TODO should show the report modal on click-->
             <a :href="mailToHref" class="no-underline">
