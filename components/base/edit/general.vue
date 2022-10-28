@@ -43,14 +43,43 @@
           :required="true"
           label="Le statut de la base est"
           name="baseState"
-      /></template>
-      <!-- <DsfrRadioButtonSet
-        v-model="base.contactStatus"
-        :inline="true"
-        :label-visible="true"
-        :options="contactStatusOptions"
-        label="Le contact est :"
-      />-->
+        />
+      </template>
+      <div class="fr-form-group">
+        <fieldset class="fr-fieldset fr-fieldset--inline">
+          <legend
+            id="radio-inline-legend"
+            class="fr-fieldset__legend fr-text--regular fr-mb-n3v"
+          >
+            <label class="fr-label"> Le contact est :</label>
+          </legend>
+          <div class="fr-fieldset__content">
+            <div class="fr-radio-group">
+              <input
+                id="contact-state-public"
+                v-model="base.contactState"
+                type="radio"
+                name="contact-state"
+                value="public"
+                :disabled="base.state === 'private'"
+              />
+              <label class="fr-label" for="contact-state-public">Public</label>
+            </div>
+            <div class="fr-radio-group">
+              <input
+                id="contact-state-private"
+                v-model="base.contactState"
+                type="radio"
+                name="contact-state"
+                value="private"
+                :disabled="base.state === 'private'"
+              />
+              <label class="fr-label" for="contact-state-private">Privé</label>
+            </div>
+          </div>
+          <div class="fr-hint-text fr-mt-2w">{{ contactStateHint }}</div>
+        </fieldset>
+      </div>
       <TagSelector
         v-if="tagStore.categoryBySlug(participantTypeCategoryName)"
         :category="tagStore.categoryBySlug(participantTypeCategoryName)"
@@ -116,6 +145,11 @@ const fileActionWord = (attrName: "profileImage" | "coverImage") =>
   base.value[attrName] ? "Ajouter une " : "Changer l'"
 const profileActionWord = computed<string>(() => fileActionWord("profileImage"))
 const coverActionWord = computed<string>(() => fileActionWord("coverImage"))
+const contactStateHint = computed<string>(() =>
+  base.value?.contactState === "private"
+    ? "Seuls les contributeurs et administrateurs de la base peuvent vous contacter"
+    : "Les personnes autorisées à consulter la base peuvent vous contacter"
+)
 
 const base = ref<Base | BaseCreate>(
   props.new
@@ -128,7 +162,6 @@ const base = ref<Base | BaseCreate>(
       }
     : {
         ...baseStore.current,
-        profileImage: { ...baseStore.current?.profileImage },
       }
 )
 
@@ -159,17 +192,6 @@ const baseStateOptions = [
     },*/
 ]
 
-/*const contactStatusOptions = [
-  {
-    label: "Public",
-    value: "public",
-  },
-  {
-    label: "Privé",
-    value: "private",
-  },
-]*/
-
 const baseWithTags = computed(() => ({
   ...base.value,
   tags: [
@@ -186,8 +208,8 @@ async function createBase() {
   const { data, error } = await baseStore.createBase(baseWithTags.value)
   if (!error.value) {
     emits("close")
-    if (props.newStayOnPage) return emits("done", data.value.id)
-    useRouter().push(`/base/${data.value.id}`)
+    if (props.newStayOnPage) return emits("done", data.value!.id)
+    useRouter().push(`/base/${data.value!.id}`)
   }
 }
 

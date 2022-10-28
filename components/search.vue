@@ -253,7 +253,7 @@ const doSearch = debounce(async (scrollToTop = false) => {
       dataType: dataType.value,
       tags: selectedTags.value,
       tagOperator: tagOperator.value,
-      restrictToBase: route.params.id || null,
+      restrictToBase: (isInBaseIndex.value && route.params.id) || null,
       live: isLiveResources.value,
     },
     { page: currentPage.value + 1 }
@@ -314,7 +314,7 @@ onMounted(() => {
   .ov-icon
     margin-right: 18px
 .btn-tab-activable.-active
-  background: #F5F5FE
+  background: var(--background-alt-blue-france)
   box-shadow: none
 </style>
 

@@ -58,6 +58,15 @@
         @focus="focusCategory(category.name)"
         @blur="focusCategory('')"
       />
+
+      <div v-if="!resourceStore.current.description">
+        <div class="fr-alert fr-alert--warning fr-alert--sm">
+          <p class="fr-alert__title">
+            La description de la ressource doit être ajoutée dans l'onglet
+            "Informations" > "Général"
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -119,12 +128,21 @@ onMounted(() => {
   missingCategoriesToGoPublicOnMounted.value = missingCategoriesToGoPublic.value
 })
 
+const licenseTypeCategoryId = tagStore.categoryBySlug("license_01license")?.id
 const missingCategoriesToGoPublic = computed((): TagCategory[] => {
   const toReturn: TagCategory[] = []
   for (const category of tagStore.categories) {
-    if (category.relatesTo !== "Resource" || !category.requiredToBePublic) {
+    if (
+      category.relatesTo?.indexOf("Resource") === -1 ||
+      !category.requiredToBePublic
+    )
       continue
-    }
+    if (
+      category.id === licenseTypeCategoryId &&
+      !resourceStore.current.hasGlobalLicense
+    )
+      continue // allow no license if license is meant to be content-specific
+
     // check if we have selected at least a tag in this category
     let skipCategory = false
     for (const selectedTagId of resourceStore.current.tags!) {
@@ -141,7 +159,9 @@ const missingCategoriesToGoPublic = computed((): TagCategory[] => {
 })
 
 const canGoPublic = computed(
-  () => missingCategoriesToGoPublic.value.length === 0
+  () =>
+    missingCategoriesToGoPublic.value.length === 0 &&
+    !!resourceStore.current.description
 )
 
 const options = computed(() => {

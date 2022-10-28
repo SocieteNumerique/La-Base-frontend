@@ -2,7 +2,7 @@
   <div class="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
     <button
       :class="{ '-active': !isGridView, '-inactive': isGridView }"
-      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
+      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular"
       @click="isGridView = false"
     >
       <VIcon class="fr-mr-2v" name="ri-align-left" />
@@ -11,7 +11,7 @@
     <button
       v-if="isEditingMode"
       v-show="!isGridViewEnabled"
-      class="fr-btn fr-btn--tertiary-no-outline -inactive"
+      class="fr-btn fr-btn--tertiary-no-outline -inactive fr-text--regular"
       @click="isGridViewEnabled = true"
     >
       <VIcon class="fr-mr-2v" name="ri-add-line" />
@@ -20,7 +20,7 @@
     <button
       v-show="isGridViewEnabled"
       :class="{ '-active': isGridView, '-inactive': !isGridView }"
-      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable"
+      class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular"
       @click="isGridView = true"
     >
       <VIcon class="fr-mr-2v" name="ri-grid-line" />
@@ -29,7 +29,7 @@
     <button
       v-if="isEditingMode"
       v-show="isGridViewEnabled && isGridView"
-      class="fr-btn fr-btn--tertiary-no-outline"
+      class="fr-btn fr-btn--tertiary-no-outline fr-text--regular"
       @click="noGridViewAtAll"
     >
       <VIcon name="ri-close-line" />

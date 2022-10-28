@@ -6,12 +6,11 @@
     placeholder="https://"
     type="url"
   />
-  <!--<DsfrCheckbox
+  <DsfrCheckbox
     v-model="content.withPreview"
-    disabled
     label="Afficher l'aperçu du lien"
     name="preview"
-  />-->
+  />
   <DsfrInput
     v-model="content.title"
     hint="max 50 caractères"

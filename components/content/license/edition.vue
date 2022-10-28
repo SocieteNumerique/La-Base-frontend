@@ -13,6 +13,7 @@
   <DsfrButton
     :disabled="content.useResourceLicenseAndAccess"
     secondary
+    class="fr-btn--sm"
     @click="isEditingLicense = true"
   >
     {{ hasSpecificLicenceData ? "Modifier" : "Renseigner" }} licence et accès
@@ -59,7 +60,7 @@ const tagStore = useTagStore()
 const props = defineProps({
   modelValue: { type: Object as PropType<Content>, required: true },
 })
-const emits = defineEmits(["close", "update:model-value"])
+const emits = defineEmits(["close", "update:modelValue"])
 
 const step = ref<"general" | "details">("general")
 const isExiting = ref<boolean>(false)

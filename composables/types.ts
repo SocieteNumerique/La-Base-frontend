@@ -55,6 +55,7 @@ export type Resource = {
   licenseText?: LicenseText | null
   linkedResourceIds?: number[]
   modified: string
+  profileImage?: ResizableImage
   producerState: string
   resourceCreatedOn: string
   rootBase?: number
@@ -76,6 +77,7 @@ export type ResourceCreate = {
 export type CollectionCreate = {
   base: number
   name: string
+  profileImage?: ResizableImage
 }
 
 export type CollectionWithDetailedResources = {
@@ -85,6 +87,7 @@ export type CollectionWithDetailedResources = {
   pinnedInBases?: number[]
   name: string
   nbResources?: number
+  profileImage?: ResizableImage
   resources?: Resource[]
 }
 
@@ -93,6 +96,7 @@ export type Collection = {
   base: number
   description: string
   pinnedInBases?: number[]
+  profileImage?: ResizableImage
   name: string
   nbResources?: number
   resources?: number[]
@@ -159,6 +163,7 @@ export type Base = {
   canWrite?: boolean
   collections?: number[]
   contact?: string
+  contactState?: string
   contributors?: User[]
   contributorTags?: number[]
   coverImage?: ResizableImage
@@ -212,11 +217,16 @@ type BaseContent = {
 
 export interface LinkContent extends BaseContent {
   link: string
+  targetDescription?: string
+  targetImage?: string
+  targetTitle?: string
   withPreview?: boolean
 }
+
 export interface TextContent extends BaseContent {
   text: string
 }
+
 export interface LinkedResourceContent extends BaseContent {
   linkedResource: number
 }
@@ -228,13 +238,20 @@ export type FullFile = {
   link?: string
 }
 
+export type CroppedImage = {
+  base64?: string
+  name: string
+  mimeType?: string
+  links?: { [key: string]: string }
+}
+
 export type ResizableImage = {
   image?: FullFile
-  scaleX?: number
-  scaleY?: number
-  relativePositionY?: number
-  relativePositionX?: number
-  coordinates?: Coordinates
+  croppedImage?: CroppedImage
+  relativeHeight?: number
+  relativeWidth?: number
+  relativeLeft?: number
+  relativeTop?: number
 }
 
 export interface FileContent extends BaseContent {

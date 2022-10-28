@@ -36,8 +36,8 @@
         <ImageResized
           class="fr-mb-2w"
           :resizable-image="resource?.profileImage"
-          :width="352"
-          :ratio="1.4"
+          :dimensions="{ width: '100%', height: '252px' }"
+          format="miniature"
           default-image="resource"
         />
         <h3 class="fr-h6 fr-mb-0">{{ resource?.title }}</h3>
@@ -80,15 +80,7 @@
         </div>
       </div>
       <div class="fr-p-2w">
-        <div>
-          <h4
-            class="fr-text--xs"
-            :class="resource?.description ? 'fr-mb-3v' : 'fr-mb-0'"
-          >
-            Description
-          </h4>
-          <div class="description-text">{{ resource?.description }}</div>
-        </div>
+        <div class="description-text">{{ resource?.description }}</div>
         <div class="separator fr-my-3v" />
         <div>
           <h4

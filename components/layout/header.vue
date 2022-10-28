@@ -2,7 +2,7 @@
   <header class="fr-header" role="banner">
     <div class="fr-header__body">
       <div class="fr-container">
-        <div class="fr-header__body-row">
+        <div class="fr-header__body-row fr-py-2w">
           <LayoutLogo class="fr-ml-3w" />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
@@ -127,10 +127,7 @@
           <ul class="fr-links-group">
             <li>
               <NuxtLink to="/">
-                <button>
-                  Recherche
-                  <VIcon class="fr-ml-1w" name="ri-search-line" />
-                </button>
+                <button>Recherche</button>
               </NuxtLink>
             </li>
             <li>
@@ -233,7 +230,6 @@ const pages = computed(() => pageStore.pages)
 
 <style lang="sass" scoped>
 .fr-header
-  box-shadow: none
   border-bottom: var(--grey-925-125) 1px solid
 
   .fr-links-group li

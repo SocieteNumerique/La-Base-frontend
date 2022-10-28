@@ -4,7 +4,6 @@
       class="tag-line fr-py-1w"
       :class="{
         'fr-text--disabled': !!disabled,
-        'white-space-no-wrap': !showDefinition,
       }"
     >
       <p
@@ -15,19 +14,25 @@
         {{ props.tag.name }}
       </p>
       <div class="fr-text--sm fr-m-0 grid-tag-icons">
-        <VIcon v-if="!props.tag.isFree" name="official-line" :scale="0.9" />
-        <div v-else />
-        <span class="tag-count">
-          {{ props.tag?.count || 0 }}
-        </span>
         <VIcon
           v-if="props.tag.definition"
           class="cursor--pointer"
           :name="showDefinition ? 'ri-information-fill' : 'ri-information-line'"
           :scale="0.9"
+          title="définition"
           @click="showDefinition = !showDefinition"
         />
         <span v-else class="no-information">-</span>
+        <span class="tag-count" title="nombre d'occurences">
+          {{ props.tag?.count || 0 }}
+        </span>
+        <VIcon
+          v-if="!props.tag.isFree"
+          name="official-line"
+          :scale="0.9"
+          title="tag officiel"
+        />
+        <div v-else />
       </div>
     </div>
     <p v-if="showDefinition" class="fr-mb-1w fr-text--xs fr-text-default--grey">
@@ -55,12 +60,7 @@ const showDefinition = ref(false)
   display: flex
   justify-content: space-between
   p
-    text-overflow: ellipsis
-    max-width: 260px
-    overflow: hidden
-
-.white-space-no-wrap
-  white-space: nowrap
+    width: 260px
 
 .grid-tag-icons
   display: grid

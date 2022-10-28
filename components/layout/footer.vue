@@ -2,10 +2,14 @@
   <footer id="footer" class="fr-footer fr-mt-15w" role="contentinfo">
     <div class="fr-container">
       <div class="fr-footer__body">
-        <img alt="logo du site" src="/logos/ANCT.png" style="height: 80px" />
         <img
           alt="logo du site"
-          class="fr-ml-6w"
+          src="/logos/anctMarianne.png"
+          style="height: 80px"
+        />
+        <img
+          alt="logo du site"
+          class="fr-mr-n3v"
           src="/logos/financeUE.jpg"
           style="height: 80px"
         />

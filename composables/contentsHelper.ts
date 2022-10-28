@@ -41,14 +41,22 @@ function prepareContent(
       withPreview: payload.file.mimeType?.startsWith("image/"),
     }
   }
-  if (type === "link") return { type, link: "", nbCol: 2, section: sectionId }
+  if (type === "link")
+    return { type, link: "", nbCol: 2, section: sectionId, withPreview: true }
   if (type === "linkedResource")
     return { type, nbCol: 2, section: sectionId, linkedResource: resourceId }
   throw "unknown type"
 }
 
 async function postContent(content: Content) {
-  const { data, error } = await useApiPost<Content>(`contents/`, content)
+  const { data, error } = await useApiPost<Content>(
+    `contents/`,
+    content,
+    undefined,
+    undefined,
+    undefined,
+    "Chargement du fichier"
+  )
   if (!error.value) {
     return data.value
   }
@@ -72,13 +80,16 @@ async function postContent(content: Content) {
 export async function updateContent(
   content: Content,
   showSuccess = true
-): Promise<Content | undefined> {
+): Promise<Content | undefined | null> {
   const { data, error } = await useApiPatch<Content>(
     `contents/${content.id}/`,
     content,
     undefined,
     showSuccess ? "Mise à jour réussie du contenu" : null,
-    true
+    true,
+    content?.licenseText?.file?.base64 || content?.file?.base64
+      ? "Chargement du fichier"
+      : false
   )
   if (!error.value) {
     return data.value

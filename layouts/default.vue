@@ -9,6 +9,18 @@
         @close="closeAlert(alert.id)"
       />
     </div>
+
+    <DsfrModal
+      v-if="loadingStore.showLoadingOverlay"
+      :title="loadingStore.message"
+      class="spinner-modal"
+      opened
+    >
+      <div class="loading-container fr-m-auto" tabindex="0">
+        <VIcon scale="3" name="ri-loader-2-line" animation="spin" />
+      </div>
+    </DsfrModal>
+
     <slot name="header">
       <div class="fr-container fr-mt-4w">
         <div v-if="route.meta.title" class="fr-grid-row">
@@ -30,9 +42,11 @@
 <script setup lang="ts">
 import { useAlertStore } from "~/stores/alertStore"
 import { useMainStore } from "~/stores/mainStore"
+import { useLoadingStore } from "~/stores/loadingStore"
 
 const alertStore = useAlertStore()
 const mainStore = useMainStore()
+const loadingStore = useLoadingStore()
 
 const route = useRoute()
 
@@ -61,4 +75,12 @@ const closeAlert = (alertId: string) => {
 
   footer
     margin-top: auto
+
+  .spinner-modal
+    z-index: 10000
+    .fr-modal__header .fr-btn
+      display: none
+
+    .loading-container
+      width: fit-content
 </style>
