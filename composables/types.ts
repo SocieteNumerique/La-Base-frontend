@@ -19,6 +19,7 @@ export type ExternalProducer = {
   validated?: boolean
   resource?: number
   occupation?: number
+  websiteUrl?: string
 }
 
 export type PinStatus = { id: number; isPinned: boolean }

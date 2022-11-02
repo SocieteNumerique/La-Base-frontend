@@ -6,20 +6,18 @@
           <div class="fr-col-3"></div>
           <div class="fr-col-6">
             <div v-if="resourceStore.currentId">
-              <NuxtLink :to="baseHref" class="no-underline">
-                <DsfrButton
-                  icon="ri-arrow-go-back-line"
-                  class="fr-btn--tertiary-no-outline fr-pl-0 fr-btn--sm"
-                  label="Retour à la base"
-                />
-              </NuxtLink>
-              <NuxtLink :to="resourceHref" class="no-underline">
-                <DsfrButton
-                  icon="ri-file-line"
-                  class="fr-btn--tertiary-no-outline fr-ml-2w fr-btn--sm"
-                  label="Aller à la fiche"
-                />
-              </NuxtLink>
+              <DsfrButton
+                icon="ri-arrow-go-back-line"
+                class="fr-btn--tertiary-no-outline fr-pl-0 fr-btn--sm"
+                label="Retour à la base"
+                @click="goTo('base')"
+              />
+              <DsfrButton
+                icon="ri-file-line"
+                class="fr-btn--tertiary-no-outline fr-ml-2w fr-btn--sm"
+                label="Aller à la fiche"
+                @click="goTo('resource')"
+              />
             </div>
           </div>
         </div>
@@ -86,12 +84,28 @@
         </div>
       </div>
     </div>
+    <DsfrModal
+      v-if="isNavigating !== ''"
+      :actions="goToActions"
+      title="Modifications en cours"
+      :opened="true"
+      @close="isNavigating = ''"
+    >
+      <p>
+        Vous avez des modifications en cours, voulez-vous les ignorer ou
+        continuer l'édition ?
+      </p>
+    </DsfrModal>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
-import { DsfrButton } from "@gouvminint/vue-dsfr"
+import { DsfrButton, DsfrModal } from "@gouvminint/vue-dsfr"
+import { useRouter } from "vue-router"
+import { computed } from "vue"
+
+const router = useRouter()
 
 const resourceStore = useResourceStore()
 
@@ -112,4 +126,34 @@ const baseHref = computed(() => {
   return "/base/" + resourceStore.current?.rootBase
 })
 const resourceHref = computed(() => "/ressource/" + resourceStore.currentId)
+const isNavigating = ref<"" | "resource" | "base">("")
+const goTo = (target: "resource" | "base", check = true) => {
+  console.log("### goto", target, check)
+  if (check && resourceStore.current.dirty) {
+    // show confirmation modal
+    console.log("## show modal !")
+    isNavigating.value = target
+  } else {
+    // navigate
+    router.push(target == "resource" ? resourceHref.value : baseHref.value)
+  }
+}
+const goToActions = computed(() => {
+  const target = isNavigating.value === "resource" ? "resource" : "base"
+  return [
+    {
+      label: "Continuer l'édition",
+      onClick: () => {
+        isNavigating.value = ""
+      },
+    },
+    {
+      label: "Aller à la " + (target === "resource" ? "ressource" : "base"),
+      secondary: true,
+      onClick: () => {
+        goTo(target, false)
+      },
+    },
+  ]
+})
 </script>
