@@ -101,12 +101,19 @@
         title="Ajouter un producteur"
         @close="onNewExternalProducerModalClose"
       >
-        <DsfrInput
-          :model-value="newExternalProducer.name"
+        <DsfrInputGroup
+          v-model="newExternalProducer.name"
           hint="Le nom du producteur sera visible sur la ressource"
           label="Nom du producteur"
           :label-visible="true"
-          @update:model-value="onNewExternalProducerName"
+          placeholder="Hakim Dupont"
+        />
+        <DsfrInputGroup
+          v-model="newExternalProducer.websiteUrl"
+          hint="Si le producteur possède un site internet, vous pouvez le renseigner ici"
+          label="Site internet"
+          :label-visible="true"
+          placeholder="http://site-internet.fr"
         />
         <!--        <div class="fr-mt-3w">-->
         <!--          <DsfrInput-->
@@ -148,6 +155,7 @@ const newExternalProducer = ref<ExternalProducer>({
   name: "",
   emailContact: "",
   occupation: undefined,
+  websiteUrl: "",
 })
 
 const isAddExternalProducerDisabled = computed(() => {
@@ -234,11 +242,6 @@ const selectProducer = (producer: string) => {
   if (producer != "know") {
     resourceStore.resourcesById[resourceStore.currentId!].externalProducers = []
   }
-}
-
-const onNewExternalProducerName = (value: string) => {
-  newExternalProducer.value.name = value
-  // isAddExternalProducerDisabled.value
 }
 
 const onNewExternalProducerEmailContact = (value: string) => {
