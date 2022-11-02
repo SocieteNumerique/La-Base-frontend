@@ -142,16 +142,16 @@ const goToActions = computed(() => {
   const target = isNavigating.value === "resource" ? "resource" : "base"
   return [
     {
-      label: "Aller à la " + target,
+      label: "Continuer l'édition",
       onClick: () => {
-        goTo(target, false)
+        isNavigating.value = ""
       },
     },
     {
-      label: "Continuer l'édition",
+      label: "Aller à la " + (target === "resource" ? "ressource" : "base"),
       secondary: true,
       onClick: () => {
-        isNavigating.value = ""
+        goTo(target, false)
       },
     },
   ]
