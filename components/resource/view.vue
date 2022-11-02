@@ -7,6 +7,7 @@
             <ImageResized
               :resizable-image="resource?.profileImage"
               format="miniature"
+              :dimensions="{ width: '278px', height: '200px' }"
               default-image="resource"
             />
           </div>
