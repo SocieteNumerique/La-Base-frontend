@@ -20,7 +20,7 @@
       </div>
     </template>
     <div
-      :class="isFolded ? '-folded' : ''"
+      :class="section.isFoldable && isFolded ? '-folded' : ''"
       class="grid-container hide-if-folded"
     >
       <ul ref="blockGridRef" class="grid content-grid">
@@ -48,7 +48,7 @@ defineProps({
 })
 
 const section = useModel<SectionWithContent>("modelValue", { type: "object" })
-const isFolded = ref<boolean>(false)
+const isFolded = ref<boolean>(true)
 
 const contents = computed<Content[]>({
   get() {

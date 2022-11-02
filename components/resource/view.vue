@@ -6,7 +6,7 @@
           <div class="fr-col-md-3 fr-pr-3w">
             <ImageResized
               :resizable-image="resource?.profileImage"
-              format="resourceHeader"
+              format="miniature"
               default-image="resource"
             />
           </div>

@@ -26,7 +26,7 @@ import {
 
 const resourceStore = useResourceStore()
 
-const isGridViewEnabled = ref<boolean>(
+const isGridViewEnabled = computed<boolean>(() =>
   resourceStore.current?.isGridViewEnabled == null
     ? true
     : resourceStore.current.isGridViewEnabled
