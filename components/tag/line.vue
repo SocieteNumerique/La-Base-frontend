@@ -20,6 +20,7 @@
           :name="showDefinition ? 'ri-information-fill' : 'ri-information-line'"
           :scale="0.9"
           title="définition"
+          color="var(--text-action-high-blue-france)"
           @click="showDefinition = !showDefinition"
         />
         <span v-else class="no-information">-</span>

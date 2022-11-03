@@ -204,6 +204,7 @@ import { usePageStore } from "~/stores/pageStore"
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 const pageStore = usePageStore()
+const router = useRouter()
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
@@ -223,7 +224,10 @@ onFocusOut(
 
 const onLogOutClick = () => {
   userStore.logout()
-  useRouter().push("/")
+  router.push("/")
+  router.replace({
+    query: { ...useRoute().query, update: new Date().getMilliseconds() },
+  })
 }
 const pages = computed(() => pageStore.pages)
 </script>
@@ -253,4 +257,8 @@ const pages = computed(() => pageStore.pages)
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll
   top: 40px
+
+li
+  a[aria-current]
+    background: var(--background-open-blue-france)
 </style>

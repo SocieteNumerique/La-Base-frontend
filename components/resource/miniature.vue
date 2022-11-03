@@ -84,22 +84,26 @@
         <div class="separator fr-my-3v" />
         <div>
           <h4
-            class="fr-text--xs"
+            class="fr-text--xs fr-mr-3v"
             :class="supportTags.length ? 'fr-mb-3v' : 'fr-mb-0'"
+            style="display: inline"
           >
             Type de support
           </h4>
-          <DsfrTags :tags="supportTags" style="margin-bottom: -8px" />
+          <DsfrTags
+            :tags="supportTags"
+            style="margin-bottom: -8px; display: inline"
+          />
         </div>
         <div class="separator fr-my-3v" />
         <div class="fr-grid-row fr-text-mention--grey">
-          <div class="fr-mr-2w">
-            <VIcon :scale="0.7" class="fr-mr-2v" name="ri-link" />
+          <div class="fr-mr-5v">
+            <VIcon :scale="0.7" class="fr-mr-1v" name="ri-link" />
             {{ resource?.contentStats?.links }}
             {{ pluralize(["lien"], resource?.contentStats?.links) }}
           </div>
           <div>
-            <VIcon :scale="0.7" class="fr-mr-2v" name="ri-file-line" />
+            <VIcon :scale="0.7" class="fr-mr-1v" name="ri-file-line" />
             {{ resource?.contentStats?.files }}
             {{ pluralize(["fichier"], resource?.contentStats?.files) }}
           </div>
