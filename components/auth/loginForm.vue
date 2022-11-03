@@ -69,6 +69,7 @@
 <script setup lang="ts">
 import { useUserStore } from "~/stores/userStore"
 import { useLoadingStore } from "~/stores/loadingStore"
+import { useRouter } from "vue-router"
 
 const isForgottenEmailScreen = ref(false)
 const email = ref("")
@@ -80,6 +81,7 @@ const password = ref("")
 const userStore = useUserStore()
 const loadingStore = useLoadingStore()
 const isEmailNotValidated = ref(false)
+const router = useRouter()
 
 const emit = defineEmits(["close", "done"])
 
@@ -160,6 +162,9 @@ const submit = async () => {
         isEmailNotValidated.value = true
       }
     } else {
+      router.replace({
+        query: { ...useRoute().query, update: new Date().getMilliseconds() },
+      })
       emit("done")
     }
   }
