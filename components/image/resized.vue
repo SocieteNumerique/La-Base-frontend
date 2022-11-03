@@ -106,7 +106,7 @@ const style = computed(() => {
     width: 100%
     height: 100%
     z-index: 5
-    background-color: change-color(#f6f6f6, $alpha: 0.25)
+    background-color: change-color(#f6f6f6, $alpha: 0.15)
 
   &.no-image::after
     background-color: change-color(#ede8ff, $alpha: 0.35)
