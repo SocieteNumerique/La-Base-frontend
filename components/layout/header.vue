@@ -257,4 +257,8 @@ const pages = computed(() => pageStore.pages)
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll
   top: 40px
+
+li
+  a[aria-current]
+    background: var(--background-open-blue-france)
 </style>
