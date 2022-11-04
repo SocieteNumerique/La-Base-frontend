@@ -5,7 +5,9 @@ type Tooltip = {
   content: string
   id: number
   image?: string
+  page: string
   position: "right" | "left" | "bottom" | "top"
+  slug: string
   title: string
 }
 

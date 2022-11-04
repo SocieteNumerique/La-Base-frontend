@@ -3,9 +3,11 @@
     <template #header>
       <div style="background: #e8edff" class="fr-py-4w">
         <div class="fr-container">
-          <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
-            Bienvenue sur La Base du numérique d’intérêt général
-          </h1>
+          <IntroTooltip slug="intro">
+            <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
+              Bienvenue sur La Base du numérique d’intérêt général
+            </h1>
+          </IntroTooltip>
         </div>
       </div>
     </template>
