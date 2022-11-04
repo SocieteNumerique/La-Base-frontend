@@ -6,7 +6,8 @@
           <div class="fr-col-md-3 fr-pr-3w">
             <ImageResized
               :resizable-image="resource?.profileImage"
-              format="resourceHeader"
+              format="miniature"
+              :dimensions="{ width: '278px', height: '200px' }"
               default-image="resource"
             />
           </div>
@@ -16,7 +17,7 @@
             </h1>
 
             <div class="fr-mb-2w" style="display: flex; flex-direction: row">
-              <div>
+              <div class="fr-text--sm fr-m-0">
                 Fiche publiée dans
                 <NuxtLink
                   :to="'/base/' + resource?.rootBase"
@@ -25,7 +26,7 @@
                   {{ resource?.rootBaseTitle }}
                 </NuxtLink>
               </div>
-              <div class="fr-ml-3w">
+              <div class="fr-ml-3w fr-text--sm fr-m-0">
                 <template
                   v-if="
                     resource?.canWrite &&
@@ -47,16 +48,22 @@
                 <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
                 <!--            </div>-->
                 <div class="stat">
-                  <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
-                  <span>{{
+                  <span class="fr-h6">{{ resource?.stats.visitCount }}</span>
+                  <span class="fr-text--sm fr-ml-1w">{{
                     pluralize(["vue"], resource?.stats.visitCount)
                   }}</span>
                 </div>
               </div>
-              <div class="is-flex fr-text--sm fr-m-0">
+              <div
+                class="is-flex fr-text--xs fr-m-0"
+                style="align-items: flex-end"
+              >
                 <div>Fiche créée le {{ $date(resource?.created) }}</div>
                 <div class="fr-ml-4w">
                   Fiche modifiée le {{ $date(resource?.modified) }}
+                </div>
+                <div class="fr-ml-4w">
+                  Statut : {{ stateLabel[resource?.state] }}
                 </div>
               </div>
             </div>
@@ -217,6 +224,7 @@ import IndexTable from "~/components/indexTable.vue"
 import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 import { pluralize } from "~/composables/strUtils"
+import { stateLabel } from "~/composables/constants"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },

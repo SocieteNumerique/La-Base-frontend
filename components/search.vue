@@ -208,6 +208,11 @@ watch(
     if (query.page != oldQuery.page) {
       doSearch(true)
     }
+    if (query.update != oldQuery.update) {
+      // query.update is a kinda hacky way to make sure refresh is updated
+      // on login/logout
+      doSearch(false)
+    }
   }
 )
 

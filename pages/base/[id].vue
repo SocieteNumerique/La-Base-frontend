@@ -129,6 +129,7 @@ import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
 import { mobileOrTabletCheck } from "~/composables/mobileCheck"
+import { stateLabel } from "~/composables/constants"
 
 definePageMeta({
   layout: false,
@@ -237,13 +238,6 @@ const mailToHrefReport = computed(() => {
   }
   return `${toReturn}?subject=${subject}&body=${body}`
 })
-
-const stateLabel = {
-  public: "Public",
-  private: "Privé",
-  draft: "Invisible",
-  restricted: "Restreint",
-}
 </script>
 
 <style lang="sass" scoped>

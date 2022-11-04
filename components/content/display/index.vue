@@ -8,7 +8,7 @@
       :is-grid-view="isGridView"
       class="fr-text--sm fr-m-0"
     />
-    <div v-if="content.annotation" class="fr-text--sm fr-m-0 fr-mt-0">
+    <div v-if="content.annotation" class="fr-text--sm fr-m-0 fr-mt-2w">
       {{ content.annotation }}
     </div>
     <div
