@@ -36,7 +36,7 @@
     </div>
 
     <LayoutFooter />
-    <div v-if="true || introStore.active" class="overlay"></div>
+    <div v-if="introStore.current" class="overlay"></div>
   </div>
 </template>
 

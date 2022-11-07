@@ -3,7 +3,7 @@
     <template #header>
       <div style="background: #e8edff" class="fr-py-4w">
         <div class="fr-container">
-          <IntroTooltip slug="intro">
+          <IntroTooltip slug="INDEX_TITLE">
             <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
               Bienvenue sur La Base du numérique d’intérêt général
             </h1>
@@ -14,10 +14,12 @@
     <div>
       <div class="fr-grid-row fr-mb-5w" style="justify-content: space-between">
         <div class="fr-col-6" style="color: var(--text-action-high-grey)">
-          <p>
-            La Base regroupe les ressources des professionnels du numérique
-            d’intérêt général dont l’inclusion et la médiation numériques.
-          </p>
+          <IntroTooltip slug="INDEX_FIRST_PARAGRAPH">
+            <p>
+              La Base regroupe les ressources des professionnels du numérique
+              d’intérêt général dont l’inclusion et la médiation numériques.
+            </p>
+          </IntroTooltip>
           <p class="fr-mb-0">
             Vous pouvez naviguer au travers des bases des différents acteurs qui
             partagent leurs ressources et créer votre propre base.
