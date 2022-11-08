@@ -22,22 +22,21 @@
     75334 PARIS CEDEX 07 <a href="mailto:dpo@anct.gouv.fr">dpo@anct.gouv.fr</a>
   </p>
   <h3 id="conception">Conception</h3>
-  <p>Ce site est réalisé par la SAS BAM et la SARL SCOP TelesCoop</p>
+  <p>Ce site est réalisé par la SAS SCOP BAM et la SARL SCOP TelesCoop</p>
   <p>Dénomination : <strong>BAM</strong></p>
-  <p>Nom commercial : <strong>Collectif Bam</strong> (marque déposée)</p>
+  <p>Nom commercial : <strong>Praticable</strong> (marque déposée)</p>
   <p>
     Email :
     <strong
-      ><a href="mailto:contact@collectifbam.fr"
-        >contact@collectifbam.fr</a
+      ><a href="mailto:contact[at]praticable[.]fr"
+        >contact[at]praticable[.]fr</a
       ></strong
     >
   </p>
-  <p>Téléphone : <strong>+33 (0) 6 26 48 35 11</strong></p>
+  <p>Téléphone : <strong>+33 (0) 6 50 70 95 25</strong></p>
   <hr />
   <p>Dénomination : <strong>TelesCoop</strong></p>
   <p>Nom commercial : <strong>TELESCOOP</strong></p>
-  <p>Téléphone : <strong>08 92 97 63 11</strong></p>
   <h3 id="h-bergement-des-donn-es-de-la-la-base-">
     Hébergement des données de la La Base:
   </h3>
