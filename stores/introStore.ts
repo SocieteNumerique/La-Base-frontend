@@ -96,9 +96,9 @@ export const useIntroStore = defineStore("intro", () => {
     if (seenPages.value[page]) {
       return []
     }
-    if (indexInPage.value === 0) {
-      skipIfDoesNotExist()
-    }
+    // if (indexInPage.value === 0) {
+    //   skipIfDoesNotExist()
+    // }
     return intros.value.filter((intro) => intro.page === page)
   })
 
