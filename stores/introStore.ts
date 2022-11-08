@@ -19,19 +19,24 @@ export const useIntroStore = defineStore("intro", () => {
   const intros = ref<Intro[]>([])
   const seenPages = ref<{ [key: string]: boolean }>({})
   const indexInPage = ref(0)
+  const forceRecheckPage = ref(0)
 
   watch(
     () => route.name,
     (value) => {
       console.log("### new route", value)
-      indexInPage.value = -1
-      next()
+      indexInPage.value = 0
+      // we re-check later when DOM has initialised
+      setTimeout(() => {
+        forceRecheckPage.value += 1
+      }, 400)
     }
   )
 
   const getIntros = async () => {
     const { data, error } = await useApiGet<Intro[]>("intros/")
-    if (!error.value) {
+    if (!error.value && data.value!) {
+      console.log("### new value", data.value, error.value)
       intros.value = data.value!
     }
   }
@@ -56,15 +61,28 @@ export const useIntroStore = defineStore("intro", () => {
     skipIfDoesNotExist()
   }
 
-  const skipIfDoesNotExist = () => {
+  const doesATooltipExistWithSlug = (slug: string | undefined) => {
+    if (process.server) {
+      return true
+    }
+    if (slug == null) {
+      return false
+    }
+    const possibleSlugs = Array.from(
+      document.getElementsByClassName("tooltip-container")
+    ).map((el) => el.getAttribute("slug"))
+
+    return possibleSlugs.indexOf(slug) !== -1
+  }
+
+  const skipIfDoesNotExist = (forward = true) => {
     if (process.client) {
-      const possibleSlugs = Array.from(
-        document.getElementsByClassName("tooltip-container")
-      ).map((el) => el.getAttribute("slug"))
-      console.log("### next", possibleSlugs, current.value?.slug)
-      if (possibleSlugs.indexOf(current.value?.slug) === -1) {
-        console.log("#### not found, next")
-        next()
+      if (!doesATooltipExistWithSlug(current.value?.slug)) {
+        if (forward) {
+          next()
+        } else {
+          previous()
+        }
       }
     }
   }
@@ -76,7 +94,11 @@ export const useIntroStore = defineStore("intro", () => {
   const previous = () => {
     if (canGoPrevious.value) {
       indexInPage.value -= 1
+    } else {
+      next()
+      return
     }
+    skipIfDoesNotExist(false)
   }
 
   const current = computed<Intro | null>(() => {
@@ -87,23 +109,28 @@ export const useIntroStore = defineStore("intro", () => {
   })
 
   const forPage = computed<Intro[]>(() => {
+    forceRecheckPage.value
+    if (process.server) {
+      return []
+    }
     let page = <string>route.name
     // route name may contain id in it (ex /base/23), we remove it
     page = page.replace(/\/\d+/, "")
     // we also remove trailing slash
     page = page.replace(/\/$/, "")
-    console.log("### forPage, seen ?", seenPages.value[page])
     if (seenPages.value[page]) {
       return []
     }
-    // if (indexInPage.value === 0) {
-    //   skipIfDoesNotExist()
-    // }
-    return intros.value.filter((intro) => intro.page === page)
+
+    return intros.value
+      .filter((intro) => intro.page === page)
+      .filter((intro) => doesATooltipExistWithSlug(intro.slug))
   })
 
-  // load intros the first time
-  getIntros()
+  // load intros the first time, only in client to avoid SSR bugs
+  if (process.client) {
+    getIntros()
+  }
 
   return {
     intros,

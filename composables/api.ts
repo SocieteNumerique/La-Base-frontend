@@ -37,7 +37,7 @@ const makeLoadingKey = (path: string) => {
 const getCsrfCookie = () => {
   let cookie: string
   if (process.server) {
-    cookie = useRequestHeaders(["cookie"])["cookie"]
+    cookie = useRequestHeaders(["cookie"])["cookie"]!
   } else {
     cookie = document.cookie
   }
