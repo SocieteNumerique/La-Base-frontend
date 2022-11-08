@@ -24,7 +24,6 @@ export const useIntroStore = defineStore("intro", () => {
   watch(
     () => route.name,
     (value) => {
-      console.log("### new route", value)
       indexInPage.value = 0
       // we re-check later when DOM has initialised
       setTimeout(() => {
@@ -36,7 +35,6 @@ export const useIntroStore = defineStore("intro", () => {
   const getIntros = async () => {
     const { data, error } = await useApiGet<Intro[]>("intros/")
     if (!error.value && data.value!) {
-      console.log("### new value", data.value, error.value)
       intros.value = data.value!
     }
   }
@@ -54,7 +52,6 @@ export const useIntroStore = defineStore("intro", () => {
     if (canGoNext.value) {
       indexInPage.value += 1
     } else {
-      console.log("### not possible anymore")
       markSeen()
       return
     }
