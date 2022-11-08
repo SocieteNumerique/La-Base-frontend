@@ -47,7 +47,7 @@
           <div>
             <NuxtLink
               :to="`/base/${resource?.rootBase}`"
-              class="blue-link no-underline"
+              class="blue-link no-underline underlined-on-hover"
             >
               {{ resource?.rootBaseTitle }}
             </NuxtLink>
@@ -80,8 +80,10 @@
         </div>
       </div>
       <div class="fr-p-2w">
-        <div class="description-text">{{ resource?.description }}</div>
-        <div class="separator fr-my-3v" />
+        <template v-if="resource?.description">
+          <div class="description-text">{{ resource?.description }}</div>
+          <div class="separator fr-my-3v" />
+        </template>
         <div>
           <h4
             class="fr-text--xs fr-mr-3v"
@@ -95,7 +97,7 @@
             style="margin-bottom: -8px; display: inline"
           />
         </div>
-        <div class="separator fr-my-3v" />
+        <div class="separator fr-mb-3v fr-mt-1v" />
         <div class="fr-grid-row fr-text-mention--grey">
           <div class="fr-mr-5v">
             <VIcon :scale="0.7" class="fr-mr-1v" name="ri-link" />

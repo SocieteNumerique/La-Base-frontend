@@ -130,16 +130,6 @@
                 <button>Recherche</button>
               </NuxtLink>
             </li>
-            <li>
-              <NuxtLink to="/label">
-                <button>Label</button>
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/a-propos">
-                <button>À propos</button>
-              </NuxtLink>
-            </li>
             <li v-for="page of pages" :key="page.slug">
               <NuxtLink :to="'/page/' + page.slug">
                 <button>

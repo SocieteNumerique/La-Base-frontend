@@ -21,7 +21,7 @@
                 Fiche publiée dans
                 <NuxtLink
                   :to="'/base/' + resource?.rootBase"
-                  class="fr-text-label--blue-france no-underline"
+                  class="fr-text-label--blue-france no-underline underlined-on-hover"
                 >
                   {{ resource?.rootBaseTitle }}
                 </NuxtLink>

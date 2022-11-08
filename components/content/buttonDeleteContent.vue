@@ -1,5 +1,8 @@
 <template>
-  <button class="fr-btn--tertiary-no-outline" @click="ongoingDeletion = true">
+  <button
+    class="fr-btn--tertiary-no-outline fr-pb-1v"
+    @click="ongoingDeletion = true"
+  >
     <VIcon name="ri-delete-bin-line" />
     {{ full ? "Supprimer" : "" }}
   </button>
