@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { useApiGet } from "~/composables/api"
 import { useRoute } from "vue-router"
-import { computed } from "vue"
+import { computed, watch } from "vue"
 
 type Intro = {
   content: string
@@ -20,12 +20,22 @@ export const useIntroStore = defineStore("intro", () => {
   const seenPages = ref<{ [key: string]: boolean }>({})
   const indexInPage = ref(0)
 
+  watch(
+    () => route.name,
+    (value) => {
+      console.log("### new route", value)
+      indexInPage.value = -1
+      next()
+    }
+  )
+
   const getIntros = async () => {
     const { data, error } = await useApiGet<Intro[]>("intros/")
     if (!error.value) {
       intros.value = data.value!
     }
   }
+
   const markSeen = () => {
     const page = <string>route.name
     seenPages.value[page] = true
@@ -38,6 +48,24 @@ export const useIntroStore = defineStore("intro", () => {
   const next = () => {
     if (canGoNext.value) {
       indexInPage.value += 1
+    } else {
+      console.log("### not possible anymore")
+      markSeen()
+      return
+    }
+    skipIfDoesNotExist()
+  }
+
+  const skipIfDoesNotExist = () => {
+    if (process.client) {
+      const possibleSlugs = Array.from(
+        document.getElementsByClassName("tooltip-container")
+      ).map((el) => el.getAttribute("slug"))
+      console.log("### next", possibleSlugs, current.value?.slug)
+      if (possibleSlugs.indexOf(current.value?.slug) === -1) {
+        console.log("#### not found, next")
+        next()
+      }
     }
   }
 
@@ -59,14 +87,17 @@ export const useIntroStore = defineStore("intro", () => {
   })
 
   const forPage = computed<Intro[]>(() => {
-    const route = useRoute()
     let page = <string>route.name
     // route name may contain id in it (ex /base/23), we remove it
     page = page.replace(/\/\d+/, "")
     // we also remove trailing slash
     page = page.replace(/\/$/, "")
+    console.log("### forPage, seen ?", seenPages.value[page])
     if (seenPages.value[page]) {
       return []
+    }
+    if (indexInPage.value === 0) {
+      skipIfDoesNotExist()
     }
     return intros.value.filter((intro) => intro.page === page)
   })

@@ -1,5 +1,9 @@
 <template>
-  <div :class="isActive ? 'tooltip-container active' : ''">
+  <div
+    class="tooltip-container"
+    :slug="props.slug"
+    :class="isActive ? 'active' : ''"
+  >
     <slot />
     <div v-if="isActive" class="tooltip" :class="introStore.current.position">
       <VIcon
@@ -7,7 +11,7 @@
         name="ri-close-line"
         style="position: absolute; right: 16px; top: 16px; cursor: pointer"
         color="white"
-        @click="introStore.markSeen(route.name)"
+        @click="introStore.markSeen()"
       />
       <div class="header fr-py-2w fr-text--bold">
         {{ introStore.current?.title }}
@@ -54,11 +58,9 @@
 
 <script setup lang="ts">
 import { useIntroStore } from "~/stores/introStore"
-import { useRoute } from "vue-router"
 import { computed } from "vue"
 
 const introStore = useIntroStore()
-const route = useRoute()
 
 const isActive = computed(
   () => introStore.current && introStore.current.slug === props.slug
