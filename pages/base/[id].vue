@@ -100,13 +100,9 @@
 
     <Search @results="updateResults" />
 
-    <div
-      id="search-results"
-      style="border-bottom: 1px solid var(--border-default-grey)"
-      class="fr-my-3w"
-    ></div>
-
-    <BaseResources :base="base" :resources-result="resourcesResult" />
+    <div class="fr-container">
+      <BaseResources :base="base" :resources-result="resourcesResult" />
+    </div>
 
     <BaseAbout
       v-if="showAboutModal"
@@ -130,11 +126,14 @@ import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
 import { mobileOrTabletCheck } from "~/composables/mobileCheck"
 import { stateLabel } from "~/composables/constants"
+import { useFullWidth } from "~/composables/useFullWidth"
 
 definePageMeta({
   layout: false,
   title: "Base",
 })
+
+useFullWidth()
 
 const route = useRoute()
 const router = useRouter()

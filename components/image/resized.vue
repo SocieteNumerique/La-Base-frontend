@@ -60,7 +60,9 @@ const computedDimensions = computed<Dimensions>(
 
 const defaultImageStyle = computed(() => {
   return {
-    border: props.bordered ? "1px solid #E5E5E5" : undefined,
+    border: props.bordered
+      ? "1px solid var(--background-disabled-grey)"
+      : undefined,
     "border-radius": props.circle ? "100%" : undefined,
     width: computedDimensions.value.width,
     height: computedDimensions.value.height,
@@ -73,7 +75,9 @@ const style = computed(() => {
       ? `url('${url.value}')`
       : "var(--background-default-grey)",
     "border-radius": props.circle ? "50%" : undefined,
-    border: props.bordered ? "1px solid #E5E5E5" : undefined,
+    border: props.bordered
+      ? "1px solid var(--background-disabled-grey)"
+      : undefined,
     "background-color": "white",
     width: computedDimensions.value.width,
     height: computedDimensions.value.height,

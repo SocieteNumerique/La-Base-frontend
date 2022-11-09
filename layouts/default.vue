@@ -22,8 +22,8 @@
     </DsfrModal>
 
     <slot name="header">
-      <div class="fr-container fr-mt-4w">
-        <div v-if="route.meta.title" class="fr-grid-row">
+      <div v-if="route.meta.title" class="fr-container fr-mt-4w">
+        <div class="fr-grid-row">
           <h1>{{ route.meta.title }}</h1>
         </div>
       </div>

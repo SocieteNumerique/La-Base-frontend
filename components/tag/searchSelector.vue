@@ -59,7 +59,7 @@
       <div
         v-if="isFocused && props.category.acceptsFreeTags"
         class="fr-px-2w fr-py-1w"
-        style="border-top: 1px solid #e5e5e5"
+        style="border-top: 1px solid var(--background-disabled-grey)"
       >
         <button
           class="fr-m-0 fr-text--md fr-text-label--blue-france"

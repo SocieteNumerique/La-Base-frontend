@@ -4,13 +4,15 @@ import { useMainStore } from "~/stores/mainStore"
 export const useFullWidth = () => {
   const mainStore = useMainStore()
   if (process.server) {
-    mainStore.useFullWidthLayout = true
+    // TODO below value should actually be true, but due
+    //   to an SSR bug it does not work
+    mainStore.setFullWidth(false)
   } else {
     onMounted(() => {
-      mainStore.useFullWidthLayout = true
+      mainStore.setFullWidth(true)
     })
     onBeforeUnmount(() => {
-      mainStore.useFullWidthLayout = false
+      mainStore.setFullWidth(false)
     })
   }
 }

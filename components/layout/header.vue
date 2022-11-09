@@ -127,6 +127,11 @@
           <ul class="fr-links-group">
             <li>
               <NuxtLink to="/">
+                <button>Accueil</button>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/recherche">
                 <button>Recherche</button>
               </NuxtLink>
             </li>
