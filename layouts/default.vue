@@ -29,18 +29,8 @@
       </div>
     </slot>
 
-    <div
-      :class="
-        mainStore.number && mainStore.useFullWidthLayout
-          ? null
-          : 'fr-container fr-mt-4w'
-      "
-    >
-      <div
-        :class="
-          mainStore.number && mainStore.useFullWidthLayout ? null : 'fr-mb-11v'
-        "
-      >
+    <div :class="mainStore.useFullWidthLayout ? null : 'fr-container fr-mt-4w'">
+      <div :class="mainStore.useFullWidthLayout ? null : 'fr-mb-11v'">
         <slot />
       </div>
     </div>
