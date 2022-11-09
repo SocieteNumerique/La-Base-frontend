@@ -7,7 +7,6 @@ import { usePageStore } from "~/stores/pageStore"
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("vue:setup", () => {
     useBaseStore().refreshBases()
-    useMainStore().refreshVersion()
     useTagStore().refreshIndex()
     useUserStore().refreshProfile()
     usePageStore().getPages()

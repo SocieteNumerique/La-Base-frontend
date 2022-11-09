@@ -1,7 +1,7 @@
 <template>
   <div
     :id="'tag-dropdown-' + props.category.id"
-    class="tag-dropdown fr-text--sm"
+    class="tag-dropdown fr-text--sm fr-mb-2w"
   >
     <div
       class="cursor--pointer dropdown-title fr-text-label--blue-france"
@@ -107,5 +107,10 @@ const selectTag = (tagId: number) => {
   z-index: 100;
   box-shadow: 4px 4px 4px var(--grey-975-75-hover),
     -4px 4px 4px var(--grey-975-75-hover);
+}
+.tag-dropdown {
+  border: 1px solid var(--background-disabled-grey);
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 </style>

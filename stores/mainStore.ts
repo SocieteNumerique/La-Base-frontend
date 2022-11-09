@@ -6,11 +6,8 @@ export const useMainStore = defineStore("main", {
     version: "",
   }),
   actions: {
-    async refreshVersion() {
-      const { data, error } = await useApiGet<{ version: string }>("version")
-      if (!error.value) {
-        this.version = data.value.version
-      }
+    setFullWidth(value: boolean) {
+      this.useFullWidthLayout = value
     },
   },
 })

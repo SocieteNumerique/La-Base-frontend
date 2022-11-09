@@ -22,15 +22,25 @@
     </DsfrModal>
 
     <slot name="header">
-      <div class="fr-container fr-mt-4w">
-        <div v-if="route.meta.title" class="fr-grid-row">
+      <div v-if="route.meta.title" class="fr-container fr-mt-4w">
+        <div class="fr-grid-row">
           <h1>{{ route.meta.title }}</h1>
         </div>
       </div>
     </slot>
 
-    <div :class="mainStore.useFullWidthLayout ? null : 'fr-container fr-mt-4w'">
-      <div :class="mainStore.useFullWidthLayout ? null : 'fr-mb-11v'">
+    <div
+      :class="
+        mainStore.number && mainStore.useFullWidthLayout
+          ? null
+          : 'fr-container fr-mt-4w'
+      "
+    >
+      <div
+        :class="
+          mainStore.number && mainStore.useFullWidthLayout ? null : 'fr-mb-11v'
+        "
+      >
         <slot />
       </div>
     </div>

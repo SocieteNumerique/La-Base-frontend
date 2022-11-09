@@ -14,11 +14,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       baseStore.refreshBases()
     }
 
-    const mainStore = useMainStore()
-    if (!mainStore.version) {
-      mainStore.refreshVersion()
-    }
-
     const tagStore = useTagStore()
     if (!Object.keys(tagStore.tagCategoriesById).length) {
       tagStore.refreshIndex()

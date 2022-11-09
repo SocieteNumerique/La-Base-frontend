@@ -1,5 +1,6 @@
 import {
   RiCloseLine,
+  RiCloseCircleLine,
   RiFlagLine,
   RiHome2Line,
   RiRefreshLine,
@@ -85,6 +86,7 @@ export const icons = [
   officialLine,
   officialLineColored,
   RiCloseLine,
+  RiCloseCircleLine,
   RiFlagLine,
   RiHome2Line,
   RiRefreshLine,

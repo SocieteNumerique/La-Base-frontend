@@ -1,81 +1,90 @@
 <template>
-  <div>
-    <div class="fr-grid-row fr-grid-row--gutters">
-      <div
-        :style="
-          isSearchDeactivated
-            ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
-            : null
-        "
-        class="fr-col-6 fr-pt-0"
-      >
-        <div class="fr-search-bar fr-input-group fr-mt-4w">
-          <input
-            id="search"
-            v-model="textInput"
-            class="fr-input"
-            type="text"
-            :placeholder="
-              isInBaseIndex
-                ? 'Rechercher dans toute la base'
-                : 'Rechercher dans toute la plateforme'
-            "
-            @input="doSearch()"
-          />
-          <button class="fr-btn">
-            <VIcon name="ri-search-line" />
-          </button>
-        </div>
-      </div>
-      <div
-        v-if="isInBaseIndex"
-        class="fr-col-6"
-        style="align-items: flex-end; display: flex; justify-content: center"
-      >
-        <div class="fr-btns-group--xs is-flex" style="width: 100%">
-          <button
-            :class="{ '-active': view === 'resources' }"
-            class="btn-tab-activable fr-btn--tertiary fr-p-2v fr-mr-3w"
-            @click="view = 'resources'"
+  <div style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)">
+    <div
+      class="fr-pt-6w fr-pb-4w"
+      style="background: var(--background-open-blue-france)"
+    >
+      <div class="fr-container">
+        <div class="fr-grid-row">
+          <div v-if="!isInBaseIndex" class="fr-col-md-4 fr-p-0">
+            <div class="is-flex" style="align-items: center">
+              <div class="toggle-container">
+                <button
+                  class="toggle-button"
+                  :class="dataType === 'resources' ? '-active' : null"
+                  @click="dataType = 'resources'"
+                >
+                  <img
+                    alt="Chercher des ressources"
+                    class="fr-mr-1v"
+                    src="/img/home/resource-blue.svg"
+                  />
+                  <span> Fiches </span>
+                </button>
+                <button
+                  class="toggle-button"
+                  :class="dataType === 'bases' ? '-active' : null"
+                  @click="dataType = 'bases'"
+                >
+                  <img
+                    alt="Chercher des bases"
+                    class="fr-mr-1v"
+                    src="/img/home/base-blue.svg"
+                  />
+                  <span> Bases </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="fr-col-md-8 fr-p-0 is-flex"
+            style="justify-content: space-between"
           >
-            <VIcon name="ri-file-line" />
-            Voir les fiches
-          </button>
-          <button
-            :class="{ '-active': view === 'collections' }"
-            class="btn-tab-activable fr-btn--tertiary fr-p-2v"
-            @click="view = 'collections'"
-          >
-            <VIcon name="ri-folder-3-line" />
-            Voir les collections
-          </button>
+            <div
+              :style="
+                isSearchDeactivated
+                  ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
+                  : null
+              "
+            >
+              <div class="fr-search-bar fr-input-group">
+                <input
+                  id="search"
+                  v-model="textInput"
+                  class="fr-input"
+                  type="text"
+                  :placeholder="
+                    isInBaseIndex
+                      ? 'Rechercher dans toute la base'
+                      : 'Rechercher dans toute la plateforme'
+                  "
+                  style="width: 308px"
+                  @input="doSearch()"
+                />
+                <button class="fr-btn">
+                  <VIcon name="ri-search-line" />
+                </button>
+              </div>
+            </div>
+            <div v-if="!isSearchDeactivated">
+              <button class="fr-btn" @click="showFilters = !showFilters">
+                Filtrer
+                <span style="padding-left: 3px">
+                  <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
+                  <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div v-if="!isSearchDeactivated" class="fr-mt-4w">
-      <button
-        class="fr-btn fr-btn--tertiary-no-outline fr-pl-0"
-        :class="showFilters ? 'fr-btn--tertiary--active' : null"
-        @click="showFilters = !showFilters"
-      >
-        Filtrer
-        <span style="padding-left: 3px">
-          <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
-          <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
-        </span>
-      </button>
-      <button
-        class="fr-btn fr-btn--tertiary-no-outline"
-        style="margin-left: 12px"
-        @click="reset"
-      >
-        Réinitialiser la recherche
-      </button>
-    </div>
-
-    <template v-if="showFilters && !isSearchDeactivated">
-      <ul v-if="selectedTags.length" class="fr-pt-1w fr-mt-2w fr-tags-group">
+    <div
+      v-if="showFilters && !isSearchDeactivated"
+      class="fr-container fr-pt-2w fr-pb-6w"
+    >
+      <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
         <li v-for="tagId in selectedTags" :key="tagId">
           <button
             class="fr-tag--dismiss fr-tag"
@@ -85,7 +94,29 @@
             {{ tagStore.tagsById[tagId].name }}
           </button>
         </li>
+        <li>
+          <DsfrButton
+            label="Réinitialiser"
+            icon="ri-close-circle-line"
+            class="fr-btn--tertiary-no-outline reset-btn"
+            @click="resetTags"
+          />
+        </li>
       </ul>
+      <div class="fr-mt-1w small-radio-buttons">
+        <DsfrRadioButtonSet
+          v-model="tagOperatorInput"
+          name="tagOperator"
+          :inline="true"
+          :options="[
+            { label: 'Tous les tags sélectionnés', value: 'AND' },
+            { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
+          ]"
+          legend="Les résultats comportent :"
+          class="inline-radio fr-mb-3w"
+          @update:model-value="onRadioChange"
+        />
+      </div>
       <div class="dropdown-holder">
         <TagDropdown
           v-for="category of tagCategories"
@@ -109,21 +140,10 @@
           @select="onSelect"
         />
       </div>
-      <div class="fr-mt-1w small-radio-buttons">
-        <DsfrRadioButtonSet
-          v-model="tagOperatorInput"
-          name="tagOperator"
-          :inline="true"
-          :options="[
-            { label: 'Tous les tags sélectionnés', value: 'AND' },
-            { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
-          ]"
-          :required="true"
-          legend="Les résultats comportent"
-          @update:model-value="onRadioChange"
-        />
+      <div class="fr-mt-3v">
+        {{ nResults }} {{ pluralize(["résultat"], nResults) }}
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -141,6 +161,7 @@ import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { pluralize } from "~/composables/strUtils"
 
 definePageMeta({
   layout: false,
@@ -154,14 +175,16 @@ const tagStore = useTagStore()
 const router = useRouter()
 const route = useRoute()
 
-const results = ref<Base[] | Resource[]>([])
+const nResults = ref(0)
 const textInput = ref<string>(<string>route.query.text || "")
 const possibleTags = ref<number[]>([])
 
 const emit = defineEmits(["results", "searchedText"])
 
-const dataType = computed<"resources" | "bases">(() => {
-  return <"resources" | "bases">route.query.dataType || "resources"
+const dataType = computed<"resources" | "bases">({
+  get: () => <"resources" | "bases">route.query.dataType || "resources",
+  set: (type: string) =>
+    router.push({ query: { ...route.query, dataType: type } }),
 })
 
 const view = computed<string>({
@@ -178,6 +201,12 @@ const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
+  },
+})
+const orderBy = computed<string>({
+  get: () => <string>route.query.orderBy || "-modified",
+  set(newValue: string) {
+    updateRouterQuery({ orderBy: newValue, page: 0 })
   },
 })
 const isLiveResources = computed<boolean>(() =>
@@ -211,6 +240,9 @@ watch(
     if (query.update != oldQuery.update) {
       // query.update is a kinda hacky way to make sure refresh is updated
       // on login/logout
+      doSearch(false)
+    }
+    if (query.orderBy != oldQuery.orderBy) {
       doSearch(false)
     }
   }
@@ -260,12 +292,13 @@ const doSearch = debounce(async (scrollToTop = false) => {
       tagOperator: tagOperator.value,
       restrictToBase: (isInBaseIndex.value && route.params.id) || null,
       live: isLiveResources.value,
+      orderBy: orderBy.value,
     },
     { page: currentPage.value + 1 }
   )
   if (!error.value) {
-    results.value = data.value.results.objects
-    possibleTags.value = data.value.results.possibleTags
+    nResults.value = data.value!.count
+    possibleTags.value = data.value!.results.possibleTags
     emit("results", data.value)
     if (scrollToTop) {
       document
@@ -291,6 +324,11 @@ const reset = () => {
   doSearch()
 }
 
+const resetTags = () => {
+  selectedTags.value = []
+  doSearch()
+}
+
 const onRadioChange = (value: "OR" | "AND") => {
   tagOperatorInput.value = value
   tagOperator.value = value
@@ -307,7 +345,7 @@ onMounted(() => {
   display: flex
   margin-left: -32px
   flex-wrap: wrap
-  margin-top: 16px
+  margin-top: -16px
   *
     margin-left: 32px
     margin-top: 0
@@ -321,6 +359,26 @@ onMounted(() => {
 .btn-tab-activable.-active
   background: var(--background-alt-blue-france)
   box-shadow: none
+
+.toggle-container
+  background: var(--background-alt-grey)
+  border-radius: 16px
+  padding: 6px
+
+.toggle-button
+  color: var(--text-action-high-blue-france)
+  font-weight: bold
+  border-radius: 12px
+  padding: 6px 16px
+
+  &.-active
+    color: white
+    background: var(--text-action-high-blue-france)
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25)
+
+  img
+    vertical-align: bottom
+    height: 20px
 </style>
 
 <style>
@@ -332,5 +390,20 @@ onMounted(() => {
 .small-radio-buttons .fr-fieldset__content {
   transform: scale(0.875);
   transform-origin: left;
+}
+.inline-radio legend {
+  float: left;
+  padding-right: 16px;
+  font-weight: normal;
+  font-size: 14px;
+}
+.reset-btn {
+  margin-bottom: 0.75rem;
+  margin-right: 0.75rem;
+  font-size: 14px;
+  color: var(--text-action-high-blue-france);
+  padding: 4px 12px;
+  line-height: initial;
+  min-height: initial;
 }
 </style>
