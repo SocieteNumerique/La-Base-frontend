@@ -1,38 +1,23 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div style="background: #e8edff" class="fr-py-4w">
+      <div style="background: #e8edff" class="fr-py-8w">
         <div class="fr-container">
           <IntroTooltip slug="INDEX_TITLE">
-            <h1 class="fr-h1 fr-mb-0" style="max-width: 750px">
-              Bienvenue sur La Base du numérique d’intérêt général
+            <h1 class="fr-h1 fr-mb-9w" style="max-width: 750px">
+              Bienvenue sur La Base
             </h1>
           </IntroTooltip>
-        </div>
-      </div>
-    </template>
-    <div>
-      <div class="fr-container">
-        <div
-          class="fr-grid-row fr-mb-5w"
-          style="justify-content: space-between"
-        >
-          <div class="fr-col-6" style="color: var(--text-action-high-grey)">
-            <IntroTooltip slug="INDEX_FIRST_PARAGRAPH">
-              <p>
-                La Base regroupe les ressources des professionnels du numérique
-                d’intérêt général dont l’inclusion et la médiation numériques.
-              </p>
-            </IntroTooltip>
-            <p class="fr-mb-0">
-              Vous pouvez naviguer au travers des bases des différents acteurs
-              qui partagent leurs ressources et créer votre propre base.
-            </p>
-            <div>
-              <NuxtLink
-                to="/a-propos"
-                class="no-underline no-append-ico fr-link fr-mt-2w"
-              >
+          <div
+            class="fr-grid-row fr-mb-5w"
+            style="justify-content: space-between"
+          >
+            <div class="fr-col-6" style="color: var(--text-action-high-grey)">
+              <TextBlock slug="homeIntroLeft" />
+            </div>
+            <div class="fr-col-5 fr-text-mention--grey">
+              <TextBlock slug="homeIntroRight" />
+              <NuxtLink to="/a-propos" class="fr-btn fr-mt-2w">
                 <VIcon
                   name="ri-arrow-right-line"
                   class="fr-mr-1w"
@@ -42,34 +27,48 @@
               </NuxtLink>
             </div>
           </div>
-          <div class="fr-col-5 fr-text-mention--grey">
-            <div class="fr-mb-9v">
-              <p class="fr-mb-3v">
-                La Base est une plateforme en amélioration continue grâce à vos
-                retours et contributions. Vous pouvez nous écrire pour nous
-                transmettre vos idées et vos remarques quant à l’évolution de La
-                Base.
-              </p>
-              <a href="mailto:labase@anct.gouv.fr" class="no-underline">
-                <DsfrButton class="fr-btn--sm" label="Nous contacter" />
-              </a>
-            </div>
-
-            <template v-if="!userStore.isLoggedIn">
-              <p class="fr-mb-3v">
-                Pour pouvoir créer une base, renseigner, publier et enregistrer
-                des fiches ressources vous devez bénéficier d’un compte.
-              </p>
-              <div>
-                <DsfrButton
-                  class="fr-btn--sm"
-                  label="S'inscrire"
-                  @click="userStore.showSignUpModal = true"
-                />
-              </div>
-            </template>
-          </div>
         </div>
+      </div>
+    </template>
+    <div>
+      <div class="fr-container fr-pt-12w">
+        <h2 class="fr-mb-5w">Que trouve-t-on dans La Base ?</h2>
+        <HomeBlock
+          icon="/img/home/block-search.svg"
+          title="Le moteur de recherche"
+          description-slug="homeSearchBlockDescription"
+          to="/recherche"
+          text-slug="homeSearchBlockContent"
+          more-text-slug="homeSearchBlockContentMore"
+          class="fr-mb-4w"
+        />
+        <HomeBlock
+          icon="/img/home/block-people.svg"
+          title="Le compte"
+          description-slug="homeAccountBlockDescription"
+          to="/profil-informations"
+          text-slug="homeAccountBlockContent"
+          more-text-slug="homeAccountBlockContentMore"
+          class="fr-mb-4w"
+        />
+        <HomeBlock
+          icon="/img/home/block-resources.svg"
+          title="Les fiches ressource"
+          description-slug="homeResourcesBlockDescription"
+          to="/recherche"
+          text-slug="homeResourcesBlockContent"
+          more-text-slug="homeResourcesBlockContentMore"
+          class="fr-mb-4w"
+        />
+        <HomeBlock
+          icon="/img/home/block-bases.svg"
+          title="Le moteur de recherche"
+          description-slug="homeBasesBlockDescription"
+          to="/recherche"
+          text-slug="homeBasesBlockContent"
+          more-text-slug="homeBasesBlockContentMore"
+          class="fr-mb-4w"
+        />
       </div>
     </div>
   </NuxtLayout>
