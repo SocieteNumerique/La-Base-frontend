@@ -4,7 +4,7 @@ import { useRoute } from "vue-router"
 import { computed, watch } from "vue"
 
 type Intro = {
-  content: string
+  htmlContent: string
   id: number
   image?: string
   page: string

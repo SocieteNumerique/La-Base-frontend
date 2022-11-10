@@ -17,10 +17,12 @@ export const useUserStore = defineStore("user", {
     email: "",
     firstName: "",
     id: 0,
+    isAdmin: false,
+    isCnfs: false,
+    isStaff: false,
     lastName: "",
     prefillEmail: "",
     showSignupModal: false,
-    isCnfs: false,
     tags: [],
   }),
   actions: {
@@ -184,6 +186,8 @@ export const useUserStore = defineStore("user", {
       this.lastName = data.lastName
       this.isCnfs = data?.isCnfs || false
       this.tags = data!.tags
+      this.isAdmin = data!.isAdmin
+      this.isStaff = data!.isStaff
     },
   },
   getters: {
