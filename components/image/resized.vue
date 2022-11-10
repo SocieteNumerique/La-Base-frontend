@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ overlay: overlay, 'no-image': !url }"
+    :class="{ resizedOverlay: overlay, 'no-image': !url }"
     class="image-container"
     :style="!url && overlay ? 'background: white' : null"
   >
@@ -99,7 +99,7 @@ const style = computed(() => {
   background-size: cover
 
 
-.overlay
+.resizedOverlay
   position: relative
 
   &::after
