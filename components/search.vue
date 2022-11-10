@@ -397,7 +397,7 @@ onMounted(() => {
   font-weight: normal;
   font-size: 14px;
 }
-.reset-btn {
+.fr-btn.reset-btn {
   margin-bottom: 0.75rem;
   margin-right: 0.75rem;
   font-size: 14px;

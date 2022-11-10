@@ -2,9 +2,18 @@
   <div>
     <template v-if="slug">
       <div v-if="block" v-html="block"></div>
-      <div v-else-if="userStore.isAdmin" class="missing-content">
+      <div
+        v-else-if="userStore.isAdmin && props.required"
+        class="missing-content"
+      >
         Texte manquant pour le slug
-        <pre style="display: inline">{{ props.slug }}</pre>
+        <a
+          :href="`/admin/main/textblock/${props.slug}/change/`"
+          style="text-decoration: underline"
+          target="_blank"
+        >
+          <pre style="display: inline">{{ props.slug }}</pre>
+        </a>
       </div>
     </template>
   </div>
@@ -19,6 +28,7 @@ const userStore = useUserStore()
 
 const props = defineProps({
   slug: { type: String, required: true },
+  required: { type: Boolean, default: true },
 })
 
 const textBlockStore = useTextBlockStore()
