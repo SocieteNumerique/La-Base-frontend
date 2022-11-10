@@ -13,7 +13,9 @@
           </div>
           <div class="fr-ml-4w" style="text-align: left">
             <h3 class="fr-h4">{{ props.title }}</h3>
-            <p class="fr-tile__desc">{{ props.description }}</p>
+            <p class="fr-tile__desc">
+              <TextBlock :slug="props.descriptionSlug" :required="false" />
+            </p>
             <div class="fr-mt-4w">
               <NuxtLink :to="props.to" class="fr-btn"
                 >Accéder <VIcon class="fr-ml-1w" name="ri-arrow-right-line"
