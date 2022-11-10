@@ -80,7 +80,7 @@
       </div>
     </template>
 
-    <div class="fr-header" style="box-shadow: none">
+    <div class="fr-header fr-mb-5w" style="box-shadow: none">
       <div class="fr-header__body fr-header__nav">
         <div class="fr-container">
           <div class="fr-header__body-row">
@@ -117,21 +117,14 @@
 
     <BasePresentation v-if="currentTab === 'presentation'" />
 
-    <template v-else-if="currentTab === 'resources'">
-      <Search @results="updateResults" />
+    <template v-else>
+      <Search v-if="currentTab === 'resources'" @results="updateResults" />
 
-      <div class="fr-container">
+      <div class="fr-container fr-mt-5w">
         <BaseResources :base="base" :resources-result="resourcesResult" />
       </div>
     </template>
 
-    <BaseAbout
-      v-if="showAboutModal"
-      :participant-types="participantTypes"
-      :base="base"
-      :territory="territory"
-      @close="showAboutModal = false"
-    />
     <ResourceCreationModal
       v-if="showAddResourceModal"
       :base-id="base.id"
@@ -165,7 +158,6 @@ const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
-const showAboutModal = ref(false)
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
@@ -200,11 +192,6 @@ const participantTypes = computed<{ label: string }[]>(
       return { label: tagStore.tagsById[tagId]?.name, small: true }
     }) || []
 )
-const territory = computed<string>(() =>
-  (
-    base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
-  ).join(", ")
-)
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
@@ -234,7 +221,6 @@ onBeforeMount(async () => {
 
   // if we have no access to this base, redirect to home or login
   if (error.value) {
-    console.log("### error", error.value)
     const alertStore = useAlertStore()
     const userStore = useUserStore()
     if (!userStore.isLoggedIn) {
@@ -248,6 +234,7 @@ onBeforeMount(async () => {
       alertStore.alert("Vous n'avez pas accès à cette base", "", "warning")
       router.replace("/")
     }
+    return
   }
 
   useRegisterVisit("base", baseStore.currentId!)
@@ -287,19 +274,9 @@ const mailToHrefReport = computed(() => {
 
 .stat *
   margin-left: 12px
-
-.base-meta
-  align-items: center
-
-  .territory
-    color: black
-    font-size: 0.75rem
 </style>
 
 <style lang="sass">
-.base-meta .participant-tags .fr-tag
-  margin-bottom: 0
-
 .brand
   position: relative
 

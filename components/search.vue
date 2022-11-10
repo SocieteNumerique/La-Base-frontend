@@ -40,13 +40,7 @@
             class="fr-col-md-8 fr-p-0 is-flex"
             style="justify-content: space-between"
           >
-            <div
-              :style="
-                isSearchDeactivated
-                  ? 'pointer-events: none; filter: grayscale(1) opacity(0.5); user-select: none'
-                  : null
-              "
-            >
+            <div>
               <div class="fr-search-bar fr-input-group">
                 <input
                   id="search"
@@ -66,7 +60,7 @@
                 </button>
               </div>
             </div>
-            <div v-if="!isSearchDeactivated">
+            <div>
               <button class="fr-btn" @click="showFilters = !showFilters">
                 Filtrer
                 <span style="padding-left: 3px">
@@ -80,10 +74,7 @@
       </div>
     </div>
 
-    <div
-      v-if="showFilters && !isSearchDeactivated"
-      class="fr-container fr-pt-2w fr-pb-6w"
-    >
+    <div v-if="showFilters" class="fr-container fr-pt-2w fr-pb-6w">
       <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
         <li v-for="tagId in selectedTags" :key="tagId">
           <button
@@ -153,8 +144,6 @@ import { debounce } from "~/composables/debounce"
 import {
   BasesSearchResult,
   ResourcesSearchResult,
-  Base,
-  Resource,
   TagCategory,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
@@ -187,10 +176,6 @@ const dataType = computed<"resources" | "bases">({
     router.push({ query: { ...route.query, dataType: type } }),
 })
 
-const view = computed<string>({
-  get: () => (route.query.view as string) || "resources",
-  set: (value) => router.push({ query: { ...route.query, view: value } }),
-})
 const currentPage = computed<number>({
   get: () => Number(route.query.page) || 0,
   set(page: number) {
@@ -260,10 +245,6 @@ watch(
     doSearch()
   }
 )
-
-const isSearchDeactivated = computed(() => {
-  return route.query.view === "collections"
-})
 
 const tagCategories = computed<TagCategory[]>(() => {
   const filterKey = dataType.value === "resources" ? "Resource" : "Base"

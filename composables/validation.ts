@@ -22,19 +22,19 @@ export const validationMessageFromError = (error: ErrorObject): string => {
   }
   if (error.$validator === "isNationalCartographyWebsite") {
     // @ts-ignore
-    return "Le champ doit commencer par https://www.cartographie.societenumerique.gouv.fr/"
+    return "Le champ doit commencer par https://[www.]cartographie.societenumerique.gouv.fr"
   }
   if (error.$validator === "isLinkedinUrl") {
     // @ts-ignore
-    return "Le champ doit commencer par https://www.linkedin.com/"
+    return "Le champ doit commencer par https://www.linkedin.com ou https://linkedin.com"
   }
   if (error.$validator === "isFacebookUrl") {
     // @ts-ignore
-    return "Le champ doit commencer par https://www.facebook.com/"
+    return "Le champ doit commencer par https://www.facebook.com ou https://facebook.com"
   }
   if (error.$validator === "isTwitterUrl") {
     // @ts-ignore
-    return "Le champ doit commencer par https://www.twitter.com/"
+    return "Le champ doit commencer par https://www.twitter.com ou https://twitter.com"
   }
   return "Champ non valide"
 }

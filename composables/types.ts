@@ -1,5 +1,3 @@
-import { Coordinates } from "vue-advanced-cropper"
-
 export type User = {
   id?: number
   email: string
@@ -178,6 +176,7 @@ export type Base = {
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
+  resources?: ResourcesWithPagination
   socialMediaFacebook: string
   socialMediaLinkedin: string
   socialMediaMastodon: string

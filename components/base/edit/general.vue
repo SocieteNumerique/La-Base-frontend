@@ -123,6 +123,7 @@
         :is-invalid="v$.website.$error"
         :label-visible="true"
         label="Site web"
+        placeholder="https://monsite.fr"
         maxlength="200"
         :required="false"
       />
@@ -295,6 +296,7 @@ const baseWithTags = computed(() => ({
     ...participantTags.value.map((tag) => tag.id),
     ...territoryTags.value.map((tag) => tag.id),
   ],
+  ...userDataState,
 }))
 
 async function updateBase() {
@@ -322,15 +324,17 @@ const actions = computed(() => [
     onClick: () => emits("close"),
   },
 ])
-
-const isNationalCartographyWebsite = (input: string) =>
-  input.startsWith("https://www.cartographie.societenumerique.gouv.fr")
-const isLinkedinUrl = (input: string) =>
-  input.startsWith("https://www.linkedin.com")
-const isFacebookUrl = (input: string) =>
-  input.startsWith("https://www.facebook.com")
-const isTwitterUrl = (input: string) =>
-  input.startsWith("https://www.twitter.com")
+const isOfWebsite = (baseUrl: string) => {
+  return (input: string) =>
+    input.startsWith(`https://www.${baseUrl}`) ||
+    input.startsWith(`https://${baseUrl}`)
+}
+const isNationalCartographyWebsite = isOfWebsite(
+  "cartographie.societenumerique.gouv.fr"
+)
+const isLinkedinUrl = isOfWebsite("linkedin.com")
+const isFacebookUrl = isOfWebsite("facebook.com")
+const isTwitterUrl = isOfWebsite("twitter.com")
 
 // form validation
 const userDataState = reactive({
