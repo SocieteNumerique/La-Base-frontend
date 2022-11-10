@@ -16,6 +16,26 @@ export const validationMessageFromError = (error: ErrorObject): string => {
     // @ts-ignore
     return "Les mots de passe ne correspondent pas"
   }
+  if (error.$validator === "url") {
+    // @ts-ignore
+    return "Le champ ne correspond pas à un lien"
+  }
+  if (error.$validator === "isNationalCartographyWebsite") {
+    // @ts-ignore
+    return "Le champ doit commencer par https://www.cartographie.societenumerique.gouv.fr/"
+  }
+  if (error.$validator === "isLinkedinUrl") {
+    // @ts-ignore
+    return "Le champ doit commencer par https://www.linkedin.com/"
+  }
+  if (error.$validator === "isFacebookUrl") {
+    // @ts-ignore
+    return "Le champ doit commencer par https://www.facebook.com/"
+  }
+  if (error.$validator === "isTwitterUrl") {
+    // @ts-ignore
+    return "Le champ doit commencer par https://www.twitter.com/"
+  }
   return "Champ non valide"
 }
 

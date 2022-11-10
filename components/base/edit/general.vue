@@ -6,9 +6,11 @@
     @close="$emit('close')"
   >
     <div class="base-form-container">
-      <DsfrInput
+      <DsfrInputGroup
         id="baseTitle"
-        v-model="base.title"
+        v-model="v$.title.$model"
+        :error-message="validationMessageFromErrors(v$.title.$errors)"
+        :is-invalid="v$.title.$error"
         :label-visible="true"
         autofocus
         hint="max 100 caractères"
@@ -16,18 +18,22 @@
         maxlength="100"
         required="true"
       />
-      <DsfrInput
-        v-model="base.description"
+      <DsfrInputGroup
+        v-model="v$.description.$model"
+        :error-message="validationMessageFromErrors(v$.description.$errors)"
+        :is-invalid="v$.description.$error"
         :is-textarea="true"
         :label-visible="true"
         :required="true"
         label="Présentation de la base"
         placeholder="Description de la base"
       />
-      <DsfrInput
-        v-model="base.contact"
+      <DsfrInputGroup
+        v-model="v$.contact.$model"
+        :error-message="validationMessageFromErrors(v$.contact.$errors)"
+        :is-invalid="v$.contact.$error"
         :label-visible="true"
-        label="Contact"
+        label="Courriel de contact"
         maxlength="100"
         required="true"
       />
@@ -37,7 +43,9 @@
         </label>
         <DsfrRadioButtonSet
           id="new-base-from-header-state"
-          v-model="base.state"
+          v-model="v$.state.$model"
+          :error-message="validationMessageFromErrors(v$.state.$errors)"
+          :is-invalid="v$.state.$error"
           :inline="true"
           :options="baseStateOptions"
           :required="true"
@@ -57,7 +65,11 @@
             <div class="fr-radio-group">
               <input
                 id="contact-state-public"
-                v-model="base.contactState"
+                v-model="v$.contactState.$model"
+                :error-message="
+                  validationMessageFromErrors(v$.contactState.$errors)
+                "
+                :is-invalid="v$.contactState.$error"
                 type="radio"
                 name="contact-state"
                 value="public"
@@ -68,7 +80,11 @@
             <div class="fr-radio-group">
               <input
                 id="contact-state-private"
-                v-model="base.contactState"
+                v-model="v$.contactState.$model"
+                :error-message="
+                  validationMessageFromErrors(v$.contactState.$errors)
+                "
+                :is-invalid="v$.contactState.$error"
                 type="radio"
                 name="contact-state"
                 value="private"
@@ -101,6 +117,27 @@
         @change="territoryTags = $event"
         @focus="focusCategory(territoryCategoryName)"
       />
+      <DsfrInputGroup
+        v-model="v$.website.$model"
+        :error-message="validationMessageFromErrors(v$.website.$errors)"
+        :is-invalid="v$.website.$error"
+        :label-visible="true"
+        label="Site web"
+        maxlength="200"
+        :required="false"
+      />
+      <DsfrInputGroup
+        v-model="v$.nationalCartographyWebsite.$model"
+        :error-message="
+          validationMessageFromErrors(v$.nationalCartographyWebsite.$errors)
+        "
+        :is-invalid="v$.nationalCartographyWebsite.$error"
+        :label-visible="true"
+        label="Lien de votre fiche sur la cartographie nationale"
+        placeholder="https://www.cartographie.societenumerique.gouv.fr/"
+        maxlength="200"
+        :required="false"
+      />
       <ImageResizableUpload
         v-model="base.profileImage"
         :label="`${profileActionWord}image de profil pour la base`"
@@ -109,9 +146,63 @@
       />
       <ImageResizableUpload
         v-model="base.coverImage"
-        :label="`${coverActionWord}image de couverture pour la base`"
+        :label="`${coverActionWord}image de couverture pour la base !!!!!!!!!!!!!!!!`"
         :desired-ratio="4.8"
       />
+      <div class="fr-grid-row fr-grid-row--gutters">
+        <div class="fr-col-sm-6">
+          <DsfrInputGroup
+            v-model="v$.socialMediaLinkedin.$model"
+            :error-message="
+              validationMessageFromErrors(v$.socialMediaLinkedin.$errors)
+            "
+            :is-invalid="v$.socialMediaLinkedin.$error"
+            :label-visible="true"
+            label="Lien page LinkedIn"
+            placeholder="https://"
+            maxlength="200"
+            :required="false"
+          />
+          <DsfrInputGroup
+            v-model="v$.socialMediaFacebook.$model"
+            :error-message="
+              validationMessageFromErrors(v$.socialMediaFacebook.$errors)
+            "
+            :is-invalid="v$.socialMediaFacebook.$error"
+            :label-visible="true"
+            label="Lien page Facebook"
+            placeholder="https://"
+            maxlength="200"
+            :required="false"
+          />
+        </div>
+        <div class="fr-col-sm-6">
+          <DsfrInputGroup
+            v-model="v$.socialMediaTwitter.$model"
+            :error-message="
+              validationMessageFromErrors(v$.socialMediaTwitter.$errors)
+            "
+            :is-invalid="v$.socialMediaTwitter.$error"
+            :label-visible="true"
+            label="Lien page Twitter"
+            placeholder="https://"
+            maxlength="200"
+            :required="false"
+          />
+          <DsfrInputGroup
+            v-model="v$.socialMediaMastodon.$model"
+            :error-message="
+              validationMessageFromErrors(v$.socialMediaMastodon.$errors)
+            "
+            :is-invalid="v$.socialMediaMastodon.$error"
+            :label-visible="true"
+            label="Lien page Mastodon"
+            placeholder="https://"
+            maxlength="200"
+            :required="false"
+          />
+        </div>
+      </div>
     </div>
   </DsfrModal>
 </template>
@@ -125,12 +216,18 @@ import {
   participantTypeCategoryName,
   territoryCategoryName,
 } from "~/composables/strUtils"
-import { computed } from "vue"
+import { computed, reactive } from "vue"
+import { url, minLength, required, email } from "@vuelidate/validators"
+import useVuelidate from "@vuelidate/core"
+import { useRoute } from "vue-router"
+import { validationMessageFromErrors } from "~/composables/validation"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
 const userStore = useUserStore()
+const route = useRoute()
 
+const baseId = parseInt(<string>route.params.id)
 const emits = defineEmits(["close", "save", "done"])
 const props = defineProps({
   new: { type: Boolean, default: false },
@@ -213,15 +310,11 @@ async function createBase() {
   }
 }
 
-const isNotValid = computed<boolean>(
-  () => !(base.value.title && base.value.description && base.value.contact)
-)
-
 const actions = computed(() => [
   {
     label: "Valider",
     onClick: props.new ? createBase : updateBase,
-    disabled: isNotValid.value,
+    disabled: !v$.value.$invalid,
   },
   {
     label: "Annuler",
@@ -229,6 +322,46 @@ const actions = computed(() => [
     onClick: () => emits("close"),
   },
 ])
+
+const isNationalCartographyWebsite = (input: string) =>
+  input.startsWith("https://www.cartographie.societenumerique.gouv.fr")
+const isLinkedinUrl = (input: string) =>
+  input.startsWith("https://www.linkedin.com")
+const isFacebookUrl = (input: string) =>
+  input.startsWith("https://www.facebook.com")
+const isTwitterUrl = (input: string) =>
+  input.startsWith("https://www.twitter.com")
+
+// form validation
+const userDataState = reactive({
+  socialMediaFacebook: baseStore.basesById[baseId].socialMediaFacebook,
+  socialMediaTwitter: baseStore.basesById[baseId].socialMediaTwitter,
+  socialMediaMastodon: baseStore.basesById[baseId].socialMediaMastodon,
+  socialMediaLinkedin: baseStore.basesById[baseId].socialMediaLinkedin,
+  nationalCartographyWebsite:
+    baseStore.basesById[baseId].nationalCartographyWebsite,
+  website: baseStore.basesById[baseId].website,
+
+  title: baseStore.basesById[baseId].title,
+  description: baseStore.basesById[baseId].description,
+  contact: baseStore.basesById[baseId].contact,
+  state: baseStore.basesById[baseId].state,
+  contactState: baseStore.basesById[baseId].contactState,
+})
+const userDataRules = {
+  socialMediaFacebook: { isFacebookUrl },
+  socialMediaTwitter: { isTwitterUrl },
+  socialMediaMastodon: { url },
+  socialMediaLinkedin: { isLinkedinUrl },
+  nationalCartographyWebsite: { isNationalCartographyWebsite },
+  website: { url },
+  title: { required, minLength: minLength(3) },
+  description: { required, minLength: minLength(3) },
+  contact: { required, email },
+  state: {},
+  contactState: {},
+}
+const v$ = useVuelidate(userDataRules, userDataState)
 
 onMounted(() => {
   setTimeout(() => {

@@ -174,14 +174,20 @@ export type Base = {
   id: number
   isCertified?: boolean
   isShort?: boolean
+  nationalCartographyWebsite?: string
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
+  socialMediaFacebook: string
+  socialMediaLinkedin: string
+  socialMediaMastodon: string
+  socialMediaTwitter: string
   state?: string
   tags?: number[]
   territoryTags?: number[]
   title: string
   visitCount?: number
+  website?: string
 }
 export type ResourcesWithPagination = {
   count: number
