@@ -186,13 +186,6 @@ const updateResults = (newResults: SearchResult<Resource>) => {
   resourcesResult.value = newResults
 }
 
-const participantTypes = computed<{ label: string }[]>(
-  () =>
-    base.value?.participantTypeTags?.map((tagId: number) => {
-      return { label: tagStore.tagsById[tagId]?.name, small: true }
-    }) || []
-)
-
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
   baseStore.currentId = baseId
