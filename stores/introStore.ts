@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { useApiGet } from "~/composables/api"
 import { useRoute } from "vue-router"
 import { computed, watch } from "vue"
+import { useUserStore } from "~/stores/userStore"
 
 type Intro = {
   htmlContent: string
@@ -9,17 +10,34 @@ type Intro = {
   image?: string
   page: string
   position: "right" | "left" | "bottom" | "top"
+  seen: boolean
   slug: string
   title: string
 }
 
 export const useIntroStore = defineStore("intro", () => {
   const route = useRoute()
+  const userStore = useUserStore()
 
   const intros = ref<Intro[]>([])
   const seenPages = ref<{ [key: string]: boolean }>({})
   const indexInPage = ref(0)
   const forceRecheckPage = ref(0)
+  const ready = ref(false)
+
+  const saveLocallySeen = () => {
+    localStorage.setItem("seenPages", JSON.stringify(seenPages.value))
+  }
+  const loadLocallySeen = () => {
+    const seenPagesLocally = localStorage.getItem("seenPages")
+    if (seenPagesLocally) {
+      seenPages.value = JSON.parse(seenPagesLocally)
+      forceRecheckPage.value += 1
+    }
+  }
+  const resetLocallySeen = () => {
+    seenPages.value = {}
+  }
 
   watch(
     () => route.name,
@@ -36,12 +54,24 @@ export const useIntroStore = defineStore("intro", () => {
     const { data, error } = await useApiGet<Intro[]>("intros/")
     if (!error.value && data.value!) {
       intros.value = data.value!
+      for (const intro of intros.value) {
+        if (intro.seen) {
+          markSeen(false, intro.page)
+        }
+      }
     }
   }
 
-  const markSeen = () => {
-    const page = <string>route.name
+  const markSeen = (send = true, page = "") => {
+    if (page === "") {
+      page = <string>route.name
+    }
     seenPages.value[page] = true
+    if (userStore.isLoggedIn && send) {
+      useApiGet("seen-page/" + page)
+    } else {
+      saveLocallySeen()
+    }
   }
 
   const canGoNext = computed(() => {
@@ -110,6 +140,9 @@ export const useIntroStore = defineStore("intro", () => {
     if (process.server) {
       return []
     }
+    if (!ready.value) {
+      return []
+    }
     let page = <string>route.name
     // route name may contain id in it (ex /base/23), we remove it
     page = page.replace(/\/\d+/, "")
@@ -127,6 +160,14 @@ export const useIntroStore = defineStore("intro", () => {
   // load intros the first time, only in client to avoid SSR bugs
   if (process.client) {
     getIntros()
+    // use settimeout, otherwise store hydration might override seenPages after
+    //  we load them from local storage
+    setTimeout(() => {
+      if (!userStore.isLoggedIn) {
+        loadLocallySeen()
+      }
+      ready.value = true
+    }, 500)
   }
 
   return {
@@ -141,5 +182,7 @@ export const useIntroStore = defineStore("intro", () => {
     canGoPrevious,
     current,
     forPage,
+    resetLocallySeen,
+    loadLocallySeen,
   }
 })
