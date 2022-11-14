@@ -228,32 +228,8 @@ const pages = computed(() => pageStore.pages)
 </script>
 
 <style lang="sass" scoped>
-.fr-header
-  border-bottom: var(--grey-925-125) 1px solid
-
-  .fr-links-group li
-    align-items: baseline
-    button
-      font-size: 1em //safari needs it
-
-  .fr-header__nav
-    border-top: 1px solid var(--border-default-grey)
-
-    .fr-header__body-row
-      padding: 0
-
-    .fr-links-group
-      justify-content: start
-
-    button
-      padding: 16px 12px
-
 .selector__menu
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll
   top: 40px
-
-li
-  a[aria-current]
-    background: var(--background-open-blue-france)
 </style>

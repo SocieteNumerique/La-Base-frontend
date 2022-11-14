@@ -28,7 +28,7 @@
             </div>
             <BaseSettings />
           </div>
-          <h1 style="max-width: 800px" class="fr-h2 fr-mb-4w">
+          <h1 style="max-width: 800px" class="fr-h2 fr-mb-1w">
             {{ base?.title }}
             <VIcon
               v-if="base?.isCertified"
@@ -39,36 +39,11 @@
               style="position: relative; bottom: 7px"
             />
           </h1>
-          <div class="is-flex base-meta">
-            <button
-              class="fr-btn--tertiary-no-outline fr-text-title--blue-france fr-mr-3w"
-              @click="showAboutModal = true"
-            >
-              À propos
-            </button>
-            <DsfrTags
-              v-if="participantTypes.length"
-              :tags="participantTypes"
-              class="fr-mr-3w participant-tags"
-            />
-            <div v-if="territory" class="territory">
-              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
-              {{ territory }}
-            </div>
-          </div>
           <div
             style="border-bottom: 1px solid var(--border-default-grey)"
             class="fr-my-2w"
           />
           <div class="has-children-space-between">
-            <div class="is-flex" style="align-items: center">
-              <div class="stat">
-                <span class="fr-text--xl fr-text--bold">{{
-                  base?.visitCount
-                }}</span>
-                <span>vues</span>
-              </div>
-            </div>
             <div>
               <a
                 v-if="base?.contact"
@@ -93,23 +68,67 @@
                 @close="showReportModal = false"
               />
             </div>
+            <div style="padding-top: 3px">
+              <DsfrButton
+                icon="ri-add-line"
+                label="Ajouter une fiche"
+                @click="onAddResourceClick"
+              />
+            </div>
           </div>
         </div>
       </div>
     </template>
 
-    <Search @results="updateResults" />
-
-    <div class="fr-container">
-      <BaseResources :base="base" :resources-result="resourcesResult" />
+    <div class="fr-header fr-mb-5w" style="box-shadow: none">
+      <div class="fr-header__body fr-header__nav">
+        <div class="fr-container">
+          <div class="fr-header__body-row">
+            <ul class="fr-links-group">
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'presentation' ? 'page' : null"
+                  @click="currentTab = 'presentation'"
+                >
+                  <button>Présentation</button>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'collections' ? 'page' : null"
+                  @click="currentTab = 'collections'"
+                >
+                  <button>Collections</button>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'resources' ? 'page' : null"
+                  @click="currentTab = 'resources'"
+                >
+                  <button>Fiches</button>
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <BaseAbout
-      v-if="showAboutModal"
-      :participant-types="participantTypes"
-      :base="base"
-      :territory="territory"
-      @close="showAboutModal = false"
+    <BasePresentation v-if="currentTab === 'presentation'" />
+
+    <template v-else>
+      <Search v-if="currentTab === 'resources'" @results="updateResults" />
+
+      <div class="fr-container fr-mt-5w">
+        <BaseResources :base="base" :resources-result="resourcesResult" />
+      </div>
+    </template>
+
+    <ResourceCreationModal
+      v-if="showAddResourceModal"
+      :base-id="base.id"
+      @close="showAddResourceModal = false"
     />
   </NuxtLayout>
 </template>
@@ -139,33 +158,33 @@ const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
-const showAboutModal = ref(false)
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
+})
+
+const currentTab = computed<"presentation" | "resources" | "collections">({
+  get: () =>
+    <"presentation" | "resources" | "collections" | "">route.query.tab ||
+    "presentation",
+  set: (type: "presentation" | "resources" | "collections") =>
+    router.push({ query: { ...route.query, tab: type } }),
 })
 
 const base = computed(() => {
   return baseStore.current
 })
 
+const showAddResourceModal = ref<boolean>(false)
+const onAddResourceClick = () => {
+  showAddResourceModal.value = true
+}
+
 const showReportModal = ref<boolean>(false)
 
 const updateResults = (newResults: SearchResult<Resource>) => {
   resourcesResult.value = newResults
 }
-
-const participantTypes = computed<{ label: string }[]>(
-  () =>
-    base.value?.participantTypeTags?.map((tagId: number) => {
-      return { label: tagStore.tagsById[tagId]?.name, small: true }
-    }) || []
-)
-const territory = computed<string>(() =>
-  (
-    base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
-  ).join(", ")
-)
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
@@ -195,7 +214,6 @@ onBeforeMount(async () => {
 
   // if we have no access to this base, redirect to home or login
   if (error.value) {
-    console.log("### error", error.value)
     const alertStore = useAlertStore()
     const userStore = useUserStore()
     if (!userStore.isLoggedIn) {
@@ -209,6 +227,7 @@ onBeforeMount(async () => {
       alertStore.alert("Vous n'avez pas accès à cette base", "", "warning")
       router.replace("/")
     }
+    return
   }
 
   useRegisterVisit("base", baseStore.currentId!)
@@ -248,19 +267,9 @@ const mailToHrefReport = computed(() => {
 
 .stat *
   margin-left: 12px
-
-.base-meta
-  align-items: center
-
-  .territory
-    color: black
-    font-size: 0.75rem
 </style>
 
 <style lang="sass">
-.base-meta .participant-tags .fr-tag
-  margin-bottom: 0
-
 .brand
   position: relative
 

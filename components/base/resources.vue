@@ -1,8 +1,8 @@
 <template>
   <div id="resources">
-    <div class="is-flex flex-space-between fr-mb-4w">
+    <div class="is-flex flex-space-between fr-mb-1w">
       <div class="fr-mt-3v">
-        <span v-if="view === 'resources'"
+        <span v-if="currentTab === 'resources'"
           >{{ resourcesResult.count }}
           {{ pluralize(["fiche"], resourcesResult.count) }}</span
         >
@@ -11,7 +11,7 @@
           {{ pluralize(["collection"], base?.collections.length) }}
         </span>
       </div>
-      <div v-if="base?.canWrite && view === 'resources'">
+      <div v-if="base?.canWrite && currentTab === 'resources'">
         <div style="text-align: center" class="fr-mb-4w">
           <button
             class="fr-btn fr-btn--tertiary-no-outline"
@@ -33,19 +33,14 @@
       </div>
       <div v-if="base?.canWrite || base?.canAddResources">
         <DsfrButton
-          v-show="view === 'resources'"
-          icon="ri-add-line"
-          label="Ajouter une fiche"
-          @click="onAddResourceClick"
-        />
-        <DsfrButton
-          v-show="view === 'collections' && !openCollectionId"
+          v-show="currentTab === 'collections' && !openCollectionId"
           icon="ri-add-line"
           label="Ajouter une collection"
+          :secondary="true"
           @click="onAddCollectionClick"
         />
         <DsfrButton
-          v-show="view === 'collections' && openCollectionId"
+          v-show="currentTab === 'collections' && openCollectionId"
           secondary
           label="Éditer la collection"
           icon="ri-edit-line"
@@ -53,15 +48,10 @@
           @click="editCollectionModalTab = 'general'"
         />
         <DsfrButton
-          v-show="view === 'collections' && openCollectionId"
+          v-show="currentTab === 'collections' && openCollectionId"
           label="Gérer les fiches"
           icon="ri-file-line"
           @click="editCollectionModalTab = 'resources'"
-        />
-        <ResourceCreationModal
-          v-if="showAddResourceModal"
-          :base-id="base.id"
-          @close="showAddResourceModal = false"
         />
         <CollectionNew
           v-if="showAddCollectionModal"
@@ -76,7 +66,9 @@
       </div>
     </div>
 
-    <template v-if="view === 'collections' && openCollectionId === undefined">
+    <template
+      v-if="currentTab === 'collections' && openCollectionId === undefined"
+    >
       <div class="resource-grid">
         <CollectionMiniatureById
           v-for="collectionId of base?.collections"
@@ -90,7 +82,25 @@
       </div>
     </template>
 
-    <template v-if="view === 'resources'">
+    <template v-if="currentTab === 'resources'">
+      <hr />
+      <div
+        style="
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+        "
+        class="fr-mb-4w fr-mt-1w fr-container"
+      >
+        <SearchOrderBy />
+        <div>
+          <template v-if="resourcesResult.count">
+            {{ resourcesResult.count }}
+            {{ pluralize(["résultat"], resourcesResult.count, true) }}
+          </template>
+          <template v-else> aucun résultat correspondant </template>
+        </div>
+      </div>
       <!-- loading spinner -->
       <template
         v-if="
@@ -130,10 +140,10 @@
       </div>
     </template>
 
-    <template v-if="view === 'collections' && openCollection">
+    <template v-if="currentTab === 'collections' && openCollection">
       <h3 class="fr-h6 fr-mb-5w">
         <NuxtLink
-          :to="{ query: { view: 'collections' } }"
+          :to="{ query: { tab: 'collections' } }"
           class="no-underline fr-text-title--blue-france"
         >
           <VIcon class="fr-mr-4w fr-my-auto" name="ri-arrow-left-line" />
@@ -156,36 +166,37 @@
 import { useRoute } from "vue-router"
 import { computed, PropType } from "vue"
 import { useCollectionStore } from "~/stores/collectionStore"
-import { Base, Collection, Resource, SearchResult } from "~/composables/types"
+import { Collection, Resource, SearchResult } from "~/composables/types"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
+import { useBaseStore } from "~/stores/baseStore"
 
 const route = useRoute()
 const router = useRouter()
 const collectionStore = useCollectionStore()
 const loadingStore = useLoadingStore()
+const baseStore = useBaseStore()
 
 const props = defineProps({
-  base: { type: Object as PropType<Base>, required: true },
   resourcesResult: {
     type: Object as PropType<SearchResult<Resource>>,
     required: true,
   },
 })
 
-const showAddResourceModal = ref<boolean>(false)
+const base = computed(() => {
+  return baseStore.current
+})
+
 const showAddCollectionModal = ref<boolean>(false)
 const editCollectionModalTab = ref<"resources" | "general" | "">("")
 
-const onAddResourceClick = () => {
-  showAddResourceModal.value = true
-}
 const onAddCollectionClick = () => {
   showAddCollectionModal.value = true
 }
 
-const view = computed<string>({
-  get: () => (route.query.view as string) || "resources",
+const currentTab = computed<string>({
+  get: () => (route.query.tab as string) || "resources",
   set: (value) => router.push({ query: { ...route.query, view: value } }),
 })
 const showLliveResources = computed<boolean>({
