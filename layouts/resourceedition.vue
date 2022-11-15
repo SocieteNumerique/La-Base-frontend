@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div class="fr-container fr-mt-2w">
+      <div class="fr-container fr-mt-2w fr-px-0">
         <div class="fr-grid-row">
           <div class="fr-col-3"></div>
           <div class="fr-col-6">

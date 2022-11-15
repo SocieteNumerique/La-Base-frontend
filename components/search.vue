@@ -53,9 +53,10 @@
                       : 'Rechercher dans toute la plateforme'
                   "
                   style="width: 308px"
-                  @input="doSearch()"
+                  @change="doSearch"
+                  @keydown.enter="doSearch"
                 />
-                <button class="fr-btn">
+                <button class="fr-btn" @click="doSearch">
                   <VIcon name="ri-search-line" />
                 </button>
               </div>

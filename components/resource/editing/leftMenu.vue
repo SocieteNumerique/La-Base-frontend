@@ -40,7 +40,10 @@
                 <template v-if="menu.subMenus.length">
                   <button
                     class="fr-sidemenu__btn"
-                    :aria-expanded="resourceStore.isMenuActive(menu.key)"
+                    :aria-expanded="
+                      resourceStore.isMenuActive(menu.key) &&
+                      isMenuOpen[menu.key]
+                    "
                     aria-controls="fr-sidemenu-item-0"
                     :aria-current="
                       resourceStore.isMenuActive(menu.key) ? 'page' : null
@@ -53,7 +56,10 @@
                     v-if="menu.subMenus.length"
                     id="fr-sidemenu-item-0"
                     :class="
-                      resourceStore.isMenuActive(menu.key) ? '' : 'fr-collapse'
+                      resourceStore.isMenuActive(menu.key) &&
+                      isMenuOpen[menu.key]
+                        ? ''
+                        : 'fr-collapse'
                     "
                   >
                     <ul class="fr-sidemenu__list">
@@ -170,6 +176,7 @@ const baseStore = useBaseStore()
 const save = () => {
   resourceStore.save()
 }
+const isMenuOpen = ref<{ [key: string]: boolean }>({ informations: true })
 const deleteResource = async () => {
   ongoingDeletion.value = false
   const baseId = resourceStore.current.rootBase
@@ -190,22 +197,6 @@ const canDelete = computed(() => {
   return baseStore.basesById[baseId].canWrite || false
 })
 
-const boldIfMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isMenuActive(menuName)
-    ? "fr-text--bold"
-    : "fr-text--regular"
-})
-const boldIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName)
-    ? "fr-text--bold"
-    : "fr-text--regular"
-})
-const styleIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName) ? "" : "padding-left: 52px"
-})
-const iconIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName) ? "ri-arrow-right-line" : ""
-})
 const selectSubMenu = (subMenu: string) => {
   if (
     navigationMenuByKey[resourceStore.navigation.activeMenu].subMenus[subMenu]
@@ -218,6 +209,11 @@ const selectSubMenu = (subMenu: string) => {
 const selectMenu = (menuKey: string) => {
   const wasAlreadyActive = resourceStore.navigation.activeMenu === menuKey
   resourceStore.navigation.activeMenu = menuKey
+  if (wasAlreadyActive) {
+    isMenuOpen.value[menuKey] = !isMenuOpen.value[menuKey]
+  } else {
+    isMenuOpen.value[menuKey] = true
+  }
 
   // if we go into a new menu with sub-menus, select first sub-menu
   if (

@@ -135,7 +135,7 @@ const currentTab = computed<"presentation" | "resources" | "collections">({
     router.push({ query: { ...route.query, tab: type } }),
 })
 const latestResources = computed(() => {
-  if (base.value) {
+  if (base.value && !base.value.isShort) {
     return base.value!.resources!.results.slice(0, 3)
   }
   return []
