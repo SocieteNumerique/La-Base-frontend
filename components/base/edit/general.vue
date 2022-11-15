@@ -51,6 +51,8 @@
           :required="true"
           label="Le statut de la base est"
           name="baseState"
+          class="fr-mb-0"
+          @change="onStateChange"
         />
       </template>
       <div class="fr-form-group">
@@ -73,7 +75,7 @@
                 type="radio"
                 name="contact-state"
                 value="public"
-                :disabled="base.state === 'private'"
+                :disabled="v$.state.$model === 'private'"
               />
               <label class="fr-label" for="contact-state-public">Public</label>
             </div>
@@ -88,7 +90,7 @@
                 type="radio"
                 name="contact-state"
                 value="private"
-                :disabled="base.state === 'private'"
+                :disabled="v$.state.$model === 'private'"
               />
               <label class="fr-label" for="contact-state-private">Privé</label>
             </div>
@@ -147,7 +149,7 @@
       />
       <ImageResizableUpload
         v-model="base.coverImage"
-        :label="`${coverActionWord}image de couverture pour la base !!!!!!!!!!!!!!!!`"
+        :label="`${coverActionWord}image de couverture pour la base`"
         :desired-ratio="4.8"
       />
       <div class="fr-grid-row fr-grid-row--gutters">
@@ -337,21 +339,37 @@ const isFacebookUrl = isOfWebsite("facebook.com")
 const isTwitterUrl = isOfWebsite("twitter.com")
 
 // form validation
-const userDataState = reactive({
-  socialMediaFacebook: baseStore.basesById[baseId].socialMediaFacebook,
-  socialMediaTwitter: baseStore.basesById[baseId].socialMediaTwitter,
-  socialMediaMastodon: baseStore.basesById[baseId].socialMediaMastodon,
-  socialMediaLinkedin: baseStore.basesById[baseId].socialMediaLinkedin,
-  nationalCartographyWebsite:
-    baseStore.basesById[baseId].nationalCartographyWebsite,
-  website: baseStore.basesById[baseId].website,
+const userDataState = reactive(
+  props.new
+    ? {
+        socialMediaFacebook: "",
+        socialMediaTwitter: "",
+        socialMediaMastodon: "",
+        socialMediaLinkedin: "",
+        nationalCartographyWebsite: "",
+        website: "",
+        title: "",
+        description: "",
+        contact: userStore.email,
+        state: "private",
+        contactState: "",
+      }
+    : {
+        socialMediaFacebook: baseStore.basesById[baseId].socialMediaFacebook,
+        socialMediaTwitter: baseStore.basesById[baseId].socialMediaTwitter,
+        socialMediaMastodon: baseStore.basesById[baseId].socialMediaMastodon,
+        socialMediaLinkedin: baseStore.basesById[baseId].socialMediaLinkedin,
+        nationalCartographyWebsite:
+          baseStore.basesById[baseId].nationalCartographyWebsite,
+        website: baseStore.basesById[baseId].website,
 
-  title: baseStore.basesById[baseId].title,
-  description: baseStore.basesById[baseId].description,
-  contact: baseStore.basesById[baseId].contact,
-  state: baseStore.basesById[baseId].state,
-  contactState: baseStore.basesById[baseId].contactState,
-})
+        title: baseStore.basesById[baseId].title,
+        description: baseStore.basesById[baseId].description,
+        contact: baseStore.basesById[baseId].contact,
+        state: baseStore.basesById[baseId].state,
+        contactState: baseStore.basesById[baseId].contactState,
+      }
+)
 const userDataRules = {
   socialMediaFacebook: { isFacebookUrl },
   socialMediaTwitter: { isTwitterUrl },
@@ -375,6 +393,10 @@ onMounted(() => {
     }
   }, 200)
 })
+
+const onStateChange = (ev: any) => {
+  v$.value.contactState.$model = ev.target.value
+}
 </script>
 
 <style lang="sass">
