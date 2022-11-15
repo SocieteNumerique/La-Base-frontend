@@ -3,8 +3,16 @@
     <h2 class="fr-h3 fr-mb-5w">Présentation</h2>
     <div class="is-flex fr-mb-5w" style="align-items: center">
       <div class="stat">
-        <span class="fr-text--xl fr-text--bold">{{ base?.visitCount }}</span>
-        <span>vues</span>
+        <span class="fr-text--xl fr-text--bold">{{
+          base?.stats.visitCount
+        }}</span>
+        <span>{{ pluralize(["vue"], base?.stats.visitCount) }}</span>
+      </div>
+      <div class="stat">
+        <span class="fr-text--xl fr-text--bold">{{
+          base?.stats.resourceCount
+        }}</span>
+        <span>{{ pluralize(["ressource"], base?.stats.visitCount) }}</span>
       </div>
     </div>
     <div class="fr-grid-row">

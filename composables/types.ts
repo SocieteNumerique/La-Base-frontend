@@ -155,6 +155,10 @@ export type BaseCreate = {
   tags?: number[]
   title: string
 }
+type BaseStats = {
+  resourceCount: number
+  visitCount: number
+}
 export type Base = {
   admins?: User[]
   authorizedUsers?: User[]
@@ -182,10 +186,10 @@ export type Base = {
   socialMediaMastodon: string
   socialMediaTwitter: string
   state?: string
+  stats: BaseStats
   tags?: number[]
   territoryTags?: number[]
   title: string
-  visitCount?: number
   website?: string
 }
 export type ResourcesWithPagination = {
