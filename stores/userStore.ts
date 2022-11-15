@@ -5,6 +5,7 @@ import { useCollectionStore } from "~/stores/collectionStore"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useApiDelete } from "~/composables/api"
 import { useAlertStore } from "~/stores/alertStore"
+import { useIntroStore } from "~/stores/introStore"
 
 function resetPerUserData() {
   useCollectionStore().collectionsById = {}
@@ -39,9 +40,11 @@ export const useUserStore = defineStore("user", {
       )
       if (error.value) {
         let text = ""
+        // @ts-ignore
         if (Object.keys(error.value?.data).indexOf("oldPassword") !== -1) {
           text = "L'ancien mot de passe ne correspond pas à celui du compte"
         } else {
+          // @ts-ignore
           text = JSON.stringify(error.value.data)
         }
         useAlertStore().alert(
@@ -87,10 +90,12 @@ export const useUserStore = defineStore("user", {
         { title: "Connexion impossible", text: "_responseBody" }
       )
       if (!error.value) {
-        this.updateState(data.value)
+        this.updateState(data.value!)
+        const introStore = useIntroStore()
+        introStore.resetLocallySeen()
         const baseStore = useBaseStore()
         resetPerUserData()
-        baseStore.refreshBases()
+        await baseStore.refreshBases()
       }
 
       return { data, error }
@@ -110,6 +115,8 @@ export const useUserStore = defineStore("user", {
           email: "",
           tags: [],
         })
+        const introStore = useIntroStore()
+        introStore.resetLocallySeen()
         const baseStore = useBaseStore()
         await baseStore.refreshBases()
         resetPerUserData()
@@ -118,7 +125,7 @@ export const useUserStore = defineStore("user", {
     async refreshProfile() {
       const { data, error } = await useApiGet<User>("users/me/")
       if (!error.value) {
-        this.updateState(data.value)
+        this.updateState(data.value!)
       }
     },
     async resendConfirmationEmail(email: string) {
@@ -176,7 +183,7 @@ export const useUserStore = defineStore("user", {
         }
       )
       if (!error.value) {
-        this.updateState(data.value)
+        this.updateState(data.value!)
       }
       return { data, error }
     },
