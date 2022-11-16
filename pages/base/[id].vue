@@ -21,10 +21,12 @@
           </div>
           <div
             v-if="base?.canWrite"
-            class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2v pre-header"
+            class="has-children-space-between fr-text--sm fr-mb-2v pre-header"
           >
             <div>
-              <div>Statut : {{ stateLabel[base?.state] }}</div>
+              <div style="color: var(--text-mention-grey)">
+                Statut : {{ stateLabel[base?.state] }}
+              </div>
             </div>
             <BaseSettings />
           </div>
@@ -45,21 +47,25 @@
           />
           <div class="has-children-space-between">
             <div>
-              <a
-                v-if="base?.contact"
-                :href="mailToHrefContact"
-                class="no-underline"
-              >
-                <RoundButton icon="ri-mail-line" label="Contacter" />
-              </a>
               <ShareButton :link="route.fullPath">
-                <RoundButton icon="ri-share-line" label="Partager" />
+                <RoundButton
+                  icon="ri-share-line"
+                  class="fr-pl-0"
+                  label="Partager"
+                />
               </ShareButton>
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
               <a :href="mailToHrefReport" class="no-underline">
                 <RoundButton icon="ri-alert-line" label="Signaler" />
+              </a>
+              <a
+                v-if="base?.contact"
+                :href="mailToHrefContact"
+                class="no-underline"
+              >
+                <RoundButton icon="ri-mail-line" label="Contacter" />
               </a>
               <ReportSimpleModal
                 v-if="showReportModal"
@@ -68,10 +74,11 @@
                 @close="showReportModal = false"
               />
             </div>
-            <div style="padding-top: 3px">
+            <div style="padding-top: 7px">
               <DsfrButton
                 icon="ri-add-line"
                 label="Ajouter une fiche"
+                class="fr-btn--sm"
                 @click="onAddResourceClick"
               />
             </div>
@@ -95,18 +102,18 @@
               </li>
               <li>
                 <NuxtLink
-                  :aria-current="currentTab === 'collections' ? 'page' : null"
-                  @click="currentTab = 'collections'"
-                >
-                  <button>Collections</button>
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
                   :aria-current="currentTab === 'resources' ? 'page' : null"
                   @click="currentTab = 'resources'"
                 >
                   <button>Fiches</button>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'collections' ? 'page' : null"
+                  @click="currentTab = 'collections'"
+                >
+                  <button>Collections</button>
                 </NuxtLink>
               </li>
             </ul>

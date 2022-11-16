@@ -25,8 +25,9 @@ const orderBy = computed<string>({
   },
 })
 const orderByOptions = [
-  { text: "Dernière modification", value: "-modified" },
-  { text: "Dernier ajout", value: "-created" },
-  { text: "Nombre de vues", value: "-visit_count" },
+  { text: "Du plus récent au plus ancien", value: "-modified" },
+  { text: "Du plus ancien au plus récent", value: "modified" },
+  { text: "Du plus vu au moins vu", value: "-visit_count" },
+  { text: "Du moins vu au plus vu", value: "visit_count" },
 ]
 </script>

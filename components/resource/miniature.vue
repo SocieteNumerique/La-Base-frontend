@@ -84,7 +84,7 @@
           <div class="description-text">{{ resource?.description }}</div>
           <div class="separator fr-my-3v" />
         </template>
-        <div>
+        <div v-if="supportTags.length">
           <h4
             class="fr-text--xs fr-mr-3v"
             :class="supportTags.length ? 'fr-mb-3v' : 'fr-mb-0'"
@@ -96,8 +96,8 @@
             :tags="supportTags"
             style="margin-bottom: -8px; display: inline"
           />
+          <div class="separator fr-mb-3v fr-mt-1v" />
         </div>
-        <div class="separator fr-mb-3v fr-mt-1v" />
         <div class="fr-grid-row fr-text-mention--grey">
           <div class="fr-mr-5v">
             <VIcon :scale="0.7" class="fr-mr-1v" name="ri-link" />

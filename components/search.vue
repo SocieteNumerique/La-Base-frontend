@@ -1,8 +1,11 @@
 <template>
-  <div style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)">
+  <div
+    id="search-container"
+    style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)"
+  >
     <div
       class="fr-pt-6w fr-pb-4w"
-      style="background: var(--background-open-blue-france)"
+      style="background: var(--background-alt-blue-france)"
     >
       <div class="fr-container">
         <div class="fr-grid-row">
@@ -16,10 +19,11 @@
                 >
                   <img
                     alt="Chercher des ressources"
-                    class="fr-mr-1v"
+                    class="fr-mr-3v"
                     src="/img/home/resource-blue.svg"
+                    style="height: 18px"
                   />
-                  <span> Fiches </span>
+                  <span>Fiches</span>
                 </button>
                 <button
                   class="toggle-button"
@@ -28,10 +32,10 @@
                 >
                   <img
                     alt="Chercher des bases"
-                    class="fr-mr-1v"
+                    class="fr-mr-3v"
                     src="/img/home/base-blue.svg"
                   />
-                  <span> Bases </span>
+                  <span>Bases</span>
                 </button>
               </div>
             </div>
@@ -152,6 +156,7 @@ import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
 import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
+import { onFocusOut } from "~/composables/focusOut"
 
 definePageMeta({
   layout: false,
@@ -168,6 +173,13 @@ const route = useRoute()
 const nResults = ref(0)
 const textInput = ref<string>(<string>route.query.text || "")
 const possibleTags = ref<number[]>([])
+
+// hide filters on outside click
+onFocusOut(
+  () => (showFilters.value = false),
+  "search-container",
+  () => showFilters.value
+)
 
 const emit = defineEmits(["results", "searchedText"])
 
@@ -257,7 +269,7 @@ const tagCategories = computed<TagCategory[]>(() => {
 })
 
 const isInBaseIndex = computed(() => route.path.startsWith("/base"))
-const showFilters = ref(!isInBaseIndex.value)
+const showFilters = ref(false)
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
@@ -329,7 +341,7 @@ onMounted(() => {
   flex-wrap: wrap
   margin-top: -16px
   *
-    margin-left: 32px
+    margin-left: 16px
     margin-top: 0
 .btn-tab-activable
   flex-grow: 1
@@ -352,6 +364,7 @@ onMounted(() => {
   font-weight: bold
   border-radius: 12px
   padding: 6px 16px
+  font-size: 1rem
 
   &.-active
     color: white
@@ -361,6 +374,10 @@ onMounted(() => {
   img
     vertical-align: bottom
     height: 20px
+    margin-bottom: 3px
+
+  &:not(.-active):hover
+    color: #0909B9
 </style>
 
 <style>

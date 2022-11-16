@@ -20,7 +20,7 @@
           align-items: baseline;
           justify-content: space-between;
         "
-        class="fr-mb-2w fr-mt-3w fr-container"
+        class="fr-my-4w fr-container"
       >
         <SearchOrderBy />
         <div>

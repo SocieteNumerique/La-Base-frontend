@@ -34,7 +34,7 @@
           :tags="participantTypes"
           class="fr-mr-3w participant-tags fr-mb-2w"
         />
-        <div v-if="territory" class="territory">
+        <div v-if="territory" class="territory fr-py-1w" style="display: flex">
           <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
           {{ territory }}
         </div>
@@ -64,11 +64,11 @@
             />
           </a>
         </div>
-        <div style="margin-left: -12px">
+        <div style="margin-left: -4px">
           <a
             v-for="link in socialMediaLinks"
             :key="link.iconName"
-            class="fr-btn fr-btn--tertiary-no-outline"
+            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
             :href="link.link"
             target="_blank"
           >
@@ -82,20 +82,20 @@
       <div class="fr-col-sm-6">
         <button
           class="fr-btn select-type-btn"
-          @click="currentTab = 'collections'"
+          @click="currentTab = 'resources'"
         >
-          <img src="/img/home/collection-blue.svg" alt="" />
-          <span>Voir les collections</span>
+          <img src="/img/home/resource-blue.svg" alt="" />
+          <span>Voir les fiches</span>
           <VIcon name="ri-arrow-right-line" />
         </button>
       </div>
       <div class="fr-col-sm-6">
         <button
           class="fr-btn select-type-btn"
-          @click="currentTab = 'resources'"
+          @click="currentTab = 'collections'"
         >
-          <img src="/img/home/resource-blue.svg" alt="" />
-          <span>Voir les fiches</span>
+          <img src="/img/home/collection-blue.svg" alt="" />
+          <span>Voir les collections</span>
           <VIcon name="ri-arrow-right-line" />
         </button>
       </div>

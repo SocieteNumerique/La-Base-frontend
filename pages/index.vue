@@ -1,7 +1,10 @@
 <template>
   <NuxtLayout name="default">
     <template #header>
-      <div style="background: #e8edff" class="fr-py-8w">
+      <div
+        style="background: var(--background-alt-blue-france)"
+        class="fr-py-8w"
+      >
         <div class="fr-container">
           <IntroTooltip slug="INDEX_TITLE">
             <h1 class="fr-h1 fr-mb-9w" style="max-width: 750px">
