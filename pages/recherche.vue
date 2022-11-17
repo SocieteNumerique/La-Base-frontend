@@ -4,7 +4,7 @@
 
     <!-- is loading -->
     <template v-if="loadingStore.isLoading('search')">
-      <div class="fr-p-5w" style="text-align: center">
+      <div class="fr-container fr-p-5w" style="text-align: center">
         <div style="animation: spin 1.5s linear infinite">
           <VIcon scale="3" name="ri-loader-2-line" />
         </div>

@@ -1,11 +1,13 @@
 <template>
-  <div
-    id="search-container"
-    style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)"
-  >
+  <div id="search-container">
     <div
-      class="fr-pt-6w fr-pb-4w"
-      style="background: var(--background-alt-blue-france)"
+      class="fr-pb-3w fr-pt-4w"
+      style="
+        background: var(--background-alt-blue-france);
+        position: sticky;
+        top: 0;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      "
     >
       <div class="fr-container">
         <div class="fr-grid-row">
@@ -296,8 +298,8 @@ const doSearch = debounce(async (scrollToTop = false) => {
     emit("results", data.value)
     if (scrollToTop) {
       document
-        .getElementById("search-results")!
-        .scrollIntoView({ behavior: "smooth" })
+        .getElementById("search-results")
+        ?.scrollIntoView({ behavior: "smooth" })
     }
   }
 }, 400)
@@ -337,7 +339,7 @@ onMounted(() => {
 <style scoped lang="sass">
 .dropdown-holder
   display: flex
-  margin-left: -32px
+  margin-left: -16px
   flex-wrap: wrap
   margin-top: -16px
   *
@@ -404,5 +406,11 @@ onMounted(() => {
   padding: 4px 12px;
   line-height: initial;
   min-height: initial;
+}
+
+#search-container {
+  display: unset;
+  z-index: 100000;
+  position: relative;
 }
 </style>

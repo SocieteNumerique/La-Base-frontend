@@ -109,7 +109,7 @@
         </div>
         <div
           class="fr-mt-7w"
-          style="display: flex; flex-direction: column; max-width: 150px"
+          style="display: flex; flex-direction: column; max-width: 160px"
         >
           <DsfrButton
             :secondary="true"
@@ -131,9 +131,23 @@
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
-            class="fr-btn--sm"
+            class="fr-mb-3v fr-btn--sm"
             @click="ongoingDeletion = true"
           />
+          <template v-if="isClient">
+            <DsfrButton
+              icon="ri-arrow-go-back-line"
+              class="fr-mb-3v fr-btn--tertiary-no-outline fr-btn--sm"
+              label="Retour à la base"
+              @click="goTo('base')"
+            />
+            <DsfrButton
+              icon="ri-arrow-right-line"
+              class="fr-btn--sm fr-btn--tertiary-no-outline"
+              label="Aller à la fiche"
+              @click="goTo('resource')"
+            />
+          </template>
         </div>
       </nav>
     </div>
@@ -157,6 +171,18 @@
       Confirmez-vous la suppression de la ressource ? <br />
       Tous les contenus de la ressource seront supprimés avec elle.
     </DsfrModal>
+    <DsfrModal
+      v-if="isNavigating !== ''"
+      :actions="goToActions"
+      title="Modifications en cours"
+      :opened="true"
+      @close="isNavigating = ''"
+    >
+      <p>
+        Vous avez des modifications en cours, voulez-vous les ignorer ou
+        continuer l'édition ?
+      </p>
+    </DsfrModal>
   </div>
 </template>
 
@@ -168,10 +194,16 @@ import {
 } from "~/stores/resourceStore"
 import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
+import { useRouter } from "vue-router"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
+const router = useRouter()
+let isClient = false
+if (process.client) {
+  isClient = true
+}
 
 const save = () => {
   resourceStore.save()
@@ -240,6 +272,41 @@ const actions = [
     onClick: () => (ongoingDeletion.value = false),
   },
 ]
+
+const baseHref = computed(() => {
+  return "/base/" + resourceStore.current?.rootBase
+})
+const resourceHref = computed(() => "/ressource/" + resourceStore.currentId)
+const isNavigating = ref<"" | "resource" | "base">("")
+const goToActions = computed(() => {
+  const target = isNavigating.value === "resource" ? "resource" : "base"
+  return [
+    {
+      label: "Continuer l'édition",
+      onClick: () => {
+        isNavigating.value = ""
+      },
+    },
+    {
+      label: "Aller à la " + (target === "resource" ? "ressource" : "base"),
+      secondary: true,
+      onClick: () => {
+        goTo(target, false)
+      },
+    },
+  ]
+})
+
+const goTo = (target: "resource" | "base", check = true) => {
+  console.log("### goto", target, check)
+  if (check && resourceStore.current.dirty) {
+    // show confirmation modal
+    isNavigating.value = target
+  } else {
+    // navigate
+    router.push(target == "resource" ? resourceHref.value : baseHref.value)
+  }
+}
 </script>
 
 <style lang="sass">

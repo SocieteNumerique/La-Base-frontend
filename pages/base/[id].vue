@@ -90,7 +90,7 @@
     <div class="fr-header fr-mb-5w" style="box-shadow: none">
       <div class="fr-header__body fr-header__nav">
         <div class="fr-container">
-          <div class="fr-header__body-row">
+          <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
                 <NuxtLink
