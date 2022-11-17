@@ -1,7 +1,7 @@
 <template>
   <div class="fr-container">
-    <h2 class="fr-h3 fr-mb-5w">Présentation</h2>
-    <div class="is-flex fr-mb-5w" style="align-items: center">
+    <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
+    <div class="is-flex fr-mb-3w" style="align-items: center">
       <div class="stat">
         <span class="fr-text--xl fr-text--bold">{{
           base?.stats.visitCount
@@ -85,7 +85,7 @@
           @click="currentTab = 'resources'"
         >
           <img src="/img/home/resource-blue.svg" alt="" />
-          <span>Voir les fiches</span>
+          <span class="fr-text--xl">Voir les fiches</span>
           <VIcon name="ri-arrow-right-line" />
         </button>
       </div>
@@ -95,7 +95,7 @@
           @click="currentTab = 'collections'"
         >
           <img src="/img/home/collection-blue.svg" alt="" />
-          <span>Voir les collections</span>
+          <span class="fr-text--xl">Voir les collections</span>
           <VIcon name="ri-arrow-right-line" />
         </button>
       </div>
@@ -188,11 +188,13 @@ const socialMediaLinks = computed<{ link: string; iconName: string }[]>(() => {
   width: 100%;
   border-radius: 12px;
   display: inline-block;
-  padding: 8px 0;
+  padding: 11px 0;
 }
 .select-type-btn img {
   vertical-align: middle;
-  height: 24px;
+  height: 32px;
+  position: relative;
+  bottom: 3px;
 }
 .select-type-btn span {
   margin-left: 24px;

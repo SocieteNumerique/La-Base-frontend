@@ -7,14 +7,11 @@
       >
         <div class="fr-container">
           <IntroTooltip slug="INDEX_TITLE">
-            <h1 class="fr-h1 fr-mb-9w" style="max-width: 750px">
+            <h1 class="fr-h1 fr-mb-7w" style="max-width: 750px">
               Bienvenue sur La Base
             </h1>
           </IntroTooltip>
-          <div
-            class="fr-grid-row fr-mb-5w"
-            style="justify-content: space-between"
-          >
+          <div class="fr-grid-row" style="justify-content: space-between">
             <div class="fr-col-6" style="color: var(--text-action-high-grey)">
               <TextBlock slug="homeIntroLeft" />
             </div>
@@ -34,7 +31,7 @@
       </div>
     </template>
     <div>
-      <div class="fr-container fr-pt-12w">
+      <div class="fr-container fr-pt-5w">
         <h2 class="fr-mb-5w">Que trouve-t-on dans La Base ?</h2>
         <HomeBlock
           icon="/img/home/block-search.svg"
@@ -43,7 +40,7 @@
           to="/recherche"
           text-slug="homeSearchBlockContent"
           more-text-slug="homeSearchBlockContentMore"
-          class="fr-mb-4w"
+          class="fr-mb-5w"
         />
         <HomeBlock
           icon="/img/home/block-people.svg"
@@ -52,7 +49,7 @@
           to="/profil-informations"
           text-slug="homeAccountBlockContent"
           more-text-slug="homeAccountBlockContentMore"
-          class="fr-mb-4w"
+          class="fr-mb-5w"
         />
         <HomeBlock
           icon="/img/home/block-resources.svg"
@@ -61,7 +58,7 @@
           to="/recherche"
           text-slug="homeResourcesBlockContent"
           more-text-slug="homeResourcesBlockContentMore"
-          class="fr-mb-4w"
+          class="fr-mb-5w"
         />
         <HomeBlock
           icon="/img/home/block-bases.svg"
@@ -70,7 +67,7 @@
           to="/recherche"
           text-slug="homeBasesBlockContent"
           more-text-slug="homeBasesBlockContentMore"
-          class="fr-mb-4w"
+          class="fr-mb-5w"
         />
       </div>
     </div>

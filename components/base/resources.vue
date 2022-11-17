@@ -1,30 +1,34 @@
 <template>
   <div id="resources">
-    <div class="is-flex flex-space-between fr-mb-1w">
-      <div class="fr-mt-3v">
-        <span v-if="currentTab === 'resources'"
-          >{{ resourcesResult.count }}
-          {{ pluralize(["fiche"], resourcesResult.count) }}</span
-        >
-        <span v-else>
-          {{ base?.collections.length }}
-          {{ pluralize(["collection"], base?.collections.length) }}
-        </span>
+    <div class="is-flex flex-space-between fr-mb-4w">
+      <div style="display: flex; align-items: center">
+        <div v-if="currentTab === 'collections'">
+          {{ base?.collections.length }} collections
+        </div>
       </div>
       <div v-if="base?.canWrite && currentTab === 'resources'">
-        <div style="text-align: center" class="fr-mb-4w">
+        <div style="text-align: center; display: flex" class="fr-mb-3w">
           <button
-            class="fr-btn fr-btn--tertiary-no-outline"
+            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
             style="font-weight: 400"
-            :class="showLliveResources ? 'fr-btn--tertiary--active' : null"
+            :class="
+              showLliveResources
+                ? 'fr-btn--tertiary--active'
+                : 'fr-text--disabled'
+            "
             @click="showLliveResources = true"
           >
             Fiches publiées
           </button>
+          <div class="vertical-separator"></div>
           <button
-            class="fr-btn fr-btn--tertiary-no-outline fr-ml-1w"
+            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
             style="font-weight: 400"
-            :class="!showLliveResources ? 'fr-btn--tertiary--active' : null"
+            :class="
+              !showLliveResources
+                ? 'fr-btn--tertiary--active'
+                : 'fr-text--disabled'
+            "
             @click="showLliveResources = false"
           >
             Brouillons
@@ -36,6 +40,7 @@
           v-show="currentTab === 'collections' && !openCollectionId"
           icon="ri-add-line"
           label="Ajouter une collection"
+          class="fr-btn--sm"
           :secondary="true"
           @click="onAddCollectionClick"
         />
@@ -44,13 +49,14 @@
           secondary
           label="Éditer la collection"
           icon="ri-edit-line"
-          class="fr-mr-3w"
+          class="fr-mr-3w fr-btn--sm"
           @click="editCollectionModalTab = 'general'"
         />
         <DsfrButton
           v-show="currentTab === 'collections' && openCollectionId"
           label="Gérer les fiches"
           icon="ri-file-line"
+          class="fr-btn--sm"
           @click="editCollectionModalTab = 'resources'"
         />
         <CollectionNew
@@ -78,27 +84,23 @@
         />
       </div>
       <div v-if="!base?.collections?.length">
-        Vous n’avez pas encore créé de collection de fiches ressources
+        Aucune collection n'a encore été ajoutée.
       </div>
     </template>
 
     <template v-if="currentTab === 'resources'">
-      <hr />
       <div
         style="
           display: flex;
           align-items: baseline;
           justify-content: space-between;
         "
-        class="fr-mb-4w fr-mt-1w fr-container"
+        class="fr-mb-4w fr-mt-3w fr-container fr-p-0"
       >
         <SearchOrderBy />
         <div>
-          <template v-if="resourcesResult.count">
-            {{ resourcesResult.count }}
-            {{ pluralize(["résultat"], resourcesResult.count, true) }}
-          </template>
-          <template v-else> aucun résultat correspondant </template>
+          {{ resourcesResult.count }}
+          {{ pluralize(["résultat"], resourcesResult.count, true) }}
         </div>
       </div>
       <!-- loading spinner -->
@@ -127,7 +129,12 @@
             :resource="resource"
           />
         </div>
-        <div v-else>Aucun résultat correspondant</div>
+        <div v-else>
+          <template v-if="!base?.resources.count">
+            Aucune fiche n'a encore été ajoutée.
+          </template>
+          <template v-else>Aucun résultat correspondant.</template>
+        </div>
       </template>
 
       <!-- pagination -->
@@ -234,4 +241,12 @@ const onCurrentPageChange = async (pageZeroBased: number) => {
 .fr-btn--tertiary--active
   border-bottom-width: 1px !important
   font-weight: 400
+
+.fr-text--disabled
+  color: var(--text-disabled-grey) !important
+
+.vertical-separator
+  width: 1px
+  border-right: 1px solid var(--border-default-grey)
+  margin: 0 24px
 </style>

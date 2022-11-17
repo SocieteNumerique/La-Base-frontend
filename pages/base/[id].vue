@@ -23,7 +23,7 @@
             v-if="base?.canWrite"
             class="has-children-space-between fr-text--sm fr-mb-2v pre-header"
           >
-            <div>
+            <div style="display: flex; align-items: center">
               <div style="color: var(--text-mention-grey)">
                 Statut : {{ stateLabel[base?.state] }}
               </div>
@@ -87,7 +87,7 @@
       </div>
     </template>
 
-    <div class="fr-header fr-mb-5w" style="box-shadow: none">
+    <div class="fr-header" style="box-shadow: none">
       <div class="fr-header__body fr-header__nav">
         <div class="fr-container">
           <div class="fr-header__body-row" style="padding-left: 6px">
@@ -122,12 +122,12 @@
       </div>
     </div>
 
-    <BasePresentation v-if="currentTab === 'presentation'" />
+    <BasePresentation v-if="currentTab === 'presentation'" class="fr-mt-4w" />
 
     <template v-else>
       <Search v-if="currentTab === 'resources'" @results="updateResults" />
 
-      <div class="fr-container fr-mt-5w">
+      <div class="fr-container fr-mt-4w">
         <BaseResources :base="base" :resources-result="resourcesResult" />
       </div>
     </template>

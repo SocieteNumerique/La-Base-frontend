@@ -201,7 +201,7 @@
                   <p class="fr-text--sm fr-m-0">
                     <NuxtLink
                       :to="'/base/' + resource?.rootBase"
-                      class="fr-text-label--blue-france no-underline"
+                      class="fr-text-label--blue-france no-underline underlined-on-hover"
                     >
                       {{ resource?.rootBaseTitle }}
                     </NuxtLink>

@@ -6,7 +6,10 @@
         background: var(--background-alt-blue-france);
         position: sticky;
         top: 0;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        z-index: 1000000;
+      "
+      :style="
+        showFilters ? null : 'box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)'
       "
     >
       <div class="fr-container">
@@ -44,7 +47,7 @@
           </div>
           <div
             class="fr-col-md-8 fr-p-0 is-flex"
-            style="justify-content: space-between"
+            :style="isInBaseIndex ? null : 'justify-content: space-between'"
           >
             <div>
               <div class="fr-search-bar fr-input-group">
@@ -67,7 +70,7 @@
                 </button>
               </div>
             </div>
-            <div>
+            <div :style="isInBaseIndex ? 'margin-left: 24px' : null">
               <button class="fr-btn" @click="showFilters = !showFilters">
                 Filtrer
                 <span style="padding-left: 3px">
@@ -81,65 +84,71 @@
       </div>
     </div>
 
-    <div v-if="showFilters" class="fr-container fr-pt-2w fr-pb-6w">
-      <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
-        <li v-for="tagId in selectedTags" :key="tagId">
-          <button
-            class="fr-tag--dismiss fr-tag"
-            :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
-            @click="removeTag(tagId)"
-          >
-            {{ tagStore.tagsById[tagId].name }}
-          </button>
-        </li>
-        <li>
-          <DsfrButton
-            label="Réinitialiser"
-            icon="ri-close-circle-line"
-            class="fr-btn--tertiary-no-outline reset-btn"
-            @click="resetTags"
+    <div
+      v-if="showFilters"
+      class="fr-pt-2w fr-pb-6w"
+      style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px"
+    >
+      <div class="fr-container">
+        <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
+          <li v-for="tagId in selectedTags" :key="tagId">
+            <button
+              class="fr-tag--dismiss fr-tag"
+              :aria-label="`Retirer ${tagStore.tagsById[tagId].name}`"
+              @click="removeTag(tagId)"
+            >
+              {{ tagStore.tagsById[tagId].name }}
+            </button>
+          </li>
+          <li>
+            <DsfrButton
+              label="Réinitialiser"
+              icon="ri-close-circle-line"
+              class="fr-btn--tertiary-no-outline reset-btn"
+              @click="resetTags"
+            />
+          </li>
+        </ul>
+        <div class="fr-mt-1w small-radio-buttons">
+          <DsfrRadioButtonSet
+            v-model="tagOperatorInput"
+            name="tagOperator"
+            :inline="true"
+            :options="[
+              { label: 'Tous les tags sélectionnés', value: 'AND' },
+              { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
+            ]"
+            legend="Les résultats comportent :"
+            class="inline-radio fr-mb-3w"
+            @update:model-value="onRadioChange"
           />
-        </li>
-      </ul>
-      <div class="fr-mt-1w small-radio-buttons">
-        <DsfrRadioButtonSet
-          v-model="tagOperatorInput"
-          name="tagOperator"
-          :inline="true"
-          :options="[
-            { label: 'Tous les tags sélectionnés', value: 'AND' },
-            { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
-          ]"
-          legend="Les résultats comportent :"
-          class="inline-radio fr-mb-3w"
-          @update:model-value="onRadioChange"
-        />
-      </div>
-      <div class="dropdown-holder">
-        <TagDropdown
-          v-for="category of tagCategories"
-          :key="category.id"
-          :category="category"
-          :is-focused="focusedCategory === category.id"
-          :selected-tags="selectedTags"
-          :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
-          @focus="focusedCategory = category.id"
-          @blur="focusedCategory = 0"
-          @select="onSelect"
-        />
-        <TagLicenseDropdown
-          v-if="dataType === 'resources'"
-          :is-focused="focusedCategory === licenseTypeCategoryId"
-          :selected-tags="selectedTags"
-          :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
-          :tag-operator="tagOperatorInput"
-          @focus="focusedCategory = licenseTypeCategoryId"
-          @blur="focusedCategory = 0"
-          @select="onSelect"
-        />
-      </div>
-      <div class="fr-mt-3v">
-        {{ nResults }} {{ pluralize(["résultat"], nResults) }}
+        </div>
+        <div class="dropdown-holder">
+          <TagDropdown
+            v-for="category of tagCategories"
+            :key="category.id"
+            :category="category"
+            :is-focused="focusedCategory === category.id"
+            :selected-tags="selectedTags"
+            :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+            @focus="focusedCategory = category.id"
+            @blur="focusedCategory = 0"
+            @select="onSelect"
+          />
+          <TagLicenseDropdown
+            v-if="dataType === 'resources'"
+            :is-focused="focusedCategory === licenseTypeCategoryId"
+            :selected-tags="selectedTags"
+            :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+            :tag-operator="tagOperatorInput"
+            @focus="focusedCategory = licenseTypeCategoryId"
+            @blur="focusedCategory = 0"
+            @select="onSelect"
+          />
+        </div>
+        <div class="fr-mt-3v">
+          {{ nResults }} {{ pluralize(["résultat"], nResults) }}
+        </div>
       </div>
     </div>
   </div>
