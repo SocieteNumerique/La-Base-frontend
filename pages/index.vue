@@ -89,6 +89,7 @@ import { paginationFromNResults } from "~/composables/pagination"
 import { useFullWidth } from "~/composables/useFullWidth"
 
 definePageMeta({
+  middleware: ["home"],
   layout: false,
   title: "Base",
 })
