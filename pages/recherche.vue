@@ -24,11 +24,8 @@
       >
         <SearchOrderBy />
         <div>
-          <template v-if="nResults">
-            {{ nResults }}
-            {{ pluralize(["résultat"], nResults, true) }}
-          </template>
-          <template v-else> aucun résultat correspondant </template>
+          {{ nResults }}
+          {{ pluralize(["résultat"], nResults, true) }}
           <span v-if="searchedText"> pour {{ searchedText }}</span>
         </div>
       </div>

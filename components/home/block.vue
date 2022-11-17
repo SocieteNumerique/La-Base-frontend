@@ -17,24 +17,24 @@
               <TextBlock :slug="props.descriptionSlug" :required="false" />
             </p>
             <div class="fr-mt-4w">
-              <NuxtLink :to="props.to" class="fr-btn"
+              <NuxtLink :to="props.to" class="fr-btn fr-btn--sm"
                 >Accéder <VIcon class="fr-ml-1w" name="ri-arrow-right-line"
               /></NuxtLink>
             </div>
           </div>
         </div>
+
         <div class="fr-pl-5w" style="text-align: left">
           <TextBlock :slug="props.textSlug" />
+          <div v-if="showMore" class="fr-mt-2w">
+            <TextBlock :slug="props.moreTextSlug" />
+          </div>
           <div v-if="canShowMore" class="fr-mt-3w show-more-button-holder">
             <div style="display: flex; justify-content: flex-end">
               <div class="more-cross" @click="showMore = !showMore">
                 <VIcon v-if="!showMore" name="ri-add-line" />
                 <VIcon v-if="showMore" name="ri-subtract-line" />
               </div>
-            </div>
-
-            <div v-if="showMore">
-              <TextBlock :slug="props.moreTextSlug" />
             </div>
           </div>
         </div>
