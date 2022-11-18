@@ -146,6 +146,27 @@
             @select="onSelect"
           />
         </div>
+        <div class="fr-mt-1w small-radio-buttons">
+          <DsfrRadioButtonSet
+            v-model="resourceBaseFilterInput"
+            name="resourceBaseFilter"
+            :inline="true"
+            :options="[
+              { label: 'Toutes les fiches', value: '' },
+              {
+                label: 'Les fiches créées par la base',
+                value: 'create',
+              },
+              {
+                label: 'Les fiches enregistrées par la base',
+                value: 'save',
+              },
+            ]"
+            legend="Afficher :"
+            class="inline-radio fr-mb-3w"
+            @update:model-value="onRadioFileBaseFilter"
+          />
+        </div>
         <div class="fr-mt-3v">
           {{ nResults }} {{ pluralize(["résultat"], nResults) }}
         </div>
@@ -175,6 +196,7 @@ definePageMeta({
 })
 
 const tagOperatorInput = ref<"OR" | "AND">("AND")
+const resourceBaseFilterInput = ref<"" | "create" | "save">("")
 const focusedCategory = ref(0)
 
 const tagStore = useTagStore()
@@ -210,6 +232,12 @@ const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
+  },
+})
+const resourceBaseFilter = computed<string>({
+  get: () => <string>route.query.resourceBaseFilter || "",
+  set(newValue: string) {
+    updateRouterQuery({ resourceBaseFilter: newValue, page: 0 })
   },
 })
 const orderBy = computed<string>({
@@ -298,6 +326,7 @@ const doSearch = debounce(async (scrollToTop = false) => {
       restrictToBase: (isInBaseIndex.value && route.params.id) || null,
       live: isLiveResources.value,
       orderBy: orderBy.value,
+      resourceBaseFilter: resourceBaseFilter.value,
     },
     { page: currentPage.value + 1 }
   )
@@ -340,7 +369,22 @@ const onRadioChange = (value: "OR" | "AND") => {
   doSearch()
 }
 
+const onRadioFileBaseFilter = (value: "" | "create" | "save") => {
+  resourceBaseFilterInput.value = value
+  resourceBaseFilter.value = value
+  doSearch()
+}
+
+const setSearchHistory = () => {
+  resourceBaseFilterInput.value = ["create", "save"].includes(
+    resourceBaseFilter.value
+  )
+    ? (resourceBaseFilter.value as "create" | "save")
+    : ""
+}
+
 onMounted(() => {
+  setSearchHistory()
   doSearch()
 })
 </script>
