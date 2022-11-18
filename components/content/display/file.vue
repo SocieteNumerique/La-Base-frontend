@@ -58,7 +58,6 @@
 import { FileContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useAlertStore } from "~/stores/alertStore"
-import { watchOnce } from "@vueuse/core"
 
 const props = defineProps({
   content: { type: Object as PropType<FileContent>, required: true },

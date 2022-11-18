@@ -107,10 +107,7 @@
             </ul>
           </div>
         </div>
-        <div
-          class="fr-mt-7w"
-          style="display: flex; flex-direction: column; max-width: 160px"
-        >
+        <div class="bottom-button-holder fr-mt-7w">
           <DsfrButton
             :secondary="true"
             label="Pré-visualiser"
@@ -312,4 +309,12 @@ const goTo = (target: "resource" | "base", check = true) => {
 <style lang="sass">
 .full-height
   height: 100%
+
+.bottom-button-holder
+  display: flex
+  flex-direction: column
+  max-width: 160px
+
+  button
+    width: 100%
 </style>
