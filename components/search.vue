@@ -6,7 +6,7 @@
         background: var(--background-alt-blue-france);
         position: sticky;
         top: 0;
-        z-index: 1000000;
+        z-index: 1;
       "
       :style="
         showFilters ? null : 'box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)'
@@ -419,7 +419,6 @@ onMounted(() => {
 
 #search-container {
   display: unset;
-  z-index: 100000;
   position: relative;
 }
 </style>
