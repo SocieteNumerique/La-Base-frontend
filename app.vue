@@ -1,5 +1,5 @@
 <template>
-  <Html :lang="String(dynamic)">
+  <Html>
     <Head>
       <Title>{{ title }}</Title>
       <Meta name="description" :content="description" />
