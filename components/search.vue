@@ -163,7 +163,7 @@
               },
             ]"
             legend="Afficher :"
-            class="inline-radio fr-mb-3w"
+            class="inline-radio fr-mb-0"
             @update:model-value="onRadioFileBaseFilter"
           />
         </div>
