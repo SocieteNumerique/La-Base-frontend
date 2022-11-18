@@ -1,5 +1,5 @@
 <template>
-  <Html :lang="String(dynamic)">
+  <Html>
     <Head>
       <Title>{{ title }}</Title>
       <Meta name="description" :content="description" />
@@ -7,7 +7,7 @@
   </Html>
 
   <NuxtLayout>
-    <NuxtPage :key="$route.path" />
+    <NuxtPage />
   </NuxtLayout>
 </template>
 
@@ -19,7 +19,7 @@ import { usePageStore } from "~/stores/pageStore"
 
 useHead({
   titleTemplate: (title) => {
-    if (title.length) {
+    if (title && title.length) {
       return `La Base - ${title}`
     }
     return "La Base"
