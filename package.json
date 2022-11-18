@@ -7,7 +7,7 @@
     "test": "cypress run"
   },
   "dependencies": {
-    "@gouvminint/vue-dsfr": "^1.5.0",
+    "@gouvminint/vue-dsfr": "1.6.0",
     "@pinia/nuxt": "^0.4.2",
     "@tiptap/extension-link": "^2.0.0-beta.195",
     "@tiptap/starter-kit": "^2.0.0-beta.195",
@@ -21,7 +21,8 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.5.1",
-    "nuxt": "3.0.0-rc.10",
+    "nuxt": "3.0.0",
+    "oh-vue-icons": "^1.0.0-rc3",
     "prettier": "^2.7.1",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
