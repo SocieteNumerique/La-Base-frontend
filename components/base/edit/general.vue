@@ -28,6 +28,16 @@
         label="Présentation de la base"
         placeholder="Description de la base"
       />
+
+      <FormRichTextInputGroup
+        v-model="v$.description.$model"
+        :toolbar-options="toolbarOptions"
+        :is-invalid="v$.description.$error"
+        :error-message="validationMessageFromErrors(v$.description.$errors)"
+        label="Présentation de la base"
+        :required="true"
+      />
+
       <DsfrInputGroup
         v-model="v$.contact.$model"
         :error-message="validationMessageFromErrors(v$.contact.$errors)"
@@ -221,7 +231,7 @@ import {
 } from "~/composables/strUtils"
 import { computed, reactive } from "vue"
 import { url, minLength, required, email } from "@vuelidate/validators"
-import useVuelidate from "@vuelidate/core"
+import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
 
@@ -250,6 +260,17 @@ const contactStateHint = computed<string>(() =>
     ? "Seuls les contributeurs et administrateurs de la base peuvent vous contacter"
     : "Les personnes autorisées à consulter la base peuvent vous contacter"
 )
+
+const toolbarOptions = {
+  show: [
+    "bold",
+    "italic",
+    "list-ordered",
+    "list-unordered",
+    "link",
+    "link-unlink",
+  ],
+}
 
 const base = ref<Base | BaseCreate>(
   props.new
@@ -370,6 +391,19 @@ const userDataState = reactive(
         contactState: baseStore.basesById[baseId].contactState,
       }
 )
+
+const getRichTextContent = (input: string): string =>
+  input.replace(/<[^>]*>?/gm, "")
+
+const richTextMinValidator = (min: number): ValidationRuleWithParams => {
+  return {
+    $validator(input: any) {
+      return getRichTextContent(input).length >= min
+    },
+    $message: () => "",
+    $params: { min },
+  }
+}
 const userDataRules = {
   socialMediaFacebook: { isFacebookUrl },
   socialMediaTwitter: { isTwitterUrl },
@@ -378,12 +412,25 @@ const userDataRules = {
   nationalCartographyWebsite: { isNationalCartographyWebsite },
   website: { url },
   title: { required, minLength: minLength(3) },
-  description: { required, minLength: minLength(3) },
+  description: {
+    minLength: richTextMinValidator(3),
+  },
   contact: { required, email },
   state: {},
   contactState: {},
 }
 const v$ = useVuelidate(userDataRules, userDataState)
+
+const descriptionContent = computed({
+  get() {
+    return {
+      text: v$.value.description.$model,
+    }
+  },
+  set(newValue: any) {
+    v$.value.description.$model = newValue.text
+  },
+})
 
 onMounted(() => {
   setTimeout(() => {
