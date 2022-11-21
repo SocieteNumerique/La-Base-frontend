@@ -15,8 +15,19 @@ export default defineNuxtConfig({
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
   ignore: ["**/*.test.*", "**/*.spec.*", "**/*.cy.*"],
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "vue-plausible"],
   build: {
     transpile: ["oh-vue-icons"],
+  },
+  plausible: {
+    // Use as fallback if no runtime config is available at runtime
+    domain: process.env.PLAUSIBLE_DOMAIN,
+  },
+  runtimeConfig: {
+    public: {
+      plausible: {
+        domain: process.env.PLAUSIBLE_DOMAIN,
+      },
+    },
   },
 })
