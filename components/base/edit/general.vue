@@ -18,16 +18,6 @@
         maxlength="100"
         required="true"
       />
-      <DsfrInputGroup
-        v-model="v$.description.$model"
-        :error-message="validationMessageFromErrors(v$.description.$errors)"
-        :is-invalid="v$.description.$error"
-        :is-textarea="true"
-        :label-visible="true"
-        :required="true"
-        label="Présentation de la base"
-        placeholder="Description de la base"
-      />
 
       <FormRichTextInputGroup
         v-model="v$.description.$model"
