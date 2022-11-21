@@ -10,3 +10,5 @@ yalc.lock
 cypress/videos
 .vscode
 .idea
+.env
+
