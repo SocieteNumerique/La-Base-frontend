@@ -23,11 +23,8 @@
           margin-right: 62px;
           padding-right: 62px;
         "
-      >
-        <p>
-          {{ base?.description }}
-        </p>
-      </div>
+        v-html="base?.description"
+      ></div>
       <div class="fr-col-md-4">
         <DsfrTags
           v-if="participantTypes.length"
