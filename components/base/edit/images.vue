@@ -23,22 +23,15 @@
 
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
-import { Base, BaseCreate, Tag } from "~/composables/types"
-import { useTagStore } from "~/stores/tagStore"
-import { useUserStore } from "~/stores/userStore"
-import { computed, reactive } from "vue"
+import { Base, BaseCreate } from "~/composables/types"
+import { computed } from "vue"
 import { useRoute } from "vue-router"
 
 const baseStore = useBaseStore()
-const tagStore = useTagStore()
-const userStore = useUserStore()
 const route = useRoute()
 
 const baseId = parseInt(<string>route.params.id)
 const emits = defineEmits(["close", "save", "done"])
-const props = defineProps({
-  newStayOnPage: { type: Boolean, default: false },
-})
 
 const modalTitle = "Changer les images de profil et de couverture"
 
