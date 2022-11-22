@@ -4,18 +4,22 @@
 
 <script setup lang="ts">
 import { PropType } from "vue"
-import { TextContent } from "~/composables/types"
+import {
+  Heading,
+  RichTextToolbarOptions,
+  TextContent,
+} from "~/composables/types"
 
 defineProps({
   modelValue: { type: Object as PropType<TextContent>, required: true },
 })
 
 const content = useModel<TextContent>("modelValue", { type: "object" })
-const toolbarOptions = {
+const toolbarOptions: RichTextToolbarOptions = {
   headingSwitch: {
-    h1: 4,
-    h2: 5,
-    h3: 6,
+    [Heading.H1]: 4,
+    [Heading.H2]: 5,
+    [Heading.H3]: 6,
   },
 }
 </script>

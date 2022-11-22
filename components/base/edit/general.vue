@@ -212,7 +212,13 @@
 
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
-import { Base, BaseCreate, Tag } from "~/composables/types"
+import {
+  Base,
+  BaseCreate,
+  OtherRichTextActions,
+  RichTextToolbarOptions,
+  Tag,
+} from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
 import {
@@ -220,7 +226,7 @@ import {
   territoryCategoryName,
 } from "~/composables/strUtils"
 import { computed, reactive } from "vue"
-import { url, minLength, required, email } from "@vuelidate/validators"
+import { email, minLength, required, url } from "@vuelidate/validators"
 import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
@@ -251,14 +257,14 @@ const contactStateHint = computed<string>(() =>
     : "Les personnes autorisées à consulter la base peuvent vous contacter"
 )
 
-const toolbarOptions = {
+const toolbarOptions: RichTextToolbarOptions = {
   show: [
-    "bold",
-    "italic",
-    "list-ordered",
-    "list-unordered",
-    "link",
-    "link-unlink",
+    OtherRichTextActions.BOLD,
+    OtherRichTextActions.ITALIC,
+    OtherRichTextActions.LIST_ORDERED,
+    OtherRichTextActions.LIST_UNORDERED,
+    OtherRichTextActions.LINK,
+    OtherRichTextActions.LINK_UNLINK,
   ],
 }
 

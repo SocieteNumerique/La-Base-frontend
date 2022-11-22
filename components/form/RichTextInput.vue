@@ -61,6 +61,13 @@ import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import { PropType } from "vue"
 import { Level } from "@tiptap/extension-heading"
+import {
+  Heading,
+  OtherRichTextActions,
+  RichTextToolbar,
+  RichTextToolbarItem,
+  RichTextToolbarOptions,
+} from "~/composables/types"
 
 const props = defineProps({
   id: {
@@ -71,10 +78,7 @@ const props = defineProps({
   },
   modelValue: { type: String, required: true },
   toolbarOptions: {
-    type: Object as PropType<{
-      show: string[]
-      headingSwitch: { [key: string]: Level }
-    }>,
+    type: Object as PropType<RichTextToolbarOptions>,
     default: () => {
       return {}
     },
@@ -110,70 +114,70 @@ const editor = useEditor({
     modelValue.value = editor.value!.getHTML()
   },
 })
-const testActiveHeading = (level: Level) =>
-  editor.value?.isActive("heading", { level })
+const testActiveHeading = (level: Level): boolean =>
+  Boolean(editor.value?.isActive("heading", { level }))
 const onClickHeading = (level: Level) =>
   editor.value?.chain().focus().toggleHeading({ level: level }).run()
 
-const defaultToolbar = () => [
+const defaultToolbar = (): RichTextToolbar => [
   {
-    name: "h1",
+    name: Heading.H1,
     testActive: () => testActiveHeading(1),
     onClick: () => onClickHeading(1),
     icon: "ri-h-1",
     disabled: () => false,
   },
   {
-    name: "h2",
+    name: Heading.H2,
     testActive: () => testActiveHeading(2),
     onClick: () => onClickHeading(2),
     icon: "ri-h-2",
     disabled: () => false,
   },
   {
-    name: "h3",
+    name: Heading.H3,
     testActive: () => testActiveHeading(3),
     onClick: () => onClickHeading(3),
     icon: "ri-h-3",
     disabled: () => false,
   },
   {
-    name: "bold",
-    testActive: () => editor.value?.isActive("bold"),
+    name: OtherRichTextActions.BOLD,
+    testActive: () => Boolean(editor.value?.isActive("bold")),
     onClick: () => editor.value!.chain().focus().toggleBold().run(),
     icon: "ri-bold",
     disabled: () => false,
   },
   {
-    name: "italic",
-    testActive: () => editor.value?.isActive("italic"),
+    name: OtherRichTextActions.ITALIC,
+    testActive: () => Boolean(editor.value?.isActive("italic")),
     onClick: () => editor.value?.chain().focus().toggleItalic().run(),
     icon: "ri-italic",
     disabled: () => false,
   },
   {
-    name: "list-ordered",
-    testActive: () => editor.value?.isActive("orderedList"),
+    name: OtherRichTextActions.LIST_ORDERED,
+    testActive: () => Boolean(editor.value?.isActive("orderedList")),
     onClick: () => editor.value?.chain().focus().toggleOrderedList().run(),
     icon: "ri-list-ordered",
     disabled: () => false,
   },
   {
-    name: "list-unordered",
-    testActive: () => editor.value?.isActive("bulletList"),
+    name: OtherRichTextActions.LIST_UNORDERED,
+    testActive: () => Boolean(editor.value?.isActive("bulletList")),
     onClick: () => editor.value?.chain().focus().toggleBulletList().run(),
     icon: "ri-list-unordered",
     disabled: () => false,
   },
   {
-    name: "link",
-    testActive: () => editor.value?.isActive("link"),
+    name: OtherRichTextActions.LINK,
+    testActive: () => Boolean(editor.value?.isActive("link")),
     onClick: () => openLinkModal(),
     icon: "ri-link",
     disabled: () => false,
   },
   {
-    name: "link-unlink",
+    name: OtherRichTextActions.LINK_UNLINK,
     testActive: () => !editor.value?.isActive("link"),
     onClick: () => editor.value?.chain().focus().unsetLink().run(),
     icon: "ri-link-unlink",
@@ -183,37 +187,41 @@ const defaultToolbar = () => [
 
 const toolbarOptionsStrategy = {
   show: {
-    test(toolbarOptions: any): boolean {
+    test(toolbarOptions: RichTextToolbarOptions): boolean {
       return Boolean(toolbarOptions.show)
     },
-    run(toolbar: any, toolbarOptions: any) {
+    run(toolbar: RichTextToolbar, toolbarOptions: RichTextToolbarOptions) {
       return toolbar.filter((toolbarItem: any) =>
-        toolbarOptions.show.includes(toolbarItem.name)
+        toolbarOptions.show!.includes(toolbarItem.name)
       )
     },
   },
   headingSwitch: {
-    test(toolbarOptions: any): boolean {
+    test(toolbarOptions: RichTextToolbarOptions): boolean {
       return Boolean(toolbarOptions.headingSwitch)
     },
-    run(toolbar: any, toolbarOptions: any) {
-      return toolbar.map((toolbarItem: any) => {
-        if (!toolbarOptions.headingSwitch[toolbarItem.name]) {
+    run(toolbar: RichTextToolbar, toolbarOptions: RichTextToolbarOptions) {
+      return toolbar.map((toolbarItem: RichTextToolbarItem) => {
+        if (!(toolbarItem.name in toolbarOptions.headingSwitch!)) {
           return toolbarItem
         }
         return {
           ...toolbarItem,
           testActive: () =>
-            testActiveHeading(toolbarOptions.headingSwitch[toolbarItem.name]),
+            testActiveHeading(
+              toolbarOptions.headingSwitch![toolbarItem.name as Heading]!
+            ),
           onClick: () =>
-            onClickHeading(toolbarOptions.headingSwitch[toolbarItem.name]),
+            onClickHeading(
+              toolbarOptions.headingSwitch![toolbarItem.name as Heading]!
+            ),
         }
       })
     },
   },
 }
 
-const getToolbar = (toolbarOptions: any) => {
+const getToolbar = (toolbarOptions: RichTextToolbarOptions) => {
   let newToolbar = defaultToolbar()
   Object.values(toolbarOptionsStrategy)
     .filter((strategy: any) => strategy.test(toolbarOptions))
@@ -224,10 +232,6 @@ const getToolbar = (toolbarOptions: any) => {
 }
 
 const toolbar = ref(getToolbar(props.toolbarOptions))
-
-const finalLabelClass = computed(() => {
-  return ["fr-label", props.labelClass]
-})
 
 watch(
   () => modelValue.value,
