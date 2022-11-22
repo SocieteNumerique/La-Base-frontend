@@ -28,6 +28,11 @@
       @close="openStep = ''"
       @save="updateBase"
     />
+    <BaseEditImages
+      v-if="openStep === 'images'"
+      @close="openStep = ''"
+      @save="updateBase"
+    />
     <BaseEditAdmins
       v-if="openStep === 'admin'"
       @close="openStep = ''"
@@ -75,6 +80,10 @@ const menuOptions = [
   {
     label: "Informations",
     step: "general",
+  },
+  {
+    label: "Images",
+    step: "images",
   },
   {
     label: "Administrateurs",
