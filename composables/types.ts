@@ -1,3 +1,5 @@
+import { Level } from "@tiptap/extension-heading"
+
 export type User = {
   id?: number
   email: string
@@ -366,3 +368,36 @@ export type Page = {
   slug: string
   title: string
 }
+
+export enum Heading {
+  H1 = "h1",
+  H2 = "h2",
+  H3 = "h3",
+  H4 = "h4",
+  H5 = "h5",
+  H6 = "h6",
+}
+export enum OtherRichTextActions {
+  BOLD = "bold",
+  ITALIC = "italic",
+  LIST_ORDERED = "list-ordered",
+  LIST_UNORDERED = "list-unordered",
+  LINK = "link",
+  LINK_UNLINK = "link",
+}
+type RichTextToolbarActions = Heading | OtherRichTextActions
+export type RichTextToolbarHeadingSwitch = {
+  [key in Heading]?: Level
+}
+export type RichTextToolbarOptions = {
+  show?: RichTextToolbarActions[]
+  headingSwitch?: RichTextToolbarHeadingSwitch
+}
+export type RichTextToolbarItem = {
+  name: RichTextToolbarActions
+  testActive: () => boolean
+  onClick: () => void
+  icon: string
+  disabled: () => boolean
+}
+export type RichTextToolbar = RichTextToolbarItem[]

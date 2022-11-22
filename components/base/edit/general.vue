@@ -18,16 +18,16 @@
         maxlength="100"
         required="true"
       />
-      <DsfrInputGroup
+
+      <FormRichTextInputGroup
         v-model="v$.description.$model"
-        :error-message="validationMessageFromErrors(v$.description.$errors)"
+        :toolbar-options="toolbarOptions"
         :is-invalid="v$.description.$error"
-        :is-textarea="true"
-        :label-visible="true"
-        :required="true"
+        :error-message="validationMessageFromErrors(v$.description.$errors)"
         label="Présentation de la base"
-        placeholder="Description de la base"
+        :required="true"
       />
+
       <DsfrInputGroup
         v-model="v$.contact.$model"
         :error-message="validationMessageFromErrors(v$.contact.$errors)"
@@ -212,7 +212,13 @@
 
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
-import { Base, BaseCreate, Tag } from "~/composables/types"
+import {
+  Base,
+  BaseCreate,
+  OtherRichTextActions,
+  RichTextToolbarOptions,
+  Tag,
+} from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
 import {
@@ -220,8 +226,8 @@ import {
   territoryCategoryName,
 } from "~/composables/strUtils"
 import { computed, reactive } from "vue"
-import { url, minLength, required, email } from "@vuelidate/validators"
-import useVuelidate from "@vuelidate/core"
+import { email, minLength, required, url } from "@vuelidate/validators"
+import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
 
@@ -250,6 +256,17 @@ const contactStateHint = computed<string>(() =>
     ? "Seuls les contributeurs et administrateurs de la base peuvent vous contacter"
     : "Les personnes autorisées à consulter la base peuvent vous contacter"
 )
+
+const toolbarOptions: RichTextToolbarOptions = {
+  show: [
+    OtherRichTextActions.BOLD,
+    OtherRichTextActions.ITALIC,
+    OtherRichTextActions.LIST_ORDERED,
+    OtherRichTextActions.LIST_UNORDERED,
+    OtherRichTextActions.LINK,
+    OtherRichTextActions.LINK_UNLINK,
+  ],
+}
 
 const base = ref<Base | BaseCreate>(
   props.new
@@ -370,6 +387,19 @@ const userDataState = reactive(
         contactState: baseStore.basesById[baseId].contactState,
       }
 )
+
+const getRichTextContent = (input: string): string =>
+  input.replace(/<[^>]*>?/gm, "")
+
+const richTextMinValidator = (min: number): ValidationRuleWithParams => {
+  return {
+    $validator(input: any) {
+      return getRichTextContent(input).length >= min
+    },
+    $message: () => "",
+    $params: { min },
+  }
+}
 const userDataRules = {
   socialMediaFacebook: { isFacebookUrl },
   socialMediaTwitter: { isTwitterUrl },
@@ -378,12 +408,25 @@ const userDataRules = {
   nationalCartographyWebsite: { isNationalCartographyWebsite },
   website: { url },
   title: { required, minLength: minLength(3) },
-  description: { required, minLength: minLength(3) },
+  description: {
+    minLength: richTextMinValidator(3),
+  },
   contact: { required, email },
   state: {},
   contactState: {},
 }
 const v$ = useVuelidate(userDataRules, userDataState)
+
+const descriptionContent = computed({
+  get() {
+    return {
+      text: v$.value.description.$model,
+    }
+  },
+  set(newValue: any) {
+    v$.value.description.$model = newValue.text
+  },
+})
 
 onMounted(() => {
   setTimeout(() => {
