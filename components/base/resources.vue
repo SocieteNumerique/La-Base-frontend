@@ -158,9 +158,11 @@
         {{ openCollection.name }}
       </h3>
 
+      <SearchOrderBy class="fr-mb-5w" />
+
       <div class="resource-grid">
         <ResourceMiniatureById
-          v-for="resourceId of openCollection?.resources || []"
+          v-for="resourceId of openCollectionSortedResource"
           :key="resourceId"
           :resource-id="resourceId"
         />
@@ -171,18 +173,20 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router"
-import { computed, PropType } from "vue"
+import { computed, PropType, watch } from "vue"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { Collection, Resource, SearchResult } from "~/composables/types"
 import { useLoadingStore } from "~/stores/loadingStore"
 import { pluralize } from "~/composables/strUtils"
 import { useBaseStore } from "~/stores/baseStore"
+import { useResourceStore } from "~/stores/resourceStore"
 
 const route = useRoute()
 const router = useRouter()
 const collectionStore = useCollectionStore()
 const loadingStore = useLoadingStore()
 const baseStore = useBaseStore()
+const resourceStore = useResourceStore()
 
 const props = defineProps({
   resourcesResult: {
@@ -200,6 +204,39 @@ const editCollectionModalTab = ref<"resources" | "general" | "">("")
 
 const onAddCollectionClick = () => {
   showAddCollectionModal.value = true
+}
+const getResourceParameterByOrderBy: {
+  [key: string]: (resource: Resource) => number
+} = {
+  visit_count: (resource: Resource) => {
+    return resource.stats?.visitCount || 0
+  },
+  modified: (resource: Resource) => {
+    return Date.parse(resource.modified)
+  },
+}
+const getSortedCollectionResource = (): number[] => {
+  if (currentTab.value !== "collections" || !openCollection.value?.resources) {
+    return []
+  }
+
+  const resources = [...openCollection.value.resources]
+  const orderBy = (route.query.orderBy as string) || "-modified"
+  const orderByWithoutSign = orderBy.replace(/^\-/, "")
+  const asc = orderBy === orderByWithoutSign
+
+  const values = resources.sort((resourceIdA, resourceIdB) => {
+    const resourceA: Resource = resourceStore.resourcesById[resourceIdA]
+    const resourceB: Resource = resourceStore.resourcesById[resourceIdB]
+
+    if (!(orderByWithoutSign in getResourceParameterByOrderBy)) {
+      return 0
+    }
+    const a = getResourceParameterByOrderBy[orderByWithoutSign](resourceA)
+    const b = getResourceParameterByOrderBy[orderByWithoutSign](resourceB)
+    return asc ? a - b : b - a
+  })
+  return values
 }
 
 const currentTab = computed<string>({
@@ -219,6 +256,16 @@ const openCollection = computed<Collection | undefined>(() => {
     return collectionStore.collectionsById[openCollectionId.value]
   return undefined
 })
+const openCollectionSortedResource = ref<number[]>(
+  getSortedCollectionResource()
+)
+
+watch(
+  () => route.query,
+  () => {
+    openCollectionSortedResource.value = getSortedCollectionResource()
+  }
+)
 
 // pagination
 const pages = computed(() => {
