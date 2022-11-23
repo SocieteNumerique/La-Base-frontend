@@ -158,7 +158,7 @@
         {{ openCollection.name }}
       </h3>
 
-      <SearchOrderBy class="fr-mb-5w" />
+      <SearchOrderBy class="fr-mb-3w" />
 
       <div class="resource-grid">
         <ResourceMiniatureById
