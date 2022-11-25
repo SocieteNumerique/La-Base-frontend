@@ -61,7 +61,7 @@
                 <RoundButton icon="ri-alert-line" label="Signaler" />
               </a>
               <a
-                v-if="base?.contact"
+                v-show="base?.contact"
                 :href="mailToHrefContact"
                 class="no-underline"
               >
