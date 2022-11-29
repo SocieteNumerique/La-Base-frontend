@@ -2,12 +2,7 @@
   <div id="search-container">
     <div
       class="fr-pb-3w fr-pt-4w"
-      style="
-        background: var(--background-alt-blue-france);
-        position: sticky;
-        top: 0;
-        z-index: 1;
-      "
+      style="background: var(--background-alt-blue-france)"
       :style="
         showFilters ? null : 'box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)'
       "
@@ -87,7 +82,7 @@
     <div
       v-if="showFilters"
       class="fr-pt-2w fr-pb-6w"
-      style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px"
+      style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
     >
       <div class="fr-container">
         <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
@@ -463,6 +458,8 @@ onMounted(() => {
 
 #search-container {
   display: unset;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="fr-tile fr-enlarge-link">
+  <div class="fr-tile">
     <div class="fr-tile__body">
-      <div class="content">
+      <div class="content fr-pt-1w">
         <div
           style="
             display: flex;
@@ -31,9 +31,19 @@
           </div>
           <div v-if="canShowMore" class="fr-mt-3w show-more-button-holder">
             <div style="display: flex; justify-content: flex-end">
-              <div class="more-cross" @click="showMore = !showMore">
-                <VIcon v-if="!showMore" name="ri-add-line" />
-                <VIcon v-if="showMore" name="ri-subtract-line" />
+              <div @click="showMore = !showMore">
+                <DsfrButton
+                  v-if="!showMore"
+                  class="fr-btn--tertiary-no-outline fr-btn--sm"
+                  label="Voir plus"
+                  icon="ri-add-line"
+                />
+                <DsfrButton
+                  v-if="showMore"
+                  class="fr-btn--tertiary-no-outline fr-btn--sm"
+                  label="Voir moins"
+                  icon="ri-subtract-line"
+                />
               </div>
             </div>
           </div>
@@ -44,6 +54,7 @@
 </template>
 <script setup lang="ts">
 import { useTextBlockStore } from "~/stores/textBlockStore"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const props = defineProps({
   icon: { type: String, required: true },
@@ -85,18 +96,5 @@ const showMore = ref(false)
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-.more-cross {
-  font-size: 20px;
-  border: 1px solid var(--text-action-high-blue-france);
-  color: var(--text-action-high-blue-france);
-  padding: 4px 8px 9px 8px;
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-}
-.more-cross:hover {
-  background: var(--text-action-high-blue-france);
-  color: white;
 }
 </style>

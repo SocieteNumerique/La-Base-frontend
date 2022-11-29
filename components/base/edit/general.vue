@@ -141,6 +141,19 @@
         maxlength="200"
         :required="false"
       />
+      <a
+        href="https://sonum.tlscp.fr/fr/dispositif/cartographie-nationale/"
+        target="_blank"
+        class="no-underline"
+        style="
+          display: inline-block;
+          margin-top: -20px;
+          color: var(--text-action-high-blue-france);
+        "
+      >
+        Plus d’informations sur la cartographie nationale
+      </a>
+
       <template v-if="props.new">
         <ImageResizableUpload
           v-model="base.profileImage"
@@ -232,6 +245,7 @@ import { email, minLength, required, url } from "@vuelidate/validators"
 import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()

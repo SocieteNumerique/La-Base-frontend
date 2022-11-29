@@ -18,7 +18,7 @@ export const validationMessageFromError = (error: ErrorObject): string => {
   }
   if (error.$validator === "url") {
     // @ts-ignore
-    return "Le champ ne correspond pas à un lien"
+    return "Le champ doit commencer par http:// ou https://"
   }
   if (error.$validator === "isNationalCartographyWebsite") {
     // @ts-ignore

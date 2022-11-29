@@ -7,16 +7,16 @@
         </div>
       </div>
       <div v-if="base?.canWrite && currentTab === 'resources'">
-        <div style="text-align: center; display: flex" class="fr-mb-3w">
+        <div style="text-align: center; display: flex" class="fr-mb-6w">
           <button
             class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
             style="font-weight: 400"
             :class="
-              showLliveResources
+              showLiveResources
                 ? 'fr-btn--tertiary--active'
                 : 'fr-text--disabled'
             "
-            @click="showLliveResources = true"
+            @click="showLiveResources = true"
           >
             Fiches publiées
           </button>
@@ -25,11 +25,11 @@
             class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
             style="font-weight: 400"
             :class="
-              !showLliveResources
+              !showLiveResources
                 ? 'fr-btn--tertiary--active'
                 : 'fr-text--disabled'
             "
-            @click="showLliveResources = false"
+            @click="showLiveResources = false"
           >
             Brouillons
           </button>
@@ -94,8 +94,9 @@
           display: flex;
           align-items: baseline;
           justify-content: space-between;
+          margin-top: -32px;
         "
-        class="fr-mb-4w fr-mt-3w fr-container fr-p-0"
+        class="fr-mb-4w fr-container fr-p-0"
       >
         <SearchOrderBy />
         <div>
@@ -243,7 +244,7 @@ const currentTab = computed<string>({
   get: () => (route.query.tab as string) || "resources",
   set: (value) => router.push({ query: { ...route.query, view: value } }),
 })
-const showLliveResources = computed<boolean>({
+const showLiveResources = computed<boolean>({
   get: () => Boolean(Number(((<string>route.query.live) as string) || "1")),
   set: (value) =>
     router.push({ query: { ...route.query, live: String(Number(value)) } }),

@@ -32,7 +32,7 @@
     </template>
     <div>
       <div class="fr-container fr-pt-5w">
-        <h2 class="fr-mb-5w">Que trouve-t-on dans La Base ?</h2>
+        <h2 class="fr-mb-6w fr-h3">Que trouve-t-on dans La Base ?</h2>
         <HomeBlock
           icon="/img/home/block-search.svg"
           title="Le moteur de recherche"
@@ -40,7 +40,7 @@
           to="/recherche"
           text-slug="homeSearchBlockContent"
           more-text-slug="homeSearchBlockContentMore"
-          class="fr-mb-5w"
+          class="fr-mb-6w"
         />
         <HomeBlock
           icon="/img/home/block-people.svg"
@@ -49,7 +49,7 @@
           to="/profil-informations"
           text-slug="homeAccountBlockContent"
           more-text-slug="homeAccountBlockContentMore"
-          class="fr-mb-5w"
+          class="fr-mb-6w"
         />
         <HomeBlock
           icon="/img/home/block-resources.svg"
@@ -58,16 +58,16 @@
           to="/recherche"
           text-slug="homeResourcesBlockContent"
           more-text-slug="homeResourcesBlockContentMore"
-          class="fr-mb-5w"
+          class="fr-mb-6w"
         />
         <HomeBlock
           icon="/img/home/block-bases.svg"
-          title="Le moteur de recherche"
+          title="Les bases"
           description-slug="homeBasesBlockDescription"
-          to="/recherche"
+          to="/recherche?dataType=bases"
           text-slug="homeBasesBlockContent"
           more-text-slug="homeBasesBlockContentMore"
-          class="fr-mb-5w"
+          class="fr-mb-6w"
         />
       </div>
     </div>
