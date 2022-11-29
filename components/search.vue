@@ -146,7 +146,7 @@
             @select="onSelect"
           />
         </div>
-        <div class="fr-mt-1w small-radio-buttons">
+        <div v-if="isInBaseIndex" class="fr-mt-1w small-radio-buttons">
           <DsfrRadioButtonSet
             v-model="resourceBaseFilterInput"
             name="resourceBaseFilter"
