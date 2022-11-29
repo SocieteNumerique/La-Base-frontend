@@ -205,7 +205,7 @@ const editCollectionModalTab = ref<"resources" | "general" | "">("")
 const onAddCollectionClick = () => {
   showAddCollectionModal.value = true
 }
-const getResourceParameterByOrderBy: {
+const resourceOrderByGetter: {
   [key: string]: (resource: Resource) => number
 } = {
   visit_count: (resource: Resource) => {
@@ -215,7 +215,7 @@ const getResourceParameterByOrderBy: {
     return Date.parse(resource.modified)
   },
 }
-const getSortedCollectionResource = (): number[] => {
+const getSortedCollectionResources = (): number[] => {
   if (currentTab.value !== "collections" || !openCollection.value?.resources) {
     return []
   }
@@ -229,11 +229,11 @@ const getSortedCollectionResource = (): number[] => {
     const resourceA: Resource = resourceStore.resourcesById[resourceIdA]
     const resourceB: Resource = resourceStore.resourcesById[resourceIdB]
 
-    if (!(orderByWithoutSign in getResourceParameterByOrderBy)) {
+    if (!(orderByWithoutSign in resourceOrderByGetter)) {
       return 0
     }
-    const a = getResourceParameterByOrderBy[orderByWithoutSign](resourceA)
-    const b = getResourceParameterByOrderBy[orderByWithoutSign](resourceB)
+    const a = resourceOrderByGetter[orderByWithoutSign](resourceA)
+    const b = resourceOrderByGetter[orderByWithoutSign](resourceB)
     return asc ? a - b : b - a
   })
   return values
@@ -257,13 +257,13 @@ const openCollection = computed<Collection | undefined>(() => {
   return undefined
 })
 const openCollectionSortedResource = ref<number[]>(
-  getSortedCollectionResource()
+  getSortedCollectionResources()
 )
 
 watch(
   () => route.query,
   () => {
-    openCollectionSortedResource.value = getSortedCollectionResource()
+    openCollectionSortedResource.value = getSortedCollectionResources()
   }
 )
 
