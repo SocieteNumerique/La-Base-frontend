@@ -141,17 +141,19 @@
         maxlength="200"
         :required="false"
       />
-      <ImageResizableUpload
-        v-model="base.profileImage"
-        :label="`${profileActionWord}image de profil pour la base`"
-        crop-circle
-        :desired-ratio="1"
-      />
-      <ImageResizableUpload
-        v-model="base.coverImage"
-        :label="`${coverActionWord}image de couverture pour la base`"
-        :desired-ratio="4.8"
-      />
+      <template v-if="props.new">
+        <ImageResizableUpload
+          v-model="base.profileImage"
+          :label="`${profileActionWord}image de profil pour la base`"
+          crop-circle
+          :desired-ratio="1"
+        />
+        <ImageResizableUpload
+          v-model="base.coverImage"
+          :label="`${coverActionWord}image de couverture pour la base`"
+          :desired-ratio="4.8"
+        />
+      </template>
       <div class="fr-grid-row fr-grid-row--gutters">
         <div class="fr-col-sm-6">
           <DsfrInputGroup
