@@ -214,9 +214,13 @@
                     <div class="fr-col-11" style="white-space: pre-line">
                       {{ resource?.description }}
                     </div>
-                    <hr class="fr-my-9v" style="padding-bottom: 1px" />
                   </template>
+                </div>
+              </div>
 
+              <div class="fr-grid-row">
+                <div class="fr-col-md-8">
+                  <hr class="fr-mb-9v fr-mt-6v" style="padding-bottom: 1px" />
                   <ResourceContents />
                 </div>
               </div>
