@@ -63,7 +63,7 @@ export type Resource = {
   rootBase?: number
   rootBaseTitle?: string
   state: string
-  stats?: { pinned: number; visitCount: number }
+  stats?: { publicPinCount: number; visitCount: number; pinCount: number }
   supportTags?: number[]
   tags?: number[]
   title: string

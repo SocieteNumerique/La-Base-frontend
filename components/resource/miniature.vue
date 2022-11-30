@@ -77,6 +77,12 @@
             </span>
             {{ pluralize(["vue"], resource?.stats.visitCount) }}
           </p>
+          <p class="fr-m-0">
+            <span class="fr-text--lg fr-text--bold">
+              {{ resource?.stats.pinCount }}
+            </span>
+            {{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
+          </p>
         </div>
       </div>
       <div class="fr-p-2w">
