@@ -63,10 +63,10 @@
             @update:model-value="onPasswordConfirmationUpdate"
           />
           <TagSelector
-            :is-focused="focusedCategory === 'general_00participantType'"
-            :category="tagStore.categoryBySlug('general_00participantType')"
+            :is-focused="focusedCategory === 'externalProducer_00occupation'"
+            :category="tagStore.categoryBySlug('externalProducer_00occupation')"
             source="own"
-            @focus="focusCategory('general_00participantType')"
+            @focus="focusCategory('externalProducer_00occupation')"
             @blur="focusCategory('')"
             @change="onParticipantTagsChange"
           />
