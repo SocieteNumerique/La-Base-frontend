@@ -115,12 +115,4 @@ const territory = computed<string>(() =>
 
   .toolbar
     border-bottom: 1px solid var(--grey-975-75-active)
-
-.stats-holder
-  display: flex
-
-  * + *
-    margin-left: 16px
-  p
-    margin-bottom: 0
 </style>
