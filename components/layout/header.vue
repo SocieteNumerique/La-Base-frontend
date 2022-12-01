@@ -76,7 +76,7 @@
                       v-show="showProfileMenu"
                       id="profile-menu"
                       class="selector__menu fr-px-2w fr-text--xs"
-                      style="overflow-x: hidden; overflow-y: auto"
+                      style="overflow-x: hidden; overflow-y: auto; z-index: 12"
                     >
                       <div
                         class="item fr-link"
