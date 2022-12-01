@@ -82,7 +82,7 @@ const menuOptions = [
     step: "general",
   },
   {
-    label: "Images",
+    label: "Images de profil",
     step: "images",
   },
   {
