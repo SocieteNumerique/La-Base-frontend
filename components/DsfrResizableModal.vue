@@ -48,6 +48,8 @@
 </template>
 
 <script>
+// Use option api and js because we use code from vue-dsfr
+// https://github.com/dnum-mi/vue-dsfr/blob/2584d74ee7079f30a2a47a75bca33b789ba0252b/src/components/DsfrModal/DsfrModal.vue
 import { defineComponent } from "vue"
 
 import { FocusTrap } from "focus-trap-vue"
