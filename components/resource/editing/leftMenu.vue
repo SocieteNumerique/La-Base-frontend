@@ -114,7 +114,7 @@
               'fr-text-default--error': duplicatedResourceIds.length,
             }"
             :disabled="duplicatedResourceIds.length === 0"
-            @click="showDuplicateResourceModal = true"
+            @click="showDuplicateResourcesModal = true"
           >
             <span class="fr-pr-1w fr-pt-1v">
               <VIcon
@@ -205,8 +205,8 @@
         continuer l'édition ?
       </p>
     </DsfrModal>
-    <ResourceEditingDuplicateResourceModal
-      :opened="showDuplicateResourceModal"
+    <ResourceEditingDuplicateResourcesModal
+      :opened="showDuplicateResourcesModal"
       :duplicate-resource-ids="duplicatedResourceIds"
       @close="onCloseDuplicateResourceModal()"
     />
@@ -232,27 +232,12 @@ let isClient = false
 if (process.client) {
   isClient = true
 }
-
-const showDuplicateResourceModal = ref(false)
-const duplicatedResourceIds = ref<number[]>([])
-const verifyDuplicatedResource = async () => {
-  const { data } = await useApiGet<number[]>(
-    `resources/${resourceStore.current.id}/duplicate/`,
-    {
-      title: resourceStore.current.title,
-      description: resourceStore.current.description,
-    }
-  )
-  duplicatedResourceIds.value = data.value || []
-}
-watch(
-  () => resourceStore.current.title,
-  () => verifyDuplicatedResource()
-)
-watch(
-  () => resourceStore.current.description,
-  () => verifyDuplicatedResource()
-)
+const {
+  showDuplicateResourcesModal,
+  duplicatedResourceIds,
+  verifyDuplicatedResource,
+  onCloseDuplicateResourceModal,
+} = useDuplicateResourceDetector()
 
 onMounted(() => {
   verifyDuplicatedResource()
@@ -311,10 +296,6 @@ const selectMenu = (menuKey: string) => {
       }
     }
   }
-}
-const onCloseDuplicateResourceModal = () => {
-  showDuplicateResourceModal.value = false
-  verifyDuplicatedResource()
 }
 
 const ongoingDeletion = ref<boolean>(false)

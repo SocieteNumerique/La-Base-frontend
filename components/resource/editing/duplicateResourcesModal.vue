@@ -123,9 +123,16 @@ const getButtons = (resourceId: number) => {
   ]
 }
 
+const resetDuplicateAnswers = () => {
+  ignoredDuplicates.value = []
+  confirmedDuplicates.value = []
+}
+
 const onClose = () => {
-  if (!ignoredDuplicates.value.length || !confirmedDuplicates.value.length) {
+  if (!ignoredDuplicates.value.length && !confirmedDuplicates.value.length) {
+    resetDuplicateAnswers()
     emits("close")
+    return
   }
   resourceStore
     .duplicateAnswer(
@@ -134,6 +141,7 @@ const onClose = () => {
       confirmedDuplicates.value
     )
     .then(() => {
+      resetDuplicateAnswers()
       emits("close")
     })
 }
