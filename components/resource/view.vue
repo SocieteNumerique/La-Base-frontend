@@ -43,10 +43,12 @@
             <hr class="fr-pb-2w" />
             <div class="has-children-space-between">
               <div class="is-flex">
-                <!--            <div class="stat">-->
-                <!--              <span class="fr-h5">45</span>-->
-                <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
-                <!--            </div>-->
+                <div class="stat">
+                  <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
+                  <span class="fr-text--sm fr-ml-1w">{{
+                    pluralize(["enregistrement"], resource?.stats.pinCount)
+                  }}</span>
+                </div>
                 <div class="stat">
                   <span class="fr-h6">{{ resource?.stats.visitCount }}</span>
                   <span class="fr-text--sm fr-ml-1w">{{
