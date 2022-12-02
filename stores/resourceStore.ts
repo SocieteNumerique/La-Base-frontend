@@ -274,7 +274,7 @@ export const useResourceStore = defineStore("resource", {
           : resource?.licenseText?.file?.base64
           ? "Chargement du texte de license"
           : false
-
+      console.log("### save", resource)
       const { data, error } = await useApiPatch<Resource>(
         `resources/${resourceId}/`,
         resource,

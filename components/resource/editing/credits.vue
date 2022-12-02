@@ -186,8 +186,9 @@ const removeProducer = (producerEmail: string) => {
 
 const onOwnBaseChose = () => {
   showOwnBaseModal.value = false
-  resourceStore.resourcesById[resourceStore.currentId!].creator =
-    ownSelectedBase.value
+  resourceStore.resourcesById[resourceStore.currentId!].creatorBases = [
+    ownSelectedBase.value,
+  ]
   resourceStore.markDirty()
   console.log("### selected", ownSelectedBase)
 }
