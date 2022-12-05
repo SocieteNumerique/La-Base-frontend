@@ -25,7 +25,7 @@
                     <div
                       v-show="showBasesList"
                       id="header-bases-list"
-                      class="selector__menu fr-px-2w fr-text--xs"
+                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
                     >
                       <NuxtLink
                         v-for="base of baseStore.baseOptions"
@@ -75,8 +75,8 @@
                     <div
                       v-show="showProfileMenu"
                       id="profile-menu"
-                      class="selector__menu fr-px-2w fr-text--xs"
-                      style="overflow-x: hidden; overflow-y: auto; z-index: 12"
+                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
+                      style="overflow-x: hidden; overflow-y: auto"
                     >
                       <div
                         class="item fr-link"
@@ -232,4 +232,7 @@ const pages = computed(() => pageStore.pages)
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll
   top: 40px
+
+.over-sticky
+  z-index: 12
 </style>

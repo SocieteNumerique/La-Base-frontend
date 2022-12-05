@@ -74,7 +74,7 @@
                 @close="showReportModal = false"
               />
             </div>
-            <div style="padding-top: 7px">
+            <div v-if="base?.canWrite" style="padding-top: 7px">
               <DsfrButton
                 icon="ri-add-line"
                 label="Ajouter une fiche"
