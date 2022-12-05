@@ -15,7 +15,7 @@
                 <button
                   class="toggle-button"
                   :class="dataType === 'resources' ? '-active' : null"
-                  @click="dataType = 'resources'"
+                  @click="setDataType('resources')"
                 >
                   <img
                     alt="Chercher des ressources"
@@ -28,7 +28,7 @@
                 <button
                   class="toggle-button"
                   :class="dataType === 'bases' ? '-active' : null"
-                  @click="dataType = 'bases'"
+                  @click="setDataType('bases')"
                 >
                   <img
                     alt="Chercher des bases"
@@ -211,10 +211,23 @@ onFocusOut(
 
 const emit = defineEmits(["results", "searchedText"])
 
+const setDataType = (type: "bases" | "resources") => {
+  // when changing from resources to bases, pin_count is no longer possible
+  // so we also update orderBy at the same time
+  if (type === "bases" && orderBy.value.includes("pin_count")) {
+    router.push({
+      query: { ...route.query, dataType: type, orderBy: "-modified" },
+    })
+  } else {
+    dataType.value = type
+  }
+}
+
 const dataType = computed<"resources" | "bases">({
   get: () => <"resources" | "bases">route.query.dataType || "resources",
-  set: (type: string) =>
-    router.push({ query: { ...route.query, dataType: type } }),
+  set: (type: string) => {
+    router.push({ query: { ...route.query, dataType: type } })
+  },
 })
 
 const currentPage = computed<number>({
