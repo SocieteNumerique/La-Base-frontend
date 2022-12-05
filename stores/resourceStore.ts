@@ -299,7 +299,7 @@ export const useResourceStore = defineStore("resource", {
       const resource = this.resourcesById[resourceId]
       resource.pinnedInBases = pinnedInBases
     },
-    async duplicateAnswer(
+    async markDuplicates(
       resourceId: number,
       ignoredDuplicates: number[],
       confirmedDuplicates: number[]
@@ -308,7 +308,7 @@ export const useResourceStore = defineStore("resource", {
         id: number
         ignoredDuplicates: number[]
         confirmedDuplicates: number[]
-      }>(`resources/${resourceId}/duplicate_answers/`, {
+      }>(`resources/${resourceId}/mark_duplicates/`, {
         ignoredDuplicates,
         confirmedDuplicates,
       })

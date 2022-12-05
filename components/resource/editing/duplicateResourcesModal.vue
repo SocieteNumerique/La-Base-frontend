@@ -135,7 +135,7 @@ const onClose = () => {
     return
   }
   resourceStore
-    .duplicateAnswer(
+    .markDuplicates(
       resourceStore.current.id,
       ignoredDuplicates.value,
       confirmedDuplicates.value
