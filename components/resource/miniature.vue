@@ -1,10 +1,11 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-p-2w toolbar">
+    <div v-if="props.showToolbar" class="fr-grid-row fr-p-2w toolbar">
       <nuxt-link
         v-if="resource?.canWrite"
         :to="`/ressource/${resource.id}/edition`"
         class="no-underline"
+        :target="targetLink"
       >
         <button
           class="fr-btn--tertiary-no-outline"
@@ -28,7 +29,11 @@
         />
       </div>
     </div>
-    <NuxtLink :to="`/ressource/${resource?.id}`" class="no-underline">
+    <NuxtLink
+      :to="`/ressource/${resource?.id}`"
+      class="no-underline"
+      :target="targetLink"
+    >
       <div
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
         class="bordered fr-p-2w"
@@ -129,13 +134,19 @@ import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
 
 const props = defineProps({
+  showToolbar: { type: Boolean, default: true },
   resource: { type: Object as PropType<Resource>, required: true },
   modelValue: { type: Array as PropType<PinStatus[]>, required: true },
+  newTab: { type: Boolean, default: false },
 })
 
 const userStore = useUserStore()
 const pinnedInBases = useModel("modelValue", { type: "array" })
 const tagStore = useTagStore()
+
+const targetLink = computed<string>(() => {
+  return props.newTab ? "_blank" : "_self"
+})
 
 const supportTags = computed<{ label: string }[]>(
   () =>

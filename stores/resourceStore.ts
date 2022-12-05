@@ -299,6 +299,26 @@ export const useResourceStore = defineStore("resource", {
       const resource = this.resourcesById[resourceId]
       resource.pinnedInBases = pinnedInBases
     },
+    async markDuplicates(
+      resourceId: number,
+      ignoredDuplicates: number[],
+      confirmedDuplicates: number[]
+    ) {
+      const { data, error } = await useApiPatch<{
+        id: number
+        ignoredDuplicates: number[]
+        confirmedDuplicates: number[]
+      }>(`resources/${resourceId}/mark_duplicates/`, {
+        ignoredDuplicates,
+        confirmedDuplicates,
+      })
+      if (!error.value) {
+        this.resourcesById[data.value!.id!] = {
+          ...this.resourcesById[data.value!.id!],
+          ...data.value!,
+        }
+      }
+    },
   },
   getters: {
     current: (state): Resource => {
