@@ -1,8 +1,14 @@
 <template>
   <div :class="{ 'is-editing': isEditing }" class="content-container">
-    <div class="toolbar fr-px-2w fr-text--xs">
+    <div
+      class="toolbar fr-pt-1v fr-pr-2w fr-text--xs"
+      :class="isEditing ? 'has-border-left-grey' : null"
+    >
       <div>
-        <button class="content-drag-handle fr-ml-n5v">
+        <button
+          class="content-drag-handle"
+          style="position: absolute; margin-left: -30px"
+        >
           <img src="~/assets/svg/dragHandle.svg" />
         </button>
         <!-- <span>Statut :</span> -->
@@ -10,13 +16,13 @@
       <div class="fr-btns-group--xs fr-ml-auto">
         <button
           :class="{ '-active': isEditing }"
-          class="btn-tab-activable fr-btn--tertiary-no-outline fr-mr-3v"
+          class="btn-tab-activable fr-btn--tertiary-no-outline fr-mr-4v fr-pb-1v"
           @click="$emit('open-edition')"
         >
           <VIcon name="ri-edit-line" />
           Éditer
         </button>
-        <!--<button class="fr-btn--tertiary-no-outline" disabled>
+        <!--<button class="fr-btn--tertiary-no-outline fr-mr-4v fr-pb-1v" disabled>
           <VIcon name="ri-settings-3-line" />
           Paramètres
         </button>-->

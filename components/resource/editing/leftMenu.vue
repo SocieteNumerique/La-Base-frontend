@@ -40,7 +40,10 @@
                 <template v-if="menu.subMenus.length">
                   <button
                     class="fr-sidemenu__btn"
-                    :aria-expanded="resourceStore.isMenuActive(menu.key)"
+                    :aria-expanded="
+                      resourceStore.isMenuActive(menu.key) &&
+                      isMenuOpen[menu.key]
+                    "
                     aria-controls="fr-sidemenu-item-0"
                     :aria-current="
                       resourceStore.isMenuActive(menu.key) ? 'page' : null
@@ -53,7 +56,10 @@
                     v-if="menu.subMenus.length"
                     id="fr-sidemenu-item-0"
                     :class="
-                      resourceStore.isMenuActive(menu.key) ? '' : 'fr-collapse'
+                      resourceStore.isMenuActive(menu.key) &&
+                      isMenuOpen[menu.key]
+                        ? ''
+                        : 'fr-collapse'
                     "
                   >
                     <ul class="fr-sidemenu__list">
@@ -101,10 +107,7 @@
             </ul>
           </div>
         </div>
-        <div
-          class="fr-mt-7w"
-          style="display: flex; flex-direction: column; max-width: 150px"
-        >
+        <div class="bottom-button-holder fr-mt-7w">
           <DsfrButton
             :secondary="true"
             label="Pré-visualiser"
@@ -125,9 +128,23 @@
             :secondary="true"
             label="Supprimer"
             icon="ri-delete-bin-line"
-            class="fr-btn--sm"
+            class="fr-mb-3v fr-btn--sm"
             @click="ongoingDeletion = true"
           />
+          <template v-if="isClient">
+            <DsfrButton
+              icon="ri-arrow-go-back-line"
+              class="fr-mb-3v fr-btn--tertiary-no-outline fr-btn--sm"
+              label="Retour à la base"
+              @click="goTo('base')"
+            />
+            <DsfrButton
+              icon="ri-arrow-right-line"
+              class="fr-btn--sm fr-btn--tertiary-no-outline"
+              label="Aller à la fiche"
+              @click="goTo('resource')"
+            />
+          </template>
         </div>
       </nav>
     </div>
@@ -151,6 +168,18 @@
       Confirmez-vous la suppression de la ressource ? <br />
       Tous les contenus de la ressource seront supprimés avec elle.
     </DsfrModal>
+    <DsfrModal
+      v-if="isNavigating !== ''"
+      :actions="goToActions"
+      title="Modifications en cours"
+      :opened="true"
+      @close="isNavigating = ''"
+    >
+      <p>
+        Vous avez des modifications en cours, voulez-vous les ignorer ou
+        continuer l'édition ?
+      </p>
+    </DsfrModal>
   </div>
 </template>
 
@@ -162,14 +191,21 @@ import {
 } from "~/stores/resourceStore"
 import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
+import { useRouter } from "vue-router"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
+const router = useRouter()
+let isClient = false
+if (process.client) {
+  isClient = true
+}
 
 const save = () => {
   resourceStore.save()
 }
+const isMenuOpen = ref<{ [key: string]: boolean }>({ informations: true })
 const deleteResource = async () => {
   ongoingDeletion.value = false
   const baseId = resourceStore.current.rootBase
@@ -190,22 +226,6 @@ const canDelete = computed(() => {
   return baseStore.basesById[baseId].canWrite || false
 })
 
-const boldIfMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isMenuActive(menuName)
-    ? "fr-text--bold"
-    : "fr-text--regular"
-})
-const boldIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName)
-    ? "fr-text--bold"
-    : "fr-text--regular"
-})
-const styleIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName) ? "" : "padding-left: 52px"
-})
-const iconIfSubMenuActive = computed(() => (menuName: string) => {
-  return resourceStore.isSubMenuActive(menuName) ? "ri-arrow-right-line" : ""
-})
 const selectSubMenu = (subMenu: string) => {
   if (
     navigationMenuByKey[resourceStore.navigation.activeMenu].subMenus[subMenu]
@@ -218,6 +238,11 @@ const selectSubMenu = (subMenu: string) => {
 const selectMenu = (menuKey: string) => {
   const wasAlreadyActive = resourceStore.navigation.activeMenu === menuKey
   resourceStore.navigation.activeMenu = menuKey
+  if (wasAlreadyActive) {
+    isMenuOpen.value[menuKey] = !isMenuOpen.value[menuKey]
+  } else {
+    isMenuOpen.value[menuKey] = true
+  }
 
   // if we go into a new menu with sub-menus, select first sub-menu
   if (
@@ -244,9 +269,52 @@ const actions = [
     onClick: () => (ongoingDeletion.value = false),
   },
 ]
+
+const baseHref = computed(() => {
+  return "/base/" + resourceStore.current?.rootBase
+})
+const resourceHref = computed(() => "/ressource/" + resourceStore.currentId)
+const isNavigating = ref<"" | "resource" | "base">("")
+const goToActions = computed(() => {
+  const target = isNavigating.value === "resource" ? "resource" : "base"
+  return [
+    {
+      label: "Continuer l'édition",
+      onClick: () => {
+        isNavigating.value = ""
+      },
+    },
+    {
+      label: "Aller à la " + (target === "resource" ? "ressource" : "base"),
+      secondary: true,
+      onClick: () => {
+        goTo(target, false)
+      },
+    },
+  ]
+})
+
+const goTo = (target: "resource" | "base", check = true) => {
+  console.log("### goto", target, check)
+  if (check && resourceStore.current.dirty) {
+    // show confirmation modal
+    isNavigating.value = target
+  } else {
+    // navigate
+    router.push(target == "resource" ? resourceHref.value : baseHref.value)
+  }
+}
 </script>
 
 <style lang="sass">
 .full-height
   height: 100%
+
+.bottom-button-holder
+  display: flex
+  flex-direction: column
+  max-width: 160px
+
+  button
+    width: 100%
 </style>

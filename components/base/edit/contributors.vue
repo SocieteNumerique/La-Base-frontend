@@ -56,17 +56,18 @@ const removeUserId = (userId: number) => {
   )
 }
 
-const updateBase = () => {
-  baseStore.update({
+const updateBase = async () => {
+  await baseStore.update({
     ...baseStore.current,
     contributorTags: contributorTags.value.map((tag) => tag.id),
     contributors: contributors.value,
   })
+  emits("close")
 }
 
 const addActions = computed(() => [
   {
-    label: "Valider",
+    label: "Enregistrer",
     onClick: updateBase,
   },
   {

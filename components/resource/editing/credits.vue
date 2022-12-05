@@ -60,14 +60,18 @@
                 />
               </div>
             </div>
-            <div v-if="resourceStore.current?.producerState === 'know'">
+            <div
+              v-if="resourceStore.current?.producerState === 'know'"
+              class="fr-mt-2w"
+            >
               <DsfrButton
                 label="Ajouter un producteur"
                 secondary
-                class="btn--no-border"
+                class="fr-btn--sm"
                 icon="ri-add-circle-line"
                 @click="showExternalProducersModal = true"
               />
+              <hr class="fr-mt-3w" />
             </div>
           </div>
 

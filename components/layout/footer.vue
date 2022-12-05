@@ -57,17 +57,20 @@
             </span>
           </li>
           <li class="fr-footer__bottom-item">
-            <NuxtLink to="/mentions-legales" class="fr-footer__bottom-link">
+            <NuxtLink
+              to="/page/mentions-legales"
+              class="fr-footer__bottom-link"
+            >
               Mentions légales
             </NuxtLink>
           </li>
           <li class="fr-footer__bottom-item">
-            <NuxtLink to="/charte" class="fr-footer__bottom-link">
+            <NuxtLink to="/page/charte" class="fr-footer__bottom-link">
               Charte
             </NuxtLink>
           </li>
           <li class="fr-footer__bottom-item">
-            <NuxtLink to="/contact" class="fr-footer__bottom-link">
+            <NuxtLink to="/page/contact" class="fr-footer__bottom-link">
               Contact
             </NuxtLink>
           </li>

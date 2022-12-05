@@ -21,14 +21,16 @@
           </div>
           <div
             v-if="base?.canWrite"
-            class="has-children-space-between fr-text--sm fr-text-default--grey fr-mb-2v pre-header"
+            class="has-children-space-between fr-text--sm fr-mb-2v pre-header"
           >
-            <div>
-              <div>Statut : {{ stateLabel[base?.state] }}</div>
+            <div style="display: flex; align-items: center">
+              <div style="color: var(--text-mention-grey)">
+                Statut : {{ stateLabel[base?.state] }}
+              </div>
             </div>
             <BaseSettings />
           </div>
-          <h1 style="max-width: 800px" class="fr-h2 fr-mb-4w">
+          <h1 style="max-width: 800px" class="fr-h2 fr-mb-1w">
             {{ base?.title }}
             <VIcon
               v-if="base?.isCertified"
@@ -39,52 +41,31 @@
               style="position: relative; bottom: 7px"
             />
           </h1>
-          <div class="is-flex base-meta">
-            <button
-              class="fr-btn--tertiary-no-outline fr-text-title--blue-france fr-mr-3w"
-              @click="showAboutModal = true"
-            >
-              À propos
-            </button>
-            <DsfrTags
-              v-if="participantTypes.length"
-              :tags="participantTypes"
-              class="fr-mr-3w participant-tags"
-            />
-            <div v-if="territory" class="territory">
-              <VIcon class="fr-mr-2v" name="ri-map-pin-line" />
-              {{ territory }}
-            </div>
-          </div>
           <div
             style="border-bottom: 1px solid var(--border-default-grey)"
             class="fr-my-2w"
           />
           <div class="has-children-space-between">
-            <div class="is-flex" style="align-items: center">
-              <div class="stat">
-                <span class="fr-text--xl fr-text--bold">{{
-                  base?.visitCount
-                }}</span>
-                <span>vues</span>
-              </div>
-            </div>
             <div>
-              <a
-                v-if="base?.contact"
-                :href="mailToHrefContact"
-                class="no-underline"
-              >
-                <RoundButton icon="ri-mail-line" label="Contacter" />
-              </a>
               <ShareButton :link="route.fullPath">
-                <RoundButton icon="ri-share-line" label="Partager" />
+                <RoundButton
+                  icon="ri-share-line"
+                  class="fr-pl-0"
+                  label="Partager"
+                />
               </ShareButton>
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
               <a :href="mailToHrefReport" class="no-underline">
                 <RoundButton icon="ri-alert-line" label="Signaler" />
+              </a>
+              <a
+                v-show="base?.contact"
+                :href="mailToHrefContact"
+                class="no-underline"
+              >
+                <RoundButton icon="ri-mail-line" label="Contacter" />
               </a>
               <ReportSimpleModal
                 v-if="showReportModal"
@@ -93,27 +74,68 @@
                 @close="showReportModal = false"
               />
             </div>
+            <div style="padding-top: 7px">
+              <DsfrButton
+                icon="ri-add-line"
+                label="Ajouter une fiche"
+                class="fr-btn--sm"
+                @click="onAddResourceClick"
+              />
+            </div>
           </div>
         </div>
       </div>
     </template>
 
-    <Search @results="updateResults" />
+    <div class="fr-header" style="box-shadow: none">
+      <div class="fr-header__body fr-header__nav">
+        <div class="fr-container">
+          <div class="fr-header__body-row" style="padding-left: 6px">
+            <ul class="fr-links-group">
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'presentation' ? 'page' : null"
+                  @click="currentTab = 'presentation'"
+                >
+                  <button>Présentation</button>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'resources' ? 'page' : null"
+                  @click="currentTab = 'resources'"
+                >
+                  <button>Fiches</button>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  :aria-current="currentTab === 'collections' ? 'page' : null"
+                  @click="currentTab = 'collections'"
+                >
+                  <button>Collections</button>
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div
-      id="search-results"
-      style="border-bottom: 1px solid var(--border-default-grey)"
-      class="fr-my-3w"
-    ></div>
+    <BasePresentation v-if="currentTab === 'presentation'" class="fr-mt-4w" />
 
-    <BaseResources :base="base" :resources-result="resourcesResult" />
+    <template v-else>
+      <Search v-if="currentTab === 'resources'" @results="updateResults" />
 
-    <BaseAbout
-      v-if="showAboutModal"
-      :participant-types="participantTypes"
-      :base="base"
-      :territory="territory"
-      @close="showAboutModal = false"
+      <div class="fr-container fr-mt-4w">
+        <BaseResources :base="base" :resources-result="resourcesResult" />
+      </div>
+    </template>
+
+    <ResourceCreationModal
+      v-if="showAddResourceModal"
+      :base-id="base.id"
+      @close="showAddResourceModal = false"
     />
   </NuxtLayout>
 </template>
@@ -129,43 +151,47 @@ import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
 import { mobileOrTabletCheck } from "~/composables/mobileCheck"
+import { stateLabel } from "~/composables/constants"
+import { useFullWidth } from "~/composables/useFullWidth"
 
 definePageMeta({
   layout: false,
   title: "Base",
 })
 
+useFullWidth()
+
 const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
-const showAboutModal = ref(false)
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
+})
+
+const currentTab = computed<"presentation" | "resources" | "collections">({
+  get: () =>
+    <"presentation" | "resources" | "collections" | "">route.query.tab ||
+    "presentation",
+  set: (type: "presentation" | "resources" | "collections") =>
+    router.push({ query: { ...route.query, tab: type } }),
 })
 
 const base = computed(() => {
   return baseStore.current
 })
 
+const showAddResourceModal = ref<boolean>(false)
+const onAddResourceClick = () => {
+  showAddResourceModal.value = true
+}
+
 const showReportModal = ref<boolean>(false)
 
 const updateResults = (newResults: SearchResult<Resource>) => {
   resourcesResult.value = newResults
 }
-
-const participantTypes = computed<{ label: string }[]>(
-  () =>
-    base.value?.participantTypeTags?.map((tagId: number) => {
-      return { label: tagStore.tagsById[tagId]?.name, small: true }
-    }) || []
-)
-const territory = computed<string>(() =>
-  (
-    base.value?.territoryTags?.map((id) => tagStore.tagsById[id].name) || []
-  ).join(", ")
-)
 
 const getBaseIfNotExists = async () => {
   const baseId = parseInt(<string>route.params.id)
@@ -195,7 +221,6 @@ onBeforeMount(async () => {
 
   // if we have no access to this base, redirect to home or login
   if (error.value) {
-    console.log("### error", error.value)
     const alertStore = useAlertStore()
     const userStore = useUserStore()
     if (!userStore.isLoggedIn) {
@@ -209,6 +234,7 @@ onBeforeMount(async () => {
       alertStore.alert("Vous n'avez pas accès à cette base", "", "warning")
       router.replace("/")
     }
+    return
   }
 
   useRegisterVisit("base", baseStore.currentId!)
@@ -237,13 +263,6 @@ const mailToHrefReport = computed(() => {
   }
   return `${toReturn}?subject=${subject}&body=${body}`
 })
-
-const stateLabel = {
-  public: "Public",
-  private: "Privé",
-  draft: "Invisible",
-  restricted: "Restreint",
-}
 </script>
 
 <style lang="sass" scoped>
@@ -255,19 +274,9 @@ const stateLabel = {
 
 .stat *
   margin-left: 12px
-
-.base-meta
-  align-items: center
-
-  .territory
-    color: black
-    font-size: 0.75rem
 </style>
 
 <style lang="sass">
-.base-meta .participant-tags .fr-tag
-  margin-bottom: 0
-
 .brand
   position: relative
 

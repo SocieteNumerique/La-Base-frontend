@@ -19,7 +19,7 @@
       :circle="cropCircle"
     />
   </div>
-  <div class="fr-btns-group fr-btns-group--inline">
+  <div class="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
     <DsfrButton
       v-if="file.image?.link && !showResizeModal"
       class="fr-my-3v"

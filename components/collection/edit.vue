@@ -36,7 +36,7 @@
       />
     </div>
 
-    <div class="btn-group fr-mt-4w">
+    <div class="btn-group fr-btns-group--sm fr-mt-4w">
       <DsfrButton v-if="!isNew" class="btn-alert" @click="toStep('delete')">
         Supprimer la collection
       </DsfrButton>

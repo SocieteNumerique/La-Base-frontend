@@ -76,7 +76,7 @@
                       v-show="showProfileMenu"
                       id="profile-menu"
                       class="selector__menu fr-px-2w fr-text--xs"
-                      style="overflow-x: hidden; overflow-y: auto"
+                      style="overflow-x: hidden; overflow-y: auto; z-index: 12"
                     >
                       <div
                         class="item fr-link"
@@ -127,17 +127,12 @@
           <ul class="fr-links-group">
             <li>
               <NuxtLink to="/">
+                <button>Accueil</button>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/recherche">
                 <button>Recherche</button>
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/label">
-                <button>Label</button>
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/a-propos">
-                <button>À propos</button>
               </NuxtLink>
             </li>
             <li v-for="page of pages" :key="page.slug">
@@ -204,6 +199,7 @@ import { usePageStore } from "~/stores/pageStore"
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 const pageStore = usePageStore()
+const router = useRouter()
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
@@ -223,32 +219,15 @@ onFocusOut(
 
 const onLogOutClick = () => {
   userStore.logout()
-  useRouter().push("/")
+  router.push("/")
+  router.replace({
+    query: { ...useRoute().query, update: new Date().getMilliseconds() },
+  })
 }
 const pages = computed(() => pageStore.pages)
 </script>
 
 <style lang="sass" scoped>
-.fr-header
-  border-bottom: var(--grey-925-125) 1px solid
-
-  .fr-links-group li
-    align-items: baseline
-    button
-      font-size: 1em //safari needs it
-
-  .fr-header__nav
-    border-top: 1px solid var(--border-default-grey)
-
-    .fr-header__body-row
-      padding: 0
-
-    .fr-links-group
-      justify-content: start
-
-    button
-      padding: 16px 12px
-
 .selector__menu
   max-height: calc(5 * var(--item-height))
   overflow-y: scroll

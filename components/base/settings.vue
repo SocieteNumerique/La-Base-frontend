@@ -9,7 +9,7 @@
         class="fr-text-title--blue-france fr-mr-2v"
         name="ri-settings-3-line"
       />
-      <span>Paramètres de la base</span>
+      <span class="fr-text-title--blue-france">Paramètres de la base</span>
     </button>
 
     <div v-show="isMenuShown" class="selector__menu fr-px-2w fr-text--xs">
@@ -25,6 +25,11 @@
 
     <BaseEditGeneral
       v-if="openStep === 'general'"
+      @close="openStep = ''"
+      @save="updateBase"
+    />
+    <BaseEditImages
+      v-if="openStep === 'images'"
       @close="openStep = ''"
       @save="updateBase"
     />
@@ -75,6 +80,10 @@ const menuOptions = [
   {
     label: "Informations",
     step: "general",
+  },
+  {
+    label: "Images de profil",
+    step: "images",
   },
   {
     label: "Administrateurs",

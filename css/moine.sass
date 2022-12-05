@@ -100,7 +100,7 @@
   padding: 0 1rem
 
   &:not(:last-of-type)
-    border-bottom: 1px solid #e5e5e5
+    border-bottom: 1px solid var(--background-disabled-grey)
 
 .result-line > *
   padding: 0.5rem 0
@@ -118,6 +118,12 @@ a
   &.no-append-ico::after
     content: none
 
+  &.underlined-on-hover:hover
+    text-decoration: underline !important
+
+.underlined-on-hover:hover
+  text-decoration: underline !important
+
 .resource-grid
   $gap: 24px
   display: flex
@@ -133,8 +139,8 @@ a
   margin-left: -24px
   > *
     margin-left: 24px
-    margin-top: 24px
-    margin-bottom: 0
+    margin-bottom: 24px
+    margin-top: 0
 
 
 // selector
@@ -159,7 +165,7 @@ a
       display: flex
       align-items: center
       width: 100%
-      height: var(--item-height)
+      min-height: var(--item-height)
       text-align: left
 
 .selector
@@ -216,3 +222,37 @@ a
 
 .fr-btn
   font-weight: 400
+
+
+// header nav (used in header and in base)
+.fr-header
+  border-bottom: var(--grey-925-125) 1px solid
+
+  .fr-links-group li
+    align-items: baseline
+    button
+      font-size: 1em //safari needs it
+
+  .fr-header__nav
+    border-top: 1px solid var(--border-default-grey)
+
+    .fr-header__body-row
+      padding: 0
+
+    .fr-links-group
+      justify-content: start
+
+    button
+      padding: 16px 12px
+
+  li
+    a[aria-current]
+      background: var(--background-open-blue-france)
+
+.stats-holder
+  display: flex
+
+  * + *
+    margin-left: 16px
+  p
+    margin-bottom: 0

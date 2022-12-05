@@ -68,7 +68,6 @@
 import { useCollectionStore } from "~/stores/collectionStore"
 import { PinStatus, Collection } from "~/composables/types"
 import { pluralize } from "~/composables/strUtils"
-import { watchOnce } from "@vueuse/shared"
 import { useBaseStore } from "~/stores/baseStore"
 
 const route = useRoute()
@@ -105,7 +104,12 @@ const pinnedInBases = computed<PinStatus[]>({
 
 const openedTab = ref<"general" | "resources" | null>(null)
 
-watchOnce(openedTab, () => {
+const hasOpenedTabBeenWatched = ref(false)
+watch(openedTab, () => {
+  if (hasOpenedTabBeenWatched.value) {
+    return
+  }
+  hasOpenedTabBeenWatched.value = true
   const baseStore = useBaseStore()
   const baseId = savedCollection.value.base
   if (!baseStore.basesById[baseId] || baseStore.basesById[baseId].isShort) {

@@ -33,15 +33,21 @@
           />
         </h3>
         <div class="separator fr-my-1w" />
-        <div
-          v-if="base.visitCount != null"
-          title="nombre de vues depuis le 9 septembre 2022"
-        >
-          <p class="fr-m-0">
+        <div class="stats-holder">
+          <p
+            v-if="base.stats.visitCount != null"
+            title="nombre de vues depuis le 9 septembre 2022"
+          >
             <span class="fr-text--lg fr-text--bold"
-              >{{ base.visitCount }}
+              >{{ base.stats.visitCount }}
             </span>
-            {{ pluralize(["vue"], base.visitCount) }}
+            {{ pluralize(["vue"], base.stats.visitCount) }}
+          </p>
+          <p v-if="base.stats.visitCount != null">
+            <span class="fr-text--lg fr-text--bold"
+              >{{ base.stats.resourceCount }}
+            </span>
+            {{ pluralize(["ressource"], base.stats.resourceCount) }}
           </p>
         </div>
         <div

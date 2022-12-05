@@ -1,11 +1,11 @@
 <template>
   <div
     :id="'tag-dropdown-' + props.category.id"
-    class="tag-dropdown fr-text--sm"
+    class="tag-dropdown fr-text--sm fr-mb-2w"
+    :class="isFocused ? '-active' : null"
   >
     <div
       class="cursor--pointer dropdown-title fr-text-label--blue-france"
-      :class="isFocused ? 'underlined' : null"
       @click="onTitleClick"
     >
       <slot name="label">
@@ -18,6 +18,7 @@
     </div>
     <div
       class="dropdown-tags"
+      :class="isFocused ? 'with-border-top' : null"
       :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
     >
       <template v-if="isFocused">
@@ -92,20 +93,27 @@ const selectTag = (tagId: number) => {
 </script>
 
 <style scoped>
-.dropdown-title {
-  border-bottom: 2px solid transparent;
-}
-.dropdown-title.underlined {
-  border-bottom: 2px solid #000091;
-}
 .dropdown-tags {
   transition: max-height 0.2s ease-in-out 0s;
   width: 400px;
   overflow-y: auto;
   position: absolute;
+  margin-top: 10px;
+  margin-left: -8px;
   background: white;
   z-index: 100;
   box-shadow: 4px 4px 4px var(--grey-975-75-hover),
     -4px 4px 4px var(--grey-975-75-hover);
+}
+.dropdown-tags.with-border-top {
+  border-top: 1px solid var(--grey-975-75-hover);
+}
+.tag-dropdown {
+  border: 1px solid var(--background-disabled-grey);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.tag-dropdown.-active {
+  border: 1px solid var(--text-action-high-blue-france);
 }
 </style>

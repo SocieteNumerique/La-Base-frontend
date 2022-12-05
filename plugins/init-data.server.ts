@@ -1,15 +1,15 @@
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
-import { useMainStore } from "~/stores/mainStore"
 import { useTagStore } from "~/stores/tagStore"
 import { usePageStore } from "~/stores/pageStore"
+import { useTextBlockStore } from "~/stores/textBlockStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("vue:setup", () => {
     useBaseStore().refreshBases()
-    useMainStore().refreshVersion()
     useTagStore().refreshIndex()
     useUserStore().refreshProfile()
     usePageStore().getPages()
+    useTextBlockStore().getTextBlocks()
   })
 })

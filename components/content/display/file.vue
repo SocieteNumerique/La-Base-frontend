@@ -1,22 +1,27 @@
 <template>
   <div>
     <div v-if="content.withPreview && isImage" class="file-preview">
-      <img :alt="content.file.name" :src="imageLink" />
+      <img alt="" :src="imageLink" crossorigin />
     </div>
     <div v-if="isEditingView">
       <a
         :href="content.file?.link"
-        class="no-underline no-append-ico"
+        class="no-underline no-append-ico fr-text--xs"
         rel="noopener noreferrer"
         target="_blank"
       >
-        <VIcon name="ri-file-line" />
-        {{ content.file?.name }}
+        <VIcon name="ri-file-line" scale="0.8" class="fr-mr-1w" />{{
+          content.file?.name
+        }}
       </a>
     </div>
-    <div v-else-if="!content.withPreview || !isImage" class="file-no-preview">
-      <VIcon name="ri-file-line" />
-      {{ content.file?.name }}
+    <div
+      v-else-if="!content.withPreview || !isImage"
+      class="file-no-preview fr-text-xs"
+    >
+      <VIcon name="ri-file-line" scale="0.8" class="fr-mr-1w" />{{
+        content.file?.name
+      }}
     </div>
     <div v-if="!isEditingView">
       <div class="fr-btns-group--xs">
@@ -53,7 +58,6 @@
 import { FileContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useAlertStore } from "~/stores/alertStore"
-import { watchOnce } from "@vueuse/core"
 
 const props = defineProps({
   content: { type: Object as PropType<FileContent>, required: true },

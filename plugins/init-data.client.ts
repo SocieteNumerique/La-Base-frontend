@@ -1,8 +1,8 @@
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
-import { useMainStore } from "~/stores/mainStore"
 import { useTagStore } from "~/stores/tagStore"
 import { usePageStore } from "~/stores/pageStore"
+import { useTextBlockStore } from "~/stores/textBlockStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("app:mounted", () => {
@@ -12,11 +12,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     const baseStore = useBaseStore()
     if (!baseStore.basesOrder.length) {
       baseStore.refreshBases()
-    }
-
-    const mainStore = useMainStore()
-    if (!mainStore.version) {
-      mainStore.refreshVersion()
     }
 
     const tagStore = useTagStore()
@@ -32,6 +27,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     const pageStore = usePageStore()
     if (!Object.keys(pageStore.pagesBySlug).length) {
       pageStore.getPages()
+    }
+
+    const textBlockStore = useTextBlockStore()
+    if (!Object.keys(textBlockStore.blockBySlug).length) {
+      textBlockStore.getTextBlocks()
     }
   })
 })

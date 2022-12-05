@@ -20,6 +20,7 @@
           :name="showDefinition ? 'ri-information-fill' : 'ri-information-line'"
           :scale="0.9"
           title="définition"
+          color="var(--text-action-high-blue-france)"
           @click="showDefinition = !showDefinition"
         />
         <span v-else class="no-information">-</span>
@@ -66,7 +67,7 @@ const showDefinition = ref(false)
   display: grid
   grid-auto-flow: column
   grid-template-columns: 16px 30px 15px
-  grid-column-gap: 8px
+  grid-column-gap: 4px
   align-items: center
   text-align: center
 

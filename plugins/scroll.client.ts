@@ -5,6 +5,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     to: LocationQuery,
     from: LocationQuery
   ) => {
+    console.log("### to", to.name, to.path, "from", from.name, from.path)
     if (to.path == from.path) {
       return
     }

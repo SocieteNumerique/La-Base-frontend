@@ -17,16 +17,16 @@
             </h1>
 
             <div class="fr-mb-2w" style="display: flex; flex-direction: row">
-              <div>
+              <div class="fr-text--sm fr-m-0">
                 Fiche publiée dans
                 <NuxtLink
                   :to="'/base/' + resource?.rootBase"
-                  class="fr-text-label--blue-france no-underline"
+                  class="fr-text-label--blue-france no-underline underlined-on-hover"
                 >
                   {{ resource?.rootBaseTitle }}
                 </NuxtLink>
               </div>
-              <div class="fr-ml-3w">
+              <div class="fr-ml-3w fr-text--sm fr-m-0">
                 <template
                   v-if="
                     resource?.canWrite &&
@@ -43,21 +43,29 @@
             <hr class="fr-pb-2w" />
             <div class="has-children-space-between">
               <div class="is-flex">
-                <!--            <div class="stat">-->
-                <!--              <span class="fr-h5">45</span>-->
-                <!--              <span class="fr-text-label&#45;&#45;blue-france">enregistrements</span>-->
-                <!--            </div>-->
                 <div class="stat">
-                  <span class="fr-h5">{{ resource?.stats.visitCount }}</span>
-                  <span>{{
+                  <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
+                  <span class="fr-text--sm fr-ml-1w">{{
+                    pluralize(["enregistrement"], resource?.stats.pinCount)
+                  }}</span>
+                </div>
+                <div class="stat">
+                  <span class="fr-h6">{{ resource?.stats.visitCount }}</span>
+                  <span class="fr-text--sm fr-ml-1w">{{
                     pluralize(["vue"], resource?.stats.visitCount)
                   }}</span>
                 </div>
               </div>
-              <div class="is-flex fr-text--sm fr-m-0">
+              <div
+                class="is-flex fr-text--xs fr-m-0"
+                style="align-items: flex-end"
+              >
                 <div>Fiche créée le {{ $date(resource?.created) }}</div>
                 <div class="fr-ml-4w">
                   Fiche modifiée le {{ $date(resource?.modified) }}
+                </div>
+                <div class="fr-ml-4w">
+                  Statut : {{ stateLabel[resource?.state] }}
                 </div>
               </div>
             </div>
@@ -189,6 +197,18 @@
                     Date de création de la ressource
                   </p>
                   <p class="fr-text--sm">{{ resource?.resourceCreatedOn }}</p>
+                  <p class="fr-text--bold fr-mb-0 fr-text--sm">
+                    Crédits de la ressource
+                  </p>
+                  <p class="fr-text--sm fr-m-0">
+                    <NuxtLink
+                      :to="'/base/' + resource?.rootBase"
+                      class="fr-text-label--blue-france no-underline underlined-on-hover"
+                    >
+                      {{ resource?.rootBaseTitle }}
+                    </NuxtLink>
+                  </p>
+                  <p></p>
                 </div>
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
@@ -196,9 +216,13 @@
                     <div class="fr-col-11" style="white-space: pre-line">
                       {{ resource?.description }}
                     </div>
-                    <hr class="fr-my-9v" style="padding-bottom: 1px" />
                   </template>
+                </div>
+              </div>
 
+              <div class="fr-grid-row">
+                <div class="fr-col-md-8">
+                  <hr class="fr-mb-9v fr-mt-6v" style="padding-bottom: 1px" />
                   <ResourceContents />
                 </div>
               </div>
@@ -218,6 +242,7 @@ import IndexTable from "~/components/indexTable.vue"
 import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 import { pluralize } from "~/composables/strUtils"
+import { stateLabel } from "~/composables/constants"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },

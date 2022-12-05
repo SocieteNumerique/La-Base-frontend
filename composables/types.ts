@@ -1,10 +1,11 @@
-import { Coordinates } from "vue-advanced-cropper"
+import { Level } from "@tiptap/extension-heading"
 
 export type User = {
   id?: number
   email: string
   isAdmin?: boolean
   isCnfs?: boolean
+  isStaff?: boolean
   firstName: string
   lastName: string
   password?: string
@@ -62,7 +63,7 @@ export type Resource = {
   rootBase?: number
   rootBaseTitle?: string
   state: string
-  stats?: { pinned: number; visitCount: number }
+  stats?: { publicPinCount: number; visitCount: number; pinCount: number }
   supportTags?: number[]
   tags?: number[]
   title: string
@@ -156,6 +157,10 @@ export type BaseCreate = {
   tags?: number[]
   title: string
 }
+type BaseStats = {
+  resourceCount: number
+  visitCount: number
+}
 export type Base = {
   admins?: User[]
   authorizedUsers?: User[]
@@ -173,14 +178,21 @@ export type Base = {
   id: number
   isCertified?: boolean
   isShort?: boolean
+  nationalCartographyWebsite?: string
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
+  resources?: ResourcesWithPagination
+  socialMediaFacebook: string
+  socialMediaLinkedin: string
+  socialMediaMastodon: string
+  socialMediaTwitter: string
   state?: string
+  stats: BaseStats
   tags?: number[]
   territoryTags?: number[]
   title: string
-  visitCount?: number
+  website?: string
 }
 export type ResourcesWithPagination = {
   count: number
@@ -356,3 +368,36 @@ export type Page = {
   slug: string
   title: string
 }
+
+export enum Heading {
+  H1 = "h1",
+  H2 = "h2",
+  H3 = "h3",
+  H4 = "h4",
+  H5 = "h5",
+  H6 = "h6",
+}
+export enum OtherRichTextActions {
+  BOLD = "bold",
+  ITALIC = "italic",
+  LIST_ORDERED = "list-ordered",
+  LIST_UNORDERED = "list-unordered",
+  LINK = "link",
+  LINK_UNLINK = "link",
+}
+type RichTextToolbarActions = Heading | OtherRichTextActions
+export type RichTextToolbarHeadingSwitch = {
+  [key in Heading]?: Level
+}
+export type RichTextToolbarOptions = {
+  show?: RichTextToolbarActions[]
+  headingSwitch?: RichTextToolbarHeadingSwitch
+}
+export type RichTextToolbarItem = {
+  name: RichTextToolbarActions
+  testActive: () => boolean
+  onClick: () => void
+  icon: string
+  disabled: () => boolean
+}
+export type RichTextToolbar = RichTextToolbarItem[]
