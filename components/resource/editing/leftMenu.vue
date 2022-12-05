@@ -108,6 +108,31 @@
           </div>
         </div>
         <div class="bottom-button-holder fr-mt-7w">
+          <button
+            class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
+            :class="{
+              'fr-text-default--error': duplicatedResourceIds.length,
+            }"
+            :disabled="duplicatedResourceIds.length === 0"
+            @click="showDuplicateResourcesModal = true"
+          >
+            <span class="fr-pr-1w fr-pt-1v">
+              <VIcon
+                :name="
+                  duplicatedResourceIds.length
+                    ? 'ri-alert-fill'
+                    : 'ri-checkbox-circle-line'
+                "
+              />
+            </span>
+            {{ duplicatedResourceIds.length }}
+            {{
+              pluralize(
+                ["doublon détécté", "doublons détéctés"],
+                duplicatedResourceIds.length
+              )
+            }}
+          </button>
           <DsfrButton
             :secondary="true"
             label="Pré-visualiser"
@@ -180,6 +205,11 @@
         continuer l'édition ?
       </p>
     </DsfrModal>
+    <ResourceEditingDuplicateResourcesModal
+      :opened="showDuplicateResourcesModal"
+      :duplicate-resource-ids="duplicatedResourceIds"
+      @close="onCloseDuplicateResourceModal()"
+    />
   </div>
 </template>
 
@@ -197,10 +227,21 @@ const showPreview = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 const router = useRouter()
+
 let isClient = false
 if (process.client) {
   isClient = true
 }
+const {
+  showDuplicateResourcesModal,
+  duplicatedResourceIds,
+  verifyDuplicatedResource,
+  onCloseDuplicateResourceModal,
+} = useDuplicateResourceDetector()
+
+onMounted(() => {
+  verifyDuplicatedResource()
+})
 
 const save = () => {
   resourceStore.save()
@@ -307,13 +348,10 @@ const goTo = (target: "resource" | "base", check = true) => {
 </script>
 
 <style lang="sass">
-.full-height
-  height: 100%
-
 .bottom-button-holder
   display: flex
   flex-direction: column
-  max-width: 160px
+  max-width: 170px
 
   button
     width: 100%

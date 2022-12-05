@@ -31,7 +31,7 @@ const orderByOptions = [
   { text: "Du moins vu au plus vu", value: "visit_count" },
   // { text: "Du mieux noté au moins bien noté", value: "-rating" },
   // { text: "Du moins bien noté au mieux noté", value: "rating" },
-  { text: "Du plus enregistré au moins enregistré", value: "-pinned_count" },
-  { text: "Du moins enregistré au plus enregistré", value: "pinned_count" },
+  { text: "Du plus enregistré au moins enregistré", value: "-pin_count" },
+  { text: "Du moins enregistré au plus enregistré", value: "pin_count" },
 ]
 </script>
