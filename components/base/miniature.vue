@@ -1,6 +1,6 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-grid-row--right fr-p-2w toolbar">
+    <div class="fr-grid-row fr-p-2w toolbar">
       <ShareButton :link="link" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">

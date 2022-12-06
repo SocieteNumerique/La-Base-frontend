@@ -74,7 +74,7 @@
         </div>
       </div>
     </div>
-    <hr class="fr-pb-4w fr-mt-7w" />
+    <hr class="fr-pb-4w fr-mt-5w" />
     <div class="fr-grid-row fr-grid-row--gutters">
       <div class="fr-col-sm-6">
         <button
@@ -98,7 +98,7 @@
       </div>
     </div>
     <template v-if="latestResources.length">
-      <hr class="fr-pb-7w fr-mt-4w" />
+      <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
         <ResourceMiniature

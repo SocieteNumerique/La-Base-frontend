@@ -1,25 +1,11 @@
 <template>
   <div class="miniature-container fr-text--xs">
     <div v-if="props.showToolbar" class="fr-grid-row fr-p-2w toolbar">
-      <nuxt-link
-        v-if="resource?.canWrite"
-        :to="`/ressource/${resource.id}/edition`"
-        class="no-underline"
-        :target="targetLink"
-      >
-        <button
-          class="fr-btn--tertiary-no-outline"
-          title="Éditer la fiche"
-          aria-label="Éditer la fiche"
-        >
-          <VIcon name="ri-edit-line" />
-        </button>
-      </nuxt-link>
-      <div class="is-flex fr-ml-auto">
-        <ShareButton
-          :link="link"
-          :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
-        />
+      <ShareButton
+        :link="link"
+        :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
+      />
+      <div class="is-flex fr-ml-auto" style="align-items: center">
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -27,6 +13,20 @@
           instance-type="resource"
           :small="true"
         />
+        <nuxt-link
+          v-if="resource?.canWrite"
+          :to="`/ressource/${resource.id}/edition`"
+          class="no-underline"
+          :target="targetLink"
+        >
+          <button
+            class="fr-btn--tertiary-no-outline fr-ml-2w"
+            title="Éditer la fiche"
+            aria-label="Éditer la fiche"
+          >
+            <VIcon name="ri-edit-line" />
+          </button>
+        </nuxt-link>
       </div>
     </div>
     <NuxtLink

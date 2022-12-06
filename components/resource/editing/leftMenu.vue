@@ -255,7 +255,7 @@ const deleteResource = async () => {
     setTimeout(() => {
       delete resourceStore.resourcesById[id]
     }, 200)
-    useRouter().push(`/base/${baseId}`)
+    router.push(`/base/${baseId}`)
   }
 }
 const doShowPreview = () => {
