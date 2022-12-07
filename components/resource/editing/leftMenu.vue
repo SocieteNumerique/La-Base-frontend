@@ -336,7 +336,6 @@ const goToActions = computed(() => {
 })
 
 const goTo = (target: "resource" | "base", check = true) => {
-  console.log("### goto", target, check)
   if (check && resourceStore.current.dirty) {
     // show confirmation modal
     isNavigating.value = target
