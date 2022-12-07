@@ -12,6 +12,7 @@
             :href="producer.href"
             class="fr-text-label--blue-france no-underline underlined-on-hover"
             target="_blank"
+            rel="noopener noreferrer"
           >
             {{ producer.name }}
           </a>
