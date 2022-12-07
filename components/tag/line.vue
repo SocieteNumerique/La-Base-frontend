@@ -23,7 +23,7 @@
           color="var(--text-action-high-blue-france)"
           @click="showDefinition = !showDefinition"
         />
-        <span v-else class="no-information">-</span>
+        <span v-else class="no-information">·</span>
         <span class="tag-count" title="nombre d'occurences">
           {{ props.tag?.count || 0 }}
         </span>
@@ -33,7 +33,7 @@
           :scale="0.9"
           title="tag officiel"
         />
-        <div v-else />
+        <div v-else>·</div>
       </div>
     </div>
     <p v-if="showDefinition" class="fr-mb-1w fr-text--xs fr-text-default--grey">

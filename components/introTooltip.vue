@@ -16,21 +16,24 @@
       <div class="header fr-py-2w fr-text--bold">
         {{ introStore.current?.title }}
       </div>
-      <div
-        v-if="introStore.current?.image"
+      <img
+        :src="introStore.current.image"
+        alt=""
         style="
-          background-position: center;
-          background-size: cover;
           width: 100%;
-          height: 155px;
+          border-bottom: 1px solid var(--background-action-high-blue-france);
         "
-        :style="`background-image: url('${introStore.current.image}')`"
-      ></div>
+      />
       <div
-        class="fr-p-2w html-content"
+        class="fr-p-2w html-content fr-text--sm fr-m-0"
+        style="text-align: left"
         v-html="introStore.current?.htmlContent"
       ></div>
-      <div v-if="introStore.forPage.length > 1" class="tooltip-footer fr-p-2w">
+      <div
+        v-if="introStore.forPage.length > 1"
+        class="tooltip-footer fr-p-2w"
+        style="align-items: center"
+      >
         <div class="fr-text--sm fr-text--disabled fr-m-0">
           {{ introStore.indexInPage + 1 }} sur
           {{ introStore.forPage.length }}
@@ -76,6 +79,9 @@ const props = defineProps({
 .html-content p:last-child {
   margin-bottom: 0;
 }
+.html-content p {
+  font-size: 14px;
+}
 </style>
 
 <style scoped>
@@ -93,7 +99,7 @@ const props = defineProps({
 
 .tooltip {
   position: absolute;
-  width: 312px;
+  width: 348px;
 
   border: 1px solid var(--background-action-high-blue-france);
   background: white;

@@ -15,7 +15,7 @@
             <div class="fr-col-6" style="color: var(--text-action-high-grey)">
               <TextBlock slug="homeIntroLeft" />
             </div>
-            <div class="fr-col-5 fr-text-mention--grey">
+            <div class="fr-col-5">
               <TextBlock slug="homeIntroRight" />
               <NuxtLink to="/a-propos" class="fr-btn fr-mt-2w">
                 <VIcon

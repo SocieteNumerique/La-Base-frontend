@@ -7,24 +7,29 @@
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
-                <li v-if="userStore.isLoggedIn" class="selector">
+                <li
+                  v-if="userStore.isLoggedIn"
+                  id="header-bases-list"
+                  class="selector"
+                >
                   <template v-if="baseStore.hasBases">
-                    <button
-                      :class="{ '-active': showBasesList }"
-                      class="fr-link btn-tab-activable"
-                      @click="showBasesList = !showBasesList"
-                    >
-                      Mes bases
-                      <VIcon
-                        :name="`ri-arrow-${
-                          showBasesList ? 'up' : 'down'
-                        }-s-line`"
-                        class="fr-ml-3v"
-                      />
-                    </button>
+                    <IntroTooltip slug="CREATE_BASES">
+                      <button
+                        :class="{ '-active': showBasesList }"
+                        class="fr-link btn-tab-activable"
+                        @click="showBasesList = !showBasesList"
+                      >
+                        Mes bases
+                        <VIcon
+                          :name="`ri-arrow-${
+                            showBasesList ? 'up' : 'down'
+                          }-s-line`"
+                          class="fr-ml-3v"
+                        />
+                      </button>
+                    </IntroTooltip>
                     <div
                       v-show="showBasesList"
-                      id="header-bases-list"
                       class="selector__menu fr-px-2w fr-text--xs over-sticky"
                     >
                       <NuxtLink
@@ -57,7 +62,7 @@
                     S'inscrire
                   </button>
                 </li>
-                <li class="selector">
+                <li id="profile-menu" class="selector">
                   <template v-if="userStore.isLoggedIn">
                     <button
                       :class="{ '-active': showProfileMenu }"
@@ -74,7 +79,6 @@
                     </button>
                     <div
                       v-show="showProfileMenu"
-                      id="profile-menu"
                       class="selector__menu fr-px-2w fr-text--xs over-sticky"
                       style="overflow-x: hidden; overflow-y: auto"
                     >
