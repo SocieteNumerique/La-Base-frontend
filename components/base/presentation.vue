@@ -99,7 +99,7 @@
         </button>
       </div>
     </div>
-    <template v-if="latestResources.length">
+    <template v-if="base.showLatestAdditions && latestResources.length">
       <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">

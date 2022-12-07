@@ -54,6 +54,11 @@
       v-if="openStep === 'certification'"
       @close="openStep = ''"
     />
+    <BaseEditSection
+      v-if="openStep === 'section'"
+      @close="openStep = ''"
+      @save="updateBase"
+    />
     <BaseEditDelete v-if="openStep === 'delete'" @close="openStep = ''" />
   </div>
 </template>
@@ -102,6 +107,10 @@ const menuOptions = [
   {
     label: "Statut de la base",
     step: "status",
+  },
+  {
+    label: "Rubrique à la une",
+    step: "section",
   },
   {
     label: "Certifier la base",
