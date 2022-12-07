@@ -6,8 +6,8 @@ export function useDuplicateResourceDetector() {
   const duplicatedResourceIds = ref<number[]>([])
 
   const verifyDuplicatedResource = async () => {
-    const { data } = await useApiGet<number[]>(
-      `resources/${resourceStore.current.id}/duplicates/`,
+    const { data } = await useApiPost<number[]>(
+      `resources/${resourceStore.current.id}/duplicates`,
       {
         title: resourceStore.current.title,
         description: resourceStore.current.description,
