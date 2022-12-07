@@ -49,7 +49,6 @@ const baseStore = useBaseStore()
 const tagStore = useTagStore()
 
 const producers = computed<Producer[]>(() => {
-  console.log("### producers", resource.value)
   if (resource.value.isShort) {
     return []
   }
@@ -83,8 +82,6 @@ const producers = computed<Producer[]>(() => {
       toReturn.push(producer)
     }
   }
-
-  console.log("### producers", toReturn)
 
   return toReturn
 })
