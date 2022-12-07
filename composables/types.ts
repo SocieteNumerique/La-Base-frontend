@@ -41,6 +41,7 @@ export type Resource = {
   contentStats?: { links: number; files: number }
   created?: string
   creator?: Creator
+  creatorBases?: number[]
   dirty?: boolean
   hasGlobalLicense?: boolean
   id: number

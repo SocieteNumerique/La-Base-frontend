@@ -197,17 +197,7 @@
                     Date de création de la ressource
                   </p>
                   <p class="fr-text--sm">{{ resource?.resourceCreatedOn }}</p>
-                  <p class="fr-text--bold fr-mb-0 fr-text--sm">
-                    Crédits de la ressource
-                  </p>
-                  <p class="fr-text--sm fr-m-0">
-                    <NuxtLink
-                      :to="'/base/' + resource?.rootBase"
-                      class="fr-text-label--blue-france no-underline underlined-on-hover"
-                    >
-                      {{ resource?.rootBaseTitle }}
-                    </NuxtLink>
-                  </p>
+                  <ResourceCredits />
                   <p></p>
                 </div>
                 <div class="fr-col-md-8">
