@@ -2,48 +2,54 @@
   <div id="resources">
     <div class="is-flex flex-space-between fr-mb-4w">
       <div style="display: flex; align-items: center">
-        <div v-if="currentTab === 'collections'">
-          {{ base?.collections.length }} collections
-        </div>
+        <IntroTooltip slug="MODIFY_COLLECTIONS">
+          <div v-if="currentTab === 'collections'">
+            {{ base?.collections.length }} collections
+          </div>
+        </IntroTooltip>
       </div>
       <div v-if="base?.canWrite && currentTab === 'resources'">
-        <div style="text-align: center; display: flex" class="fr-mb-6w">
-          <button
-            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
-            style="font-weight: 400"
-            :class="
-              showLiveResources
-                ? 'fr-btn--tertiary--active'
-                : 'fr-text--disabled'
-            "
-            @click="showLiveResources = true"
-          >
-            Fiches publiées
-          </button>
-          <div class="vertical-separator"></div>
-          <button
-            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
-            style="font-weight: 400"
-            :class="
-              !showLiveResources
-                ? 'fr-btn--tertiary--active'
-                : 'fr-text--disabled'
-            "
-            @click="showLiveResources = false"
-          >
-            Brouillons
-          </button>
-        </div>
+        <IntroTooltip slug="FICHES_SWITCH">
+          <div style="text-align: center; display: flex" class="fr-mb-6w">
+            <button
+              class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
+              style="font-weight: 400"
+              :class="
+                showLiveResources
+                  ? 'fr-btn--tertiary--active'
+                  : 'fr-text--disabled'
+              "
+              @click="showLiveResources = true"
+            >
+              Fiches publiées
+            </button>
+            <div class="vertical-separator"></div>
+            <button
+              class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
+              style="font-weight: 400"
+              :class="
+                !showLiveResources
+                  ? 'fr-btn--tertiary--active'
+                  : 'fr-text--disabled'
+              "
+              @click="showLiveResources = false"
+            >
+              Brouillons
+            </button>
+          </div>
+        </IntroTooltip>
       </div>
       <div v-if="base?.canWrite || base?.canAddResources">
-        <DsfrButton
-          v-show="currentTab === 'collections' && !openCollectionId"
-          icon="ri-add-line"
-          label="Ajouter une collection"
-          class="fr-btn--sm"
-          :secondary="true"
-          @click="onAddCollectionClick"
-        />
+        <IntroTooltip slug="CREATE_COLLECTION" style="display: inline-block">
+          <DsfrButton
+            v-show="currentTab === 'collections' && !openCollectionId"
+            icon="ri-add-line"
+            label="Ajouter une collection"
+            class="fr-btn--sm"
+            :secondary="true"
+            @click="onAddCollectionClick"
+          />
+        </IntroTooltip>
         <DsfrButton
           v-show="currentTab === 'collections' && openCollectionId"
           secondary

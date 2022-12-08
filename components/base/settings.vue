@@ -1,16 +1,18 @@
 <template>
   <div :id="containerId" class="selector">
-    <button
-      :class="{ '-active': isMenuShown }"
-      class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
-      @click="isMenuShown = !isMenuShown"
-    >
-      <VIcon
-        class="fr-text-title--blue-france fr-mr-2v"
-        name="ri-settings-3-line"
-      />
-      <span class="fr-text-title--blue-france">Paramètres de la base</span>
-    </button>
+    <IntroTooltip slug="BASES_SETTINGS">
+      <button
+        :class="{ '-active': isMenuShown }"
+        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
+        @click="isMenuShown = !isMenuShown"
+      >
+        <VIcon
+          class="fr-text-title--blue-france fr-mr-2v"
+          name="ri-settings-3-line"
+        />
+        <span class="fr-text-title--blue-france">Paramètres de la base</span>
+      </button>
+    </IntroTooltip>
 
     <div v-show="isMenuShown" class="selector__menu fr-px-2w fr-text--xs">
       <div

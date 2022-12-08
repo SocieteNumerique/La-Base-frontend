@@ -13,7 +13,7 @@
                   class="selector"
                 >
                   <template v-if="baseStore.hasBases">
-                    <IntroTooltip slug="CREATE_BASES">
+                    <IntroTooltip slug="MY_BASES">
                       <button
                         :class="{ '-active': showBasesList }"
                         class="fr-link btn-tab-activable"
@@ -49,9 +49,11 @@
                     </div>
                   </template>
                   <template v-else>
-                    <button class="fr-link" @click="showAddBaseModal = true">
-                      Créer une base
-                    </button>
+                    <IntroTooltip slug="CREATE_BASES">
+                      <button class="fr-link" @click="showAddBaseModal = true">
+                        Créer une base
+                      </button>
+                    </IntroTooltip>
                   </template>
                 </li>
                 <li v-if="!userStore.isLoggedIn">
@@ -64,19 +66,22 @@
                 </li>
                 <li id="profile-menu" class="selector">
                   <template v-if="userStore.isLoggedIn">
-                    <button
-                      :class="{ '-active': showProfileMenu }"
-                      class="fr-link btn-tab-activable"
-                      @click="showProfileMenu = !showProfileMenu"
-                    >
-                      Mon profil
-                      <VIcon
-                        :name="`ri-arrow-${
-                          showBasesList ? 'up' : 'down'
-                        }-s-line`"
-                        class="fr-ml-3v"
-                      />
-                    </button>
+                    <IntroTooltip slug="MY_PROFILE">
+                      <button
+                        :class="{ '-active': showProfileMenu }"
+                        class="fr-link btn-tab-activable"
+                        @click="showProfileMenu = !showProfileMenu"
+                      >
+                        Mon profil
+                        <VIcon
+                          :name="`ri-arrow-${
+                            showBasesList ? 'up' : 'down'
+                          }-s-line`"
+                          class="fr-ml-3v"
+                        />
+                      </button>
+                    </IntroTooltip>
+
                     <div
                       v-show="showProfileMenu"
                       class="selector__menu fr-px-2w fr-text--xs over-sticky"
@@ -177,6 +182,17 @@
               </li>
             </template>
           </ul>
+          <ul class="fr-links-group" style="width: 160px">
+            <li>
+              <button
+                class="fr-btn--tertiary-no-outline"
+                @click="introStore.showAllInPage"
+              >
+                <VIcon name="ri-question-line" class="fr-mr-1w" />
+                Didacticiel
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -199,11 +215,13 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
 import { computed } from "vue"
 import { usePageStore } from "~/stores/pageStore"
+import { useIntroStore } from "~/stores/introStore"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 const pageStore = usePageStore()
 const router = useRouter()
+const introStore = useIntroStore()
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)

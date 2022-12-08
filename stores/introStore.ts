@@ -3,12 +3,12 @@ import { useApiGet } from "~/composables/api"
 import { useRoute } from "vue-router"
 import { computed, watch } from "vue"
 import { useUserStore } from "~/stores/userStore"
+import { useAlertStore } from "~/stores/alertStore"
 
 type Intro = {
   htmlContent: string
   id: number
   image?: string
-  page: string
   position: "right" | "left" | "bottom" | "top"
   seen: boolean
   slug: string
@@ -18,35 +18,46 @@ type Intro = {
 export const useIntroStore = defineStore("intro", () => {
   const route = useRoute()
   const userStore = useUserStore()
+  const alertStore = useAlertStore()
 
   const intros = ref<Intro[]>([])
-  const seenPages = ref<{ [key: string]: boolean }>({})
-  const indexInPage = ref(0)
-  const forceRecheckPage = ref(0)
+  const seenSlugs = ref<{ [key: string]: boolean }>({})
+  const currentIndex = ref(0)
+  const forceRecheckDom = ref(0)
   const ready = ref(false)
 
   const saveLocallySeen = () => {
-    localStorage.setItem("seenPages", JSON.stringify(seenPages.value))
+    localStorage.setItem("seenSlugs", JSON.stringify(seenSlugs.value))
   }
   const loadLocallySeen = () => {
-    const seenPagesLocally = localStorage.getItem("seenPages")
-    if (seenPagesLocally) {
-      seenPages.value = JSON.parse(seenPagesLocally)
-      forceRecheckPage.value += 1
+    const seenSlugsLocally = localStorage.getItem("seenSlugs")
+    if (seenSlugsLocally) {
+      seenSlugs.value = JSON.parse(seenSlugsLocally)
+      forceRecheckDom.value += 1
     }
   }
   const resetLocallySeen = () => {
-    seenPages.value = {}
+    seenSlugs.value = {}
   }
 
   watch(
     () => route.name,
     (value) => {
-      indexInPage.value = 0
+      currentIndex.value = 0
       // we re-check later when DOM has initialised
       setTimeout(() => {
-        forceRecheckPage.value += 1
+        forceRecheckDom.value += 1
       }, 400)
+    }
+  )
+
+  // recheck which intros are in the dom when route.query.i has changed
+  watch(
+    () => route.query.i,
+    () => {
+      setTimeout(() => {
+        forceRecheckDom.value = forceRecheckDom.value + 1
+      }, 200)
     }
   )
 
@@ -56,31 +67,33 @@ export const useIntroStore = defineStore("intro", () => {
       intros.value = data.value!
       for (const intro of intros.value) {
         if (intro.seen) {
-          markSeen(false, intro.page)
+          markSeen(false, [intro.slug])
         }
       }
     }
   }
 
-  const markSeen = (send = true, page = "") => {
-    if (page === "") {
-      page = <string>route.name
+  const markSeen = (send = true, slugs: string[] = []) => {
+    if (slugs.length === 0) {
+      slugs = availableIntros.value.map((intro) => intro.slug)
     }
-    seenPages.value[page] = true
+    for (const slug of slugs) {
+      seenSlugs.value[slug] = true
+    }
     if (userStore.isLoggedIn && send) {
-      useApiGet("seen-page/" + page)
+      useApiGet("seen-slugs/" + slugs.join(","))
     } else {
       saveLocallySeen()
     }
   }
 
   const canGoNext = computed(() => {
-    return indexInPage.value < forPage.value.length - 1
+    return currentIndex.value < availableIntros.value.length - 1
   })
 
   const next = () => {
     if (canGoNext.value) {
-      indexInPage.value += 1
+      currentIndex.value += 1
     } else {
       markSeen()
       return
@@ -115,12 +128,12 @@ export const useIntroStore = defineStore("intro", () => {
   }
 
   const canGoPrevious = computed(() => {
-    return indexInPage.value > 0
+    return currentIndex.value > 0
   })
 
   const previous = () => {
     if (canGoPrevious.value) {
-      indexInPage.value -= 1
+      currentIndex.value -= 1
     } else {
       next()
       return
@@ -129,38 +142,52 @@ export const useIntroStore = defineStore("intro", () => {
   }
 
   const current = computed<Intro | null>(() => {
-    if (indexInPage.value < forPage.value.length) {
-      return forPage.value[indexInPage.value]
+    if (currentIndex.value < availableIntros.value.length) {
+      return availableIntros.value[currentIndex.value]
     }
     return null
   })
 
-  const forPage = computed<Intro[]>(() => {
-    forceRecheckPage.value
+  const availableIntros = computed<Intro[]>(() => {
+    forceRecheckDom.value
     if (process.server) {
       return []
     }
     if (!ready.value) {
       return []
     }
-    let page = <string>route.name
-    // route name may contain id in it (ex /base/23), we remove it
-    page = page.replace(/\/\d+/, "")
-    // we also remove trailing slash
-    page = page.replace(/\/$/, "")
-    if (seenPages.value[page]) {
-      return []
-    }
 
     return intros.value
-      .filter((intro) => intro.page === page)
+      .filter((intro) => !seenSlugs.value[intro.slug])
       .filter((intro) => doesATooltipExistWithSlug(intro.slug))
   })
+
+  const showAllInPage = () => {
+    let shown = 0
+    for (const intro of intros.value) {
+      if (doesATooltipExistWithSlug(intro.slug)) {
+        seenSlugs.value[intro.slug] = false
+        shown += 1
+      }
+    }
+    if (!shown) {
+      alertStore.alert(
+        "Aucun didacticiel sur cette page",
+        "Il n'y a aucun didacticiel sur cette page, mais vous pouvez ré-essayer sur d'autres pages",
+        "info"
+      )
+    }
+  }
+
+  const done = () => {
+    markSeen()
+    currentIndex.value = 0
+  }
 
   // load intros the first time, only in client to avoid SSR bugs
   if (process.client) {
     getIntros()
-    // use settimeout, otherwise store hydration might override seenPages after
+    // use settimeout, otherwise store hydration might override seenSlugs after
     //  we load them from local storage
     setTimeout(() => {
       if (!userStore.isLoggedIn) {
@@ -171,18 +198,20 @@ export const useIntroStore = defineStore("intro", () => {
   }
 
   return {
-    intros,
-    seenPages,
-    indexInPage,
-    getIntros,
-    markSeen,
-    next,
+    availableIntros,
     canGoNext,
-    previous,
     canGoPrevious,
     current,
-    forPage,
-    resetLocallySeen,
+    currentIndex,
+    done,
+    getIntros,
+    intros,
     loadLocallySeen,
+    markSeen,
+    next,
+    previous,
+    resetLocallySeen,
+    seenSlugs,
+    showAllInPage,
   }
 })

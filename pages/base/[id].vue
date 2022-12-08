@@ -57,9 +57,11 @@
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
-              <a :href="mailToHrefReport" class="no-underline">
-                <RoundButton icon="ri-alert-line" label="Signaler" />
-              </a>
+              <IntroTooltip slug="REPORT_BASE" style="display: inline-block">
+                <a :href="mailToHrefReport" class="no-underline">
+                  <RoundButton icon="ri-alert-line" label="Signaler" />
+                </a>
+              </IntroTooltip>
               <a
                 v-show="base?.contact"
                 :href="mailToHrefContact"
@@ -75,12 +77,14 @@
               />
             </div>
             <div v-if="base?.canWrite" style="padding-top: 7px">
-              <DsfrButton
-                icon="ri-add-line"
-                label="Ajouter une fiche"
-                class="fr-btn--sm"
-                @click="onAddResourceClick"
-              />
+              <IntroTooltip slug="CREATE_FICHE">
+                <DsfrButton
+                  icon="ri-add-line"
+                  label="Ajouter une fiche"
+                  class="fr-btn--sm"
+                  @click="onAddResourceClick"
+                />
+              </IntroTooltip>
             </div>
           </div>
         </div>
@@ -101,20 +105,26 @@
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'resources' ? 'page' : null"
-                  @click="currentTab = 'resources'"
-                >
-                  <button>Fiches</button>
-                </NuxtLink>
+                <IntroTooltip slug="TAB_FICHES">
+                  <NuxtLink
+                    :aria-current="currentTab === 'resources' ? 'page' : null"
+                    style="height: 100%; display: inline-block"
+                    @click="currentTab = 'resources'"
+                  >
+                    <button>Fiches</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'collections' ? 'page' : null"
-                  @click="currentTab = 'collections'"
-                >
-                  <button>Collections</button>
-                </NuxtLink>
+                <IntroTooltip slug="TAB_COLLECTIONS">
+                  <NuxtLink
+                    :aria-current="currentTab === 'collections' ? 'page' : null"
+                    style="height: 100%; display: inline-block"
+                    @click="currentTab = 'collections'"
+                  >
+                    <button>Collections</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
             </ul>
           </div>

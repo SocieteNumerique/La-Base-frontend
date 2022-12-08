@@ -17,7 +17,7 @@
         role="navigation"
         aria-label="Menu latéral"
       >
-        <div class="fr-sidemenu__inner">
+        <div class="fr-sidemenu__inner" style="overflow: visible">
           <button
             class="fr-sidemenu__btn"
             aria-controls="fr-sidemenu-wrapper"
@@ -38,20 +38,22 @@
                 "
               >
                 <template v-if="menu.subMenus.length">
-                  <button
-                    class="fr-sidemenu__btn"
-                    :aria-expanded="
-                      resourceStore.isMenuActive(menu.key) &&
-                      isMenuOpen[menu.key]
-                    "
-                    aria-controls="fr-sidemenu-item-0"
-                    :aria-current="
-                      resourceStore.isMenuActive(menu.key) ? 'page' : null
-                    "
-                    @click="selectMenu(menu.key)"
-                  >
-                    {{ menu.name }}
-                  </button>
+                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                    <button
+                      class="fr-sidemenu__btn"
+                      :aria-expanded="
+                        resourceStore.isMenuActive(menu.key) &&
+                        isMenuOpen[menu.key]
+                      "
+                      aria-controls="fr-sidemenu-item-0"
+                      :aria-current="
+                        resourceStore.isMenuActive(menu.key) ? 'page' : null
+                      "
+                      @click="selectMenu(menu.key)"
+                    >
+                      {{ menu.name }}
+                    </button>
+                  </IntroTooltip>
                   <div
                     v-if="menu.subMenus.length"
                     id="fr-sidemenu-item-0"
@@ -93,15 +95,17 @@
                   </div>
                 </template>
                 <template v-else>
-                  <button
-                    :aria-current="
-                      resourceStore.isMenuActive(menu.key) ? 'page' : null
-                    "
-                    class="fr-sidemenu__link"
-                    @click="selectMenu(menu.key)"
-                  >
-                    {{ menu.name }}
-                  </button>
+                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                    <button
+                      :aria-current="
+                        resourceStore.isMenuActive(menu.key) ? 'page' : null
+                      "
+                      class="fr-sidemenu__link"
+                      @click="selectMenu(menu.key)"
+                    >
+                      {{ menu.name }}
+                    </button>
+                  </IntroTooltip>
                 </template>
               </li>
             </ul>
@@ -133,21 +137,25 @@
               )
             }}
           </button>
-          <DsfrButton
-            :secondary="true"
-            label="Pré-visualiser"
-            icon="ri-eye-line"
-            class="fr-mb-3v fr-btn--sm"
-            :disabled="false"
-            style="width: 100%"
-            @click="doShowPreview"
-          />
-          <DsfrButton
-            label="Sauvegarder"
-            icon="ri-save-line"
-            class="fr-mb-3v fr-btn--sm"
-            @click="save"
-          />
+          <IntroTooltip slug="LEFT_MENU_PREVIEW" class="fr-mb-3v">
+            <DsfrButton
+              :secondary="true"
+              label="Pré-visualiser"
+              icon="ri-eye-line"
+              class="fr-btn--sm"
+              :disabled="false"
+              style="width: 100%"
+              @click="doShowPreview"
+            />
+          </IntroTooltip>
+          <IntroTooltip slug="LEFT_MENU_SAVE" class="fr-mb-3v">
+            <DsfrButton
+              label="Sauvegarder"
+              icon="ri-save-line"
+              class="fr-btn--sm"
+              @click="save"
+            />
+          </IntroTooltip>
           <DsfrButton
             v-if="canDelete"
             :secondary="true"
@@ -222,11 +230,14 @@ import {
 import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
+import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 const router = useRouter()
+
+const incrementRouterQuery = useIncrementRouterQuery()
 
 let isClient = false
 if (process.client) {
@@ -274,6 +285,7 @@ const selectSubMenu = (subMenu: string) => {
   ) {
     return
   }
+  incrementRouterQuery()
   resourceStore.navigation.activeSubMenu = subMenu
 }
 const selectMenu = (menuKey: string) => {
@@ -284,6 +296,7 @@ const selectMenu = (menuKey: string) => {
   } else {
     isMenuOpen.value[menuKey] = true
   }
+  incrementRouterQuery()
 
   // if we go into a new menu with sub-menus, select first sub-menu
   if (

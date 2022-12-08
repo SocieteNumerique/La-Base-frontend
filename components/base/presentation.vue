@@ -1,6 +1,8 @@
 <template>
   <div class="fr-container">
-    <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
+    <IntroTooltip slug="PRESENTATION">
+      <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
+    </IntroTooltip>
     <div class="is-flex fr-mb-3w" style="align-items: center">
       <div class="stat">
         <span class="fr-text--xl fr-text--bold">{{
