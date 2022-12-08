@@ -1,7 +1,7 @@
 <template>
   <DsfrModal
     :actions="actions"
-    :opened="true"
+    :opened="!modalTab.length"
     :title="modalTitle"
     @close="$emit('close')"
   >
@@ -28,21 +28,34 @@
 
     <div class="separator fr-my-1w" />
 
-    <!--    <h2 class="fr-h6 fr-mb-2w">Les ressources de la semaine</h2>-->
-
-    <!--    <p class="fr-mb-2w">-->
-    <!--      Retrouvez ici mes ressources favorites du moment, bonne lecture !-->
-    <!--    </p>-->
+    <BaseEditSectionMiniature
+      v-for="sectionId of base.sections"
+      :id="sectionId"
+      :key="sectionId"
+      @edit="onEditSection(sectionId)"
+      @delete="onDeleteSection(sectionId)"
+    />
 
     <DsfrButton
       primary
       icon="ri-add-line"
       class="fr-btn fr-btn--sm"
-      @click="addSection()"
+      @click="onAddSection()"
     >
       Ajouter une rubrique</DsfrButton
     >
   </DsfrModal>
+
+  <BaseEditSectionAddEdit
+    v-if="modalTab === 'edit'"
+    :id="currentSectionId"
+    @close="closeTab()"
+  />
+  <BaseEditSectionDelete
+    v-else-if="modalTab === 'delete'"
+    :id="currentSectionId"
+    @close="closeTab()"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -51,6 +64,7 @@ import { Base, BaseCreate } from "~/composables/types"
 import { computed } from "vue"
 import { useRoute } from "vue-router"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
+import DsfrModal from "~/components/DsfrResizableModal.vue"
 
 const baseStore = useBaseStore()
 const route = useRoute()
@@ -69,16 +83,24 @@ const options = [
   { label: "Ne pas afficher", value: false },
 ]
 
-const showLatestAdditions = computed({
-  get() {
-    return Number(base?.showLatestAdditions)
-  },
-  set(newValue: number) {
-    base.showLatestAdditions = newValue
-  },
-})
+const modalTab = ref<"" | "edit" | "delete">("")
+const currentSectionId = ref<number | undefined>(undefined)
 
-const addSection = () => {}
+const onAddSection = () => {
+  modalTab.value = "edit"
+}
+const onEditSection = (sectionId: number) => {
+  modalTab.value = "edit"
+  currentSectionId.value = sectionId
+}
+const onDeleteSection = (sectionId: number) => {
+  modalTab.value = "delete"
+  currentSectionId.value = sectionId
+}
+const closeTab = () => {
+  modalTab.value = ""
+  currentSectionId.value = undefined
+}
 
 async function updateBase() {
   emits("save", base.value)
@@ -94,6 +116,19 @@ const actions = computed(() => [
     label: "Annuler",
     secondary: true,
     onClick: () => emits("close"),
+  },
+])
+
+const addSectionModalActions = computed(() => [
+  {
+    label: "Ajouter",
+    onClick: () => {},
+    disabled: false,
+  },
+  {
+    label: "Annuler",
+    secondary: true,
+    onClick: closeTab,
   },
 ])
 </script>

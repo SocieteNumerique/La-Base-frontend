@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import {
   Base,
   BaseCreate,
+  BaseSection,
   BaseWithDetailedResources,
   Collection,
 } from "~/composables/types"
@@ -138,6 +139,14 @@ export const useBaseStore = defineStore("base", {
     },
     addCollectionIdToBase(collection: Collection) {
       this.basesById[collection.base].collections?.push(collection.id)
+    },
+    removeSectionIdFromBase(sectionId: number) {
+      this.basesById[this.currentId!].sections = this.current.sections?.filter(
+        (section) => section != sectionId
+      )
+    },
+    addSectionIdToBase(section: BaseSection) {
+      this.basesById[section.base].sections?.push(section.id!)
     },
   },
   getters: {
