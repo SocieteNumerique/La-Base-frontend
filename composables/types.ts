@@ -187,6 +187,7 @@ export type Base = {
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
+  collectionChoices?: Collection[]
   resources?: ResourcesWithPagination
   socialMediaFacebook: string
   socialMediaLinkedin: string

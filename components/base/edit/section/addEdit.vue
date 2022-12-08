@@ -44,6 +44,13 @@
       label="Ajouter des fiches à la rubrique"
       placeholder="Rechercher dans les ressources de la base"
     />
+    <CollectionSelector
+      v-if="section.type === BaseSectionType.COLLECTIONS"
+      v-model="section.collections"
+      :base-id="baseId"
+      label="Ajouter des collections à la rubrique"
+      placeholder="Rechercher dans les collections de la base"
+    />
   </DsfrModal>
 </template>
 

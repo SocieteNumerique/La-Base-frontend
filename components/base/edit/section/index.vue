@@ -1,7 +1,8 @@
 <template>
   <DsfrModal
+    v-if="!modalTab.length"
     :actions="actions"
-    :opened="!modalTab.length"
+    :opened="true"
     :title="modalTitle"
     @close="$emit('close')"
   >
@@ -116,19 +117,6 @@ const actions = computed(() => [
     label: "Annuler",
     secondary: true,
     onClick: () => emits("close"),
-  },
-])
-
-const addSectionModalActions = computed(() => [
-  {
-    label: "Ajouter",
-    onClick: () => {},
-    disabled: false,
-  },
-  {
-    label: "Annuler",
-    secondary: true,
-    onClick: closeTab,
   },
 ])
 </script>
