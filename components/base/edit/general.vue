@@ -245,7 +245,6 @@ import { email, minLength, required, url } from "@vuelidate/validators"
 import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
-import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()

@@ -45,24 +45,28 @@
       @update:model-value="onDateUpdate"
     />
 
-    <ImageResizableUpload
-      v-if="resourceStore.current"
-      v-model="resourceStore.current.profileImage"
-      :label="`${
-        resourceStore.current?.profileImage?.image
-          ? 'Changer l\''
-          : 'Ajouter une '
-      }image de miniature`"
-      :desired-ratio="1.4"
-      hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
-    />
+    <div :style="introStore.current ? 'visibility: hidden' : null">
+      <ImageResizableUpload
+        v-if="resourceStore.current"
+        v-model="resourceStore.current.profileImage"
+        :label="`${
+          resourceStore.current?.profileImage?.image
+            ? 'Changer l\''
+            : 'Ajouter une '
+        }image de miniature`"
+        :desired-ratio="1.4"
+        hint="Taille maximale : 15 Mo. Formats supportés : jpg, pdf, png."
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
+import { useIntroStore } from "~/stores/introStore"
 
 const resourceStore = useResourceStore()
+const introStore = useIntroStore()
 
 const onTitleUpdate = (value: string) => {
   resourceStore.current.title = value
