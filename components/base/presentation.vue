@@ -114,45 +114,11 @@
     </template>
 
     <template v-if="base.sections.length">
-      <div v-for="sectionId in base.sections" :key="sectionId">
-        <hr class="fr-pb-5w fr-mt-4w" />
-        <h2 class="fr-h3 fr-mb-2w">
-          {{ baseSectionStore.baseSectionsById[sectionId].title }}
-        </h2>
-        <p class="fr-mb-5w">
-          {{ baseSectionStore.baseSectionsById[sectionId].description }}
-        </p>
-        <div class="resource-grid">
-          <template
-            v-if="
-              baseSectionStore.baseSectionsById[sectionId].type ===
-              BaseSectionType.RESOURCES
-            "
-          >
-            <ResourceMiniatureById
-              v-for="resourceId of baseSectionStore.baseSectionsById[sectionId]
-                .resources"
-              :key="resourceId"
-              :resource-id="resourceId"
-            />
-          </template>
-          <template
-            v-if="
-              baseSectionStore.baseSectionsById[sectionId].type ===
-              BaseSectionType.COLLECTIONS
-            "
-          >
-            <CollectionMiniatureById
-              v-for="collectionId of baseSectionStore.baseSectionsById[
-                sectionId
-              ].collections"
-              :key="collectionId"
-              :collection-id="collectionId"
-              :editable="true"
-            />
-          </template>
-        </div>
-      </div>
+      <BaseSection
+        v-for="sectionId in base.sections"
+        :key="sectionId"
+        :section="baseSectionStore.baseSectionsById[sectionId]"
+      />
     </template>
   </div>
 </template>
