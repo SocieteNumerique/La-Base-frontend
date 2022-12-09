@@ -119,6 +119,10 @@ const onDeleteSection = (sectionId: number) => {
   modalTab.value = "delete"
   currentSectionId.value = sectionId
 }
+
+const moveSection = (sectionIndex: number, move: number) => {
+  baseSectionStore.moveSection(baseId, sectionIndex, sectionIndex + move)
+}
 const closeTab = () => {
   modalTab.value = ""
   currentSectionId.value = undefined
@@ -137,7 +141,7 @@ const getSectionButtons = (sectionId: number, index: number): any[] => {
         icon: "ri-arrow-up-line",
         class: `fr-btn--tertiary-no-outline ${commonClass}`,
         onClick: () => {
-          alert(`haut ${sectionId}`)
+          moveSection(index, -1)
         },
         active: index,
       },
@@ -146,7 +150,7 @@ const getSectionButtons = (sectionId: number, index: number): any[] => {
         icon: "ri-arrow-down-line",
         class: `fr-btn--tertiary-no-outline ${commonClass}`,
         onClick: () => {
-          alert(`bas ${sectionId}`)
+          moveSection(index, 1)
         },
         active: index !== base.value.sections.length - 1,
       },

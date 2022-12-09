@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { useApiGet, useApiPatch, useApiPost } from "~/composables/api"
 import { useBaseStore } from "~/stores/baseStore"
 import { BaseSection, ObjectById } from "~/composables/types"
+import { arrayMove } from "~/composables/utils"
 
 type BaseSectionState = {
   baseSectionsById: ObjectById<BaseSection>
@@ -56,6 +57,27 @@ export const useBaseSectionStore = defineStore("baseSection", {
       return section.id
         ? await this.update(section.id, section)
         : await this.createSection(section)
+    },
+    async moveSection(baseId: number, fromIndex: number, toIndex: number) {
+      const sections = arrayMove(
+        useBaseStore().basesById[baseId].sections!,
+        fromIndex,
+        toIndex
+      )
+      const { data, error } = await useApiPatch<number[]>(
+        `base-sections/sort/`,
+        {
+          base: baseId,
+          sections,
+        },
+        {},
+        "La section a bien été déplacé",
+        true
+      )
+      if (!error.value) {
+        useBaseStore().updateSectionIdsFromBase(baseId, data.value!)
+        return true
+      }
     },
   },
 })

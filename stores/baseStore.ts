@@ -151,6 +151,9 @@ export const useBaseStore = defineStore("base", {
     addSectionIdToBase(section: BaseSection) {
       this.basesById[section.base].sections?.push(section.id!)
     },
+    updateSectionIdsFromBase(baseId: number, sections: number[]) {
+      this.basesById[baseId].sections = sections
+    },
   },
   getters: {
     bases: (state) => {
