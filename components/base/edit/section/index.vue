@@ -10,7 +10,7 @@
       Les galeries vous permettent de mettre en avant certaines ressources et
       collections dès l’accueil de votre base.
     </p>
-    <div class="separator fr-my-1w" />
+    <div class="separator fr-my-4w" />
 
     <h2 class="fr-h6 fr-mb-2w">Les derniers ajouts</h2>
 
@@ -24,10 +24,9 @@
       :inline="true"
       :options="options"
       :required="true"
-      class="fr-mb-2w"
     />
 
-    <div class="separator fr-my-1w" />
+    <div class="separator fr-my-4w" />
 
     <div
       v-for="(sectionId, index) of baseStore.current.sections"
@@ -51,7 +50,7 @@
         {{ baseSectionStore.baseSectionsById[sectionId].description }}
       </p>
 
-      <div class="separator fr-my-1w" />
+      <div class="separator fr-my-4w" />
     </div>
 
     <DsfrButtonGroup
