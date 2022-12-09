@@ -99,6 +99,7 @@
         </button>
       </div>
     </div>
+
     <template v-if="base.showLatestAdditions && latestResources.length">
       <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
@@ -111,6 +112,48 @@
         />
       </div>
     </template>
+
+    <template v-if="base.sections.length">
+      <div v-for="sectionId in base.sections" :key="sectionId">
+        <hr class="fr-pb-5w fr-mt-4w" />
+        <h2 class="fr-h3 fr-mb-2w">
+          {{ baseSectionStore.baseSectionsById[sectionId].title }}
+        </h2>
+        <p class="fr-mb-5w">
+          {{ baseSectionStore.baseSectionsById[sectionId].description }}
+        </p>
+        <div class="resource-grid">
+          <template
+            v-if="
+              baseSectionStore.baseSectionsById[sectionId].type ===
+              BaseSectionType.RESOURCES
+            "
+          >
+            <ResourceMiniatureById
+              v-for="resourceId of baseSectionStore.baseSectionsById[sectionId]
+                .resources"
+              :key="resourceId"
+              :resource-id="resourceId"
+            />
+          </template>
+          <template
+            v-if="
+              baseSectionStore.baseSectionsById[sectionId].type ===
+              BaseSectionType.COLLECTIONS
+            "
+          >
+            <CollectionMiniatureById
+              v-for="collectionId of baseSectionStore.baseSectionsById[
+                sectionId
+              ].collections"
+              :key="collectionId"
+              :collection-id="collectionId"
+              :editable="true"
+            />
+          </template>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -119,8 +162,11 @@ import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
+import { BaseSectionType } from "~/composables/types"
 
 const baseStore = useBaseStore()
+const baseSectionStore = useBaseSectionStore()
 const tagStore = useTagStore()
 const router = useRouter()
 const route = useRoute()
