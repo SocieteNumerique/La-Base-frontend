@@ -27,17 +27,6 @@ export const useBaseSectionStore = defineStore("baseSection", {
         return data.value
       }
     },
-    async getSection(sectionId: number) {
-      const { data, error } = await useApiGet<BaseSection>(
-        `base-sections/${sectionId}/`
-      )
-      if (!error.value) {
-        const section = data.value
-        this.baseSectionsById[section!.id!] = section!
-        console.log("### got section", sectionId, section!.id)
-        return section
-      }
-    },
     async update(sectionId: number, section: BaseSection) {
       const { data, error } = await useApiPatch<BaseSection>(
         `base-sections/${sectionId}/`,

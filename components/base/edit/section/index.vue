@@ -29,22 +29,37 @@
 
     <div class="separator fr-my-1w" />
 
-    <BaseEditSectionMiniature
-      v-for="sectionId of base.sections"
-      :id="sectionId"
+    <div
+      v-for="(sectionId, index) of baseStore.current.sections"
       :key="sectionId"
-      @edit="onEditSection(sectionId)"
-      @delete="onDeleteSection(sectionId)"
-    />
+    >
+      <div class="fr-mb-2w is-flex is-align-item-center">
+        <h2 class="fr-h6 is-flex-grow fr-mb-0">
+          {{ baseSectionStore.baseSectionsById[sectionId].title }}
+        </h2>
+        <div class="is-no-flex-shrink">
+          <DsfrButtonGroup
+            :buttons="getSectionButtons(sectionId, index)"
+            :inline="true"
+            class="fr-btns-group--sm"
+            size="small"
+          />
+        </div>
+      </div>
 
-    <DsfrButton
-      primary
-      icon="ri-add-line"
-      class="fr-btn fr-btn--sm"
-      @click="onAddSection()"
-    >
-      Ajouter une rubrique</DsfrButton
-    >
+      <p class="fr-mb-4v">
+        {{ baseSectionStore.baseSectionsById[sectionId].description }}
+      </p>
+
+      <div class="separator fr-my-1w" />
+    </div>
+
+    <DsfrButtonGroup
+      :buttons="buttons"
+      :inline="true"
+      class="fr-mt-4w fr-btns-group--sm"
+      size="small"
+    />
   </DsfrModal>
 
   <BaseEditSectionAddEdit
@@ -64,10 +79,12 @@ import { useBaseStore } from "~/stores/baseStore"
 import { Base, BaseCreate } from "~/composables/types"
 import { computed } from "vue"
 import { useRoute } from "vue-router"
-import { DsfrButton } from "@gouvminint/vue-dsfr"
+import { DsfrButtonGroup } from "@gouvminint/vue-dsfr"
 import DsfrModal from "~/components/DsfrResizableModal.vue"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
 
 const baseStore = useBaseStore()
+const baseSectionStore = useBaseSectionStore()
 const route = useRoute()
 
 const baseId = parseInt(<string>route.params.id)
@@ -78,6 +95,7 @@ const modalTitle = "Rubriques à la une"
 const base = ref<Base | BaseCreate>({
   ...baseStore.current,
 })
+const ordering = ref(false)
 
 const options = [
   { label: " Afficher les derniers ajouts", value: true },
@@ -89,6 +107,9 @@ const currentSectionId = ref<number | undefined>(undefined)
 
 const onAddSection = () => {
   modalTab.value = "edit"
+}
+const onOrderSection = () => {
+  ordering.value = !ordering.value
 }
 const onEditSection = (sectionId: number) => {
   modalTab.value = "edit"
@@ -106,6 +127,67 @@ const closeTab = () => {
 async function updateBase() {
   emits("save", base.value)
 }
+
+const getSectionButtons = (sectionId: number, index: number): any[] => {
+  const commonClass = "fr-mb-0 fr-mr-0"
+  if (ordering.value) {
+    return [
+      {
+        label: "Vers le haut",
+        icon: "ri-arrow-up-line",
+        class: `fr-btn--tertiary-no-outline ${commonClass}`,
+        onClick: () => {
+          alert(`haut ${sectionId}`)
+        },
+        active: index,
+      },
+      {
+        label: "Vers le bas",
+        icon: "ri-arrow-down-line",
+        class: `fr-btn--tertiary-no-outline ${commonClass}`,
+        onClick: () => {
+          alert(`bas ${sectionId}`)
+        },
+        active: index !== base.value.sections.length - 1,
+      },
+    ].filter((button) => button.active)
+  }
+  return [
+    {
+      label: "Supprimer",
+      icon: "ri-delete-bin-line",
+      class: `fr-btn--tertiary-no-outline ${commonClass}`,
+      onClick: () => onDeleteSection(sectionId),
+    },
+    {
+      label: "Modifier",
+      icon: "ri-edit-line",
+      class: `fr-btn--tertiary-no-outline ${commonClass}`,
+      onClick: () => onEditSection(sectionId),
+    },
+  ]
+}
+
+const buttons = computed(() =>
+  [
+    {
+      label: "Ajouter une rubrique",
+      disabled: false,
+      primary: true,
+      icon: "ri-add-line",
+      onClick: onAddSection,
+      active: true,
+    },
+    {
+      label: ordering.value
+        ? "Arreter le changement d'ordre"
+        : "Changer l'ordre des sections",
+      secondary: true,
+      onClick: onOrderSection,
+      active: base.value.sections.length,
+    },
+  ].filter((button) => button.active)
+)
 
 const actions = computed(() => [
   {

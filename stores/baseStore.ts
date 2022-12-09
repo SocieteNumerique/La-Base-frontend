@@ -9,6 +9,7 @@ import {
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
 
 function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   for (const instance of instancesSrc) {
@@ -38,10 +39,12 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
     })
   }
   saveInOtherStores(useCollectionStore().collectionsById, newCollections)
+  saveInOtherStores(useBaseSectionStore().baseSectionsById, base.sections)
 
   baseStore.basesById[base.id] = {
     ...base,
     collections: newCollections.map((collection) => collection.id),
+    sections: base.sections.map((section) => section.id!),
   }
 }
 

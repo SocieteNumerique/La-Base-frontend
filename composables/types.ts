@@ -154,6 +154,21 @@ export type TagCategoryWithFullTags = {
   tags: Tag[]
 }
 
+export enum BaseSectionType {
+  RESOURCES = "resources",
+  COLLECTIONS = "collections",
+}
+export type BaseSection = {
+  id?: number
+  base: number
+  title: string
+  description: string
+  position?: number
+  type: BaseSectionType
+  resources: number[]
+  collections: number[]
+}
+
 export type BaseCreate = {
   contact?: string
   coverImage?: ResizableImage
@@ -200,7 +215,7 @@ export type Base = {
   title: string
   website?: string
   showLatestAdditions: boolean
-  sections: number[]
+  sections?: number[]
 }
 export type ResourcesWithPagination = {
   count: number
@@ -214,6 +229,7 @@ export type BaseWithDetailedResources = {
   resources?: ResourcesWithPagination
   title: string
   collections: CollectionWithDetailedResources[]
+  sections: BaseSection[]
   resourcesInPinnedCollections?: Resource[]
 }
 
@@ -409,18 +425,3 @@ export type RichTextToolbarItem = {
   disabled: () => boolean
 }
 export type RichTextToolbar = RichTextToolbarItem[]
-
-export enum BaseSectionType {
-  RESOURCES = "resources",
-  COLLECTIONS = "collections",
-}
-export type BaseSection = {
-  id?: number
-  base: number
-  title: string
-  description: string
-  position?: number
-  type: BaseSectionType
-  resources: number[]
-  collections: number[]
-}
