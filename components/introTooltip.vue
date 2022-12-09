@@ -1,61 +1,71 @@
 <template>
-  <div
-    class="tooltip-container"
-    :slug="props.slug"
-    :class="isActive ? 'active' : ''"
-  >
-    <slot />
-    <div v-if="isActive" class="tooltip" :class="introStore.current.position">
-      <VIcon
-        :scale="1.25"
-        name="ri-close-line"
-        style="position: absolute; right: 16px; top: 16px; cursor: pointer"
-        color="white"
-        @click="introStore.markSeen()"
-      />
-      <div class="header fr-py-2w fr-text--bold">
-        {{ introStore.current?.title }}
-      </div>
-      <img
-        :src="introStore.current.image"
-        alt=""
-        style="
-          width: 100%;
-          border-bottom: 1px solid var(--background-action-high-blue-france);
-        "
-      />
-      <div
-        class="fr-p-2w html-content fr-text--sm fr-m-0"
-        style="text-align: left"
-        v-html="introStore.current?.htmlContent"
-      ></div>
-      <div
-        v-if="introStore.forPage.length > 1"
-        class="tooltip-footer fr-p-2w"
-        style="align-items: center"
-      >
-        <div class="fr-text--sm fr-text--disabled fr-m-0">
-          {{ introStore.indexInPage + 1 }} sur
-          {{ introStore.forPage.length }}
+  <div>
+    <div
+      class="tooltip-container"
+      :slug="props.slug"
+      :class="isActive ? 'active' : ''"
+    >
+      <slot />
+      <div v-if="isActive" class="tooltip" :class="introStore.current.position">
+        <VIcon
+          :scale="1.25"
+          name="ri-close-line"
+          style="position: absolute; right: 16px; top: 16px; cursor: pointer"
+          color="white"
+          @click="introStore.done"
+        />
+        <div class="header fr-py-2w fr-text--bold">
+          {{ introStore.current?.title }}
         </div>
-        <div class="fr-btns-group--sm">
-          <button
-            class="fr-btn fr-btn--secondary fr-mr-2w"
-            :disabled="!introStore.canGoPrevious"
-            @click="introStore.previous"
-          >
-            Précédent
-          </button>
-          <button
-            class="fr-btn"
-            :disabled="!introStore.canGoNext"
-            @click="introStore.next"
-          >
-            Suivant
-          </button>
+        <img
+          :src="introStore.current.image"
+          alt=""
+          style="
+            width: 100%;
+            border-bottom: 1px solid var(--background-action-high-blue-france);
+          "
+        />
+        <div
+          class="fr-p-2w html-content fr-text--sm fr-m-0"
+          style="text-align: left"
+          v-html="introStore.current?.htmlContent"
+        ></div>
+        <div
+          v-if="introStore.availableIntros.length > 1"
+          class="tooltip-footer fr-p-2w"
+          style="align-items: center"
+        >
+          <div class="fr-text--sm fr-text--disabled fr-m-0">
+            {{ introStore.currentIndex + 1 }} sur
+            {{ introStore.availableIntros.length }}
+          </div>
+          <div class="fr-btns-group--sm">
+            <button
+              class="fr-btn fr-btn--secondary fr-mr-2w"
+              :disabled="!introStore.canGoPrevious"
+              @click="introStore.previous"
+            >
+              Précédent
+            </button>
+            <button
+              v-if="introStore.canGoNext"
+              class="fr-btn force-btn-colors"
+              @click="introStore.next"
+            >
+              Suivant
+            </button>
+            <button
+              v-else
+              class="fr-btn force-btn-colors"
+              @click="introStore.done"
+            >
+              Terminer
+            </button>
+          </div>
         </div>
       </div>
     </div>
+    <div v-if="isActive" class="overlay"></div>
   </div>
 </template>
 
@@ -87,7 +97,7 @@ const props = defineProps({
 <style scoped>
 .tooltip-container.active {
   position: relative;
-  z-index: 101;
+  z-index: 10001;
   background: white;
 }
 
@@ -106,7 +116,7 @@ const props = defineProps({
 }
 
 .tooltip.bottom {
-  left: calc(50% - 156px);
+  left: calc(50% - 173px);
   top: calc(100% + 15px);
 }
 .tooltip.bottom:after {
@@ -116,7 +126,7 @@ const props = defineProps({
   left: calc(50% - 15px);
 }
 .tooltip.top {
-  left: calc(50% - 156px);
+  left: calc(50% - 173px);
   bottom: calc(100% + 15px);
 }
 .tooltip.top:after {
@@ -164,4 +174,19 @@ const props = defineProps({
   display: flex;
   justify-content: flex-end;
 }
+</style>
+<style scoped lang="sass">
+.overlay
+  background-color: rgba(0, 0, 0, 0.5)
+  z-index: 10000
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+
+// colors are otherwise overwritten by header colors
+.fr-btn.force-btn-colors
+  background-color: var(--background-action-high-blue-france)
+  color: var(--text-inverted-blue-france)
 </style>

@@ -36,7 +36,6 @@
     </div>
 
     <LayoutFooter />
-    <div v-if="introStore.current" class="overlay"></div>
   </div>
 </template>
 
@@ -86,13 +85,4 @@ const closeAlert = (alertId: string) => {
 
     .loading-container
       width: fit-content
-
-.overlay
-  background-color: rgba(0, 0, 0, 0.5)
-  z-index: 100
-  position: absolute
-  top: 0
-  left: 0
-  bottom: 0
-  right: 0
 </style>

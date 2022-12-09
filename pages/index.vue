@@ -6,11 +6,9 @@
         class="fr-py-8w"
       >
         <div class="fr-container">
-          <IntroTooltip slug="INDEX_TITLE">
-            <h1 class="fr-h1 fr-mb-7w" style="max-width: 750px">
-              Bienvenue sur La Base
-            </h1>
-          </IntroTooltip>
+          <h1 class="fr-h1 fr-mb-7w" style="max-width: 750px">
+            Bienvenue sur La Base
+          </h1>
           <div class="fr-grid-row" style="justify-content: space-between">
             <div class="fr-col-6" style="color: var(--text-action-high-grey)">
               <TextBlock slug="homeIntroLeft" />

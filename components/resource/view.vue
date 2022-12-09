@@ -82,9 +82,11 @@
               />
             </ShareButton>
             <!-- TODO should show the report modal on click-->
-            <a :href="mailToHref" class="no-underline">
-              <RoundButton icon="ri-alert-line" label="Signaler" />
-            </a>
+            <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
+              <a :href="mailToHref" class="no-underline">
+                <RoundButton icon="ri-alert-line" label="Signaler" />
+              </a>
+            </IntroTooltip>
 
             <ReportSimpleModal
               v-if="showReportModal"
@@ -115,12 +117,14 @@
                 :to="editionLink"
                 class="no-underline"
               >
-                <DsfrButton
-                  icon="ri-edit-line"
-                  label="Éditer"
-                  class="fr-btn--sm"
-                  secondary
-                />
+                <IntroTooltip slug="EDIT_RESOURCE">
+                  <DsfrButton
+                    icon="ri-edit-line"
+                    label="Éditer"
+                    class="fr-btn--sm"
+                    secondary
+                  />
+                </IntroTooltip>
               </NuxtLink>
 
               <PinMenu

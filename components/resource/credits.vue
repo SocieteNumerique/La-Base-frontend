@@ -50,7 +50,7 @@ const baseStore = useBaseStore()
 const tagStore = useTagStore()
 
 const producers = computed<Producer[]>(() => {
-  if (resource.value.isShort) {
+  if (resource.value == null || resource.value.isShort) {
     return []
   }
 
