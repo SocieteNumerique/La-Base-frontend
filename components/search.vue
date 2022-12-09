@@ -60,10 +60,9 @@
                         : 'Rechercher dans toute la plateforme'
                     "
                     style="width: 308px"
-                    @change="doSearch"
-                    @keydown.enter="doSearch"
+                    @input="doSearch(false, 400)"
                   />
-                  <button class="fr-btn" @click="doSearch">
+                  <button class="fr-btn">
                     <VIcon name="ri-search-line" />
                   </button>
                 </div>
@@ -190,6 +189,7 @@ import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
+import { timeout } from "rxjs"
 
 definePageMeta({
   layout: false,
@@ -327,34 +327,42 @@ const showFilters = ref(false)
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
 
-const doSearch = debounce(async (scrollToTop = false) => {
-  const { data, error } = await useApiPost<
-    BasesSearchResult | ResourcesSearchResult
-  >(
-    "search/",
-    {
-      text: textInput.value,
-      dataType: dataType.value,
-      tags: selectedTags.value,
-      tagOperator: tagOperator.value,
-      restrictToBase: (isInBaseIndex.value && route.params.id) || null,
-      live: isLiveResources.value,
-      orderBy: orderBy.value,
-      resourceBaseFilter: resourceBaseFilter.value,
-    },
-    { page: currentPage.value + 1 }
-  )
-  if (!error.value) {
-    nResults.value = data.value!.count
-    possibleTags.value = data.value!.results.possibleTags
-    emit("results", data.value)
-    if (scrollToTop) {
-      document
-        .getElementById("search-results")
-        ?.scrollIntoView({ behavior: "smooth" })
-    }
+let searchTimeout: ReturnType<typeof setTimeout>
+const doSearch = (scrollToTop = false, debounceDelay = 0) => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
   }
-}, 400)
+
+  searchTimeout = setTimeout(async () => {
+    const { data, error } = await useApiPost<
+      BasesSearchResult | ResourcesSearchResult
+    >(
+      "search/",
+      {
+        text: textInput.value,
+        dataType: dataType.value,
+        tags: selectedTags.value,
+        tagOperator: tagOperator.value,
+        restrictToBase: (isInBaseIndex.value && route.params.id) || null,
+        live: isLiveResources.value,
+        orderBy: orderBy.value,
+        resourceBaseFilter: resourceBaseFilter.value,
+      },
+      { page: currentPage.value + 1 }
+    )
+
+    if (!error.value) {
+      nResults.value = data.value!.count
+      possibleTags.value = data.value!.results.possibleTags
+      emit("results", data.value)
+      if (scrollToTop) {
+        document
+          .getElementById("search-results")
+          ?.scrollIntoView({ behavior: "smooth" })
+      }
+    }
+  }, debounceDelay)
+}
 
 const onSelect = (tagId: number) => {
   selectedTags.value = [...selectedTags.value, tagId]
