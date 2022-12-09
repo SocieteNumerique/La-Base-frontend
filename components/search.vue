@@ -1,96 +1,93 @@
 <template>
   <div id="search-container">
     <div
-      class="fr-pb-3w fr-pt-4w"
-      style="background: var(--background-alt-blue-france)"
       :style="
         showFilters ? null : 'box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)'
       "
     >
-      <div class="fr-container">
-        <div class="fr-grid-row">
-          <div v-if="!isInBaseIndex" class="fr-col-md-4 fr-p-0">
-            <div class="is-flex" style="align-items: center">
-              <IntroTooltip slug="SEARCH_SWITCH">
-                <div class="toggle-container">
-                  <button
-                    class="toggle-button"
-                    :class="dataType === 'resources' ? '-active' : null"
-                    @click="setDataType('resources')"
-                  >
-                    <img
-                      alt="Chercher des ressources"
-                      class="fr-mr-3v"
-                      src="/img/home/resource-blue.svg"
-                      style="height: 18px"
-                    />
-                    <span>Fiches</span>
-                  </button>
-                  <button
-                    class="toggle-button"
-                    :class="dataType === 'bases' ? '-active' : null"
-                    @click="setDataType('bases')"
-                  >
-                    <img
-                      alt="Chercher des bases"
-                      class="fr-mr-3v"
-                      src="/img/home/base-blue.svg"
-                    />
-                    <span>Bases</span>
-                  </button>
-                </div>
-              </IntroTooltip>
+      <div
+        class="fr-pb-3w fr-pt-4w"
+        style="background: var(--background-alt-blue-france)"
+      >
+        <div class="fr-container">
+          <div class="fr-grid-row">
+            <div v-if="!isInBaseIndex" class="fr-col-md-4 fr-p-0">
+              <div class="is-flex" style="align-items: center">
+                <IntroTooltip slug="SEARCH_SWITCH">
+                  <div class="toggle-container">
+                    <button
+                      class="toggle-button"
+                      :class="dataType === 'resources' ? '-active' : null"
+                      @click="setDataType('resources')"
+                    >
+                      <img
+                        alt="Chercher des ressources"
+                        class="fr-mr-3v"
+                        src="/img/home/resource-blue.svg"
+                        style="height: 18px"
+                      />
+                      <span>Fiches</span>
+                    </button>
+                    <button
+                      class="toggle-button"
+                      :class="dataType === 'bases' ? '-active' : null"
+                      @click="setDataType('bases')"
+                    >
+                      <img
+                        alt="Chercher des bases"
+                        class="fr-mr-3v"
+                        src="/img/home/base-blue.svg"
+                      />
+                      <span>Bases</span>
+                    </button>
+                  </div>
+                </IntroTooltip>
+              </div>
             </div>
-          </div>
-          <div
-            class="fr-col-md-8 fr-p-0 is-flex"
-            :style="isInBaseIndex ? null : 'justify-content: space-between'"
-          >
-            <div>
-              <IntroTooltip slug="SEARCH_BAR">
-                <div class="fr-search-bar fr-input-group">
-                  <input
-                    id="search"
-                    v-model="textInput"
-                    class="fr-input"
-                    type="text"
-                    :placeholder="
-                      isInBaseIndex
-                        ? 'Rechercher dans toute la base'
-                        : 'Rechercher dans toute la plateforme'
-                    "
-                    style="width: 308px"
-                    @input="doSearch(false, 400)"
-                  />
-                  <button class="fr-btn">
-                    <VIcon name="ri-search-line" />
+            <div
+              class="fr-col-md-8 fr-p-0 is-flex"
+              :style="isInBaseIndex ? null : 'justify-content: space-between'"
+            >
+              <div>
+                <IntroTooltip slug="SEARCH_BAR">
+                  <div class="fr-search-bar fr-input-group">
+                    <input
+                      id="search"
+                      v-model="textInput"
+                      class="fr-input"
+                      type="text"
+                      :placeholder="
+                        isInBaseIndex
+                          ? 'Rechercher dans toute la base'
+                          : 'Rechercher dans toute la plateforme'
+                      "
+                      style="width: 308px"
+                      @input="doSearch(false, 400)"
+                    />
+                    <button class="fr-btn">
+                      <VIcon name="ri-search-line" />
+                    </button>
+                  </div>
+                </IntroTooltip>
+              </div>
+              <div :style="isInBaseIndex ? 'margin-left: 24px' : null">
+                <IntroTooltip slug="FILTERS">
+                  <button class="fr-btn" @click="showFilters = !showFilters">
+                    Filtrer
+                    <span style="padding-left: 3px">
+                      <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
+                      <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
+                    </span>
                   </button>
-                </div>
-              </IntroTooltip>
-            </div>
-            <div :style="isInBaseIndex ? 'margin-left: 24px' : null">
-              <IntroTooltip slug="FILTERS">
-                <button class="fr-btn" @click="showFilters = !showFilters">
-                  Filtrer
-                  <span style="padding-left: 3px">
-                    <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
-                    <VIcon v-if="showFilters" name="ri-arrow-up-s-line" />
-                  </span>
-                </button>
-              </IntroTooltip>
+                </IntroTooltip>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div
-      v-if="showFilters"
-      class="fr-pt-2w fr-pb-6w"
-      style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
-    >
-      <div class="fr-container">
-        <ul v-if="selectedTags.length" class="fr-mb-2w fr-tags-group">
+      <div class="fr-container fr-pt-2w fr-pb-1v">
+        <ul v-if="selectedTags.length" class="fr-tags-group">
           <li v-for="tagId in selectedTags" :key="tagId">
             <button
               class="fr-tag--dismiss fr-tag"
@@ -109,6 +106,15 @@
             />
           </li>
         </ul>
+      </div>
+    </div>
+
+    <div
+      v-if="showFilters"
+      class="fr-pt-1w fr-pb-6w"
+      style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
+    >
+      <div class="fr-container">
         <div class="fr-mt-1w small-radio-buttons">
           <DsfrRadioButtonSet
             v-model="tagOperatorInput"
