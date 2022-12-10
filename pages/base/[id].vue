@@ -58,9 +58,11 @@
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
               <IntroTooltip slug="REPORT_BASE" style="display: inline-block">
-                <a :href="mailToHrefReport" class="no-underline">
-                  <RoundButton icon="ri-alert-line" label="Signaler" />
-                </a>
+                <RoundButton
+                  icon="ri-alert-line"
+                  label="Signaler"
+                  @click="showReportModal = true"
+                />
               </IntroTooltip>
               <a
                 v-show="base?.contact"
@@ -257,21 +259,6 @@ const mailToHrefContact = computed(() => {
   let toReturn = `mailto:${base.value.contact}`
   const subject = `[La Base] Contact à propos de la base "${base.value.title}" (id ${base.value.id})`
   return `${toReturn}?subject=${subject}`
-})
-
-const mailToHrefReport = computed(() => {
-  let toReturn = "mailto:labase@anct.gouv.fr"
-  if (!base.value) {
-    return toReturn
-  }
-  const subject = `[La Base] Signalement pour la base "${base.value.title}" (id ${base.value.id})`
-  let body: string
-  if (process.client) {
-    body = `Ce signalement concerne la base suivante : ${window.location.href}`
-  } else {
-    body = ""
-  }
-  return `${toReturn}?subject=${subject}&body=${body}`
 })
 </script>
 
