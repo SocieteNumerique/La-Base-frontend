@@ -50,6 +50,10 @@
       @close="openStep = ''"
       @save="updateBase"
     />
+    <BaseEditCertification
+      v-if="openStep === 'certification'"
+      @close="openStep = ''"
+    />
     <BaseEditDelete v-if="openStep === 'delete'" @close="openStep = ''" />
   </div>
 </template>
@@ -98,6 +102,10 @@ const menuOptions = [
   {
     label: "Statut de la base",
     step: "status",
+  },
+  {
+    label: "Certifier la base",
+    step: "certification",
   },
   {
     label: "Supprimer la base",

@@ -86,8 +86,8 @@
         </div>
       </div>
 
-      <div class="fr-container fr-pt-2w fr-pb-1v">
-        <ul v-if="selectedTags.length" class="fr-tags-group">
+      <div v-if="selectedTags.length" class="fr-container fr-pt-2w fr-pb-1v">
+        <ul class="fr-tags-group">
           <li v-for="tagId in selectedTags" :key="tagId">
             <button
               class="fr-tag--dismiss fr-tag"
@@ -195,7 +195,6 @@ import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
-import { timeout } from "rxjs"
 
 definePageMeta({
   layout: false,
