@@ -12,7 +12,7 @@
       hint="Requis: 100 caractères maximum"
       :label-visible="true"
       :required="true"
-      class="fr-mb-3w"
+      class="fr-mb-4w"
     />
 
     <DsfrInput
@@ -23,7 +23,7 @@
       :label-visible="true"
       :is-textarea="true"
       :required="true"
-      class="fr-mb-3w"
+      class="fr-mb-4w"
     />
 
     <DsfrRadioButtonSet
@@ -34,7 +34,7 @@
       :inline="true"
       :options="typeOptions"
       :required="true"
-      class="fr-mb-2w type-radios"
+      class="fr-mb-4w type-radios"
     />
 
     <ResourceSelector
