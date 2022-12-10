@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div
+    class="fr-input-group"
+    :class="{
+      'fr-input-group--error': errorMessage,
+      'fr-input-group--valid': validMessage,
+    }"
+  >
     <label class="fr-label search" for="resource-selector">{{
       props.label
     }}</label>
@@ -16,18 +22,21 @@
         <VIcon name="ri-search-line" />
       </button>
     </div>
+    <p v-if="errorMessage" :class="messageClass">
+      <span>{{ errorMessage }}</span>
+    </p>
+  </div>
 
-    <!-- search results -->
-    <div class="result-line-holder">
-      <div v-if="textInput && results.length === 0">
-        Aucun résultat correspondant
-      </div>
-      <DsfrCheckboxSet
-        v-model="selectedResources"
-        :options="resultsAsCheckboxOptions"
-        class="resource-choices"
-      />
+  <!-- search results -->
+  <div class="result-line-holder">
+    <div v-if="textInput && results.length === 0">
+      Aucun résultat correspondant
     </div>
+    <DsfrCheckboxSet
+      v-model="selectedResources"
+      :options="resultsAsCheckboxOptions"
+      class="resource-choices"
+    />
   </div>
 </template>
 
@@ -46,6 +55,18 @@ const props = defineProps({
   label: { type: String, default: "Choisissez une ressource" },
   baseId: { type: Number, required: true },
   placeholder: { type: String, default: "" },
+  errorMessage: {
+    type: String,
+    default: undefined,
+  },
+  validMessage: {
+    type: String,
+    default: undefined,
+  },
+})
+
+const messageClass = computed(() => {
+  return props.errorMessage ? "fr-error-text" : "fr-valid-text"
 })
 
 const textInput = ref("")

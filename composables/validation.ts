@@ -8,6 +8,10 @@ export const validationMessageFromError = (error: ErrorObject): string => {
     // @ts-ignore
     return `Le champ doit avoir au moins ${error.$params.min} caractères`
   }
+  if (error.$validator === "maxLengthList") {
+    // @ts-ignore
+    return `Vous pouvez sélectionner maximum ${error.$params.max} élements`
+  }
   if (error.$validator === "required") {
     // @ts-ignore
     return "Le champ ne peut pas être vide"
@@ -35,6 +39,12 @@ export const validationMessageFromError = (error: ErrorObject): string => {
   if (error.$validator === "isTwitterUrl") {
     // @ts-ignore
     return "Le champ doit commencer par https://www.twitter.com ou https://twitter.com"
+  }
+  if (error.$validator === "resourceRequired") {
+    return "Vous devez sélectionner au moins une fiche ressource"
+  }
+  if (error.$validator === "collectionRequired") {
+    return "Vous devez sélectionner au moins une collection"
   }
   return "Champ non valide"
 }

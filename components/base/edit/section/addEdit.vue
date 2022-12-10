@@ -5,29 +5,32 @@
     :title="modalTitle"
     @close="onClose()"
   >
-    <DsfrInput
-      v-model="section.title"
+    <DsfrInputGroup
+      v-model="v$.title.$model"
       label="Nom de la rubrique"
       placeholder="Nom de la rubrique"
       hint="Requis: 100 caractères maximum"
       :label-visible="true"
       :required="true"
-      class="fr-mb-4w"
+      :error-message="validationMessageFromErrors(v$.title.$errors)"
+      :is-invalid="v$.title.$error"
     />
 
-    <DsfrInput
-      v-model="section.description"
+    <DsfrInputGroup
+      v-model="v$.description.$model"
       label="Description de la rubrique"
       placeholder="Description de la rubrique"
       hint="Requis: 240 caractères maximum"
       :label-visible="true"
       :is-textarea="true"
       :required="true"
-      class="fr-mb-4w"
+      class="fr-mt-4w"
+      :error-message="validationMessageFromErrors(v$.description.$errors)"
+      :is-invalid="v$.description.$error"
     />
 
     <DsfrRadioButtonSet
-      v-model="section.type"
+      v-model="v$.type.$model"
       :label-visible="true"
       legend="Type de rubrique"
       name="sectionType"
@@ -35,21 +38,26 @@
       :options="typeOptions"
       :required="true"
       class="fr-mb-4w type-radios"
+      :error-message="validationMessageFromErrors(v$.type.$errors)"
+      :is-invalid="v$.type.$error"
     />
 
     <ResourceSelector
       v-if="section.type === BaseSectionType.RESOURCES"
-      v-model="section.resources"
+      v-model="v$.resources.$model"
       :base-id="baseId"
       label="Ajouter des fiches à la rubrique"
       placeholder="Rechercher dans les ressources de la base"
+      :error-message="validationMessageFromErrors(v$.resources.$errors)"
     />
     <CollectionSelector
       v-if="section.type === BaseSectionType.COLLECTIONS"
-      v-model="section.collections"
+      v-model="v$.collections.$model"
       :base-id="baseId"
       label="Ajouter des collections à la rubrique"
       placeholder="Rechercher dans les collections de la base"
+      :error-message="validationMessageFromErrors(v$.collections.$errors)"
+      :is-invalid="v$.collections.$error"
     />
   </DsfrModal>
 </template>
@@ -63,6 +71,9 @@ import DsfrModal from "~/components/DsfrResizableModal.vue"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
 import { deepCopy } from "~/composables/utils"
+import { maxLength, required, requiredIf, sameAs } from "@vuelidate/validators"
+import useVuelidate from "@vuelidate/core"
+import { validationMessageFromErrors } from "~/composables/validation"
 
 const baseStore = useBaseStore()
 const resourceStore = useResourceStore()
@@ -75,7 +86,6 @@ const props = defineProps({
     default: undefined,
   },
 })
-
 const isEditing = Boolean(props.id)
 
 const baseId = parseInt(<string>route.params.id)
@@ -116,6 +126,27 @@ const typeOptions = [
   },
   { label: "Collections", value: BaseSectionType.COLLECTIONS },
 ]
+
+const MAX_ELEMENTS_BY_SECTION = 15
+const sectionRules = {
+  title: { required },
+  description: { required },
+  type: { required },
+  resources: {
+    resourceRequired: requiredIf(
+      () => section.value.type === BaseSectionType.RESOURCES
+    ),
+    maxLengthList: maxLength(MAX_ELEMENTS_BY_SECTION),
+  },
+  collections: {
+    collectionRequired: requiredIf(
+      () => section.value.type === BaseSectionType.COLLECTIONS
+    ),
+    maxLengthList: maxLength(MAX_ELEMENTS_BY_SECTION),
+  },
+}
+const v$ = useVuelidate(sectionRules, section)
+
 const actions = computed(() => [
   {
     label: isEditing ? "Modifier" : "Ajouter",
@@ -124,7 +155,7 @@ const actions = computed(() => [
       baseSectionStore.save(section.value)
       onClose()
     },
-    disabled: false,
+    disabled: v$.value.$invalid,
   },
   {
     label: "Annuler",
