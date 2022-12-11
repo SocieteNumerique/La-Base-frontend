@@ -62,7 +62,7 @@
                           : 'Rechercher dans toute la plateforme'
                       "
                       style="width: 308px"
-                      @input="doSearch(false, 400)"
+                      @input="onTextInput"
                     />
                     <button class="fr-btn">
                       <VIcon name="ri-search-line" />
@@ -218,8 +218,8 @@
                 v-for="search of userSearchStore.searchesForDataType(dataType)"
                 :id="search.id"
                 :key="search.id"
-                :active="activeSearch === search.id"
-                @select="selectSearch(search)"
+                :active="activeUserSearch === search.id"
+                @select="selectUserSearch(search)"
               />
             </div>
             <div style="min-width: 308px">
@@ -236,6 +236,7 @@
     </div>
     <UserSearchAddModal
       v-if="showUserSearchAddModal"
+      :query="searchQuery"
       @close="showUserSearchAddModal = false"
     />
   </div>
@@ -256,7 +257,6 @@ import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
 import { useUserSearchStore } from "~/stores/userSearchStore"
-import { paramsFromQueryString } from "~/composables/utils"
 
 definePageMeta({
   layout: false,
@@ -272,7 +272,7 @@ const userSearchStore = useUserSearchStore()
 const router = useRouter()
 const route = useRoute()
 
-const activeSearch = ref(-1)
+const activeUserSearch = ref(-1)
 const nResults = ref(0)
 const textInput = ref<string>(<string>route.query.text || "")
 const possibleTags = ref<number[]>([])
@@ -287,6 +287,8 @@ onFocusOut(
 
 const emit = defineEmits(["results", "searchedText"])
 
+const resetActiveUserTag = () => (activeUserSearch.value = -1)
+
 const setDataType = (type: "bases" | "resources") => {
   // when changing from resources to bases, pin_count is no longer possible
   // so we also update orderBy at the same time
@@ -297,17 +299,18 @@ const setDataType = (type: "bases" | "resources") => {
   } else {
     dataType.value = type
   }
+  resetActiveUserTag()
 }
 
 const dataType = computed<"resources" | "bases">({
   get: () => <"resources" | "bases">route.query.dataType || "resources",
   set: (type: string) => {
     router.push({ query: { ...route.query, dataType: type } })
+    resetActiveUserTag()
   },
 })
 const searches = computed(() => {
   const toReturn = userSearchStore.searchesForDataType(dataType.value)
-  console.log("### searches", toReturn)
   return toReturn
 })
 
@@ -315,12 +318,14 @@ const currentPage = computed<number>({
   get: () => Number(route.query.page) || 0,
   set(page: number) {
     updateRouterQuery({ page })
+    resetActiveUserTag()
   },
 })
 const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
+    resetActiveUserTag()
   },
 })
 const resourceBaseFilter = computed<string>({
@@ -333,6 +338,7 @@ const orderBy = computed<string>({
   get: () => <string>route.query.orderBy || "-modified",
   set(newValue: string) {
     updateRouterQuery({ orderBy: newValue, page: 0 })
+    resetActiveUserTag()
   },
 })
 const isLiveResources = computed<boolean>(() =>
@@ -347,12 +353,22 @@ const selectedTags = computed<number[]>({
   },
   set(tags: number[]) {
     updateRouterQuery({ tags: tags.join(","), page: 0 })
+    resetActiveUserTag()
   },
 })
 
 const updateRouterQuery = (newQueryParams: any) => {
   router.replace({ query: { ...route.query, ...newQueryParams } })
 }
+
+const searchQuery = computed(() => {
+  return {
+    orderBy: orderBy.value,
+    tagOperator: tagOperator.value,
+    tags: selectedTags.value,
+    text: textInput.value,
+  }
+})
 
 watch(
   () => route.query,
@@ -413,10 +429,22 @@ const toggleUserSearch = () => {
   showUserSearches.value = !showUserSearches.value
 }
 
-const selectSearch = (search: UserSearch) => {
-  console.log("### selectSearch", search)
-  activeSearch.value = search.id
-  router.replace({ query: paramsFromQueryString(search.query) })
+const onTextInput = () => {
+  doSearch(false, 400)
+  resetActiveUserTag()
+}
+
+const selectUserSearch = (search: UserSearch) => {
+  activeUserSearch.value = search.id
+  router.replace({
+    query: {
+      dataType: dataType.value,
+      orderBy: search.query.orderBy,
+      tagOperator: search.query.tagOperator,
+      text: search.query.text,
+      tags: search.query.tags.join(","),
+    },
+  })
   doSearch()
 }
 

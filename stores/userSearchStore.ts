@@ -1,12 +1,12 @@
 import { defineStore } from "pinia"
 import { useApiDelete, useApiGet, useApiPost } from "~/composables/api"
-import { UserSearch } from "~/composables/types"
+import { UserSearch, UserSearchQuery } from "~/composables/types"
 
 export const useUserSearchStore = defineStore("userSearch", () => {
   const userSearchById = ref<{ [id: number]: UserSearch }>({})
 
   const addUserSearch = async (
-    query: string,
+    query: UserSearchQuery,
     name: string,
     dataType: "resources" | "bases"
   ) => {
@@ -49,10 +49,6 @@ export const useUserSearchStore = defineStore("userSearch", () => {
   const nSearches = computed(() => Object.keys(userSearchById).length)
   const searchesForDataType = computed(
     () => (dataType: "resources" | "bases") => {
-      console.log(
-        "### searchesForDataType",
-        Object.values(userSearchById.value)
-      )
       return Object.values(userSearchById.value).filter(
         (search) => search.dataType === dataType
       )

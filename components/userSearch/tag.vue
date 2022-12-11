@@ -18,8 +18,6 @@
 <script setup lang="ts">
 import { useUserSearchStore } from "~/stores/userSearchStore"
 import { computed, defineEmits } from "vue"
-import { paramsFromQueryString } from "~/composables/utils"
-import { pluralize } from "~/composables/strUtils"
 import { useTagStore } from "~/stores/tagStore"
 
 const props = defineProps({
@@ -37,18 +35,15 @@ const deleteSearch = () => {
   userSearchStore.deleteUserSearch(props.id)
 }
 const selectSearch = () => {
-  console.log("### select search !!")
   emit("select")
 }
 const title = computed(() => {
-  const query: any = paramsFromQueryString(userSearch.value?.query)
   const elements: string[] = []
-  if (query.text) {
-    elements.push(`texte : ${query.text}`)
+  if (userSearch.value.query.text) {
+    elements.push(`texte : ${userSearch.value.query.text}`)
   }
-  if (query.tags) {
-    const tags = query.tags.split(",")
-    const showTags = tags
+  if (userSearch.value.query.tags) {
+    const showTags = userSearch.value.query.tags
       .map((tagId: number) => tagStore.tagsById[tagId].name)
       .join(", ")
     elements.push(`tags: ${showTags}`)
@@ -63,6 +58,7 @@ const title = computed(() => {
   padding: 8px 16px
   background: white
   border: 1px solid var(--blue-france-925-125-hover)
+
 .user-search-tag.active
   background: blue
   background: var(--blue-france-925-125)

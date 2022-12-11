@@ -19,11 +19,16 @@
 <script setup lang="ts">
 import { useUserSearchStore } from "~/stores/userSearchStore"
 import { useRoute } from "vue-router"
+import { PropType } from "vue"
+import { UserSearchQuery } from "~/composables/types"
 
 const userSearchStore = useUserSearchStore()
 const route = useRoute()
 
 const emit = defineEmits(["close"])
+const props = defineProps({
+  query: { type: Object as PropType<UserSearchQuery>, required: true },
+})
 
 const name = ref("")
 const actions = computed(() => [
@@ -39,11 +44,9 @@ const actions = computed(() => [
   },
 ])
 
-console.log("### on add modal", route.query, route.path, route)
-
 const save = async () => {
   const { data } = await userSearchStore.addUserSearch(
-    <string>route.fullPath.split("?")[1],
+    props.query,
     name.value,
     <"resources" | "bases">route.query.dataType || "resources"
   )
