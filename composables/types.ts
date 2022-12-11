@@ -402,3 +402,10 @@ export type RichTextToolbarItem = {
   disabled: () => boolean
 }
 export type RichTextToolbar = RichTextToolbarItem[]
+
+export type UserSearch = {
+  dataType: "resources" | "bases"
+  id: number
+  name: string
+  query: string
+}

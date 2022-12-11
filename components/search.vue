@@ -70,9 +70,12 @@
                   </div>
                 </IntroTooltip>
               </div>
-              <div :style="isInBaseIndex ? 'margin-left: 24px' : null">
+              <div
+                :style="isInBaseIndex ? 'margin-left: 24px' : null"
+                style="display: flex"
+              >
                 <IntroTooltip slug="FILTERS">
-                  <button class="fr-btn" @click="showFilters = !showFilters">
+                  <button class="fr-btn" @click="toggleFilters">
                     Filtrer
                     <span style="padding-left: 3px">
                       <VIcon v-if="!showFilters" name="ri-arrow-down-s-line" />
@@ -80,6 +83,25 @@
                     </span>
                   </button>
                 </IntroTooltip>
+                <div>
+                  <button
+                    v-if="!isInBaseIndex"
+                    class="fr-btn fr-btn--secondary fr-ml-2w"
+                    @click="toggleUserSearch"
+                  >
+                    Mes recherches
+                    <span style="padding-left: 3px">
+                      <VIcon
+                        v-if="!showUserSearches"
+                        name="ri-arrow-down-s-line"
+                      />
+                      <VIcon
+                        v-if="showUserSearches"
+                        name="ri-arrow-up-s-line"
+                      />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -110,84 +132,118 @@
     </div>
 
     <div
-      v-if="showFilters"
+      v-if="showFilters || showUserSearches"
       class="fr-pt-1w fr-pb-6w"
       style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
     >
       <div class="fr-container">
-        <div class="fr-mt-1w small-radio-buttons">
-          <DsfrRadioButtonSet
-            v-model="tagOperatorInput"
-            name="tagOperator"
-            :inline="true"
-            :options="[
-              { label: 'Tous les tags sélectionnés', value: 'AND' },
-              { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
-            ]"
-            legend="Les résultats comportent :"
-            class="inline-radio fr-mb-3w"
-            @update:model-value="onRadioChange"
-          />
-        </div>
-        <div class="dropdown-holder">
-          <TagDropdown
-            v-for="category of tagCategories"
-            :key="category.id"
-            :category="category"
-            :is-focused="focusedCategory === category.id"
-            :selected-tags="selectedTags"
-            :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
-            @focus="focusedCategory = category.id"
-            @blur="focusedCategory = 0"
-            @select="onSelect"
-          />
-          <TagLicenseDropdown
-            v-if="dataType === 'resources'"
-            :is-focused="focusedCategory === licenseTypeCategoryId"
-            :selected-tags="selectedTags"
-            :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
-            :tag-operator="tagOperatorInput"
-            @focus="focusedCategory = licenseTypeCategoryId"
-            @blur="focusedCategory = 0"
-            @select="onSelect"
-          />
-        </div>
-        <div v-if="isInBaseIndex" class="fr-mt-1w small-radio-buttons">
-          <DsfrRadioButtonSet
-            v-model="resourceBaseFilterInput"
-            name="resourceBaseFilter"
-            :inline="true"
-            :options="[
-              { label: 'Toutes les fiches', value: '' },
-              {
-                label: 'Les fiches créées par la base',
-                value: 'create',
-              },
-              {
-                label: 'Les fiches enregistrées par la base',
-                value: 'save',
-              },
-            ]"
-            legend="Afficher :"
-            class="inline-radio fr-mb-0"
-            @update:model-value="onRadioFileBaseFilter"
-          />
-        </div>
-        <div class="fr-mt-3v">
-          {{ nResults }} {{ pluralize(["résultat"], nResults) }}
-        </div>
+        <template v-if="showFilters">
+          <div class="fr-mt-1w small-radio-buttons">
+            <DsfrRadioButtonSet
+              v-model="tagOperatorInput"
+              name="tagOperator"
+              :inline="true"
+              :options="[
+                { label: 'Tous les tags sélectionnés', value: 'AND' },
+                { label: 'Au moins un des tags sélectionnés ', value: 'OR' },
+              ]"
+              legend="Les résultats comportent :"
+              class="inline-radio fr-mb-3w"
+              @update:model-value="onRadioChange"
+            />
+          </div>
+          <div class="dropdown-holder">
+            <TagDropdown
+              v-for="category of tagCategories"
+              :key="category.id"
+              :category="category"
+              :is-focused="focusedCategory === category.id"
+              :selected-tags="selectedTags"
+              :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+              @focus="focusedCategory = category.id"
+              @blur="focusedCategory = 0"
+              @select="onSelect"
+            />
+            <TagLicenseDropdown
+              v-if="dataType === 'resources'"
+              :is-focused="focusedCategory === licenseTypeCategoryId"
+              :selected-tags="selectedTags"
+              :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+              :tag-operator="tagOperatorInput"
+              @focus="focusedCategory = licenseTypeCategoryId"
+              @blur="focusedCategory = 0"
+              @select="onSelect"
+            />
+          </div>
+          <div v-if="isInBaseIndex" class="fr-mt-1w small-radio-buttons">
+            <DsfrRadioButtonSet
+              v-model="resourceBaseFilterInput"
+              name="resourceBaseFilter"
+              :inline="true"
+              :options="[
+                { label: 'Toutes les fiches', value: '' },
+                {
+                  label: 'Les fiches créées par la base',
+                  value: 'create',
+                },
+                {
+                  label: 'Les fiches enregistrées par la base',
+                  value: 'save',
+                },
+              ]"
+              legend="Afficher :"
+              class="inline-radio fr-mb-0"
+              @update:model-value="onRadioFileBaseFilter"
+            />
+          </div>
+          <div class="fr-mt-3v">
+            {{ nResults }} {{ pluralize(["résultat"], nResults) }}
+          </div>
+        </template>
+        <template v-else>
+          <div
+            class="fr-pt-3w"
+            style="display: flex; justify-content: space-between"
+          >
+            <div v-if="!searches.length">
+              Vous n’avez pas encore de recherche enregistrée pour les
+              {{ dataType === "resources" ? "Fiches" : "Bases" }}
+            </div>
+            <div v-else style="margin-left: -12px; margin-top: -16px">
+              <UserSearchTag
+                v-for="search of userSearchStore.searchesForDataType(dataType)"
+                :id="search.id"
+                :key="search.id"
+                :active="activeSearch === search.id"
+                @select="selectSearch(search)"
+              />
+            </div>
+            <div style="min-width: 308px">
+              <DsfrButton
+                label="Enregistrer la recherche actuelle"
+                icon="ri-save-line"
+                secondary
+                @click="showUserSearchAddModal = true"
+              />
+            </div>
+          </div>
+        </template>
       </div>
     </div>
+    <UserSearchAddModal
+      v-if="showUserSearchAddModal"
+      @close="showUserSearchAddModal = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useApiPost } from "~/composables/api"
-import { debounce } from "~/composables/debounce"
 import {
   BasesSearchResult,
   ResourcesSearchResult,
   TagCategory,
+  UserSearch,
 } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { DsfrRadioButtonSet } from "@gouvminint/vue-dsfr"
@@ -195,6 +251,8 @@ import { computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
+import { useUserSearchStore } from "~/stores/userSearchStore"
+import { paramsFromQueryString } from "~/composables/utils"
 
 definePageMeta({
   layout: false,
@@ -206,12 +264,15 @@ const resourceBaseFilterInput = ref<"" | "create" | "save">("")
 const focusedCategory = ref(0)
 
 const tagStore = useTagStore()
+const userSearchStore = useUserSearchStore()
 const router = useRouter()
 const route = useRoute()
 
+const activeSearch = ref(-1)
 const nResults = ref(0)
 const textInput = ref<string>(<string>route.query.text || "")
 const possibleTags = ref<number[]>([])
+const showUserSearchAddModal = ref(false)
 
 // hide filters on outside click
 onFocusOut(
@@ -239,6 +300,11 @@ const dataType = computed<"resources" | "bases">({
   set: (type: string) => {
     router.push({ query: { ...route.query, dataType: type } })
   },
+})
+const searches = computed(() => {
+  const toReturn = userSearchStore.searchesForDataType(dataType.value)
+  console.log("### searches", toReturn)
+  return toReturn
 })
 
 const currentPage = computed<number>({
@@ -301,6 +367,10 @@ watch(
     if (query.orderBy != oldQuery.orderBy) {
       doSearch(false)
     }
+    if (query.text != oldQuery.text) {
+      textInput.value = <string>query.text
+      doSearch(false)
+    }
   }
 )
 
@@ -328,6 +398,23 @@ const tagCategories = computed<TagCategory[]>(() => {
 
 const isInBaseIndex = computed(() => route.path.startsWith("/base"))
 const showFilters = ref(false)
+const showUserSearches = ref(false)
+
+const toggleFilters = () => {
+  showUserSearches.value = false
+  showFilters.value = !showFilters.value
+}
+const toggleUserSearch = () => {
+  showFilters.value = false
+  showUserSearches.value = !showUserSearches.value
+}
+
+const selectSearch = (search: UserSearch) => {
+  console.log("### selectSearch", search)
+  activeSearch.value = search.id
+  router.replace({ query: paramsFromQueryString(search.query) })
+  doSearch()
+}
 
 const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]

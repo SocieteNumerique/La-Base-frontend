@@ -3,6 +3,7 @@ import { useUserStore } from "~/stores/userStore"
 import { useTagStore } from "~/stores/tagStore"
 import { usePageStore } from "~/stores/pageStore"
 import { useTextBlockStore } from "~/stores/textBlockStore"
+import { useUserSearchStore } from "~/stores/userSearchStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("vue:setup", () => {
@@ -11,5 +12,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     useUserStore().refreshProfile()
     usePageStore().getPages()
     useTextBlockStore().getTextBlocks()
+    useUserSearchStore().getUserSearches()
   })
 })
