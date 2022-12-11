@@ -2,6 +2,7 @@
   <button
     class="user-search-tag fr-ml-3v fr-mt-2w"
     :class="active ? 'active' : null"
+    :title="title"
     @click="selectSearch"
   >
     {{ userSearch?.name }}
@@ -18,6 +19,8 @@
 import { useUserSearchStore } from "~/stores/userSearchStore"
 import { computed, defineEmits } from "vue"
 import { paramsFromQueryString } from "~/composables/utils"
+import { pluralize } from "~/composables/strUtils"
+import { useTagStore } from "~/stores/tagStore"
 
 const props = defineProps({
   active: { type: Boolean, default: false },
@@ -26,6 +29,7 @@ const props = defineProps({
 const emit = defineEmits(["select"])
 
 const userSearchStore = useUserSearchStore()
+const tagStore = useTagStore()
 const userSearch = computed(() => {
   return userSearchStore.userSearchById[props.id]
 })
@@ -43,7 +47,11 @@ const title = computed(() => {
     elements.push(`texte : ${query.text}`)
   }
   if (query.tags) {
-    elements.push(`${query.tags.split(",").length} tags`)
+    const tags = query.tags.split(",")
+    const showTags = tags
+      .map((tagId: number) => tagStore.tagsById[tagId].name)
+      .join(", ")
+    elements.push(`tags: ${showTags}`)
   }
   return elements.join(" | ")
 })

@@ -108,7 +108,11 @@
         </div>
       </div>
 
-      <div v-if="selectedTags.length" class="fr-container fr-pt-2w fr-pb-1v">
+      <div
+        v-if="selectedTags.length"
+        class="fr-container fr-pt-2w fr-pb-1v"
+        style="background: white"
+      >
         <ul class="fr-tags-group">
           <li v-for="tagId in selectedTags" :key="tagId">
             <button
