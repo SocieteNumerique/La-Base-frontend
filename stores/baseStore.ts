@@ -10,7 +10,6 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
-import { id } from "postcss-selector-parser"
 
 function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   for (const instance of instancesSrc) {
