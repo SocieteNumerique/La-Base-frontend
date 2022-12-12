@@ -129,8 +129,8 @@ const typeOptions = [
 
 const MAX_ELEMENTS_BY_SECTION = 15
 const sectionRules = {
-  title: { required },
-  description: { required },
+  title: { required, maxLength: maxLength(100) },
+  description: { required, maxLength: maxLength(240) },
   type: { required },
   resources: {
     resourceRequired: requiredIf(

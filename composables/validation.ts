@@ -8,6 +8,10 @@ export const validationMessageFromError = (error: ErrorObject): string => {
     // @ts-ignore
     return `Le champ doit avoir au moins ${error.$params.min} caractères`
   }
+  if (error.$validator === "maxLength") {
+    // @ts-ignore
+    return `Le champ doit avoir au maximum ${error.$params.max} caractères`
+  }
   if (error.$validator === "maxLengthList") {
     // @ts-ignore
     return `Vous pouvez sélectionner maximum ${error.$params.max} élements`
