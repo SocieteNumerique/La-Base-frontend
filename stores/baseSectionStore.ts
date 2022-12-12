@@ -64,7 +64,7 @@ export const useBaseSectionStore = defineStore("baseSection", {
         fromIndex,
         toIndex
       )
-      const { data, error } = await useApiPatch<number[]>(
+      const { data, error } = await useApiPatch<BaseSection[]>(
         `base-sections/sort/`,
         {
           base: baseId,

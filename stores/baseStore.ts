@@ -10,6 +10,7 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
+import { id } from "postcss-selector-parser"
 
 function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   for (const instance of instancesSrc) {
@@ -151,8 +152,9 @@ export const useBaseStore = defineStore("base", {
     addSectionIdToBase(section: BaseSection) {
       this.basesById[section.base].sections?.push(section.id!)
     },
-    updateSectionIdsFromBase(baseId: number, sections: number[]) {
-      this.basesById[baseId].sections = sections
+    updateSectionIdsFromBase(baseId: number, sections: BaseSection[]) {
+      saveInOtherStores(useBaseSectionStore().baseSectionsById, sections)
+      this.basesById[baseId].sections = sections.map((section) => section.id!)
     },
   },
   getters: {
