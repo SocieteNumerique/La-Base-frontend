@@ -97,7 +97,7 @@ const base = ref<Base | BaseCreate>({
 const ordering = ref(false)
 
 const options = [
-  { label: " Afficher les derniers ajouts", value: true },
+  { label: "Afficher les derniers ajouts", value: true },
   { label: "Ne pas afficher", value: false },
 ]
 
