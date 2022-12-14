@@ -6,7 +6,12 @@
       :class="isActive ? 'active' : ''"
     >
       <slot />
-      <div v-if="isActive" class="tooltip" :class="introStore.current.position">
+      <div
+        v-if="isActive"
+        class="tooltip"
+        :class="introStore.current.position"
+        style="font-weight: normal"
+      >
         <VIcon
           :scale="1.25"
           name="ri-close-line"
@@ -18,6 +23,7 @@
           {{ introStore.current?.title }}
         </div>
         <img
+          v-if="introStore.current.image"
           :src="introStore.current.image"
           alt=""
           style="

@@ -14,7 +14,11 @@
       </button>
     </IntroTooltip>
 
-    <div v-show="isMenuShown" class="selector__menu fr-px-2w fr-text--xs">
+    <div
+      v-show="isMenuShown"
+      class="selector__menu fr-px-2w fr-text--xs"
+      style="z-index: 13; width: 200px"
+    >
       <div
         v-for="({ label, step }, index) of menuOptions"
         :key="index"

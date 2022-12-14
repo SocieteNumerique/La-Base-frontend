@@ -7,27 +7,26 @@
       @exit="openedTab = null"
     />
     <div class="fr-p-2w has-children-space-between">
-      <div v-if="editable" class="fr-my-auto">
-        <button
-          class="fr-btn--tertiary-no-outline fr-mr-3v"
-          aria-label="Éditer la collection"
-          title="Éditer la collection"
-          @click="openedTab = 'general'"
-        >
-          <VIcon :scale="0.85" name="ri-edit-line" />
-        </button>
-        <button
-          class="fr-btn--tertiary-no-outline"
-          aria-label="gérer les fiches"
-          title="Gérer les fiches"
-          @click="openedTab = 'resources'"
-        >
-          <VIcon :scale="0.85" name="ri-file-line" />
-        </button>
-      </div>
-      <div v-else />
+      <ShareButton :link="link" class="fr-mr-3w" />
       <div class="is-flex">
-        <ShareButton :link="link" class="fr-mr-3w" />
+        <template v-if="editable">
+          <button
+            class="fr-btn--tertiary-no-outline fr-mr-3v"
+            aria-label="Éditer la collection"
+            title="Éditer la collection"
+            @click="openedTab = 'general'"
+          >
+            <VIcon :scale="1" name="ri-edit-line" />
+          </button>
+          <button
+            class="fr-btn--tertiary-no-outline fr-mr-3v"
+            aria-label="gérer les fiches"
+            title="Gérer les fiches"
+            @click="openedTab = 'resources'"
+          >
+            <VIcon :scale="1" name="ri-file-line" />
+          </button>
+        </template>
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="savedCollection?.id"

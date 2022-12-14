@@ -58,7 +58,7 @@
                       type="text"
                       :placeholder="
                         isInBaseIndex
-                          ? 'Rechercher dans toute la base'
+                          ? 'Rechercher dans cette base'
                           : 'Rechercher dans toute la plateforme'
                       "
                       style="width: 308px"

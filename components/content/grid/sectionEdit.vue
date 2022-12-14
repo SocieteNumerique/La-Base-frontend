@@ -21,7 +21,7 @@
         </div>
         <div>
           <button
-            class="btn-tab-activable fr-btn--tertiary-no-outline"
+            class="btn-tab-activable fr-btn--tertiary-no-outline fr-mr-2w"
             @click="isEditing = true"
           >
             <VIcon name="ri-edit-line" />
