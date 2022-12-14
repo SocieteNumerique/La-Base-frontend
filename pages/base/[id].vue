@@ -284,6 +284,10 @@ const mailToHrefReport = computed(() => {
 
 .stat *
   margin-left: 12px
+
+.fr-links-group
+  a
+    font-size: 14px
 </style>
 
 <style lang="sass">

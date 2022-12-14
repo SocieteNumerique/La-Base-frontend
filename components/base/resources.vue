@@ -1,10 +1,26 @@
 <template>
   <div id="resources">
-    <div class="is-flex flex-space-between fr-mb-4w">
+    <div class="is-flex flex-space-between fr-mb-6w">
       <div style="display: flex; align-items: center">
         <IntroTooltip slug="MODIFY_COLLECTIONS">
           <div v-if="currentTab === 'collections'">
-            {{ base?.collections.length }} collections
+            <template v-if="openCollectionId">
+              <h3 class="fr-h6 fr-mb-0">
+                <NuxtLink
+                  :to="{ query: { tab: 'collections' } }"
+                  class="no-underline fr-text-title--blue-france"
+                >
+                  <VIcon
+                    class="fr-mr-4w fr-my-auto"
+                    name="ri-arrow-left-line"
+                  />
+                </NuxtLink>
+                {{ openCollection.name }}
+              </h3>
+            </template>
+            <template v-else>
+              {{ base?.collections.length }} collections
+            </template>
           </div>
         </IntroTooltip>
       </div>
@@ -155,17 +171,20 @@
     </template>
 
     <template v-if="currentTab === 'collections' && openCollection">
-      <h3 class="fr-h6 fr-mb-5w">
-        <NuxtLink
-          :to="{ query: { tab: 'collections' } }"
-          class="no-underline fr-text-title--blue-france"
-        >
-          <VIcon class="fr-mr-4w fr-my-auto" name="ri-arrow-left-line" />
-        </NuxtLink>
-        {{ openCollection.name }}
-      </h3>
-
-      <SearchOrderBy class="fr-mb-3w" />
+      <div
+        class="fr-mb-3w"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <SearchOrderBy class="fr-mt-n1w" />
+        <div>
+          {{ openCollectionSortedResource.length }}
+          {{ pluralize(["fiche"], openCollectionSortedResource.length) }}
+        </div>
+      </div>
 
       <div class="resource-grid">
         <ResourceMiniatureById

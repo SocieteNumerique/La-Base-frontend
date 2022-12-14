@@ -185,10 +185,10 @@
           <ul class="fr-links-group" style="width: 160px">
             <li>
               <button
-                class="fr-btn--tertiary-no-outline"
+                class="fr-btn--tertiary-no-outline fr-text--sm"
                 @click="introStore.showAllInPage"
               >
-                <VIcon name="ri-question-line" class="fr-mr-1w" />
+                <VIcon name="ri-question-line" class="fr-mr-1w" scale="0.85" />
                 Didacticiel
               </button>
             </li>
@@ -257,4 +257,10 @@ const pages = computed(() => pageStore.pages)
 
 .over-sticky
   z-index: 12
+
+.fr-links-group
+  a
+    font-size: 14px
+    button
+      line-height: 1.5rem
 </style>
