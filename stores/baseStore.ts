@@ -2,12 +2,14 @@ import { defineStore } from "pinia"
 import {
   Base,
   BaseCreate,
+  BaseSection,
   BaseWithDetailedResources,
   Collection,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
 
 function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
   for (const instance of instancesSrc) {
@@ -37,10 +39,12 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
     })
   }
   saveInOtherStores(useCollectionStore().collectionsById, newCollections)
+  saveInOtherStores(useBaseSectionStore().baseSectionsById, base.sections)
 
   baseStore.basesById[base.id] = {
     ...base,
     collections: newCollections.map((collection) => collection.id),
+    sections: base.sections.map((section) => section.id!),
   }
 }
 
@@ -138,6 +142,18 @@ export const useBaseStore = defineStore("base", {
     },
     addCollectionIdToBase(collection: Collection) {
       this.basesById[collection.base].collections?.push(collection.id)
+    },
+    removeSectionIdFromBase(sectionId: number) {
+      this.basesById[this.currentId!].sections = this.current.sections?.filter(
+        (section) => section != sectionId
+      )
+    },
+    addSectionIdToBase(section: BaseSection) {
+      this.basesById[section.base].sections?.push(section.id!)
+    },
+    updateSectionIdsFromBase(baseId: number, sections: BaseSection[]) {
+      saveInOtherStores(useBaseSectionStore().baseSectionsById, sections)
+      this.basesById[baseId].sections = sections.map((section) => section.id!)
     },
   },
   getters: {

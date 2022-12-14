@@ -99,7 +99,8 @@
         </button>
       </div>
     </div>
-    <template v-if="latestResources.length">
+
+    <template v-if="base.showLatestAdditions && latestResources.length">
       <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
@@ -111,6 +112,14 @@
         />
       </div>
     </template>
+
+    <template v-if="base.sections.length">
+      <BaseSection
+        v-for="sectionId in base.sections"
+        :key="sectionId"
+        :section="baseSectionStore.baseSectionsById[sectionId]"
+      />
+    </template>
   </div>
 </template>
 
@@ -119,8 +128,11 @@ import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
+import { BaseSectionType } from "~/composables/types"
 
 const baseStore = useBaseStore()
+const baseSectionStore = useBaseSectionStore()
 const tagStore = useTagStore()
 const router = useRouter()
 const route = useRoute()

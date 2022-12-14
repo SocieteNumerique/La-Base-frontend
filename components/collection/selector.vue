@@ -6,12 +6,12 @@
       'fr-input-group--valid': validMessage,
     }"
   >
-    <label class="fr-label search" for="resource-selector">{{
+    <label class="fr-label search" for="collection-selector">{{
       props.label
     }}</label>
     <div class="fr-search-bar fr-input-group fr-mb-0">
       <input
-        id="resource-selector"
+        id="collection-selector"
         v-model="textInput"
         class="fr-input"
         type="text"
@@ -33,26 +33,25 @@
       Aucun résultat correspondant
     </div>
     <DsfrCheckboxSet
-      v-model="selectedResources"
+      v-model="selectedCollections"
       :options="resultsAsCheckboxOptions"
-      class="resource-choices"
+      class="collection-choices"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Resource } from "~/composables/types"
+import { Collection } from "~/composables/types"
 import { computed, PropType } from "vue"
 import { DsfrCheckboxSet } from "@gouvminint/vue-dsfr"
 import { useBaseStore } from "~/stores/baseStore"
-import { useResourceStore } from "~/stores/resourceStore"
 
 const baseStore = useBaseStore()
 
 defineEmits(["update:modelValue"])
 const props = defineProps({
-  modelValue: { type: Array as PropType<Resource[]>, default: () => [] },
-  label: { type: String, default: "Choisissez une ressource" },
+  modelValue: { type: Array as PropType<Collection[]>, default: () => [] },
+  label: { type: String, default: "Choisissez une collection" },
   baseId: { type: Number, required: true },
   placeholder: { type: String, default: "" },
   errorMessage: {
@@ -70,26 +69,26 @@ const messageClass = computed(() => {
 })
 
 const textInput = ref("")
-const results = ref<Resource[]>(
-  baseStore.basesById[props.baseId].resourceChoices || []
+const results = ref<Collection[]>(
+  baseStore.basesById[props.baseId].collectionChoices || []
 )
 
-const selectedResources = useModel<Resource[]>("modelValue", {
+const selectedCollections = useModel<Collection[]>("modelValue", {
   type: "array",
 })
 const resultsAsCheckboxOptions = computed<
   { label: string; id: number; name: number }[]
 >(() =>
-  results.value.map((resource) => {
-    return { label: resource.title, id: resource.id, name: resource.id }
+  results.value.map((collection) => {
+    return { label: collection.name, id: collection.id, name: collection.id }
   })
 )
 const onInput = debounce(async () => {
   const base = baseStore.basesById[props.baseId]
-  if (!textInput.value) return (results.value = base.resourceChoices || [])
+  if (!textInput.value) return (results.value = base.collectionChoices || [])
   results.value =
-    base.resourceChoices?.filter((resource) =>
-      resource.title.toLowerCase().includes(textInput.value.toLowerCase())
+    base.collectionChoices?.filter((collection) =>
+      collection.name.toLowerCase().includes(textInput.value.toLowerCase())
     ) || []
 }, 200)
 </script>
