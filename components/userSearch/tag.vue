@@ -42,7 +42,7 @@ const title = computed(() => {
   if (userSearch.value.query.text) {
     elements.push(`texte : ${userSearch.value.query.text}`)
   }
-  if (userSearch.value.query.tags) {
+  if (userSearch.value.query.tags.length) {
     const showTags = userSearch.value.query.tags
       .map((tagId: number) => tagStore.tagsById[tagId].name)
       .join(", ")
