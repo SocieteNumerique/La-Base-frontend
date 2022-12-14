@@ -3,6 +3,7 @@ import { useUserStore } from "~/stores/userStore"
 import { useTagStore } from "~/stores/tagStore"
 import { usePageStore } from "~/stores/pageStore"
 import { useTextBlockStore } from "~/stores/textBlockStore"
+import { useUserSearchStore } from "~/stores/userSearchStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("app:mounted", () => {
@@ -32,6 +33,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     const textBlockStore = useTextBlockStore()
     if (!Object.keys(textBlockStore.blockBySlug).length) {
       textBlockStore.getTextBlocks()
+    }
+
+    const userSearchStore = useUserSearchStore()
+    if (!Object.keys(userSearchStore.userSearchById).length) {
+      userSearchStore.getUserSearches()
     }
   })
 })

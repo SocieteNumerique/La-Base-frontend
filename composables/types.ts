@@ -425,3 +425,16 @@ export type RichTextToolbarItem = {
   disabled: () => boolean
 }
 export type RichTextToolbar = RichTextToolbarItem[]
+
+export type UserSearchQuery = {
+  orderBy: string
+  tagOperator: "OR" | "AND"
+  text: string
+  tags: number[]
+}
+export type UserSearch = {
+  dataType: "resources" | "bases"
+  id: number
+  name: string
+  query: UserSearchQuery
+}
