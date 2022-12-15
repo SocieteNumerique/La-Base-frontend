@@ -1,10 +1,10 @@
 <template>
   <DsfrButton
     v-if="userStore.isLoggedIn"
-    :label="bookmark.label"
-    :icon="bookmark.icon"
-    :class="bookmark.klass"
-    class="fr-btn--sm"
+    label=""
+    :icon="icon"
+    class="fr-btn--sm fr-btn--tertiary-no-outline"
+    :title="title"
     @click="toggleBookmark"
   />
 </template>
@@ -24,22 +24,14 @@ const baseStore = useBaseStore()
 const toggleBookmark = () => {
   baseStore.toggleBookmark(props.baseId)
 }
-const bookmark = computed<{ label: string; icon: string; klass: string }>(
-  () => {
-    let label = "Ajouter aux favoris"
-    let icon = "ri-star-line"
-    let klass = ""
-    baseStore.basesById[props.baseId].bookmarked
-    if (baseStore.basesById[props.baseId].bookmarked) {
-      label = "Ajoutée aux favoris"
-      icon = "ri-star-fill"
-      klass = "fr-btn--secondary"
-    }
-    return {
-      label,
-      icon,
-      klass,
-    }
-  }
-)
+const icon = computed<string>(() => {
+  return baseStore.basesById[props.baseId].bookmarked
+    ? "ri-star-fill"
+    : "ri-star-line"
+})
+const title = computed<string>(() => {
+  return baseStore.basesById[props.baseId].bookmarked
+    ? "Ajoutée aux favoris"
+    : "Ajouter aux favoris"
+})
 </script>
