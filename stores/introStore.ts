@@ -62,13 +62,28 @@ export const useIntroStore = defineStore("intro", () => {
   )
 
   const getIntros = async () => {
-    const { data, error } = await useApiGet<Intro[]>("intros/")
+    const { data, error, pending } = await useApiGet<Intro[]>(
+      "intros/",
+      {},
+      null,
+      true
+    )
     if (!error.value && data.value!) {
-      intros.value = data.value!
-      for (const intro of intros.value) {
-        if (intro.seen) {
-          markSeen(false, [intro.slug])
+      saveIntros(data.value!)
+    } else if (pending.value) {
+      setTimeout(() => {
+        if (!error.value && data.value!) {
+          saveIntros(data.value!)
         }
+      }, 200)
+    }
+  }
+
+  const saveIntros = (introsList: Intro[]) => {
+    intros.value = introsList
+    for (const intro of introsList) {
+      if (intro.seen) {
+        markSeen(false, [intro.slug])
       }
     }
   }
