@@ -4,7 +4,10 @@
       <h1 class="fr-h2 fr-mb-5w">Mes bases favorites</h1>
 
       <div v-if="baseStore.bookmarks.length">
-        <div class="fr-search-bar fr-input-group">
+        <div
+          v-if="baseStore.bookmarks.length > 3"
+          class="fr-search-bar fr-input-group"
+        >
           <input
             id="search"
             v-model="textInput"
@@ -55,12 +58,10 @@ const results = computed<Base[]>(() => {
   const bases = baseStore.bookmarks
   const inputLower = textInput.value.toLowerCase()
   if (!textInput.value) {
-    console.log("### results, all bases", bases)
     return bases
   }
-  console.log("### filtering", bases)
   return bases.filter(
-    (base) => base.title.toLowerCase().indexOf(textInput.value) !== -1
+    (base) => base.title.toLowerCase().indexOf(inputLower) !== -1
   )
 })
 const baseStore = useBaseStore()
