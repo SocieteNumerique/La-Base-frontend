@@ -31,11 +31,10 @@ const bookmark = computed<{ label: string; icon: string; klass: string }>(
     let klass = ""
     baseStore.basesById[props.baseId].bookmarked
     if (baseStore.basesById[props.baseId].bookmarked) {
-      label = "Favoris"
+      label = "Ajoutée aux favoris"
       icon = "ri-star-fill"
       klass = "fr-btn--secondary"
     }
-    console.log("### bookmark ?", { label, icon, klass })
     return {
       label,
       icon,
