@@ -79,7 +79,7 @@ export async function useApiRequest<Type>(
 
   const key = makeLoadingKey(path)
   loadingStore.markLoading(key, spinnerMessage)
-  const { data, error } = await useAsyncData<Type>(
+  const { data, error, pending } = await useAsyncData<Type>(
     key,
     () =>
       $fetch(BASE_URL + "/api/" + path, {
@@ -139,7 +139,7 @@ export async function useApiRequest<Type>(
       alertStore.alert(title, text, type)
     }
   }
-  return { data, error }
+  return { data, error, pending }
 }
 
 export async function useApiGet<Type>(

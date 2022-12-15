@@ -1,12 +1,15 @@
 <template>
   <DsfrButton
     v-if="userStore.isLoggedIn"
-    label=""
-    :icon="icon"
     class="fr-btn--sm fr-btn--tertiary-no-outline"
     :title="title"
+    :aria-pressed="isBookmared"
+    :aria-label="title"
+    style="padding: 5px"
     @click="toggleBookmark"
-  />
+  >
+    <VIcon :name="icon" scale="1.25" />
+  </DsfrButton>
 </template>
 
 <script setup lang="ts">
@@ -21,17 +24,12 @@ const props = defineProps({
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 
-const toggleBookmark = () => {
-  baseStore.toggleBookmark(props.baseId)
-}
+const toggleBookmark = () => baseStore.toggleBookmark(props.baseId)
+const isBookmared = computed(() => baseStore.basesById[props.baseId].bookmarked)
 const icon = computed<string>(() => {
-  return baseStore.basesById[props.baseId].bookmarked
-    ? "ri-star-fill"
-    : "ri-star-line"
+  return isBookmared.value ? "ri-star-fill" : "ri-star-line"
 })
 const title = computed<string>(() => {
-  return baseStore.basesById[props.baseId].bookmarked
-    ? "Ajoutée aux favoris"
-    : "Ajouter aux favoris"
+  return isBookmared.value ? "Ajoutée aux favoris" : "Ajouter aux favoris"
 })
 </script>
