@@ -182,7 +182,14 @@
               </li>
             </template>
           </ul>
-          <ul class="fr-links-group" style="width: 160px">
+          <ul class="fr-links-group" style="justify-content: flex-end">
+            <li>
+              <NuxtLink to="/favoris">
+                <button class="fr-btn--tertiary-no-outline fr-text--sm">
+                  Mes bases favorites
+                </button>
+              </NuxtLink>
+            </li>
             <li>
               <button
                 class="fr-btn--tertiary-no-outline fr-text--sm"

@@ -66,6 +66,23 @@ export const useBaseStore = defineStore("base", {
         ? "Chargement de l'image"
         : false
     },
+    async toggleBookmark(baseId: number) {
+      const bookmark = !this.basesById[baseId].bookmarked
+      const urlEnd = bookmark ? "bookmark" : "remove_bookmark"
+      const message = bookmark
+        ? "La base a bien été enregistrée en favoris"
+        : "La base a bien été retirée des favoris"
+      const { data, error } = await useApiGet<Base>(
+        `bases/${baseId}/${urlEnd}/`,
+        {},
+        message,
+        true
+      )
+      if (!error.value) {
+        this.basesById[baseId].bookmarked = bookmark
+      }
+      return { data, error }
+    },
     async createBase(base: BaseCreate) {
       const { data, error } = await useApiPost<Base>(
         "bases/",
@@ -172,11 +189,17 @@ export const useBaseStore = defineStore("base", {
           }
         })
     },
+    bookmarks: (state) => {
+      return state.basesOrder
+        .map((baseId) => state.basesById[baseId])
+        .filter((base) => base.bookmarked)
+    },
     current: (state): Base => {
       if (state.currentId) {
         return state.basesById[state.currentId]
       }
       return {
+        bookmarked: false,
         id: -1,
         title: "",
         owner: -1,

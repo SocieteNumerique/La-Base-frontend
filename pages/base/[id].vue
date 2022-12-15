@@ -78,8 +78,8 @@
                 @close="showReportModal = false"
               />
             </div>
-            <div v-if="base?.canWrite" style="padding-top: 7px">
-              <IntroTooltip slug="CREATE_FICHE">
+            <div style="padding-top: 7px; display: flex">
+              <IntroTooltip v-if="base?.canWrite" slug="CREATE_FICHE">
                 <DsfrButton
                   icon="ri-add-line"
                   label="Ajouter une fiche"
@@ -87,6 +87,9 @@
                   @click="onAddResourceClick"
                 />
               </IntroTooltip>
+              <div class="fr-ml-2w">
+                <BaseBookmarkButton :base-id="base.id" />
+              </div>
             </div>
           </div>
         </div>

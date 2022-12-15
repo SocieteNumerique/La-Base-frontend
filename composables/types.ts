@@ -185,6 +185,7 @@ export type Base = {
   admins?: User[]
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
+  bookmarked: boolean
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]
@@ -204,12 +205,12 @@ export type Base = {
   resourceChoices?: Resource[]
   collectionChoices?: Collection[]
   resources?: ResourcesWithPagination
-  socialMediaFacebook: string
-  socialMediaLinkedin: string
-  socialMediaMastodon: string
-  socialMediaTwitter: string
+  socialMediaFacebook?: string
+  socialMediaLinkedin?: string
+  socialMediaMastodon?: string
+  socialMediaTwitter?: string
   state?: string
-  stats: BaseStats
+  stats?: BaseStats
   tags?: number[]
   territoryTags?: number[]
   title: string
@@ -223,6 +224,7 @@ export type ResourcesWithPagination = {
   results: Resource[]
 }
 export type BaseWithDetailedResources = {
+  bookmarked: boolean
   id: number
   isShort?: boolean
   owner: User | number

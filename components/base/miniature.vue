@@ -1,7 +1,11 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-p-2w toolbar">
+    <div
+      class="fr-grid-row fr-p-2w toolbar"
+      style="display: flex; justify-content: space-between"
+    >
       <ShareButton :link="link" />
+      <BaseBookmarkButton :base-id="base.id" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div class="banner">
@@ -73,8 +77,12 @@ import { computed, PropType } from "vue"
 import { Base } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { pluralize } from "~/composables/strUtils"
+import { useBaseStore } from "~/stores/baseStore"
+import { useUserStore } from "~/stores/userStore"
 
 const tagStore = useTagStore()
+const baseStore = useBaseStore()
+const userStore = useUserStore()
 
 const props = defineProps({
   base: { type: Object as PropType<Base>, required: true },
