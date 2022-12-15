@@ -17,18 +17,17 @@
       class="fr-btn"
       @click="isMenuShown = !isMenuShown"
     >
-      <span v-show="atLeastOnePin">
+      <span v-if="atLeastOnePin">
         Enregistrée
         <VIcon
           name="ri-arrow-down-s-line"
           style="position: relative; top: 2px"
         />
       </span>
-      <span v-show="!atLeastOnePin">Enregistrer</span>
+      <span v-if="!atLeastOnePin">Enregistrer</span>
     </button>
     <div
-      v-if="pinStatuses"
-      v-show="isMenuShown"
+      v-if="isMenuShown && pinStatuses"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
       <div v-if="iControlRootBase" class="item fr-text-default--grey">
