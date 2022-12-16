@@ -5,21 +5,28 @@
 
       <div v-if="baseStore.bookmarks.length">
         <div
-          v-if="baseStore.bookmarks.length > 3"
-          class="fr-search-bar fr-input-group"
+          style="display: flex; justify-content: space-between"
+          class="fr-mb-4w"
         >
-          <input
-            id="search"
-            v-model="textInput"
-            class="fr-input"
-            type="text"
-            placeholder="Filtrer parmi mes bases favorites"
-            style="width: 308px"
-          />
-          <button class="fr-btn">
-            <VIcon name="ri-search-line" />
-          </button>
+          <div
+            v-if="baseStore.bookmarks.length > 3"
+            class="fr-search-bar fr-input-group"
+          >
+            <input
+              id="search"
+              v-model="textInput"
+              class="fr-input"
+              type="text"
+              placeholder="Filtrer parmi mes bases favorites"
+              style="width: 308px"
+            />
+            <button class="fr-btn">
+              <VIcon name="ri-search-line" />
+            </button>
+          </div>
+          <div>{{ baseStore.bookmarks.length }} bases favorites</div>
         </div>
+
         <div class="bases-holder">
           <template v-if="results.length">
             <BaseMiniature
