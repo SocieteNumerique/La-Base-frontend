@@ -118,7 +118,7 @@
       </div>
     </template>
 
-    <template v-if="base.sections.length">
+    <template v-if="base.sections?.length">
       <BaseSection
         v-for="sectionId in base.sections"
         :key="sectionId"
