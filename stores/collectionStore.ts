@@ -84,5 +84,23 @@ export const useCollectionStore = defineStore("collection", {
       const collection = this.collectionsById[collectionId]
       collection.pinnedInBases = pinnedInBases
     },
+    async updateResourceOnCollection(
+      collectionId: number,
+      resourceId: number,
+      action: "add" | "remove"
+    ) {
+      const { data, error } = await useApiPatch<Collection>(
+        `collections/${collectionId}/resources/`,
+        { resourceId, action },
+        {},
+        `La resource a bien été ${
+          action === "add" ? "ajouté" : "retiré"
+        } dans la collection`,
+        true
+      )
+      if (!error.value) {
+        this.collectionsById[data.value!.id!] = data.value!
+      }
+    },
   },
 })
