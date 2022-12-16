@@ -1,12 +1,15 @@
 <template>
   <DsfrButton
     v-if="userStore.isLoggedIn"
-    :label="bookmark.label"
-    :icon="bookmark.icon"
-    :class="bookmark.klass"
-    class="fr-btn--sm"
+    class="fr-btn--sm fr-btn--tertiary-no-outline"
+    :title="title"
+    :aria-pressed="isBookmared"
+    :aria-label="title"
+    style="padding: 5px"
     @click="toggleBookmark"
-  />
+  >
+    <VIcon :name="icon" scale="1.25" />
+  </DsfrButton>
 </template>
 
 <script setup lang="ts">
@@ -21,26 +24,12 @@ const props = defineProps({
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 
-const toggleBookmark = () => {
-  baseStore.toggleBookmark(props.baseId)
-}
-const bookmark = computed<{ label: string; icon: string; klass: string }>(
-  () => {
-    let label = "Ajouter aux favoris"
-    let icon = "ri-star-line"
-    let klass = ""
-    baseStore.basesById[props.baseId].bookmarked
-    if (baseStore.basesById[props.baseId].bookmarked) {
-      label = "Favoris"
-      icon = "ri-star-fill"
-      klass = "fr-btn--secondary"
-    }
-    console.log("### bookmark ?", { label, icon, klass })
-    return {
-      label,
-      icon,
-      klass,
-    }
-  }
-)
+const toggleBookmark = () => baseStore.toggleBookmark(props.baseId)
+const isBookmared = computed(() => baseStore.basesById[props.baseId].bookmarked)
+const icon = computed<string>(() => {
+  return isBookmared.value ? "ri-star-fill" : "ri-star-line"
+})
+const title = computed<string>(() => {
+  return isBookmared.value ? "Ajoutée aux favoris" : "Ajouter aux favoris"
+})
 </script>
