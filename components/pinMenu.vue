@@ -30,39 +30,22 @@
       v-if="isMenuShown && pinStatuses"
       class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
     >
-      <div v-if="iControlRootBase" class="item fr-text-default--grey">
-        <BaseLabel :base="baseStore.basesById[rootBaseId]" class="fr-mr-2v">
-          <div>
-            <div
-              style="
-                text-overflow: ellipsis;
-                width: 230px;
-                overflow: hidden;
-                white-space: nowrap;
-              "
-            >
-              {{ baseStore.basesById[rootBaseId]?.title }}
-            </div>
-            <div class="fr-text-mention--grey">Base propriétaire</div>
-          </div>
-        </BaseLabel>
-        <VIcon class="unchangeable-check" name="ri-checkbox-circle-fill" />
-      </div>
-      <template v-for="{ id, isPinned } of pinStatuses" :key="id">
-        <div
-          :class="isPinned ? '-checked' : ''"
-          class="item"
-          @click="togglePin({ id, isPinned: isPinned })"
-        >
-          <BaseLabel
-            style="width: 280px"
-            :base="baseStore.basesById[id]"
-            class="fr-mr-2v"
-          />
-          <VIcon class="check fr-ml-auto" name="ri-check-line" />
-          <VIcon class="cross fr-ml-auto" name="ri-close-line" />
-        </div>
-      </template>
+      <PinMenuLine
+        v-if="iControlRootBase"
+        :model-value="true"
+        :base-id="rootBaseId"
+        :is-root-base="true"
+        :instance-id="instanceId"
+      />
+
+      <PinMenuLine
+        v-for="pinStatus of pinStatuses"
+        :key="pinStatus.id"
+        :model-value="pinStatus.isPinned"
+        :base-id="pinStatus.id"
+        :instance-id="instanceId"
+        @update:model-value="togglePin(pinStatus)"
+      />
       <div class="item" @click="showAddBaseModal = true">
         <VIcon class="fr-mr-1w" name="ri-add-circle-line" />
         Créer une base
@@ -77,6 +60,7 @@ import { PropType } from "vue"
 import { PinStatus } from "~/composables/types"
 import { useUserStore } from "~/stores/userStore"
 import { useResourceStore } from "~/stores/resourceStore"
+import PinMenuLine from "~/components/base/PinMenuLine.vue"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
@@ -108,7 +92,6 @@ onFocusOut(
   newBaseContainerId.value,
   () => showAddBaseModal.value
 )
-
 const savedPinStatuses = useModel<number[]>("modelValue", {
   type: "array",
 })
