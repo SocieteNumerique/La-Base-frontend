@@ -37,6 +37,7 @@
                         :key="base.id"
                         :to="`/base/${base.id}`"
                         class="item"
+                        style="width: 100%"
                       >
                         <BaseLabel :base="base" />
                       </NuxtLink>

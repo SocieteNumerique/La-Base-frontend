@@ -1,18 +1,26 @@
 <template>
-  <span class="base-label">
-    <div>
-      <ImageResized
-        :resizable-image="base.profileImage"
-        format="option"
-        circle
-        class="fr-mr-2v"
-        default-image="base"
-      />
+  <div class="base-label">
+    <div
+      style="display: flex; align-items: center; max-width: 340px"
+      class="fr-text--xs fr-pr-2w"
+    >
+      <div>
+        <ImageResized
+          :resizable-image="base.profileImage"
+          format="option"
+          circle
+          class="fr-mr-2v"
+          default-image="base"
+        />
+      </div>
+      <slot>
+        {{ base.title }}
+      </slot>
     </div>
-    <slot>
-      {{ base.title }}
-    </slot>
-  </span>
+    <div class="fr-text-mention--grey fr-text--xs">
+      {{ base.canWrite ? "Administrateur" : "Contributeur" }}
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -35,4 +43,6 @@ defineProps({
 .base-label
   display: flex
   align-items: center
+  justify-content: space-between
+  width: 100%
 </style>
