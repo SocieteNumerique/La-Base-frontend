@@ -203,7 +203,7 @@
               />
             </div>
             <div v-if="activeMenu == 'resource'" id="resource">
-              <div class="fr-grid-row" style="flex-direction: row-reverse">
+              <div class="fr-grid-row">
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
                     <h2 class="fr-text--md fr-text--bold">Description</h2>
