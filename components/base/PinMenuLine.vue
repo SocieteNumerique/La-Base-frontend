@@ -57,7 +57,6 @@ import { useBaseStore } from "~/stores/baseStore"
 import { DsfrCheckbox } from "@gouvminint/vue-dsfr"
 import { useModel } from "~/composables/modelWrapper"
 import { PropType } from "vue"
-import PinMenuLineCollection from "~/components/base/PinMenuLineCollection.vue"
 
 const props = defineProps({
   baseId: { type: Number, required: true },
