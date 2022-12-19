@@ -215,7 +215,7 @@ export type Base = {
   territoryTags?: number[]
   title: string
   website?: string
-  showLatestAdditions: boolean
+  showLatestAdditions?: boolean
   sections?: number[]
 }
 export type ResourcesWithPagination = {

@@ -177,17 +177,10 @@ export const useBaseStore = defineStore("base", {
     bases: (state) => {
       return state.basesOrder.map((baseId) => state.basesById[baseId])
     },
-    baseOptions: (state) => {
+    baseOptions: (state): Base[] => {
       return state.basesOrder
         .map((baseId) => state.basesById[baseId])
         .filter((base) => base?.canWrite || base?.canAddResources)
-        .map((base) => {
-          return {
-            title: base.title,
-            id: base.id,
-            profileImage: base.profileImage,
-          }
-        })
     },
     bookmarks: (state) => {
       return state.basesOrder
