@@ -81,11 +81,12 @@
                 label="Partager"
               />
             </ShareButton>
-            <!-- TODO should show the report modal on click-->
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
-              <a :href="mailToHref" class="no-underline">
-                <RoundButton icon="ri-alert-line" label="Signaler" />
-              </a>
+              <RoundButton
+                icon="ri-alert-line"
+                label="Signaler"
+                @click="showReportModal = true"
+              />
             </IntroTooltip>
 
             <ReportSimpleModal
@@ -249,21 +250,6 @@ const showReportModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
-const mailToHref = computed(() => {
-  let toReturn = "mailto:labase@anct.gouv.fr"
-  if (!resource.value) {
-    return toReturn
-  }
-  const subject = `[La Base] Signalement pour la ressource "${resource.value.title}" (id ${resource.value.id})`
-  let body: string
-  if (process.client) {
-    body = `Ce signalement concerne la ressource suivante : ${window.location.href}`
-  } else {
-    body = ""
-  }
-  return `${toReturn}?subject=${subject}&body=${body}`
-})
-
 const selectMenu = (key: string) => {
   activeMenu.value = key
   const el = document.getElementById(key)

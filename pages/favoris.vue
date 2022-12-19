@@ -41,7 +41,7 @@
         </div>
       </div>
       <div v-else>
-        Vous n’avez pas encore ajouté de bases à vos favoris..
+        Vous n’avez pas encore ajouté de bases à vos favoris.
         <div class="fr-mt-2w">
           <NuxtLink to="/recherche?dataType=bases" class="no-underline">
             <DsfrButton
