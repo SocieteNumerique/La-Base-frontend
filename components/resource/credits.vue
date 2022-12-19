@@ -78,20 +78,19 @@ const producers = computed<Producer[]>(() => {
         href: `/base/${baseId}`,
       })
     }
-  } else if (resource.value.producerState == "know") {
-    for (const externalProducer of resource.value.externalProducers!) {
-      const producer: Producer = { name: externalProducer.name }
-      if (externalProducer.websiteUrl) {
-        producer.href = externalProducer.websiteUrl
-        producer.isExternalLink = true
-      } else if (externalProducer.emailContact) {
-        producer.href = `mailto:${externalProducer.emailContact}`
-      }
-      if (externalProducer.occupation) {
-        producer.tag = tagStore.tagsById[externalProducer.occupation]
-      }
-      toReturn.push(producer)
+  }
+  for (const externalProducer of resource.value.externalProducers!) {
+    const producer: Producer = { name: externalProducer.name }
+    if (externalProducer.websiteUrl) {
+      producer.href = externalProducer.websiteUrl
+      producer.isExternalLink = true
+    } else if (externalProducer.emailContact) {
+      producer.href = `mailto:${externalProducer.emailContact}`
     }
+    if (externalProducer.occupation) {
+      producer.tag = tagStore.tagsById[externalProducer.occupation]
+    }
+    toReturn.push(producer)
   }
 
   return toReturn
