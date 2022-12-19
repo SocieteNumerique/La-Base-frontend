@@ -1,33 +1,43 @@
 <template>
-  <div v-if="producers.length">
-    <p class="fr-text--bold fr-mb-0 fr-text--sm">Crédits de la ressource</p>
-    <p
-      v-for="producer in producers"
-      :key="producer.name"
-      class="fr-text--sm fr-m-0"
-    >
-      <template v-if="producer.href">
-        <template v-if="producer.isExternalLink">
-          <a
-            :href="producer.href"
-            class="fr-text-label--blue-france no-underline underlined-on-hover"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ producer.name }}
-          </a>
+  <div>
+    <h2 class="fr-text--bold fr-mb-2w fr-text--md">Crédits de la ressource</h2>
+    <div v-if="producers.length">
+      <p
+        v-for="producer in producers"
+        :key="producer.name"
+        class="fr-text--sm fr-m-0"
+      >
+        <template v-if="producer.href">
+          <template v-if="producer.isExternalLink">
+            <a
+              :href="producer.href"
+              class="fr-text-label--blue-france no-underline underlined-on-hover"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ producer.name }}
+            </a>
+          </template>
+          <template v-else>
+            <NuxtLink
+              :to="producer.href"
+              class="fr-text-label--blue-france no-underline underlined-on-hover"
+              :title="producer.href"
+            >
+              {{ producer.name }}
+            </NuxtLink>
+          </template>
         </template>
-        <template v-else>
-          <NuxtLink
-            :to="producer.href"
-            class="fr-text-label--blue-france no-underline underlined-on-hover"
-            :title="producer.href"
-          >
-            {{ producer.name }}
-          </NuxtLink>
-        </template>
-      </template>
-    </p>
+      </p>
+    </div>
+    <div>
+      <DsfrButton
+        label="Demander à être crédité"
+        icon="ri-arrow-right-line"
+        icon-right
+        class="fr-btn--tertiary-no-outline fr-btn--sm fr-pl-0"
+      />
+    </div>
   </div>
 </template>
 

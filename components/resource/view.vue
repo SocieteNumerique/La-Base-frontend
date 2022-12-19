@@ -187,6 +187,16 @@
           </div>
           <div class="fr-col-9">
             <div v-if="activeMenu == 'informations'" id="informations">
+              <h2
+                v-if="resource?.resourceCreatedOn"
+                class="fr-text--bold fr-mb-0 fr-text--md"
+              >
+                Date de création
+              </h2>
+              <p>{{ resource?.resourceCreatedOn }}</p>
+              <hr class="fr-mt-3w fr-pb-3w" />
+              <ResourceCredits />
+              <hr class="fr-mt-3w fr-pb-1w" />
               <IndexTable
                 v-if="resource && !resource.isShort"
                 :element="resource"
@@ -194,17 +204,6 @@
             </div>
             <div v-if="activeMenu == 'resource'" id="resource">
               <div class="fr-grid-row" style="flex-direction: row-reverse">
-                <div class="fr-col-md-4">
-                  <p
-                    v-if="resource?.resourceCreatedOn"
-                    class="fr-text--bold fr-mb-0 fr-text--sm"
-                  >
-                    Date de création de la ressource
-                  </p>
-                  <p class="fr-text--sm">{{ resource?.resourceCreatedOn }}</p>
-                  <ResourceCredits />
-                  <p></p>
-                </div>
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
                     <h2 class="fr-text--md fr-text--bold">Description</h2>
