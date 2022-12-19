@@ -94,8 +94,8 @@ export const useCollectionStore = defineStore("collection", {
         { resourceId, action },
         {},
         `La resource a bien été ${
-          action === "add" ? "ajouté" : "retiré"
-        } dans la collection`,
+          action === "add" ? "ajoutée" : "retirée"
+        } à la collection`,
         true
       )
       if (!error.value) {
