@@ -134,11 +134,7 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
-<<<<<<< HEAD
-import { BaseSectionType } from "~/composables/types"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
-=======
->>>>>>> 468f7fb (Get latest additions resources and section resources)
 
 const baseStore = useBaseStore()
 const baseSectionStore = useBaseSectionStore()
