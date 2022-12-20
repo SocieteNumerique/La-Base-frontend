@@ -10,15 +10,11 @@
                 <li style="align-items: center">
                   <button
                     class="fr-btn--tertiary-no-outline fr-text--sm"
-                    title="didacticiel"
+                    title="Afficher le didacticiel"
                     aria-label="Afficher le didacticiel"
                     @click="introStore.showAllInPage"
                   >
-                    <VIcon
-                      name="ri-question-line"
-                      class="fr-mr-1w"
-                      scale="0.85"
-                    />
+                    <VIcon name="ri-question-line" scale="0.85" />
                   </button>
                 </li>
                 <li

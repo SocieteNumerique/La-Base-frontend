@@ -10,14 +10,14 @@
         >
           <div
             v-if="baseStore.bookmarks.length > 3"
-            class="fr-search-bar fr-input-group"
+            class="fr-search-bar fr-input-group fr-mb-0"
           >
             <input
               id="search"
               v-model="textInput"
               class="fr-input"
               type="text"
-              placeholder="Filtrer parmi mes bases favorites"
+              placeholder="Rechercher parmi mes bases favorites"
               style="width: 308px"
             />
             <button class="fr-btn">

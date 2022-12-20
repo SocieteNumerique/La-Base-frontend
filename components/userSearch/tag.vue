@@ -10,6 +10,7 @@
       name="ri-delete-bin-line"
       class="fr-ml-2w"
       style="color: var(--text-action-high-blue-france)"
+      scale="0.75"
       @click.stop="deleteSearch"
     />
   </button>

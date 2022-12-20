@@ -200,8 +200,23 @@
               @update:model-value="onRadioFileBaseFilter"
             />
           </div>
-          <div class="fr-mt-3v">
-            {{ nResults }} {{ pluralize(["résultat"], nResults) }}
+          <div
+            class="fr-mt-1w"
+            style="display: flex; justify-content: space-between"
+          >
+            <div class="fr-mt-3v">
+              {{ nResults }} {{ pluralize(["résultat"], nResults) }}
+            </div>
+            <div style="display: flex; align-items: flex-end">
+              <DsfrButton
+                label="Enregistrer la recherche actuelle"
+                icon="ri-save-line"
+                secondary
+                class="fr-btn--sm"
+                :disabled="isSaveSearchDisabled"
+                @click="showUserSearchAddModal = true"
+              />
+            </div>
           </div>
         </template>
         <template v-else>
@@ -227,6 +242,8 @@
                 label="Enregistrer la recherche actuelle"
                 icon="ri-save-line"
                 secondary
+                class="fr-btn--sm"
+                :disabled="isSaveSearchDisabled"
                 @click="showUserSearchAddModal = true"
               />
             </div>
@@ -435,7 +452,9 @@ const onTextInput = () => {
 }
 
 const selectUserSearch = (search: UserSearch) => {
-  activeUserSearch.value = search.id
+  // we use a timeout because otherwise the route watchers would
+  // overwrite activeSearchValue to -1
+  setTimeout(() => (activeUserSearch.value = search.id), 200)
   router.replace({
     query: {
       dataType: dataType.value,
@@ -527,6 +546,14 @@ const setSearchHistory = () => {
   )
     ? (resourceBaseFilter.value as "create" | "save")
     : ""
+}
+
+const isSaveSearchDisabled = () => {
+  return (
+    textInput.value === "" &&
+    selectedTags.value.length === 0 &&
+    tagOperator.value === "AND"
+  )
 }
 
 onMounted(() => {

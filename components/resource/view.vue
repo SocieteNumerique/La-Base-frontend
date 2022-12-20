@@ -189,7 +189,7 @@
             <div v-if="activeMenu == 'informations'" id="informations">
               <h2
                 v-if="resource?.resourceCreatedOn"
-                class="fr-text--bold fr-mb-0 fr-text--md"
+                class="fr-text--bold fr-mb-3v fr-text--md"
               >
                 Date de création
               </h2>

@@ -17,7 +17,7 @@
         {{ base.title }}
       </slot>
     </div>
-    <div class="fr-text-mention--grey fr-text--xs">
+    <div class="admin-or-contributor">
       {{ base.canWrite ? "Administrateur" : "Contributeur" }}
     </div>
   </div>
@@ -45,4 +45,7 @@ defineProps({
   align-items: center
   justify-content: space-between
   width: 100%
+.admin-or-contributor
+  color: #929292
+  font-size: 10px
 </style>

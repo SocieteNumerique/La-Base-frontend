@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    <hr class="fr-pb-4w fr-mt-5w" />
+    <hr class="fr-pb-4w fr-mt-4w" />
     <div class="fr-grid-row fr-grid-row--gutters">
       <div class="fr-col-sm-6">
         <button
@@ -100,8 +100,13 @@
       </div>
     </div>
 
+    <hr class="fr-pb-4w fr-mt-4w" />
+
+    <div style="display: flex; justify-content: flex-end" class="fr-mb-3v">
+      <DsfrButton label="Rubriques à la une" secondary icon="ri-add-line" />
+    </div>
+
     <template v-if="base.showLatestAdditions && latestResources.length">
-      <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
         <ResourceMiniature
@@ -130,6 +135,7 @@ import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
 import { BaseSectionType } from "~/composables/types"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const baseSectionStore = useBaseSectionStore()

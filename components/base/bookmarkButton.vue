@@ -4,7 +4,7 @@
     class="fr-btn--sm fr-btn--tertiary-no-outline"
     :title="title"
     :aria-pressed="isBookmared"
-    :aria-label="title"
+    :aria-label="ariaLabel"
     style="padding: 5px"
     @click="toggleBookmark"
   >
@@ -30,6 +30,11 @@ const icon = computed<string>(() => {
   return isBookmared.value ? "ri-star-fill" : "ri-star-line"
 })
 const title = computed<string>(() => {
-  return isBookmared.value ? "Ajoutée aux favoris" : "Ajouter aux favoris"
+  return isBookmared.value ? "Retirer des favoris" : "Ajouter aux favoris"
+})
+const ariaLabel = computed<string>(() => {
+  return isBookmared.value
+    ? "Cliquer pour ajouter la base aux favoris"
+    : "Cliquer pour retirer la base des favoris"
 })
 </script>
