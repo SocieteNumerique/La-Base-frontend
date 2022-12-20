@@ -1,8 +1,6 @@
 <template>
   <div class="fr-container">
-    <IntroTooltip slug="PRESENTATION">
-      <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
-    </IntroTooltip>
+    <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
     <div class="is-flex fr-mb-3w" style="align-items: center">
       <div class="stat">
         <span class="fr-text--xl fr-text--bold">{{
@@ -103,7 +101,9 @@
     <hr class="fr-pb-4w fr-mt-4w" />
 
     <div style="display: flex; justify-content: flex-end" class="fr-mb-3v">
-      <DsfrButton label="Rubriques à la une" secondary icon="ri-add-line" />
+      <IntroTooltip slug="NEW_BASE_SECTIONS">
+        <DsfrButton label="Rubriques à la une" secondary icon="ri-add-line" />
+      </IntroTooltip>
     </div>
 
     <template v-if="base.showLatestAdditions && latestResources.length">

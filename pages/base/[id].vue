@@ -47,13 +47,15 @@
           />
           <div class="has-children-space-between">
             <div>
-              <ShareButton :link="route.fullPath">
-                <RoundButton
-                  icon="ri-share-line"
-                  class="fr-pl-0"
-                  label="Partager"
-                />
-              </ShareButton>
+              <IntroTooltip slug="BASE_SHARE">
+                <ShareButton :link="route.fullPath">
+                  <RoundButton
+                    icon="ri-share-line"
+                    class="fr-pl-0"
+                    label="Partager"
+                  />
+                </ShareButton>
+              </IntroTooltip>
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
@@ -64,13 +66,15 @@
                   @click="showReportModal = true"
                 />
               </IntroTooltip>
-              <a
-                v-show="base?.contact"
-                :href="mailToHrefContact"
-                class="no-underline"
-              >
-                <RoundButton icon="ri-mail-line" label="Contacter" />
-              </a>
+              <IntroTooltip slug="BASE_CONTACT">
+                <a
+                  v-show="base?.contact"
+                  :href="mailToHrefContact"
+                  class="no-underline"
+                >
+                  <RoundButton icon="ri-mail-line" label="Contacter" />
+                </a>
+              </IntroTooltip>
               <ReportSimpleModal
                 v-if="showReportModal"
                 :id="base.id"
@@ -102,12 +106,16 @@
           <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'presentation' ? 'page' : null"
-                  @click="currentTab = 'presentation'"
-                >
-                  <button>Présentation</button>
-                </NuxtLink>
+                <IntroTooltip slug="PRESENTATION">
+                  <NuxtLink
+                    :aria-current="
+                      currentTab === 'presentation' ? 'page' : null
+                    "
+                    @click="currentTab = 'presentation'"
+                  >
+                    <button>Présentation</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
               <li>
                 <IntroTooltip slug="TAB_FICHES">

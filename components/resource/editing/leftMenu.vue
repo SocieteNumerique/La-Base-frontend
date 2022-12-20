@@ -112,31 +112,33 @@
           </div>
         </div>
         <div class="bottom-button-holder fr-mt-7w">
-          <button
-            class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
-            :class="{
-              'fr-text-default--error': duplicatedResourceIds.length,
-            }"
-            :disabled="duplicatedResourceIds.length === 0"
-            @click="showDuplicateResourcesModal = true"
-          >
-            <span class="fr-pr-1w fr-pt-1v">
-              <VIcon
-                :name="
+          <IntroTooltip slug="DUPLICATES_DETECTOR">
+            <button
+              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
+              :class="{
+                'fr-text-default--error': duplicatedResourceIds.length,
+              }"
+              :disabled="duplicatedResourceIds.length === 0"
+              @click="showDuplicateResourcesModal = true"
+            >
+              <span class="fr-pr-1w fr-pt-1v">
+                <VIcon
+                  :name="
+                    duplicatedResourceIds.length
+                      ? 'ri-alert-fill'
+                      : 'ri-checkbox-circle-line'
+                  "
+                />
+              </span>
+              {{ duplicatedResourceIds.length }}
+              {{
+                pluralize(
+                  ["doublon détécté", "doublons détéctés"],
                   duplicatedResourceIds.length
-                    ? 'ri-alert-fill'
-                    : 'ri-checkbox-circle-line'
-                "
-              />
-            </span>
-            {{ duplicatedResourceIds.length }}
-            {{
-              pluralize(
-                ["doublon détécté", "doublons détéctés"],
-                duplicatedResourceIds.length
-              )
-            }}
-          </button>
+                )
+              }}
+            </button>
+          </IntroTooltip>
           <IntroTooltip slug="LEFT_MENU_PREVIEW" class="fr-mb-3v">
             <DsfrButton
               :secondary="true"

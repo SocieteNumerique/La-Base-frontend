@@ -74,13 +74,15 @@
         </div>
         <div class="has-children-space-between fr-py-3v">
           <div>
-            <ShareButton :link="route.fullPath">
-              <RoundButton
-                icon="ri-share-line"
-                class="fr-pl-0"
-                label="Partager"
-              />
-            </ShareButton>
+            <IntroTooltip slug="RESOURCE_SHARE">
+              <ShareButton :link="route.fullPath">
+                <RoundButton
+                  icon="ri-share-line"
+                  class="fr-pl-0"
+                  label="Partager"
+                />
+              </ShareButton>
+            </IntroTooltip>
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
               <RoundButton
                 icon="ri-alert-line"

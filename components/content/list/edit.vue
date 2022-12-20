@@ -112,14 +112,16 @@
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
-      <button
-        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-        @click="$emit('new-section', 'Nouvelle section')"
-      >
-        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
-        <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
-        Créer une section
-      </button>
+      <IntroTooltip slug="ADD_CONTENT_SECTION">
+        <button
+          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
+          @click="$emit('new-section', 'Nouvelle section')"
+        >
+          <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+          <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
+          Créer une section
+        </button>
+      </IntroTooltip>
     </div>
   </div>
 </template>
