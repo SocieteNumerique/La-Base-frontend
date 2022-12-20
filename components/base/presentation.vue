@@ -106,14 +106,14 @@
       </IntroTooltip>
     </div>
 
-    <template v-if="base.showLatestAdditions && latestResources.length">
+    <template v-if="base.showLatestAdditions && base.latestAdditions.length">
+      <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
-        <ResourceMiniature
-          v-for="resource of latestResources"
-          :key="resource.id"
-          v-model="resource.pinnedInBases"
-          :resource="resource"
+        <ResourceMiniatureById
+          v-for="resourceId of base.latestAdditions"
+          :key="resourceId"
+          :resource-id="resourceId"
         />
       </div>
     </template>
@@ -134,8 +134,11 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
+<<<<<<< HEAD
 import { BaseSectionType } from "~/composables/types"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
+=======
+>>>>>>> 468f7fb (Get latest additions resources and section resources)
 
 const baseStore = useBaseStore()
 const baseSectionStore = useBaseSectionStore()
@@ -158,12 +161,6 @@ const currentTab = computed<"presentation" | "resources" | "collections">({
     "presentation",
   set: (type: "presentation" | "resources" | "collections") =>
     router.push({ query: { ...route.query, tab: type } }),
-})
-const latestResources = computed(() => {
-  if (base.value && !base.value.isShort) {
-    return base.value!.resources!.results.slice(0, 3)
-  }
-  return []
 })
 const territory = computed<string>(() =>
   (

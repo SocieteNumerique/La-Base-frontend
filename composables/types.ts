@@ -216,7 +216,9 @@ export type Base = {
   title: string
   website?: string
   showLatestAdditions?: boolean
+  latestAdditions: number[]
   sections?: number[]
+  resources_sections?: Resource[]
 }
 export type ResourcesWithPagination = {
   count: number
@@ -231,8 +233,10 @@ export type BaseWithDetailedResources = {
   resources?: ResourcesWithPagination
   title: string
   collections: CollectionWithDetailedResources[]
-  sections: BaseSection[]
+  sections?: BaseSection[]
   resourcesInPinnedCollections?: Resource[]
+  latestAdditions?: Resource[]
+  sectionResources?: Resource[]
 }
 
 type BaseContent = {
