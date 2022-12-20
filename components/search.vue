@@ -6,7 +6,7 @@
       "
     >
       <div
-        class="fr-pb-3w fr-pt-4w"
+        class="fr-pt-5v fr-pb-4v"
         style="background: var(--background-alt-blue-france)"
       >
         <div class="fr-container">

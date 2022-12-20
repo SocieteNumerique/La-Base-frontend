@@ -7,6 +7,20 @@
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
+                <li style="align-items: center">
+                  <button
+                    class="fr-btn--tertiary-no-outline fr-text--sm"
+                    title="didacticiel"
+                    aria-label="Afficher le didacticiel"
+                    @click="introStore.showAllInPage"
+                  >
+                    <VIcon
+                      name="ri-question-line"
+                      class="fr-mr-1w"
+                      scale="0.85"
+                    />
+                  </button>
+                </li>
                 <li
                   v-if="userStore.isLoggedIn"
                   id="header-bases-list"
@@ -76,7 +90,7 @@
                         Mon profil
                         <VIcon
                           :name="`ri-arrow-${
-                            showBasesList ? 'up' : 'down'
+                            showProfileMenu ? 'up' : 'down'
                           }-s-line`"
                           class="fr-ml-3v"
                         />
@@ -186,19 +200,15 @@
           <ul class="fr-links-group" style="justify-content: flex-end">
             <li>
               <NuxtLink to="/favoris">
-                <button class="fr-btn--tertiary-no-outline fr-text--sm">
+                <button class="fr-text--sm">
+                  <VIcon
+                    name="ri-star-line"
+                    scale="0.90"
+                    style="margin-right: 6px; position: relative; top: 1px"
+                  />
                   Mes bases favorites
                 </button>
               </NuxtLink>
-            </li>
-            <li>
-              <button
-                class="fr-btn--tertiary-no-outline fr-text--sm"
-                @click="introStore.showAllInPage"
-              >
-                <VIcon name="ri-question-line" class="fr-mr-1w" scale="0.85" />
-                Didacticiel
-              </button>
             </li>
           </ul>
         </div>
@@ -271,4 +281,10 @@ const pages = computed(() => pageStore.pages)
     font-size: 14px
     button
       line-height: 1.5rem
+
+.fr-header__tools
+  li+li
+    box-shadow: -5px 0px 0px -4px var(--border-default-grey)
+  li
+    padding: 0 4px
 </style>
