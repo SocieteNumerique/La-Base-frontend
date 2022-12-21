@@ -216,7 +216,7 @@ export type Base = {
   title: string
   website?: string
   showLatestAdditions?: boolean
-  latestAdditions: number[]
+  latestAdditions?: number[]
   sections?: number[]
   resources_sections?: Resource[]
 }
