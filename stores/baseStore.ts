@@ -44,7 +44,7 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
   saveInOtherStores(useCollectionStore().collectionsById, newCollections)
   saveInOtherStores(useBaseSectionStore().baseSectionsById, base.sections)
   saveInOtherStores(resourceStore.resourcesById, base.sectionResources)
-  saveInOtherStores(useResourceStore().resourcesById, base.latestAdditions)
+  saveInOtherStores(resourceStore.resourcesById, base.latestAdditions)
 
   baseStore.basesById[base.id] = {
     ...base,
