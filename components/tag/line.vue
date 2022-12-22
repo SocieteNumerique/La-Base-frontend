@@ -6,13 +6,13 @@
         'fr-text--disabled': !!disabled,
       }"
     >
-      <p
+      <button
         class="fr-m-0 cursor--pointer fr-text--sm"
         :title="props.tag.name"
         @click="!disabled && emit('select')"
       >
         {{ props.tag.name }}
-      </p>
+      </button>
       <div class="fr-text--sm fr-m-0 grid-tag-icons">
         <VIcon
           v-if="props.tag.definition"

@@ -6,20 +6,16 @@
         :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
       />
       <div class="is-flex fr-ml-auto" style="align-items: center">
-        <nuxt-link
+        <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="no-underline"
+          class="fr-btn--tertiary-no-outline fr-mr-2w no-underline"
           :target="targetLink"
+          title="Éditer la fiche"
+          aria-label="Éditer la fiche"
         >
-          <button
-            class="fr-btn--tertiary-no-outline fr-mr-2w"
-            title="Éditer la fiche"
-            aria-label="Éditer la fiche"
-          >
-            <VIcon name="ri-edit-line" />
-          </button>
-        </nuxt-link>
+          <VIcon name="ri-edit-line" />
+        </NuxtLink>
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -33,6 +29,7 @@
       :to="`/ressource/${resource?.id}`"
       class="no-underline"
       :target="targetLink"
+      style="outline-style: revert"
     >
       <div
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
