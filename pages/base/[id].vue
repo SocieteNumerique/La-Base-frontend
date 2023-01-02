@@ -47,7 +47,7 @@
           />
           <div class="has-children-space-between">
             <div>
-              <IntroTooltip slug="BASE_SHARE">
+              <IntroTooltip slug="BASE_SHARE" style="display: inline-block">
                 <ShareButton :link="route.fullPath">
                   <RoundButton
                     icon="ri-share-line"
@@ -66,7 +66,7 @@
                   @click="showReportModal = true"
                 />
               </IntroTooltip>
-              <IntroTooltip slug="BASE_CONTACT">
+              <IntroTooltip slug="BASE_CONTACT" style="display: inline-block">
                 <a
                   v-show="base?.contact"
                   :href="mailToHrefContact"
@@ -106,7 +106,7 @@
           <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
-                <IntroTooltip slug="PRESENTATION">
+                <IntroTooltip slug="PRESENTATION" style="display: flex">
                   <NuxtLink
                     :aria-current="
                       currentTab === 'presentation' ? 'page' : null
