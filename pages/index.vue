@@ -2,6 +2,7 @@
   <NuxtLayout name="default">
     <template #header>
       <div
+        id="content"
         style="background: var(--background-alt-blue-france)"
         class="fr-py-8w"
       >
@@ -73,15 +74,13 @@
 </template>
 
 <script setup lang="ts">
-import { Base, GenericSearchResult, Resource } from "~/composables/types"
-import { computed, onMounted } from "vue"
-import { pluralize } from "~/composables/strUtils"
-import { useRoute, useRouter } from "vue-router"
+import { Base } from "~/composables/types"
+import { onMounted } from "vue"
+import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
 import { useUserStore } from "~/stores/userStore"
-import { useLoadingStore } from "~/stores/loadingStore"
-import { paginationFromNResults } from "~/composables/pagination"
 import { useFullWidth } from "~/composables/useFullWidth"
+import { useHasHeader } from "~/composables/useHasHeader"
 
 definePageMeta({
   middleware: ["home"],
@@ -92,6 +91,7 @@ definePageMeta({
 const userStore = useUserStore()
 
 useFullWidth()
+useHasHeader()
 
 onMounted(() => {
   // display email confirmation when appropriate
