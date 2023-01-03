@@ -72,7 +72,6 @@ import { computed } from "vue"
 import { Base, GenericSearchResult, Resource } from "~/composables/types"
 import { paginationFromNResults } from "~/composables/pagination"
 import { useRoute, useRouter } from "vue-router"
-import { useMainStore } from "~/stores/mainStore"
 
 const loadingStore = useLoadingStore()
 const router = useRouter()

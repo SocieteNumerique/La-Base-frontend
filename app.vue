@@ -54,6 +54,12 @@ const title = computed<string>(() => {
   if (route.path.startsWith("/page/") && pageStore.current?.title) {
     return pageStore.current.title
   }
+  if (route.name == "recherche") {
+    return "Moteur de recherche"
+  }
+  if (route.name == "favoris") {
+    return "Mes bases favorites"
+  }
   return ""
 })
 
