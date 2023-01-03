@@ -274,6 +274,7 @@ import { useRoute, useRouter } from "vue-router"
 import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
 import { useUserSearchStore } from "~/stores/userSearchStore"
+import { useUserStore } from "~/stores/userStore"
 
 definePageMeta({
   layout: false,
@@ -286,6 +287,7 @@ const focusedCategory = ref(0)
 
 const tagStore = useTagStore()
 const userSearchStore = useUserSearchStore()
+const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -548,13 +550,16 @@ const setSearchHistory = () => {
     : ""
 }
 
-const isSaveSearchDisabled = () => {
+const isSaveSearchDisabled = computed(() => {
+  if (!userStore.isLoggedIn) {
+    return true
+  }
   return (
     textInput.value === "" &&
     selectedTags.value.length === 0 &&
     tagOperator.value === "AND"
   )
-}
+})
 
 onMounted(() => {
   setSearchHistory()
