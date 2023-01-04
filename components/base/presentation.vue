@@ -112,19 +112,19 @@
       </IntroTooltip>
     </div>
 
-    <template v-if="base.showLatestAdditions && latestResources.length">
+    <template v-if="base.showLatestAdditions && base.latestAdditions.length">
+      <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
-        <ResourceMiniature
-          v-for="resource of latestResources"
-          :key="resource.id"
-          v-model="resource.pinnedInBases"
-          :resource="resource"
+        <ResourceMiniatureById
+          v-for="resourceId of base.latestAdditions"
+          :key="resourceId"
+          :resource-id="resourceId"
         />
       </div>
     </template>
 
-    <template v-if="base.sections.length">
+    <template v-if="base.sections?.length">
       <BaseSection
         v-for="sectionId in base.sections"
         :key="sectionId"
@@ -169,12 +169,6 @@ const currentTab = computed<"presentation" | "resources" | "collections">({
     "presentation",
   set: (type: "presentation" | "resources" | "collections") =>
     router.push({ query: { ...route.query, tab: type } }),
-})
-const latestResources = computed(() => {
-  if (base.value && !base.value.isShort) {
-    return base.value!.resources!.results.slice(0, 3)
-  }
-  return []
 })
 const territory = computed<string>(() =>
   (
