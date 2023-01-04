@@ -131,20 +131,20 @@
             style="align-items: center; justify-content: space-between"
           >
             <div class="is-flex" style="align-items: center">
-              <NuxtLink
-                v-if="resource?.canWrite"
-                :to="editionLink"
-                class="no-underline"
-              >
-                <IntroTooltip slug="EDIT_RESOURCE">
+              <IntroTooltip slug="EDIT_RESOURCE">
+                <NuxtLink
+                  v-if="resource?.canWrite"
+                  :to="editionLink"
+                  class="no-underline"
+                >
                   <DsfrButton
                     icon="ri-edit-line"
                     label="Éditer"
                     class="fr-btn--sm"
                     secondary
                   />
-                </IntroTooltip>
-              </NuxtLink>
+                </NuxtLink>
+              </IntroTooltip>
 
               <PinMenu
                 v-if="resource"
