@@ -2,13 +2,18 @@
   <div class="content-edit">
     <h4 class="title fr-h4">Éditer {{ labelType }}</h4>
     <slot />
-    <DsfrButtonGroup
-      :buttons="buttons"
-      :inline="true"
-      align="right"
-      class="fr-mt-4w fr-btns-group--sm"
-      size="large"
-    />
+    <div style="display: flex; justify-content: space-between" class="fr-mt-4w">
+      <div>
+        <ContentButtonDeleteContent full secondary @delete="$emit('delete')" />
+      </div>
+      <DsfrButtonGroup
+        :buttons="buttons"
+        :inline="true"
+        align="right"
+        class="fr-btns-group--sm"
+        size="large"
+      />
+    </div>
   </div>
 </template>
 
@@ -17,7 +22,7 @@ const props = defineProps({
   type: { type: String, required: true },
 })
 
-const emits = defineEmits(["exit", "save"])
+const emits = defineEmits(["exit", "save", "delete"])
 
 const labelsByType: { [key: string]: string } = {
   text: "le texte",
