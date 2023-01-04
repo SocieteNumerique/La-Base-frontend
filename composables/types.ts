@@ -178,6 +178,7 @@ export type BaseCreate = {
   title: string
 }
 type BaseStats = {
+  bookmarkedCount: number
   resourceCount: number
   visitCount: number
 }

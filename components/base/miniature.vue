@@ -42,16 +42,21 @@
             v-if="base.stats.visitCount != null"
             title="nombre de vues depuis le 9 septembre 2022"
           >
-            <span class="fr-text--lg fr-text--bold"
-              >{{ base.stats.visitCount }}
-            </span>
-            {{ pluralize(["vue"], base.stats.visitCount) }}
+            <span class="fr-text--lg fr-text--bold">{{
+              base.stats.visitCount
+            }}</span
+            >{{ pluralize(["vue"], base.stats.visitCount) }}
           </p>
-          <p v-if="base.stats.visitCount != null">
+          <p v-if="base.stats.resourceCount != null">
+            <span class="fr-text--lg fr-text--bold">{{
+              base.stats.resourceCount
+            }}</span
+            >{{ pluralize(["ressource"], base.stats.resourceCount) }}
+          </p>
+          <p v-if="base.stats.bookmarkedCount != null">
             <span class="fr-text--lg fr-text--bold"
-              >{{ base.stats.resourceCount }}
-            </span>
-            {{ pluralize(["ressource"], base.stats.resourceCount) }}
+              >{{ base.stats.bookmarkedCount }}x</span
+            >{{ pluralize(["favori"], base.stats.bookmarkedCount) }}
           </p>
         </div>
         <div
