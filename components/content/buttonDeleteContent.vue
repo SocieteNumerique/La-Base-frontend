@@ -1,9 +1,13 @@
 <template>
   <button
-    class="fr-btn--tertiary-no-outline fr-pb-1v"
+    :class="
+      secondary
+        ? 'fr-btn fr-btn--secondary fr-btn--sm'
+        : 'fr-btn--tertiary-no-outline fr-pb-1v'
+    "
     @click="ongoingDeletion = true"
   >
-    <VIcon name="ri-delete-bin-line" />
+    <VIcon name="ri-delete-bin-line" :class="secondary ? 'fr-mr-1w' : null" />
     {{ full ? "Supprimer" : "" }}
   </button>
   <DsfrModal
@@ -24,6 +28,7 @@
 const emits = defineEmits(["delete"])
 defineProps({
   full: { type: Boolean, default: false },
+  secondary: { type: Boolean, default: false },
 })
 
 const ongoingDeletion = ref<boolean>(false)
