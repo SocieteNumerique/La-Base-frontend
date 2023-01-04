@@ -5,7 +5,7 @@
       <p
         v-for="producer in producers"
         :key="producer.name"
-        class="fr-text--sm fr-m-0"
+        class="fr-text--sm fr-mb-3v"
       >
         <template v-if="producer.href">
           <template v-if="producer.isExternalLink">
@@ -28,6 +28,15 @@
             </NuxtLink>
           </template>
         </template>
+        <template v-else>
+          {{ producer.name }}
+        </template>
+        <DsfrTag
+          v-if="producer.tag"
+          :label="producer.tag.name"
+          small
+          class="fr-ml-2w"
+        />
       </p>
     </div>
     <div>
