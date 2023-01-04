@@ -78,15 +78,13 @@
         >
           <p class="fr-mb-0">
             <span class="fr-text--lg fr-text--bold">
-              {{ resource?.stats.pinCount }}
-            </span>
-            {{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
+              {{ resource?.stats.pinCount }}</span
+            >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
           <p title="nombre de vues depuis le 9 septembre 2022" class="fr-mb-0">
             <span class="fr-text--lg fr-text--bold">
-              {{ resource?.stats.visitCount }}
-            </span>
-            {{ pluralize(["vue"], resource?.stats.visitCount) }}
+              {{ resource?.stats.visitCount }}</span
+            >{{ pluralize(["vue"], resource?.stats.visitCount) }}
           </p>
         </div>
       </div>

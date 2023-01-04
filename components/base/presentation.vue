@@ -14,6 +14,12 @@
         }}</span>
         <span>{{ pluralize(["ressource"], base?.stats.visitCount) }}</span>
       </div>
+      <div class="stat">
+        <span class="fr-text--xl fr-text--bold"
+          >{{ base?.stats.bookmarkedCount }}x</span
+        >
+        <span>{{ pluralize(["favori"], base?.stats.bookmarkedCount) }}</span>
+      </div>
     </div>
     <div class="fr-grid-row">
       <div

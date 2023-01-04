@@ -42,6 +42,18 @@ const orderByOptions = computed(() => {
       { text: "Du moins enregistré au plus enregistré", value: "pin_count" },
     ])
   }
+  if (dataType.value == "bases") {
+    toReturn = toReturn.concat([
+      {
+        text: "Du plus de favoris au moins de favoris",
+        value: "-bookmarked_count",
+      },
+      {
+        text: "Du moins de favoris au plus de favoris",
+        value: "bookmarked_count",
+      },
+    ])
+  }
 
   return toReturn
 })
