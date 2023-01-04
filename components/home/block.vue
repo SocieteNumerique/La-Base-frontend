@@ -9,7 +9,7 @@
           "
         >
           <div class="left-icon">
-            <img :src="props.icon" height="60" />
+            <img :src="props.icon" height="60" alt="" />
           </div>
           <div class="fr-ml-4w" style="text-align: left">
             <h3 class="fr-h4">{{ props.title }}</h3>

@@ -169,7 +169,7 @@
                 <NuxtLink to="/base/3">
                   <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"
@@ -182,7 +182,7 @@
                 <NuxtLink to="/base/34">
                   <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"

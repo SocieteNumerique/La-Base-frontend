@@ -9,7 +9,10 @@
           class="content-drag-handle"
           style="position: absolute; margin-left: -30px"
         >
-          <img src="~/assets/svg/dragHandle.svg" />
+          <img
+            src="~/assets/svg/dragHandle.svg"
+            alt="Curseur pour déplacer l'élément par glisser-déposer"
+          />
         </button>
         <!-- <span>Statut :</span> -->
       </div>

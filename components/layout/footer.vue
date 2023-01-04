@@ -8,7 +8,7 @@
           style="height: 80px"
         />
         <img
-          alt="logo du site"
+          alt=""
           class="fr-mr-n3v"
           src="/logos/financeUE.jpg"
           style="height: 80px"
