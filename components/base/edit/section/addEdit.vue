@@ -23,8 +23,7 @@
       :hint="`Requis: ${v$.description.$model.length}/240 caractères`"
       :label-visible="true"
       :is-textarea="true"
-      :required="true"
-      class="fr-mt-4w"
+      :required="false"
       :error-message="validationMessageFromErrors(v$.description.$errors)"
       :is-invalid="v$.description.$error"
     />
@@ -121,7 +120,7 @@ const cleanOtherType = () => {
 }
 const typeOptions = [
   {
-    label: "Fiche ressource",
+    label: "Fiches ressource",
     value: BaseSectionType.RESOURCES,
   },
   { label: "Collections", value: BaseSectionType.COLLECTIONS },
@@ -130,7 +129,7 @@ const typeOptions = [
 const MAX_ELEMENTS_BY_SECTION = 15
 const sectionRules = {
   title: { required, maxLength: maxLength(100) },
-  description: { required, maxLength: maxLength(240) },
+  description: { maxLength: maxLength(240) },
   type: { required },
   resources: {
     resourceRequired: requiredIf(

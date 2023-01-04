@@ -113,7 +113,7 @@ const menuOptions = [
     step: "status",
   },
   {
-    label: "Rubrique à la une",
+    label: "Rubriques à la une",
     step: "section",
   },
   {

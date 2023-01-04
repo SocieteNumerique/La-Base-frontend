@@ -9,7 +9,7 @@
         <nuxt-link
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="no-underline"
+          class="no-underline no-append-ico"
           :target="targetLink"
         >
           <button
@@ -31,7 +31,7 @@
     </div>
     <NuxtLink
       :to="`/ressource/${resource?.id}`"
-      class="no-underline"
+      class="no-underline no-append-ico"
       :target="targetLink"
     >
       <div

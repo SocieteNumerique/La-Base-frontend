@@ -3,7 +3,7 @@
     <div class="fr-header__body">
       <div class="fr-container">
         <div class="fr-header__body-row fr-py-2w">
-          <LayoutLogo class="fr-ml-3w" />
+          <LayoutLogo />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">

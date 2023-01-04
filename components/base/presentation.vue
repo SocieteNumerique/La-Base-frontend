@@ -102,7 +102,13 @@
 
     <div style="display: flex; justify-content: flex-end" class="fr-mb-3v">
       <IntroTooltip slug="NEW_BASE_SECTIONS">
-        <DsfrButton label="Rubriques à la une" secondary icon="ri-add-line" />
+        <DsfrButton
+          label="Rubriques à la une"
+          secondary
+          icon="ri-add-line"
+          class="fr-btn--sm"
+          @click="showBaseSection = true"
+        />
       </IntroTooltip>
     </div>
 
@@ -125,6 +131,11 @@
         :section="baseSectionStore.baseSectionsById[sectionId]"
       />
     </template>
+    <BaseEditSection
+      v-if="showBaseSection"
+      @close="showBaseSection = false"
+      @save="updateBase"
+    />
   </div>
 </template>
 
@@ -134,7 +145,6 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
-import { BaseSectionType } from "~/composables/types"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
@@ -142,6 +152,7 @@ const baseSectionStore = useBaseSectionStore()
 const tagStore = useTagStore()
 const router = useRouter()
 const route = useRoute()
+const showBaseSection = ref(false)
 
 const base = computed(() => {
   return baseStore.current
@@ -196,6 +207,12 @@ const socialMediaLinks = computed<{ link: string; iconName: string }[]>(() => {
   }
   return links
 })
+async function updateBase(data: any) {
+  const { error } = await baseStore.update(data)
+  if (!error.value) {
+    showBaseSection.value = false
+  }
+}
 </script>
 
 <style scoped>

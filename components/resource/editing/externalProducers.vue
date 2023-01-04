@@ -12,7 +12,7 @@
           <DsfrButton
             label="Supprimer"
             secondary
-            class="btn--no-border"
+            class="btn--no-border fr-btn--sm"
             icon="ri-delete-bin-line"
             @click="removeProducer(producer.emailContact)"
           />
@@ -62,14 +62,17 @@
       <!--          />-->
       <!--        </div>-->
 
-      <TagSelector
-        v-if="tagStore.categoryBySlug('externalProducer_00occupation')"
-        class="fr-mt-3w"
-        :category="tagStore.categoryBySlug('externalProducer_00occupation')"
-        :is-focused="true"
-        source="own"
-        @change="onNewExternalProducerTagChange"
-      />
+      <div id="external-producers-selector">
+        <TagSelector
+          v-if="tagStore.categoryBySlug('externalProducer_00occupation')"
+          class="fr-mt-3w"
+          :category="tagStore.categoryBySlug('externalProducer_00occupation')"
+          :is-focused="isExternalProducersTagSelectorFocused"
+          source="own"
+          @focus="isExternalProducersTagSelectorFocused = true"
+          @change="onNewExternalProducerTagChange"
+        />
+      </div>
     </DsfrModal>
   </div>
 </template>
@@ -87,6 +90,13 @@ const newExternalProducer = ref<ExternalProducer>({
   occupation: undefined,
   websiteUrl: "",
 })
+
+const isExternalProducersTagSelectorFocused = ref(false)
+onFocusOut(
+  () => (isExternalProducersTagSelectorFocused.value = false),
+  "external-producers-selector",
+  () => isExternalProducersTagSelectorFocused.value
+)
 
 const showExternalProducersModal = ref(false)
 

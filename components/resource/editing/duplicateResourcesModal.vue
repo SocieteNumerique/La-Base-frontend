@@ -11,11 +11,11 @@
       déjà publiées. Nous vous invitons à ne pas créer de doublon dans la mesure
       du possible.
     </p>
-    <div class="fr-grid-row fr-grid-row--gutters">
+    <div class="resource-grid">
       <div
         v-for="resource of visibleResources"
         :key="resource.id"
-        class="fr-col-md-6 fr-col-12"
+        style="width: 330px"
       >
         <ResourceEditingDuplicateCancelMessageBlock
           v-if="ignoredDuplicates.includes(resource.id)"
@@ -38,7 +38,15 @@
           Vous pouvez contacter l’auteur de la fiche doublon via sa base si vous
           souhaitez lui faire des suggestions à propos de la fiche ressource.
         </ResourceEditingDuplicateCancelMessageBlock>
-        <div v-else>
+        <div
+          v-else
+          style="
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          "
+        >
           <ResourceMiniature
             v-model="resource.pinnedInBases"
             :resource="resource"
@@ -49,6 +57,7 @@
             :buttons="getButtons(resource.id)"
             :inline="true"
             size="small"
+            class="fr-btns-group--sm"
           ></DsfrButtonGroup>
         </div>
       </div>
