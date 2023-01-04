@@ -11,7 +11,10 @@ import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
 import { useBaseSectionStore } from "~/stores/baseSectionStore"
 
-function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
+function saveInOtherStores(instancesInStore: any, instancesSrc?: any[]) {
+  if (!instancesSrc) {
+    return
+  }
   for (const instance of instancesSrc) {
     if (
       !instancesInStore[instance.id] ||
@@ -40,11 +43,15 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
   }
   saveInOtherStores(useCollectionStore().collectionsById, newCollections)
   saveInOtherStores(useBaseSectionStore().baseSectionsById, base.sections)
+  saveInOtherStores(resourceStore.resourcesById, base.sectionResources)
+  saveInOtherStores(resourceStore.resourcesById, base.latestAdditions)
 
   baseStore.basesById[base.id] = {
     ...base,
     collections: newCollections.map((collection) => collection.id),
-    sections: base.sections.map((section) => section.id!),
+    sections: base.sections?.map((section) => section.id!),
+    latestAdditions:
+      base.latestAdditions?.map((latestAddition) => latestAddition.id!) || [],
   }
 }
 
