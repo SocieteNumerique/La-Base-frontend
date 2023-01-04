@@ -18,7 +18,7 @@
         <span class="fr-text--xl fr-text--bold"
           >{{ base?.stats.bookmarkedCount }}x</span
         >
-        <span>{{ pluralize(["favoris"], base?.stats.bookmarkedCount) }}</span>
+        <span>{{ pluralize(["favori"], base?.stats.bookmarkedCount) }}</span>
       </div>
     </div>
     <div class="fr-grid-row">
