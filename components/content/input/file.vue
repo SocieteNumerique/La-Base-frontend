@@ -15,6 +15,17 @@
     placeholder="Légende"
     maxlength="280"
   />
+  <DsfrInput
+    v-if="isImage"
+    v-model="content.imageAlt"
+    :label-visible="true"
+    label="Texte alternatif de l'image"
+    :hint="`Texte descriptif pour les non-voyants, ${
+      (content.imageAlt || '').length
+    }/100 caractères ; laisser vide pour une image purement décorative`"
+    placeholder="Texte alternatif"
+    maxlength="100"
+  />
   <div v-if="content.file?.link" class="fr-mt-2w">
     <a
       :href="content.file?.link"
