@@ -9,11 +9,12 @@
     </p>
     <div class="resource-grid">
       <template v-if="section.type === BaseSectionType.RESOURCES">
-        <ResourceMiniatureById
-          v-for="resourceId in elements"
-          :key="resourceId"
-          :resource-id="resourceId"
-        />
+        <template v-for="resourceId in elements" :key="resourceId">
+          <ResourceMiniatureById
+            v-if="resourceStore.resourcesById[resourceId]"
+            :resource-id="resourceId"
+          />
+        </template>
       </template>
       <template v-if="section.type === BaseSectionType.COLLECTIONS">
         <CollectionMiniatureById
@@ -25,14 +26,14 @@
       </template>
     </div>
     <div
-      v-if="section[section.type].length > 3 && !showMore"
+      v-if="section[section.type].length > 3"
       class="is-flex is-justify-flex-end"
     >
       <DsfrButton
         class="fr-btn--tertiary-no-outline fr-btn--sm"
-        label="Voir plus"
-        icon="ri-add-line"
-        @click="onClickShowMore()"
+        :label="showMore ? 'Voir moins' : 'Voir plus'"
+        :icon="showMore ? 'ri-subtract-line' : 'ri-add-line'"
+        @click="showMore = !showMore"
       />
     </div>
   </div>
@@ -40,11 +41,11 @@
 
 <script setup lang="ts">
 import { computed, PropType } from "vue"
-import { useBaseStore } from "~/stores/baseStore"
 import { BaseSection, BaseSectionType } from "~/composables/types"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
+import { useResourceStore } from "~/stores/resourceStore"
 
-const baseStore = useBaseStore()
+const resourceStore = useResourceStore()
 
 const editable = useIsBaseEditable()
 

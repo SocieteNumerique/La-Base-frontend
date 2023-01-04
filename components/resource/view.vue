@@ -2,7 +2,7 @@
   <div>
     <div class="fr-pt-5w" style="background: var(--background-alt-grey)">
       <div class="fr-container">
-        <div class="fr-grid-row" style="align-items: flex-end">
+        <div class="fr-grid-row" style="align-items: stretch">
           <div class="fr-col-md-3 fr-pr-3w">
             <ImageResized
               :resizable-image="resource?.profileImage"
@@ -11,70 +11,86 @@
               default-image="resource"
             />
           </div>
-          <div class="fr-col-md-9">
-            <h1 style="max-width: 800px" class="fr-mb-4w fr-h2">
-              {{ resource?.title }}
-            </h1>
+          <div class="fr-col-md-9" style="display: flex">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                width: 100%;
+              "
+            >
+              <h1 style="max-width: 800px" class="fr-mb-0 fr-h3">
+                {{ resource?.title }}
+              </h1>
 
-            <div class="fr-mb-2w" style="display: flex; flex-direction: row">
-              <div class="fr-text--sm fr-m-0">
-                Fiche publiée dans
-                <NuxtLink
-                  :to="'/base/' + resource?.rootBase"
-                  class="fr-text-label--blue-france no-underline underlined-on-hover"
+              <div>
+                <div
+                  class="fr-mb-2w"
+                  style="display: flex; flex-direction: row"
                 >
-                  {{ resource?.rootBaseTitle }}
-                </NuxtLink>
-              </div>
-              <div class="fr-ml-3w fr-text--sm fr-m-0">
-                <template
-                  v-if="
-                    resource?.canWrite &&
-                    (resource?.creator?.firstName ||
-                      resource?.creator?.lastName)
-                  "
-                >
-                  Créée par
-                  {{ resource?.creator?.firstName }}
-                  {{ resource?.creator?.lastName }}
-                </template>
+                  <div class="fr-text--sm fr-m-0">
+                    Fiche publiée dans
+                    <NuxtLink
+                      :to="'/base/' + resource?.rootBase"
+                      class="fr-text-label--blue-france no-underline underlined-on-hover"
+                    >
+                      {{ resource?.rootBaseTitle }}
+                    </NuxtLink>
+                  </div>
+                  <div class="fr-ml-3w fr-text--sm fr-m-0">
+                    <template
+                      v-if="
+                        resource?.canWrite &&
+                        (resource?.creator?.firstName ||
+                          resource?.creator?.lastName)
+                      "
+                    >
+                      Créée par
+                      {{ resource?.creator?.firstName }}
+                      {{ resource?.creator?.lastName }}
+                    </template>
+                  </div>
+                </div>
+                <hr class="fr-pb-2w" />
+                <div class="has-children-space-between">
+                  <div class="is-flex">
+                    <div class="stat">
+                      <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
+                      <span class="fr-text--sm fr-ml-1w">{{
+                        pluralize(["enregistrement"], resource?.stats.pinCount)
+                      }}</span>
+                    </div>
+                    <div class="stat">
+                      <span class="fr-h6">{{
+                        resource?.stats.visitCount
+                      }}</span>
+                      <span class="fr-text--sm fr-ml-1w">{{
+                        pluralize(["vue"], resource?.stats.visitCount)
+                      }}</span>
+                    </div>
+                  </div>
+                  <div
+                    class="is-flex fr-text--xs fr-m-0"
+                    style="align-items: flex-end"
+                  >
+                    <div>Fiche créée le {{ $date(resource?.created) }}</div>
+                    <div class="fr-ml-4w">
+                      Fiche modifiée le {{ $date(resource?.modified) }}
+                    </div>
+                    <div class="fr-ml-4w">
+                      Statut : {{ stateLabel[resource?.state] }}
+                    </div>
+                  </div>
+                </div>
+                <hr style="padding-bottom: 1px" class="fr-mt-2w" />
               </div>
             </div>
-            <hr class="fr-pb-2w" />
-            <div class="has-children-space-between">
-              <div class="is-flex">
-                <div class="stat">
-                  <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
-                  <span class="fr-text--sm fr-ml-1w">{{
-                    pluralize(["enregistrement"], resource?.stats.pinCount)
-                  }}</span>
-                </div>
-                <div class="stat">
-                  <span class="fr-h6">{{ resource?.stats.visitCount }}</span>
-                  <span class="fr-text--sm fr-ml-1w">{{
-                    pluralize(["vue"], resource?.stats.visitCount)
-                  }}</span>
-                </div>
-              </div>
-              <div
-                class="is-flex fr-text--xs fr-m-0"
-                style="align-items: flex-end"
-              >
-                <div>Fiche créée le {{ $date(resource?.created) }}</div>
-                <div class="fr-ml-4w">
-                  Fiche modifiée le {{ $date(resource?.modified) }}
-                </div>
-                <div class="fr-ml-4w">
-                  Statut : {{ stateLabel[resource?.state] }}
-                </div>
-              </div>
-            </div>
-            <hr style="padding-bottom: 1px" class="fr-mt-2w" />
           </div>
         </div>
         <div class="has-children-space-between fr-py-3v">
           <div>
-            <IntroTooltip slug="RESOURCE_SHARE">
+            <IntroTooltip slug="RESOURCE_SHARE" style="display: inline-block">
               <ShareButton :link="route.fullPath">
                 <RoundButton
                   icon="ri-share-line"

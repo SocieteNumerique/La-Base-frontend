@@ -13,8 +13,10 @@
     title="Supprimer le contenu"
     @close="ongoingDeletion = false"
   >
-    Confirmez-vous la suppression de ce contenu ? <br />
-    Cette opération est irréversible.
+    <p>
+      Confirmez-vous la suppression de ce contenu ? <br />
+      Cette opération est irréversible.
+    </p>
   </DsfrModal>
 </template>
 

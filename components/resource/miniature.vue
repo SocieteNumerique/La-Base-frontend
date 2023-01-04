@@ -9,7 +9,7 @@
         <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="fr-btn--tertiary-no-outline fr-mr-2w no-underline"
+          class="fr-btn--tertiary-no-outline fr-mr-2w no-underline no-append-ico"
           :target="targetLink"
           title="Éditer la fiche"
           aria-label="Éditer la fiche"
@@ -27,7 +27,7 @@
     </div>
     <NuxtLink
       :to="`/ressource/${resource?.id}`"
-      class="no-underline"
+      class="no-underline no-append-ico"
       :target="targetLink"
       style="outline-style: revert"
     >

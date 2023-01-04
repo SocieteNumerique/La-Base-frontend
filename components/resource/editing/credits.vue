@@ -24,7 +24,7 @@
             <DsfrButton
               label="Modifier"
               secondary
-              class="btn--no-border"
+              class="btn--no-border fr-btn--sm"
               icon="ri-edit-line"
               @click="showOwnBaseModal = true"
             />

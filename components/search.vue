@@ -591,6 +591,7 @@ onMounted(() => {
   background: var(--background-alt-grey)
   border-radius: 16px
   padding: 6px
+  padding-left: 0
 
 .toggle-button
   color: var(--text-action-high-blue-france)

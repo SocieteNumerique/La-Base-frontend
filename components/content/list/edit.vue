@@ -23,7 +23,10 @@
           >
             <template v-if="section.isFoldable">
               <div v-if="showToolbarSection" class="toolbar-section">
-                <button class="section-drag-handle">
+                <button
+                  class="section-drag-handle"
+                  style="position: relative; right: 14px"
+                >
                   <img src="~/assets/svg/dragHandle.svg" />
                 </button>
                 <div>
