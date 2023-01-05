@@ -1,5 +1,6 @@
 <template>
-  <Html>
+  <!DOCTYPE html>
+  <Html lang="fr">
     <Head>
       <Title>{{ title }}</Title>
       <Meta name="description" :content="description" />

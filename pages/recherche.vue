@@ -1,6 +1,13 @@
 <template>
   <div>
+    <div class="fr-container" style="margin-top: -73px">
+      <h1 style="font-size: 40px">Moteur de recherche</h1>
+    </div>
     <Search @results="updateResults" />
+
+    <div class="fr-container" style="margin-top: -43px">
+      <h2 style="font-size: 40px">Résultats</h2>
+    </div>
 
     <!-- is loading -->
     <template v-if="loadingStore.isLoading('search')">
