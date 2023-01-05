@@ -392,7 +392,9 @@ const searchQuery = computed(() => {
 watch(
   () => route.query,
   (query, oldQuery) => {
-    if (query.dataType != oldQuery.dataType) {
+    const oldDataype = oldQuery.dataType || "resources"
+    const newDataype = query.dataType || "resources"
+    if (oldDataype != newDataype) {
       reset()
     }
     if (query.page != oldQuery.page) {
