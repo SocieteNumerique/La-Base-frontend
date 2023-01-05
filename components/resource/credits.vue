@@ -45,8 +45,40 @@
         icon="ri-arrow-right-line"
         icon-right
         class="fr-btn--tertiary-no-outline fr-btn--sm fr-pl-0"
+        @click="showCreditsModal = true"
       />
     </div>
+    <DsfrModal
+      v-if="showCreditsModal"
+      :actions="[
+        {
+          label: 'Envoyer',
+          onClick: sendCreditsRequest,
+          disabled: creditsRequestMessage.length < 10,
+        },
+        {
+          label: 'Annuler',
+          onclick: () => (showCreditsModal = false),
+          secondary: true,
+        },
+      ]"
+      :opened="true"
+      title="Demander à être crédité"
+      @close="showCreditsModal = false"
+    >
+      <p>
+        Si vous voulez être crédité comme producteur de la ressource, vous
+        pouvez envoyer une demande de crédit via cette fenêtre.
+      </p>
+      <DsfrInput
+        v-model="creditsRequestMessage"
+        :is-textarea="true"
+        :label-visible="true"
+        label="Votre demande"
+        hint="Merci de précisez votre demande au propriétaire de la fiche"
+      >
+      </DsfrInput>
+    </DsfrModal>
   </div>
 </template>
 
@@ -56,6 +88,10 @@ import { useResourceStore } from "~/stores/resourceStore"
 import { useBaseStore } from "~/stores/baseStore"
 import { Tag } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
+import { DsfrInput } from "@gouvminint/vue-dsfr"
+import { useUserStore } from "~/stores/userStore"
+import { useAlertStore } from "~/stores/alertStore"
+import { useApiPost } from "~/composables/api"
 
 type Producer = {
   isExternalLink?: boolean
@@ -64,9 +100,34 @@ type Producer = {
   tag?: Tag
 }
 
+const showCreditsModal = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
+const userStore = useUserStore()
+const alertStore = useAlertStore()
+const creditsRequestMessage = ref("")
+
+const sendCreditsRequest = async () => {
+  if (!userStore.isLoggedIn) {
+    alertStore.alert(
+      "Vous devez être connecté pour demander à être crédité",
+      "",
+      "warning"
+    )
+  }
+  console.log("### sendCreditsRequest", creditsRequestMessage.value)
+  const { error } = await useApiPost(
+    "credits",
+    { id: resource.value.id, message: creditsRequestMessage.value },
+    {},
+    "La demande de crédit a bien été envoyée",
+    true
+  )
+  if (!error.value) {
+    showCreditsModal.value = false
+  }
+}
 
 const producers = computed<Producer[]>(() => {
   if (resource.value == null || resource.value.isShort) {
