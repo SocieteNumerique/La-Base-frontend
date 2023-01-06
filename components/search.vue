@@ -13,7 +13,7 @@
           <div class="fr-grid-row">
             <div v-if="!isInBaseIndex" class="fr-col-md-4 fr-p-0">
               <div class="is-flex" style="align-items: center">
-                <IntroTooltip slug="SEARCH_SWITCH">
+                <IntroTooltip slug="INDEX_SEARCH_SWITCH">
                   <div class="toggle-container">
                     <button
                       class="toggle-button"
@@ -49,7 +49,7 @@
               :style="isInBaseIndex ? null : 'justify-content: space-between'"
             >
               <div>
-                <IntroTooltip slug="SEARCH_BAR">
+                <IntroTooltip slug="INDEX_SEARCH_BAR">
                   <div class="fr-search-bar fr-input-group">
                     <input
                       id="search"
@@ -74,7 +74,7 @@
                 :style="isInBaseIndex ? 'margin-left: 24px' : null"
                 style="display: flex"
               >
-                <IntroTooltip slug="FILTERS">
+                <IntroTooltip slug="INDEX_FILTERS">
                   <button class="fr-btn" @click="toggleFilters">
                     Filtrer
                     <span style="padding-left: 3px">

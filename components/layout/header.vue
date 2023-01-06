@@ -23,7 +23,7 @@
                   class="selector"
                 >
                   <template v-if="baseStore.hasBases">
-                    <IntroTooltip slug="MY_BASES">
+                    <IntroTooltip slug="INDEX_MY_BASES">
                       <button
                         :class="{ '-active': showBasesList }"
                         class="fr-link btn-tab-activable"
@@ -77,7 +77,7 @@
                 </li>
                 <li id="profile-menu" class="selector">
                   <template v-if="userStore.isLoggedIn">
-                    <IntroTooltip slug="MY_PROFILE">
+                    <IntroTooltip slug="INDEX_MY_PROFILE">
                       <button
                         :class="{ '-active': showProfileMenu }"
                         class="fr-link btn-tab-activable"
