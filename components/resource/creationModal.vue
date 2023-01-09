@@ -15,6 +15,8 @@
       <DsfrInput
         :model-value="title"
         label="Nom de la ressource"
+        maxlength="100"
+        :hint="`Requis - ${title.length}/100 caractères`"
         placeholder="Nom de la ressource"
         :label-visible="true"
         @update:model-value="onTitleUpdate"

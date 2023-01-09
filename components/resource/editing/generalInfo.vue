@@ -9,7 +9,9 @@
       :model-value="resourceStore.current?.title"
       label="Nom de la ressource"
       maxlength="100"
-      :hint="`Requis - ${resourceStore.current?.title || 0}/100 caractères`"
+      :hint="`Requis - ${
+        resourceStore.current?.title.length || 0
+      }/100 caractères`"
       :label-visible="true"
       @update:model-value="onTitleUpdate"
     />
