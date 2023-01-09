@@ -100,20 +100,16 @@ const reportMotivesOptions =
           text: "Sélectionnez une option",
         },
         {
-          text: "Le contenu est inapproprié",
-          value: "Le contenu est inapproprié",
+          text: "La base publie un ou des contenus inappropriés",
+          value: "La base publie un ou des contenus inappropriés",
         },
         {
-          text: "Le contenu est obsolète",
-          value: "Le contenu est obsolète",
+          text: "L’identité de la base est usurpée",
+          value: "L’identité de la base est usurpée",
         },
         {
-          text: "C'est le doublon d'une autre base",
-          value: "C'est le doublon d'une autre base",
-        },
-        {
-          text: "Il y a des erreurs",
-          value: "Il y a des erreurs",
+          text: "Autre motif",
+          value: "Autre motif",
         },
       ]
 
