@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 class="fr-text--bold fr-mb-2w fr-text--md">Crédits de la ressource</h2>
-    <div v-if="producers.length">
+    <div>
       <p
         v-for="producer in producers"
         :key="producer.name"
