@@ -75,12 +75,6 @@
                   <RoundButton icon="ri-mail-line" label="Contacter" />
                 </a>
               </IntroTooltip>
-              <ReportSimpleModal
-                v-if="showReportModal"
-                :id="base.id"
-                instance-type="Base"
-                @close="showReportModal = false"
-              />
             </div>
             <div style="padding-top: 7px; display: flex">
               <IntroTooltip v-if="base?.canWrite" slug="CREATE_FICHE">
@@ -159,6 +153,12 @@
       v-if="showAddResourceModal"
       :base-id="base.id"
       @close="showAddResourceModal = false"
+    />
+    <ReportSimpleModal
+      v-if="showReportModal"
+      :id="base.id"
+      instance-type="Base"
+      @close="showReportModal = false"
     />
   </NuxtLayout>
 </template>
