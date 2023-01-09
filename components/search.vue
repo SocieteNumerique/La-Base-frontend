@@ -44,6 +44,37 @@
                 </IntroTooltip>
               </div>
             </div>
+            <div v-if="canShowDrafts" class="fr-col-md-4 fr-p-0">
+              <div class="is-flex" style="align-items: center">
+                <IntroTooltip slug="FICHES_SWITCH">
+                  <div class="toggle-container">
+                    <button
+                      title="Afficher les ressources publiées"
+                      class="toggle-button"
+                      :class="showLiveResources ? '-active' : null"
+                      @click="showLiveResources = true"
+                    >
+                      <img
+                        class="fr-mr-3v"
+                        src="/img/home/resource-blue.svg"
+                        alt=""
+                        style="height: 18px"
+                      />
+                      <span>Fiches</span>
+                    </button>
+                    <button
+                      title="Afficher les brouillons"
+                      class="toggle-button"
+                      :class="!showLiveResources ? '-active' : null"
+                      @click="showLiveResources = false"
+                    >
+                      <img class="fr-mr-3v" src="/img/home/drafts.svg" alt="" />
+                      <span>Brouillons</span>
+                    </button>
+                  </div>
+                </IntroTooltip>
+              </div>
+            </div>
             <div
               class="fr-col-md-8 fr-p-0 is-flex"
               :style="isInBaseIndex ? null : 'justify-content: space-between'"
@@ -275,6 +306,7 @@ import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
 import { useUserSearchStore } from "~/stores/userSearchStore"
 import { useUserStore } from "~/stores/userStore"
+import { useBaseStore } from "~/stores/baseStore"
 
 definePageMeta({
   layout: false,
@@ -290,6 +322,7 @@ const userSearchStore = useUserSearchStore()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
+const baseStore = useBaseStore()
 
 const activeUserSearch = ref(-1)
 const nResults = ref(0)
@@ -328,9 +361,13 @@ const dataType = computed<"resources" | "bases">({
     resetActiveUserTag()
   },
 })
+const showLiveResources = computed<boolean>({
+  get: () => Boolean(Number(((<string>route.query.live) as string) || "1")),
+  set: (value) =>
+    router.push({ query: { ...route.query, live: String(Number(value)) } }),
+})
 const searches = computed(() => {
-  const toReturn = userSearchStore.searchesForDataType(dataType.value)
-  return toReturn
+  return userSearchStore.searchesForDataType(dataType.value)
 })
 
 const currentPage = computed<number>({
@@ -438,6 +475,12 @@ const tagCategories = computed<TagCategory[]>(() => {
 })
 
 const isInBaseIndex = computed(() => route.path.startsWith("/base"))
+const canShowDrafts = computed(() => {
+  if (!isInBaseIndex.value) {
+    return false
+  }
+  return baseStore.current.canWrite
+})
 const showFilters = ref(false)
 const showUserSearches = ref(false)
 
