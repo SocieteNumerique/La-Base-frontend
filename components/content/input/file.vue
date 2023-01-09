@@ -1,7 +1,7 @@
 <template>
   <DsfrInput
     v-model="content.title"
-    hint="max 50 caractères"
+    :hint="`${content.title.length || 0} / 50 caractères`"
     maxlength="50"
     :label-visible="true"
     label="Titre"
@@ -13,6 +13,7 @@
     :label-visible="true"
     label="Légende"
     placeholder="Légende"
+    :hint="`${content.annotation.length || 0} / 280 caractères`"
     maxlength="280"
   />
   <div v-if="content.file?.link" class="fr-mt-2w">

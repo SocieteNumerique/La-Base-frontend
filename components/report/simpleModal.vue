@@ -25,8 +25,10 @@
       <template #label>
         Votre texte ici
         <span class="fr-hint-text">
-          Vous pouvez précisez votre signalement ici. Pour envoyer un fichier,
-          utilisez un service externe comme fromsmash.com ou wetransfer.com.
+          {{ report.description.length }}/280 caractères. Vous pouvez précisez
+          votre signalement ici. Pour envoyer un fichier, utilisez un service
+          externe comme fromsmash.com ou wetransfer.com et copiez-collez le lien
+          ici.
         </span>
       </template>
     </DsfrInput>
