@@ -17,7 +17,12 @@
               <TextBlock :slug="props.descriptionSlug" :required="false" />
             </div>
             <div class="fr-mt-4w">
-              <NuxtLink :to="props.to" class="fr-btn fr-btn--sm"
+              <template v-if="props.to == '/profil-informations'">
+                <button class="fr-btn fr-btn--sm" @click="$emit('signup')">
+                  Accéder <VIcon class="fr-ml-1w" name="ri-arrow-right-line" />
+                </button>
+              </template>
+              <NuxtLink v-else :to="props.to" class="fr-btn fr-btn--sm"
                 >Accéder <VIcon class="fr-ml-1w" name="ri-arrow-right-line"
               /></NuxtLink>
             </div>
@@ -64,6 +69,8 @@ const props = defineProps({
   moreTextSlug: { type: String, default: "" },
   to: { type: String, required: true },
 })
+
+defineEmits(["signup"])
 
 const textBlockStore = useTextBlockStore()
 const canShowMore = computed<boolean>(

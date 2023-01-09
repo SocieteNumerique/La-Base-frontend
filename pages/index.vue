@@ -15,7 +15,7 @@
             </div>
             <div class="fr-col-5">
               <TextBlock slug="homeIntroRight" />
-              <NuxtLink to="/a-propos" class="fr-btn fr-mt-2w">
+              <NuxtLink to="/page/a-propos" class="fr-btn fr-mt-2w">
                 <VIcon
                   name="ri-arrow-right-line"
                   class="fr-mr-1w"
@@ -48,6 +48,7 @@
           text-slug="homeAccountBlockContent"
           more-text-slug="homeAccountBlockContentMore"
           class="fr-mb-6w"
+          @signup="userStore.showSignUpModal = true"
         />
         <HomeBlock
           icon="/img/home/block-resources.svg"
@@ -73,14 +74,10 @@
 </template>
 
 <script setup lang="ts">
-import { Base, GenericSearchResult, Resource } from "~/composables/types"
-import { computed, onMounted } from "vue"
-import { pluralize } from "~/composables/strUtils"
-import { useRoute, useRouter } from "vue-router"
+import { onMounted } from "vue"
+import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
 import { useUserStore } from "~/stores/userStore"
-import { useLoadingStore } from "~/stores/loadingStore"
-import { paginationFromNResults } from "~/composables/pagination"
 import { useFullWidth } from "~/composables/useFullWidth"
 
 definePageMeta({
