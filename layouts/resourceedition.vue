@@ -76,7 +76,6 @@ import { computed } from "vue"
 const resourceStore = useResourceStore()
 
 const goToState = () => {
-  console.log("### go to state")
   resourceStore.navigation.activeMenu = "parameters"
   resourceStore.navigation.activeSubMenu = "state"
 }

@@ -42,7 +42,6 @@ export const useCollectionStore = defineStore("collection", {
       if (!error.value) {
         const collection = data.value
         this.collectionsById[collection!.id!] = collection!
-        console.log("### got collection", collectionId, collection!.id)
         return collection
       }
     },

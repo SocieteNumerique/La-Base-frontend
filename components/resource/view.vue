@@ -106,12 +106,10 @@
                 @click="showReportModal = true"
               />
             </IntroTooltip>
-
-            <ReportSimpleModal
-              v-if="showReportModal"
-              :id="resource.id"
-              instance-type="Resource"
-              @close="showReportModal = false"
+            <RoundButton
+              icon="ri-edit-box-line"
+              label="Contribuer"
+              @click="showContributeModal = true"
             />
 
             <!-- TODO re-add these -->
@@ -243,6 +241,17 @@
         </div>
       </div>
     </div>
+    <ReportSimpleModal
+      v-if="showReportModal"
+      :id="resource.id"
+      instance-type="Resource"
+      @close="showReportModal = false"
+    />
+    <ResourceContributeModal
+      v-if="showContributeModal"
+      :id="resource.id"
+      @close="showContributeModal = false"
+    />
   </div>
 </template>
 
@@ -264,6 +273,7 @@ const route = useRoute()
 
 const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
+const showContributeModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
