@@ -168,7 +168,7 @@
 
     <div
       v-if="showFilters || showUserSearches"
-      class="fr-pt-1w fr-pb-6w"
+      class="fr-pt-1w fr-pb-4w"
       style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
     >
       <div class="fr-container">
@@ -240,7 +240,7 @@
             </div>
             <div style="display: flex; align-items: flex-end">
               <DsfrButton
-                label="Enregistrer la recherche actuelle"
+                label="Enregistrer la recherche"
                 icon="ri-save-line"
                 secondary
                 class="fr-btn--sm"
@@ -252,7 +252,7 @@
         </template>
         <template v-else>
           <div
-            class="fr-pt-3w"
+            class="fr-pt-2v"
             style="display: flex; justify-content: space-between"
           >
             <div v-if="!searches.length">
@@ -268,15 +268,17 @@
                 @select="selectUserSearch(search)"
               />
             </div>
-            <div style="min-width: 308px">
-              <DsfrButton
-                label="Enregistrer la recherche actuelle"
-                icon="ri-save-line"
-                secondary
-                class="fr-btn--sm"
-                :disabled="isSaveSearchDisabled"
-                @click="showUserSearchAddModal = true"
-              />
+            <div style="padding-top: 3px; flex-shrink: 0">
+              <div>
+                <DsfrButton
+                  label="Enregistrer la recherche"
+                  icon="ri-save-line"
+                  secondary
+                  class="fr-btn--sm"
+                  :disabled="isSaveSearchDisabled"
+                  @click="showUserSearchAddModal = true"
+                />
+              </div>
             </div>
           </div>
         </template>
@@ -335,6 +337,11 @@ onFocusOut(
   () => (showFilters.value = false),
   "search-container",
   () => showFilters.value
+)
+onFocusOut(
+  () => (showUserSearches.value = false),
+  "search-container",
+  () => showUserSearches.value
 )
 
 const emit = defineEmits(["results", "searchedText"])
@@ -499,6 +506,11 @@ const onTextInput = () => {
 }
 
 const selectUserSearch = (search: UserSearch) => {
+  if (activeUserSearch.value == search.id) {
+    // search was already active, we de-activate it
+    reset()
+    return
+  }
   // we use a timeout because otherwise the route watchers would
   // overwrite activeSearchValue to -1
   setTimeout(() => (activeUserSearch.value = search.id), 200)

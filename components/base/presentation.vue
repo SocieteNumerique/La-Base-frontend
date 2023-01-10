@@ -106,7 +106,11 @@
 
     <hr class="fr-pb-4w fr-mt-4w" />
 
-    <div style="display: flex; justify-content: flex-end" class="fr-mb-3v">
+    <div
+      v-if="base?.canWrite"
+      style="display: flex; justify-content: flex-end"
+      class="fr-mb-3v"
+    >
       <IntroTooltip slug="NEW_BASE_SECTIONS">
         <DsfrButton
           label="Rubriques à la une"
@@ -119,7 +123,6 @@
     </div>
 
     <template v-if="base.showLatestAdditions && base.latestAdditions.length">
-      <hr class="fr-pb-5w fr-mt-4w" />
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
         <ResourceMiniatureById

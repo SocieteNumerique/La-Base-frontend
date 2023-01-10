@@ -2,7 +2,12 @@
   <div class="item full-width">
     <div class="full-width">
       <div class="is-flex is-justify-content-space-between full-width">
-        <BaseLabel :base="base" class="is-flex-grow">
+        <BaseLabel
+          :base="base"
+          class="is-flex-grow"
+          :show-status="false"
+          :align-top="isRootBase"
+        >
           <div class="full-width">
             <div
               style="max-width: 220px"

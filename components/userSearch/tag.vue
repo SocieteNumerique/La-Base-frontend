@@ -1,8 +1,9 @@
 <template>
   <button
-    class="user-search-tag fr-ml-3v fr-mt-2w"
+    class="user-search-tag fr-ml-2w fr-mt-2w"
     :class="active ? 'active' : null"
     :title="title"
+    style="font-weight: 500"
     @click="selectSearch"
   >
     {{ userSearch?.name }}

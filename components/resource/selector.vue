@@ -35,7 +35,7 @@
     <DsfrCheckboxSet
       v-model="selectedResources"
       :options="resultsAsCheckboxOptions"
-      class="resource-choices"
+      class="resource-choices fr-checkbox-group--sm"
     />
   </div>
 </template>

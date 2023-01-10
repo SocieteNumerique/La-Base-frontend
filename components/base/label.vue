@@ -1,8 +1,9 @@
 <template>
   <div class="base-label">
     <div
-      style="display: flex; align-items: center; max-width: 340px"
-      class="fr-text--xs fr-pr-2w"
+      style="display: flex; max-width: 340px"
+      :style="alignTop ? 'align-items: flex-start' : 'align-items: center'"
+      class="fr-text--xs fr-mb-0"
     >
       <div>
         <ImageResized
@@ -17,7 +18,7 @@
         {{ base.title }}
       </slot>
     </div>
-    <div class="admin-or-contributor">
+    <div v-if="showStatus" class="admin-or-contributor">
       {{ base.canWrite ? "Administrateur" : "Contributeur" }}
     </div>
   </div>
@@ -35,6 +36,14 @@ defineProps({
       profileImage?: FullFile
     }>,
     required: true,
+  },
+  showStatus: {
+    type: Boolean,
+    default: true,
+  },
+  alignTop: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>
