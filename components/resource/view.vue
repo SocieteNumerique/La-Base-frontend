@@ -56,17 +56,17 @@
                 <div class="has-children-space-between">
                   <div class="is-flex">
                     <div class="stat">
-                      <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
-                      <span class="fr-text--sm fr-ml-1w">{{
-                        pluralize(["enregistrement"], resource?.stats.pinCount)
-                      }}</span>
-                    </div>
-                    <div class="stat">
                       <span class="fr-h6">{{
                         resource?.stats.visitCount
                       }}</span>
                       <span class="fr-text--sm fr-ml-1w">{{
                         pluralize(["vue"], resource?.stats.visitCount)
+                      }}</span>
+                    </div>
+                    <div class="stat">
+                      <span class="fr-h6">{{ resource?.stats.pinCount }}</span>
+                      <span class="fr-text--sm fr-ml-1w">{{
+                        pluralize(["enregistrement"], resource?.stats.pinCount)
                       }}</span>
                     </div>
                   </div>

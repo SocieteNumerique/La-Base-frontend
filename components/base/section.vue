@@ -1,6 +1,6 @@
 <template>
   <div>
-    <hr class="fr-pb-5w fr-mt-4w" />
+    <hr class="fr-pb-4w fr-mt-4w" />
     <h2 class="fr-h3 fr-mb-2w">
       {{ section.title }}
     </h2>

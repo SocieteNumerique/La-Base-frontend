@@ -365,7 +365,7 @@ const goTo = (target: "resource" | "base", check = true) => {
 .bottom-button-holder
   display: flex
   flex-direction: column
-  max-width: 170px
+  max-width: 175px
 
   button
     width: 100%

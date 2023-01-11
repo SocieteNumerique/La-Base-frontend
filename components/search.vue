@@ -114,7 +114,7 @@
                     </span>
                   </button>
                 </IntroTooltip>
-                <div>
+                <div v-if="userStore.isLoggedIn">
                   <button
                     v-if="!isInBaseIndex"
                     class="fr-btn fr-btn--secondary fr-ml-2w"
@@ -238,7 +238,10 @@
             <div class="fr-mt-3v">
               {{ nResults }} {{ pluralize(["résultat"], nResults) }}
             </div>
-            <div style="display: flex; align-items: flex-end">
+            <div
+              v-if="userStore.isLoggedIn"
+              style="display: flex; align-items: flex-end"
+            >
               <DsfrButton
                 label="Enregistrer la recherche"
                 icon="ri-save-line"
@@ -255,7 +258,7 @@
             class="fr-pt-2v"
             style="display: flex; justify-content: space-between"
           >
-            <div v-if="!searches.length">
+            <div v-if="!searches.length" class="fr-text--sm fr-mb-0 fr-pt-2v">
               Vous n’avez pas encore de recherche enregistrée pour les
               {{ dataType === "resources" ? "Fiches" : "Bases" }}
             </div>
@@ -387,6 +390,7 @@ const currentPage = computed<number>({
 const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
+    console.log("### tag operator changed to", tagOperator.value)
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
     resetActiveUserTag()
   },
@@ -523,6 +527,7 @@ const selectUserSearch = (search: UserSearch) => {
       tags: search.query.tags.join(","),
     },
   })
+  tagOperatorInput.value = search.query.tagOperator
   doSearch()
 }
 

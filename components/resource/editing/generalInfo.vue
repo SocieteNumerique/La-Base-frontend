@@ -34,7 +34,7 @@
           Cette description apparaîtra aussi dans les résultats du moteur de
           recherche.
           <br />
-          {{ resourceStore.current?.description.length || 0 }}/560 caractères
+          {{ resourceStore.current?.description?.length || 0 }}/560 caractères
         </span>
       </template>
     </DsfrInput>

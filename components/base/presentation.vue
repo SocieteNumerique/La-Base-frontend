@@ -23,7 +23,7 @@
     </div>
     <div class="fr-grid-row">
       <div
-        class="fr-col-md-7"
+        class="fr-col-md-7 no-margin-bottom-on-last-p"
         style="
           border-right: 1px solid var(--border-default-grey);
           margin-right: 62px;
@@ -80,8 +80,7 @@
         </div>
       </div>
     </div>
-    <hr class="fr-pb-4w fr-mt-4w" />
-    <div class="fr-grid-row fr-grid-row--gutters">
+    <div class="fr-grid-row fr-grid-row--gutters fr-mt-5w">
       <div class="fr-col-sm-6">
         <button
           class="fr-btn select-type-btn"
