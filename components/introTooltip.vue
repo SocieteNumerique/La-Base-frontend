@@ -104,6 +104,7 @@ const props = defineProps({
 
 <style scoped>
 .tooltip-container.active {
+  outline: 2px solid var(--background-action-high-blue-france);
   position: relative;
   z-index: 10001;
   background: white;
