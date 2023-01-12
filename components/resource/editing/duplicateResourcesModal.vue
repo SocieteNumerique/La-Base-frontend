@@ -21,22 +21,27 @@
           v-if="ignoredDuplicates.includes(resource.id)"
           @cancel="ignoredDuplicates.pop(resource.id)"
         >
-          Merci, cette fiche ne vous sera plus montrée comme doublon
+          <div class="fr-text--sm">
+            Merci, cette fiche ne vous sera plus montrée comme doublon
+          </div>
         </ResourceEditingDuplicateCancelMessageBlock>
         <ResourceEditingDuplicateCancelMessageBlock
           v-else-if="confirmedDuplicates.includes(resource.id)"
           @cancel="confirmedDuplicates.pop(resource.id)"
         >
-          Si votre fiche ressemble trop à celle-ci, nous vous invitons à ne pas
-          publier de nouvelle fiche doublon.
-          <br />
-          <br />
-          Si votre fiche est très similaire, nous vous invitons à abandonner la
-          création.
-          <br />
-          <br />
-          Vous pouvez contacter l’auteur de la fiche doublon via sa base si vous
-          souhaitez lui faire des suggestions à propos de la fiche ressource.
+          <div class="fr-text--sm">
+            Si votre fiche ressemble trop à celle-ci, nous vous invitons à ne
+            pas publier de nouvelle fiche doublon.
+            <br />
+            <br />
+            Si votre fiche est très similaire, nous vous invitons à abandonner
+            la création.
+            <br />
+            <br />
+            Vous pouvez contacter l’auteur de la fiche doublon via sa base si
+            vous souhaitez lui faire des suggestions à propos de la fiche
+            ressource.
+          </div>
         </ResourceEditingDuplicateCancelMessageBlock>
         <div
           v-else

@@ -2,7 +2,10 @@
   <div class="content-edit">
     <h4 class="title fr-h4">Éditer {{ labelType }}</h4>
     <slot />
-    <div style="display: flex; justify-content: space-between" class="fr-mt-4w">
+    <div
+      style="display: flex; justify-content: space-between"
+      class="fr-mt-4w fr-mb-n2w"
+    >
       <div>
         <ContentButtonDeleteContent full secondary @delete="$emit('delete')" />
       </div>

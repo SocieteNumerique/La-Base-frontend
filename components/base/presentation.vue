@@ -20,10 +20,16 @@
         >
         <span>{{ pluralize(["favori"], base?.stats.bookmarkedCount) }}</span>
       </div>
+      <div class="stat">
+        <span class="fr-text--xl fr-text--bold">{{
+          base?.collections?.length || 0
+        }}</span>
+        <span>{{ pluralize(["collection"], base?.collections?.length) }}</span>
+      </div>
     </div>
     <div class="fr-grid-row">
       <div
-        class="fr-col-md-7"
+        class="fr-col-md-7 no-margin-bottom-on-last-p"
         style="
           border-right: 1px solid var(--border-default-grey);
           margin-right: 62px;
@@ -80,8 +86,7 @@
         </div>
       </div>
     </div>
-    <hr class="fr-pb-4w fr-mt-4w" />
-    <div class="fr-grid-row fr-grid-row--gutters">
+    <div class="fr-grid-row fr-grid-row--gutters fr-mt-5w">
       <div class="fr-col-sm-6">
         <button
           class="fr-btn select-type-btn"
@@ -106,7 +111,11 @@
 
     <hr class="fr-pb-4w fr-mt-4w" />
 
-    <div style="display: flex; justify-content: flex-end" class="fr-mb-3v">
+    <div
+      v-if="base?.canWrite"
+      style="display: flex; justify-content: flex-end"
+      class="fr-mb-3v"
+    >
       <IntroTooltip slug="NEW_BASE_SECTIONS">
         <DsfrButton
           label="Rubriques à la une"
@@ -118,8 +127,7 @@
       </IntroTooltip>
     </div>
 
-    <template v-if="base.showLatestAdditions && base.latestAdditions.length">
-      <hr class="fr-pb-5w fr-mt-4w" />
+    <template v-if="base?.showLatestAdditions && base.latestAdditions.length">
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
         <ResourceMiniatureById
@@ -130,7 +138,7 @@
       </div>
     </template>
 
-    <template v-if="base.sections?.length">
+    <template v-if="base?.sections?.length">
       <BaseSection
         v-for="sectionId in base.sections"
         :key="sectionId"
@@ -197,7 +205,9 @@ const socialMediaLinks = computed<{ link: string; iconName: string }[]>(() => {
     const capitalized =
       socialMedia.slice(0, 1).toUpperCase() + socialMedia.slice(1)
     // @ts-ignore
-    const url: string = <string>base.value[`socialMedia${capitalized}`]
+    const url: string = <string>(
+      ((base.value && base.value[`socialMedia${capitalized}`]) || "")
+    )
     if (url) {
       links.push({
         link: url,

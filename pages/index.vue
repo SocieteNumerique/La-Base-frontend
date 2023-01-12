@@ -16,7 +16,7 @@
             </div>
             <div class="fr-col-5">
               <TextBlock slug="homeIntroRight" />
-              <NuxtLink to="/a-propos" class="fr-btn fr-mt-2w">
+              <NuxtLink to="/page/a-propos" class="fr-btn fr-mt-2w">
                 <VIcon
                   name="ri-arrow-right-line"
                   class="fr-mr-1w"
@@ -49,6 +49,7 @@
           text-slug="homeAccountBlockContent"
           more-text-slug="homeAccountBlockContentMore"
           class="fr-mb-6w"
+          @signup="userStore.showSignUpModal = true"
         />
         <HomeBlock
           icon="/img/home/block-resources.svg"
@@ -74,7 +75,6 @@
 </template>
 
 <script setup lang="ts">
-import { Base } from "~/composables/types"
 import { onMounted } from "vue"
 import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"

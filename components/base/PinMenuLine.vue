@@ -2,7 +2,12 @@
   <div class="item full-width">
     <div class="full-width">
       <div class="is-flex is-justify-content-space-between full-width">
-        <BaseLabel :base="base" class="is-flex-grow">
+        <BaseLabel
+          :base="base"
+          class="is-flex-grow"
+          :show-status="false"
+          :align-top="isRootBase"
+        >
           <div class="full-width">
             <div
               style="max-width: 220px"
@@ -16,7 +21,10 @@
             </div>
             <template v-if="showResources">
               <div>
-                <span @click="showCollections = !showCollections">
+                <button
+                  class="fr-text--xs fr-mb-0 fr-text fr-text-label--blue-france"
+                  @click="showCollections = !showCollections"
+                >
                   {{ collectionCount }} /
                   {{ base.collectionChoices.length }} collections
                   <VIcon
@@ -27,7 +35,7 @@
                     "
                     scale="0.9"
                   />
-                </span>
+                </button>
               </div>
             </template>
           </div>
@@ -41,7 +49,7 @@
         </div>
       </div>
       <div v-if="showCollections" style="margin-left: 38px">
-        <PinMenuLineCollection
+        <BasePinMenuLineCollection
           v-for="collection of base.collectionChoices"
           :key="collection.id"
           :collection="collection"

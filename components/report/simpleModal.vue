@@ -25,8 +25,10 @@
       <template #label>
         Votre texte ici
         <span class="fr-hint-text">
-          Vous pouvez précisez votre signalement ici. Pour envoyer un fichier,
-          utilisez un service externe comme fromsmash.com ou wetransfer.com.
+          {{ report.description.length }}/280 caractères. Vous pouvez précisez
+          votre signalement ici. Pour envoyer un fichier, utilisez un service
+          externe comme fromsmash.com ou wetransfer.com et copiez-collez le lien
+          ici.
         </span>
       </template>
     </DsfrInput>
@@ -100,20 +102,16 @@ const reportMotivesOptions =
           text: "Sélectionnez une option",
         },
         {
-          text: "Le contenu est inapproprié",
-          value: "Le contenu est inapproprié",
+          text: "La base publie un ou des contenus inappropriés",
+          value: "La base publie un ou des contenus inappropriés",
         },
         {
-          text: "Le contenu est obsolète",
-          value: "Le contenu est obsolète",
+          text: "L’identité de la base est usurpée",
+          value: "L’identité de la base est usurpée",
         },
         {
-          text: "C'est le doublon d'une autre base",
-          value: "C'est le doublon d'une autre base",
-        },
-        {
-          text: "Il y a des erreurs",
-          value: "Il y a des erreurs",
+          text: "Autre motif",
+          value: "Autre motif",
         },
       ]
 

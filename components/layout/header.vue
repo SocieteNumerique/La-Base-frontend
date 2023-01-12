@@ -9,7 +9,7 @@
               <ul class="fr-links-group">
                 <li style="align-items: center">
                   <button
-                    class="fr-btn--tertiary-no-outline fr-text--sm"
+                    class="fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
                     title="Afficher le didacticiel"
                     aria-label="Afficher le didacticiel"
                     @click="introStore.showAllInPage"
@@ -23,7 +23,7 @@
                   class="selector"
                 >
                   <template v-if="baseStore.hasBases">
-                    <IntroTooltip slug="MY_BASES">
+                    <IntroTooltip slug="INDEX_MY_BASES">
                       <button
                         :class="{ '-active': showBasesList }"
                         class="fr-link btn-tab-activable"
@@ -69,7 +69,7 @@
                 </li>
                 <li v-if="!userStore.isLoggedIn">
                   <button
-                    class="fr-link"
+                    class="fr-link no-after"
                     @click="userStore.showSignUpModal = true"
                   >
                     S'inscrire
@@ -77,7 +77,7 @@
                 </li>
                 <li id="profile-menu" class="selector">
                   <template v-if="userStore.isLoggedIn">
-                    <IntroTooltip slug="MY_PROFILE">
+                    <IntroTooltip slug="INDEX_MY_PROFILE">
                       <button
                         :class="{ '-active': showProfileMenu }"
                         class="fr-link btn-tab-activable"
@@ -193,7 +193,11 @@
               </li>
             </template>
           </ul>
-          <ul class="fr-links-group" style="justify-content: flex-end">
+          <ul
+            v-if="userStore.isLoggedIn"
+            class="fr-links-group"
+            style="justify-content: flex-end"
+          >
             <li>
               <NuxtLink to="/favoris">
                 <button tabindex="-1" class="fr-text--sm">
@@ -283,4 +287,7 @@ const pages = computed(() => pageStore.pages)
     box-shadow: -5px 0px 0px -4px var(--border-default-grey)
   li
     padding: 0 4px
+
+.fr-link.no-after::after
+    display: none !important
 </style>

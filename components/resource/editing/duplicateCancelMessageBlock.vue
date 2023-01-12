@@ -1,5 +1,7 @@
 <template>
-  <div class="is-flex flex-center full-height cancel-message-block">
+  <div
+    class="is-flex flex-center full-height cancel-message-block fr-text--sm fr-p-2w"
+  >
     <div>
       <p>
         <slot></slot>

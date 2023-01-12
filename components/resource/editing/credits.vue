@@ -93,16 +93,9 @@ const onOwnBaseChose = () => {
     ownSelectedBase.value,
   ]
   resourceStore.markDirty()
-  console.log("### selected", ownSelectedBase)
 }
 
 const selectProducer = (producer: string) => {
-  console.log(
-    "### select producer",
-    producer,
-    resourceStore.resourcesById,
-    resourceStore.currentId
-  )
   resourceStore.resourcesById[resourceStore.currentId!].producerState = producer
   resourceStore.markDirty()
   if (producer === "me") {

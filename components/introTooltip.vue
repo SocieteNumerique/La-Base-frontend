@@ -4,6 +4,7 @@
       class="tooltip-container"
       :slug="props.slug"
       :class="isActive ? 'active' : ''"
+      :style="props.childDisplay ? `display: ${props.childDisplay}` : null"
     >
       <slot />
       <div
@@ -87,6 +88,7 @@ const isActive = computed(
 
 const props = defineProps({
   slug: { type: String, required: true },
+  childDisplay: { type: String, default: "" },
 })
 </script>
 
@@ -102,6 +104,7 @@ const props = defineProps({
 
 <style scoped>
 .tooltip-container.active {
+  outline: 2px solid var(--background-action-high-blue-france);
   position: relative;
   z-index: 10001;
   background: white;

@@ -13,7 +13,7 @@
           <div class="fr-grid-row">
             <div v-if="!isInBaseIndex" class="fr-col-md-4 fr-p-0">
               <div class="is-flex" style="align-items: center">
-                <IntroTooltip slug="SEARCH_SWITCH">
+                <IntroTooltip slug="INDEX_SEARCH_SWITCH">
                   <div class="toggle-container">
                     <button
                       class="toggle-button"
@@ -44,12 +44,43 @@
                 </IntroTooltip>
               </div>
             </div>
+            <div v-if="canShowDrafts" class="fr-col-md-4 fr-p-0">
+              <div class="is-flex" style="align-items: center">
+                <IntroTooltip slug="FICHES_SWITCH">
+                  <div class="toggle-container">
+                    <button
+                      title="Afficher les ressources publiées"
+                      class="toggle-button"
+                      :class="showLiveResources ? '-active' : null"
+                      @click="showLiveResources = true"
+                    >
+                      <img
+                        class="fr-mr-3v"
+                        src="/img/home/resource-blue.svg"
+                        alt=""
+                        style="height: 18px"
+                      />
+                      <span>Fiches</span>
+                    </button>
+                    <button
+                      title="Afficher les brouillons"
+                      class="toggle-button"
+                      :class="!showLiveResources ? '-active' : null"
+                      @click="showLiveResources = false"
+                    >
+                      <img class="fr-mr-3v" src="/img/home/drafts.svg" alt="" />
+                      <span>Brouillons</span>
+                    </button>
+                  </div>
+                </IntroTooltip>
+              </div>
+            </div>
             <div
               class="fr-col-md-8 fr-p-0 is-flex"
               :style="isInBaseIndex ? null : 'justify-content: space-between'"
             >
               <div>
-                <IntroTooltip slug="SEARCH_BAR">
+                <IntroTooltip slug="INDEX_SEARCH_BAR">
                   <div class="fr-search-bar fr-input-group">
                     <input
                       id="search"
@@ -74,7 +105,7 @@
                 :style="isInBaseIndex ? 'margin-left: 24px' : null"
                 style="display: flex"
               >
-                <IntroTooltip slug="FILTERS">
+                <IntroTooltip slug="INDEX_FILTERS">
                   <button class="fr-btn" @click="toggleFilters">
                     Filtrer
                     <span style="padding-left: 3px">
@@ -83,7 +114,7 @@
                     </span>
                   </button>
                 </IntroTooltip>
-                <div>
+                <div v-if="userStore.isLoggedIn">
                   <button
                     v-if="!isInBaseIndex"
                     class="fr-btn fr-btn--secondary fr-ml-2w"
@@ -137,7 +168,7 @@
 
     <div
       v-if="showFilters || showUserSearches"
-      class="fr-pt-1w fr-pb-6w"
+      class="fr-pt-1w fr-pb-4w"
       style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 4px; background: white"
     >
       <div class="fr-container">
@@ -207,9 +238,12 @@
             <div class="fr-mt-3v">
               {{ nResults }} {{ pluralize(["résultat"], nResults) }}
             </div>
-            <div style="display: flex; align-items: flex-end">
+            <div
+              v-if="userStore.isLoggedIn"
+              style="display: flex; align-items: flex-end"
+            >
               <DsfrButton
-                label="Enregistrer la recherche actuelle"
+                label="Enregistrer la recherche"
                 icon="ri-save-line"
                 secondary
                 class="fr-btn--sm"
@@ -221,10 +255,10 @@
         </template>
         <template v-else>
           <div
-            class="fr-pt-3w"
+            class="fr-pt-2v"
             style="display: flex; justify-content: space-between"
           >
-            <div v-if="!searches.length">
+            <div v-if="!searches.length" class="fr-text--sm fr-mb-0 fr-pt-2v">
               Vous n’avez pas encore de recherche enregistrée pour les
               {{ dataType === "resources" ? "Fiches" : "Bases" }}
             </div>
@@ -237,15 +271,17 @@
                 @select="selectUserSearch(search)"
               />
             </div>
-            <div style="min-width: 308px">
-              <DsfrButton
-                label="Enregistrer la recherche actuelle"
-                icon="ri-save-line"
-                secondary
-                class="fr-btn--sm"
-                :disabled="isSaveSearchDisabled"
-                @click="showUserSearchAddModal = true"
-              />
+            <div style="padding-top: 3px; flex-shrink: 0">
+              <div>
+                <DsfrButton
+                  label="Enregistrer la recherche"
+                  icon="ri-save-line"
+                  secondary
+                  class="fr-btn--sm"
+                  :disabled="isSaveSearchDisabled"
+                  @click="showUserSearchAddModal = true"
+                />
+              </div>
             </div>
           </div>
         </template>
@@ -275,6 +311,7 @@ import { pluralize } from "~/composables/strUtils"
 import { onFocusOut } from "~/composables/focusOut"
 import { useUserSearchStore } from "~/stores/userSearchStore"
 import { useUserStore } from "~/stores/userStore"
+import { useBaseStore } from "~/stores/baseStore"
 
 definePageMeta({
   layout: false,
@@ -290,6 +327,7 @@ const userSearchStore = useUserSearchStore()
 const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
+const baseStore = useBaseStore()
 
 const activeUserSearch = ref(-1)
 const nResults = ref(0)
@@ -302,6 +340,11 @@ onFocusOut(
   () => (showFilters.value = false),
   "search-container",
   () => showFilters.value
+)
+onFocusOut(
+  () => (showUserSearches.value = false),
+  "search-container",
+  () => showUserSearches.value
 )
 
 const emit = defineEmits(["results", "searchedText"])
@@ -328,9 +371,13 @@ const dataType = computed<"resources" | "bases">({
     resetActiveUserTag()
   },
 })
+const showLiveResources = computed<boolean>({
+  get: () => Boolean(Number(((<string>route.query.live) as string) || "1")),
+  set: (value) =>
+    router.push({ query: { ...route.query, live: String(Number(value)) } }),
+})
 const searches = computed(() => {
-  const toReturn = userSearchStore.searchesForDataType(dataType.value)
-  return toReturn
+  return userSearchStore.searchesForDataType(dataType.value)
 })
 
 const currentPage = computed<number>({
@@ -343,6 +390,7 @@ const currentPage = computed<number>({
 const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
+    console.log("### tag operator changed to", tagOperator.value)
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
     resetActiveUserTag()
   },
@@ -392,7 +440,9 @@ const searchQuery = computed(() => {
 watch(
   () => route.query,
   (query, oldQuery) => {
-    if (query.dataType != oldQuery.dataType) {
+    const oldDataype = oldQuery.dataType || "resources"
+    const newDataype = query.dataType || "resources"
+    if (oldDataype != newDataype) {
       reset()
     }
     if (query.page != oldQuery.page) {
@@ -436,6 +486,12 @@ const tagCategories = computed<TagCategory[]>(() => {
 })
 
 const isInBaseIndex = computed(() => route.path.startsWith("/base"))
+const canShowDrafts = computed(() => {
+  if (!isInBaseIndex.value) {
+    return false
+  }
+  return baseStore.current.canWrite
+})
 const showFilters = ref(false)
 const showUserSearches = ref(false)
 
@@ -454,6 +510,11 @@ const onTextInput = () => {
 }
 
 const selectUserSearch = (search: UserSearch) => {
+  if (activeUserSearch.value == search.id) {
+    // search was already active, we de-activate it
+    reset()
+    return
+  }
   // we use a timeout because otherwise the route watchers would
   // overwrite activeSearchValue to -1
   setTimeout(() => (activeUserSearch.value = search.id), 200)
@@ -466,6 +527,7 @@ const selectUserSearch = (search: UserSearch) => {
       tags: search.query.tags.join(","),
     },
   })
+  tagOperatorInput.value = search.query.tagOperator
   doSearch()
 }
 

@@ -13,11 +13,11 @@
   />
   <DsfrInput
     v-model="content.title"
-    hint="max 50 caractères"
     :label-visible="true"
     label="Titre de lien"
     placeholder="Titre de lien"
     maxlength="50"
+    :hint="`${content.title.length} / 50 caractères`"
   />
   <DsfrInput
     v-model="content.annotation"
@@ -26,6 +26,7 @@
     label="Légende"
     placeholder="Légende"
     maxlength="280"
+    :hint="`${content.title.length} / 280 caractères`"
   />
 </template>
 

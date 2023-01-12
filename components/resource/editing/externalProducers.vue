@@ -128,11 +128,6 @@ const resetNewProducer = () => {
 }
 
 const removeProducer = (producerEmail: string) => {
-  console.log(
-    "### remove producer",
-    producerEmail,
-    resourceStore.current?.externalProducers
-  )
   let producers = resourceStore.current?.externalProducers || []
   producers = producers.filter(
     (producer: ExternalProducer) => producer.emailContact !== producerEmail
@@ -143,7 +138,6 @@ const removeProducer = (producerEmail: string) => {
 }
 
 const onExternalProducersAdd = () => {
-  console.log("### added")
   if (
     resourceStore.resourcesById[resourceStore.currentId!].externalProducers ==
     null
@@ -178,10 +172,6 @@ const onNewExternalProducerTagChange = (value: Tag[]) => {
   } else {
     newExternalProducer.value.occupation = undefined
   }
-  console.log(
-    "### onNewExternalProducerTagChange",
-    newExternalProducer.value.occupation
-  )
   // isAddExternalProducerDisabled.value
 }
 

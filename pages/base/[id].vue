@@ -75,12 +75,6 @@
                   <RoundButton icon="ri-mail-line" label="Contacter" />
                 </a>
               </IntroTooltip>
-              <ReportSimpleModal
-                v-if="showReportModal"
-                :id="base.id"
-                instance-type="Base"
-                @close="showReportModal = false"
-              />
             </div>
             <div style="padding-top: 7px; display: flex">
               <IntroTooltip v-if="base?.canWrite" slug="CREATE_FICHE">
@@ -92,7 +86,7 @@
                 />
               </IntroTooltip>
               <div class="fr-ml-2w">
-                <BaseBookmarkButton :base-id="base.id" />
+                <BaseBookmarkButton v-if="base" :base-id="base?.id" />
               </div>
             </div>
           </div>
@@ -157,8 +151,14 @@
 
     <ResourceCreationModal
       v-if="showAddResourceModal"
-      :base-id="base.id"
+      :base-id="base?.id"
       @close="showAddResourceModal = false"
+    />
+    <ReportSimpleModal
+      v-if="showReportModal"
+      :id="base?.id"
+      instance-type="Base"
+      @close="showReportModal = false"
     />
   </NuxtLayout>
 </template>
@@ -266,7 +266,7 @@ const mailToHrefContact = computed(() => {
     return ""
   }
   let toReturn = `mailto:${base.value.contact}`
-  const subject = `[La Base] Contact à propos de la base "${base.value.title}" (id ${base.value.id})`
+  const subject = `[La Base] Contact à propos de la base "${base.value.title}" (id ${base.value?.id})`
   return `${toReturn}?subject=${subject}`
 })
 </script>

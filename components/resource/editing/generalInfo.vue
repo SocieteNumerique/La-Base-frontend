@@ -9,7 +9,9 @@
       :model-value="resourceStore.current?.title"
       label="Nom de la ressource"
       maxlength="100"
-      hint="Requis - 100 caractères maximum"
+      :hint="`Requis - ${
+        resourceStore.current?.title.length || 0
+      }/100 caractères`"
       :label-visible="true"
       @update:model-value="onTitleUpdate"
     />
@@ -20,6 +22,7 @@
       :is-textarea="true"
       class="fr-mb-3w"
       rows="5"
+      maxlength="560"
       @update:model-value="onDescriptionUpdate"
     >
       <template #label>
@@ -30,6 +33,8 @@
           Décrivez en quelques mots votre ressource (nature, objectifs...).
           Cette description apparaîtra aussi dans les résultats du moteur de
           recherche.
+          <br />
+          {{ resourceStore.current?.description?.length || 0 }}/560 caractères
         </span>
       </template>
     </DsfrInput>

@@ -51,8 +51,10 @@
 
       <div class="text" style="overflow-x: hidden">
         <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
-        <p class="fr-m-0 fr-text--xs">
-          {{ nbResources }}
+        <p class="fr-m-0 fr-text--sm">
+          <span class="fr-text--lg fr-text--bold fr-mr-1w">{{
+            nbResources
+          }}</span>
           {{ pluralize(["Fiche ressource", "Fiches ressources"], nbResources) }}
         </p>
         <p v-if="savedCollection.description" class="fr-mt-2w fr-mb-0">

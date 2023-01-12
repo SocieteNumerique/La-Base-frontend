@@ -148,7 +148,6 @@ const isFormDisabled = computed(() => {
 })
 
 const submit = async () => {
-  console.log("submit", email.value, password.value)
   if (isForgottenEmailScreen.value) {
     const { data, error } = await userStore.resetPassword(email.value)
     if (!error.value) {

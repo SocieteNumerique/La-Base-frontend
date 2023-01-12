@@ -42,7 +42,6 @@ export const useCollectionStore = defineStore("collection", {
       if (!error.value) {
         const collection = data.value
         this.collectionsById[collection!.id!] = collection!
-        console.log("### got collection", collectionId, collection!.id)
         return collection
       }
     },
@@ -94,8 +93,8 @@ export const useCollectionStore = defineStore("collection", {
         { resourceId, action },
         {},
         `La resource a bien été ${
-          action === "add" ? "ajoutée" : "retirée"
-        } à la collection`,
+          action === "add" ? "ajoutée à" : "retirée de"
+        } la collection`,
         true
       )
       if (!error.value) {

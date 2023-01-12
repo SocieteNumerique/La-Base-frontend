@@ -9,7 +9,7 @@
         <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="fr-btn--tertiary-no-outline fr-mr-2w no-underline no-append-ico"
+          class="no-underline no-append-ico"
           :target="targetLink"
           title="Éditer la fiche"
           aria-label="Éditer la fiche"
@@ -82,6 +82,11 @@
             <span class="fr-text--lg fr-text--bold">
               {{ resource?.stats.visitCount }}</span
             >{{ pluralize(["vue"], resource?.stats.visitCount) }}
+          </p>
+          <p class="fr-mb-0">
+            <span class="fr-text--lg fr-text--bold">
+              {{ resource?.stats.pinCount }}</span
+            >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
         </div>
       </div>
