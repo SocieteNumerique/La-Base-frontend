@@ -121,7 +121,7 @@
       </IntroTooltip>
     </div>
 
-    <template v-if="base.showLatestAdditions && base.latestAdditions.length">
+    <template v-if="base?.showLatestAdditions && base.latestAdditions.length">
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
         <ResourceMiniatureById
@@ -132,7 +132,7 @@
       </div>
     </template>
 
-    <template v-if="base.sections?.length">
+    <template v-if="base?.sections?.length">
       <BaseSection
         v-for="sectionId in base.sections"
         :key="sectionId"
@@ -199,7 +199,9 @@ const socialMediaLinks = computed<{ link: string; iconName: string }[]>(() => {
     const capitalized =
       socialMedia.slice(0, 1).toUpperCase() + socialMedia.slice(1)
     // @ts-ignore
-    const url: string = <string>base.value[`socialMedia${capitalized}`]
+    const url: string = <string>(
+      ((base.value && base.value[`socialMedia${capitalized}`]) || "")
+    )
     if (url) {
       links.push({
         link: url,
