@@ -297,12 +297,4 @@ li:not(:last-child) .content-in-section, .section-container:not(:last-child)
 
 li:not(:last-child) .content-in-section
   padding-bottom: 16px
-
-.section-container
-  &.is-editing, &:hover
-    .toolbar-section
-      opacity: 1
-
-  .toolbar-section
-    opacity: 0
 </style>
