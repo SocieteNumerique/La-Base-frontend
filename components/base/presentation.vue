@@ -20,6 +20,12 @@
         >
         <span>{{ pluralize(["favori"], base?.stats.bookmarkedCount) }}</span>
       </div>
+      <div class="stat">
+        <span class="fr-text--xl fr-text--bold">{{
+          base?.collections?.length || 0
+        }}</span>
+        <span>{{ pluralize(["collection"], base?.collections?.length) }}</span>
+      </div>
     </div>
     <div class="fr-grid-row">
       <div
