@@ -2,9 +2,13 @@
   <DsfrModal
     :actions="actions"
     :opened="true"
-    title="Signalement"
+    title="Signaler la base"
     @close="$emit('close')"
   >
+    <p class="fr-text--sm">
+      Veuillez indiquez un motif de signalement et le préciser dans votre
+      message.
+    </p>
     <DsfrSelect
       v-model="report.motive"
       :options="reportMotivesOptions"
@@ -13,11 +17,21 @@
     />
     <DsfrInput
       v-model="report.description"
-      is-textarea
-      label="Description"
-      label-visible
-      required
-    />
+      :is-textarea="true"
+      :label-visible="true"
+      placeholder="Votre texte ici"
+      maxlength="280"
+    >
+      <template #label>
+        Votre texte ici
+        <span class="fr-hint-text">
+          {{ report.description.length }}/280 caractères. Vous pouvez précisez
+          votre signalement ici. Pour envoyer un fichier, utilisez un service
+          externe comme fromsmash.com ou wetransfer.com et copiez-collez le lien
+          ici.
+        </span>
+      </template>
+    </DsfrInput>
   </DsfrModal>
 </template>
 
@@ -49,7 +63,7 @@ const report = ref<Report>({
 
 async function sendReport() {
   const { error } = await useApiPost(
-    "reports/",
+    "report",
     report.value,
     {},
     "Signalement envoyé aux administrateurs",
@@ -58,32 +72,49 @@ async function sendReport() {
   if (!error.value) emits("close")
 }
 
-const reportMotivesOptions = [
-  {
-    value: "",
-    text: "-",
-  },
-  {
-    // value: "inappropriate",
-    text: "Le contenu est inapproprié",
-    value: "Le contenu est inapproprié",
-  },
-  {
-    // value: "obsolete",
-    text: "Le contenu est obsolète",
-    value: "Le contenu est obsolète",
-  },
-  {
-    // value: "duplicate",
-    text: "C'est le doublon d'une autre ressource",
-    value: "C'est le doublon d'une autre ressource",
-  },
-  {
-    // value: "error",
-    text: "Il y a des erreurs",
-    value: "Il y a des erreurs",
-  },
-]
+const reportMotivesOptions =
+  props.instanceType === "Resource"
+    ? [
+        {
+          value: "",
+          text: "Sélectionnez une option",
+        },
+        {
+          text: "Le contenu est inapproprié",
+          value: "Le contenu est inapproprié",
+        },
+        {
+          text: "Le contenu est obsolète",
+          value: "Le contenu est obsolète",
+        },
+        {
+          text: "C'est le doublon d'une autre ressource",
+          value: "C'est le doublon d'une autre ressource",
+        },
+        {
+          text: "Il y a des erreurs",
+          value: "Il y a des erreurs",
+        },
+      ]
+    : [
+        {
+          value: "",
+          text: "Sélectionnez une option",
+        },
+        {
+          text: "La base publie un ou des contenus inappropriés",
+          value: "La base publie un ou des contenus inappropriés",
+        },
+        {
+          text: "L’identité de la base est usurpée",
+          value: "L’identité de la base est usurpée",
+        },
+        {
+          text: "Autre motif",
+          value: "Autre motif",
+        },
+      ]
+
 const actions = computed(() => [
   {
     label: "Signaler",

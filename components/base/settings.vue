@@ -1,18 +1,24 @@
 <template>
   <div :id="containerId" class="selector">
-    <button
-      :class="{ '-active': isMenuShown }"
-      class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
-      @click="isMenuShown = !isMenuShown"
-    >
-      <VIcon
-        class="fr-text-title--blue-france fr-mr-2v"
-        name="ri-settings-3-line"
-      />
-      <span class="fr-text-title--blue-france">Paramètres de la base</span>
-    </button>
+    <IntroTooltip slug="BASES_SETTINGS">
+      <button
+        :class="{ '-active': isMenuShown }"
+        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
+        @click="isMenuShown = !isMenuShown"
+      >
+        <VIcon
+          class="fr-text-title--blue-france fr-mr-2v"
+          name="ri-settings-3-line"
+        />
+        <span class="fr-text-title--blue-france">Paramètres de la base</span>
+      </button>
+    </IntroTooltip>
 
-    <div v-show="isMenuShown" class="selector__menu fr-px-2w fr-text--xs">
+    <div
+      v-show="isMenuShown"
+      class="selector__menu fr-px-2w fr-text--xs"
+      style="z-index: 13; width: 200px"
+    >
       <div
         v-for="({ label, step }, index) of menuOptions"
         :key="index"
@@ -45,6 +51,15 @@
     />
     <BaseEditState
       v-if="openStep === 'status'"
+      @close="openStep = ''"
+      @save="updateBase"
+    />
+    <BaseEditCertification
+      v-if="openStep === 'certification'"
+      @close="openStep = ''"
+    />
+    <BaseEditSection
+      v-if="openStep === 'section'"
       @close="openStep = ''"
       @save="updateBase"
     />
@@ -96,6 +111,14 @@ const menuOptions = [
   {
     label: "Statut de la base",
     step: "status",
+  },
+  {
+    label: "Rubriques à la une",
+    step: "section",
+  },
+  {
+    label: "Certifier la base",
+    step: "certification",
   },
   {
     label: "Supprimer la base",

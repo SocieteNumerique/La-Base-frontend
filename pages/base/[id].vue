@@ -47,40 +47,47 @@
           />
           <div class="has-children-space-between">
             <div>
-              <ShareButton :link="route.fullPath">
-                <RoundButton
-                  icon="ri-share-line"
-                  class="fr-pl-0"
-                  label="Partager"
-                />
-              </ShareButton>
+              <IntroTooltip slug="BASE_SHARE" style="display: inline-block">
+                <ShareButton :link="route.fullPath">
+                  <RoundButton
+                    icon="ri-share-line"
+                    class="fr-pl-0"
+                    label="Partager"
+                  />
+                </ShareButton>
+              </IntroTooltip>
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
-              <a :href="mailToHrefReport" class="no-underline">
-                <RoundButton icon="ri-alert-line" label="Signaler" />
-              </a>
-              <a
-                v-show="base?.contact"
-                :href="mailToHrefContact"
-                class="no-underline"
-              >
-                <RoundButton icon="ri-mail-line" label="Contacter" />
-              </a>
-              <ReportSimpleModal
-                v-if="showReportModal"
-                :id="base.id"
-                instance-type="Base"
-                @close="showReportModal = false"
-              />
+              <IntroTooltip slug="REPORT_BASE" style="display: inline-block">
+                <RoundButton
+                  icon="ri-alert-line"
+                  label="Signaler"
+                  @click="showReportModal = true"
+                />
+              </IntroTooltip>
+              <IntroTooltip slug="BASE_CONTACT" style="display: inline-block">
+                <a
+                  v-show="base?.contact"
+                  :href="mailToHrefContact"
+                  class="no-underline"
+                >
+                  <RoundButton icon="ri-mail-line" label="Contacter" />
+                </a>
+              </IntroTooltip>
             </div>
-            <div v-if="base?.canWrite" style="padding-top: 7px">
-              <DsfrButton
-                icon="ri-add-line"
-                label="Ajouter une fiche"
-                class="fr-btn--sm"
-                @click="onAddResourceClick"
-              />
+            <div style="padding-top: 7px; display: flex">
+              <IntroTooltip v-if="base?.canWrite" slug="CREATE_FICHE">
+                <DsfrButton
+                  icon="ri-add-line"
+                  label="Ajouter une fiche"
+                  class="fr-btn--sm"
+                  @click="onAddResourceClick"
+                />
+              </IntroTooltip>
+              <div class="fr-ml-2w">
+                <BaseBookmarkButton :base-id="base.id" />
+              </div>
             </div>
           </div>
         </div>
@@ -93,28 +100,38 @@
           <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'presentation' ? 'page' : null"
-                  @click="currentTab = 'presentation'"
-                >
-                  <button>Présentation</button>
-                </NuxtLink>
+                <IntroTooltip slug="PRESENTATION" child-display="flex">
+                  <NuxtLink
+                    :aria-current="
+                      currentTab === 'presentation' ? 'page' : null
+                    "
+                    @click="currentTab = 'presentation'"
+                  >
+                    <button>Présentation</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'resources' ? 'page' : null"
-                  @click="currentTab = 'resources'"
-                >
-                  <button>Fiches</button>
-                </NuxtLink>
+                <IntroTooltip slug="TAB_FICHES">
+                  <NuxtLink
+                    :aria-current="currentTab === 'resources' ? 'page' : null"
+                    style="height: 100%; display: inline-block"
+                    @click="currentTab = 'resources'"
+                  >
+                    <button>Fiches</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
               <li>
-                <NuxtLink
-                  :aria-current="currentTab === 'collections' ? 'page' : null"
-                  @click="currentTab = 'collections'"
-                >
-                  <button>Collections</button>
-                </NuxtLink>
+                <IntroTooltip slug="TAB_COLLECTIONS">
+                  <NuxtLink
+                    :aria-current="currentTab === 'collections' ? 'page' : null"
+                    style="height: 100%; display: inline-block"
+                    @click="currentTab = 'collections'"
+                  >
+                    <button>Collections</button>
+                  </NuxtLink>
+                </IntroTooltip>
               </li>
             </ul>
           </div>
@@ -136,6 +153,12 @@
       v-if="showAddResourceModal"
       :base-id="base.id"
       @close="showAddResourceModal = false"
+    />
+    <ReportSimpleModal
+      v-if="showReportModal"
+      :id="base.id"
+      instance-type="Base"
+      @close="showReportModal = false"
     />
   </NuxtLayout>
 </template>
@@ -248,21 +271,6 @@ const mailToHrefContact = computed(() => {
   const subject = `[La Base] Contact à propos de la base "${base.value.title}" (id ${base.value.id})`
   return `${toReturn}?subject=${subject}`
 })
-
-const mailToHrefReport = computed(() => {
-  let toReturn = "mailto:labase@anct.gouv.fr"
-  if (!base.value) {
-    return toReturn
-  }
-  const subject = `[La Base] Signalement pour la base "${base.value.title}" (id ${base.value.id})`
-  let body: string
-  if (process.client) {
-    body = `Ce signalement concerne la base suivante : ${window.location.href}`
-  } else {
-    body = ""
-  }
-  return `${toReturn}?subject=${subject}&body=${body}`
-})
 </script>
 
 <style lang="sass" scoped>
@@ -274,6 +282,10 @@ const mailToHrefReport = computed(() => {
 
 .stat *
   margin-left: 12px
+
+.fr-links-group
+  a
+    font-size: 14px
 </style>
 
 <style lang="sass">

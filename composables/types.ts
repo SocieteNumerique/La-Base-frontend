@@ -1,5 +1,9 @@
 import { Level } from "@tiptap/extension-heading"
 
+export interface ObjectById<T> {
+  [key: number]: T
+}
+
 export type User = {
   id?: number
   email: string
@@ -41,6 +45,7 @@ export type Resource = {
   contentStats?: { links: number; files: number }
   created?: string
   creator?: Creator
+  creatorBases?: number[]
   dirty?: boolean
   hasGlobalLicense?: boolean
   id: number
@@ -149,6 +154,21 @@ export type TagCategoryWithFullTags = {
   tags: Tag[]
 }
 
+export enum BaseSectionType {
+  RESOURCES = "resources",
+  COLLECTIONS = "collections",
+}
+export type BaseSection = {
+  id?: number
+  base: number
+  title: string
+  description: string
+  position?: number
+  type: BaseSectionType
+  resources: number[]
+  collections: number[]
+}
+
 export type BaseCreate = {
   contact?: string
   coverImage?: ResizableImage
@@ -158,6 +178,7 @@ export type BaseCreate = {
   title: string
 }
 type BaseStats = {
+  bookmarkedCount: number
   resourceCount: number
   visitCount: number
 }
@@ -165,6 +186,7 @@ export type Base = {
   admins?: User[]
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
+  bookmarked: boolean
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]
@@ -182,17 +204,22 @@ export type Base = {
   owner: User | number
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
+  collectionChoices?: Collection[]
   resources?: ResourcesWithPagination
-  socialMediaFacebook: string
-  socialMediaLinkedin: string
-  socialMediaMastodon: string
-  socialMediaTwitter: string
+  socialMediaFacebook?: string
+  socialMediaLinkedin?: string
+  socialMediaMastodon?: string
+  socialMediaTwitter?: string
   state?: string
-  stats: BaseStats
+  stats?: BaseStats
   tags?: number[]
   territoryTags?: number[]
   title: string
   website?: string
+  showLatestAdditions?: boolean
+  latestAdditions?: number[]
+  sections?: number[]
+  resources_sections?: Resource[]
 }
 export type ResourcesWithPagination = {
   count: number
@@ -200,13 +227,17 @@ export type ResourcesWithPagination = {
   results: Resource[]
 }
 export type BaseWithDetailedResources = {
+  bookmarked: boolean
   id: number
   isShort?: boolean
   owner: User | number
   resources?: ResourcesWithPagination
   title: string
   collections: CollectionWithDetailedResources[]
+  sections?: BaseSection[]
   resourcesInPinnedCollections?: Resource[]
+  latestAdditions?: Resource[]
+  sectionResources?: Resource[]
 }
 
 type BaseContent = {
@@ -401,3 +432,16 @@ export type RichTextToolbarItem = {
   disabled: () => boolean
 }
 export type RichTextToolbar = RichTextToolbarItem[]
+
+export type UserSearchQuery = {
+  orderBy: string
+  tagOperator: "OR" | "AND"
+  text: string
+  tags: number[]
+}
+export type UserSearch = {
+  dataType: "resources" | "bases"
+  id: number
+  name: string
+  query: UserSearchQuery
+}

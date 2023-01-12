@@ -17,7 +17,7 @@
         role="navigation"
         aria-label="Menu latéral"
       >
-        <div class="fr-sidemenu__inner">
+        <div class="fr-sidemenu__inner" style="overflow: visible">
           <button
             class="fr-sidemenu__btn"
             aria-controls="fr-sidemenu-wrapper"
@@ -38,20 +38,22 @@
                 "
               >
                 <template v-if="menu.subMenus.length">
-                  <button
-                    class="fr-sidemenu__btn"
-                    :aria-expanded="
-                      resourceStore.isMenuActive(menu.key) &&
-                      isMenuOpen[menu.key]
-                    "
-                    aria-controls="fr-sidemenu-item-0"
-                    :aria-current="
-                      resourceStore.isMenuActive(menu.key) ? 'page' : null
-                    "
-                    @click="selectMenu(menu.key)"
-                  >
-                    {{ menu.name }}
-                  </button>
+                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                    <button
+                      class="fr-sidemenu__btn"
+                      :aria-expanded="
+                        resourceStore.isMenuActive(menu.key) &&
+                        isMenuOpen[menu.key]
+                      "
+                      aria-controls="fr-sidemenu-item-0"
+                      :aria-current="
+                        resourceStore.isMenuActive(menu.key) ? 'page' : null
+                      "
+                      @click="selectMenu(menu.key)"
+                    >
+                      {{ menu.name }}
+                    </button>
+                  </IntroTooltip>
                   <div
                     v-if="menu.subMenus.length"
                     id="fr-sidemenu-item-0"
@@ -93,36 +95,69 @@
                   </div>
                 </template>
                 <template v-else>
-                  <button
-                    :aria-current="
-                      resourceStore.isMenuActive(menu.key) ? 'page' : null
-                    "
-                    class="fr-sidemenu__link"
-                    @click="selectMenu(menu.key)"
-                  >
-                    {{ menu.name }}
-                  </button>
+                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                    <button
+                      :aria-current="
+                        resourceStore.isMenuActive(menu.key) ? 'page' : null
+                      "
+                      class="fr-sidemenu__link"
+                      @click="selectMenu(menu.key)"
+                    >
+                      {{ menu.name }}
+                    </button>
+                  </IntroTooltip>
                 </template>
               </li>
             </ul>
           </div>
         </div>
         <div class="bottom-button-holder fr-mt-7w">
-          <DsfrButton
-            :secondary="true"
-            label="Pré-visualiser"
-            icon="ri-eye-line"
-            class="fr-mb-3v fr-btn--sm"
-            :disabled="false"
-            style="width: 100%"
-            @click="doShowPreview"
-          />
-          <DsfrButton
-            label="Sauvegarder"
-            icon="ri-save-line"
-            class="fr-mb-3v fr-btn--sm"
-            @click="save"
-          />
+          <IntroTooltip slug="DUPLICATES_DETECTOR">
+            <button
+              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
+              :class="{
+                'fr-text-default--error': duplicatedResourceIds.length,
+              }"
+              :disabled="duplicatedResourceIds.length === 0"
+              @click="showDuplicateResourcesModal = true"
+            >
+              <span class="fr-pr-1w fr-pt-1v">
+                <VIcon
+                  :name="
+                    duplicatedResourceIds.length
+                      ? 'ri-alert-fill'
+                      : 'ri-checkbox-circle-line'
+                  "
+                />
+              </span>
+              {{ duplicatedResourceIds.length }}
+              {{
+                pluralize(
+                  ["doublon détécté", "doublons détéctés"],
+                  duplicatedResourceIds.length
+                )
+              }}
+            </button>
+          </IntroTooltip>
+          <IntroTooltip slug="LEFT_MENU_PREVIEW" class="fr-mb-3v">
+            <DsfrButton
+              :secondary="true"
+              label="Pré-visualiser"
+              icon="ri-eye-line"
+              class="fr-btn--sm"
+              :disabled="false"
+              style="width: 100%"
+              @click="doShowPreview"
+            />
+          </IntroTooltip>
+          <IntroTooltip slug="LEFT_MENU_SAVE" class="fr-mb-3v">
+            <DsfrButton
+              label="Sauvegarder"
+              icon="ri-save-line"
+              class="fr-btn--sm"
+              @click="save"
+            />
+          </IntroTooltip>
           <DsfrButton
             v-if="canDelete"
             :secondary="true"
@@ -180,6 +215,11 @@
         continuer l'édition ?
       </p>
     </DsfrModal>
+    <ResourceEditingDuplicateResourcesModal
+      :opened="showDuplicateResourcesModal"
+      :duplicate-resource-ids="duplicatedResourceIds"
+      @close="onCloseDuplicateResourceModal()"
+    />
   </div>
 </template>
 
@@ -192,15 +232,29 @@ import {
 import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
+import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
 const baseStore = useBaseStore()
 const router = useRouter()
+
+const incrementRouterQuery = useIncrementRouterQuery()
+
 let isClient = false
 if (process.client) {
   isClient = true
 }
+const {
+  showDuplicateResourcesModal,
+  duplicatedResourceIds,
+  verifyDuplicatedResource,
+  onCloseDuplicateResourceModal,
+} = useDuplicateResourceDetector()
+
+onMounted(() => {
+  verifyDuplicatedResource()
+})
 
 const save = () => {
   resourceStore.save()
@@ -214,7 +268,7 @@ const deleteResource = async () => {
     setTimeout(() => {
       delete resourceStore.resourcesById[id]
     }, 200)
-    useRouter().push(`/base/${baseId}`)
+    router.push(`/base/${baseId}`)
   }
 }
 const doShowPreview = () => {
@@ -233,6 +287,7 @@ const selectSubMenu = (subMenu: string) => {
   ) {
     return
   }
+  incrementRouterQuery()
   resourceStore.navigation.activeSubMenu = subMenu
 }
 const selectMenu = (menuKey: string) => {
@@ -243,6 +298,7 @@ const selectMenu = (menuKey: string) => {
   } else {
     isMenuOpen.value[menuKey] = true
   }
+  incrementRouterQuery()
 
   // if we go into a new menu with sub-menus, select first sub-menu
   if (
@@ -295,7 +351,6 @@ const goToActions = computed(() => {
 })
 
 const goTo = (target: "resource" | "base", check = true) => {
-  console.log("### goto", target, check)
   if (check && resourceStore.current.dirty) {
     // show confirmation modal
     isNavigating.value = target
@@ -307,13 +362,10 @@ const goTo = (target: "resource" | "base", check = true) => {
 </script>
 
 <style lang="sass">
-.full-height
-  height: 100%
-
 .bottom-button-holder
   display: flex
   flex-direction: column
-  max-width: 160px
+  max-width: 175px
 
   button
     width: 100%

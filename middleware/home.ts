@@ -1,10 +1,12 @@
 import { useUserStore } from "~/stores/userStore"
 
 export default defineNuxtRouteMiddleware((to, from) => {
+  // on load, redirect to Search page if user is already
+  // logged in and on index page
   if (
-    !process.server &&
+    process.client &&
     from.name === "index" &&
-    window.history.state.position === 1 &&
+    to.name === "index" &&
     useUserStore().isLoggedIn
   ) {
     return navigateTo("/recherche")

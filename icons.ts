@@ -53,6 +53,9 @@ import {
   RiFacebookCircleLine,
   RiLinkedinLine,
   RiMastodonLine,
+  RiQuestionLine,
+  RiStarLine,
+  RiStarFill,
 } from "oh-vue-icons/icons"
 
 const officialLine = {
@@ -155,5 +158,8 @@ export const icons = [
   RiFacebookCircleLine,
   RiLinkedinLine,
   RiMastodonLine,
+  RiQuestionLine,
   RiFileTextLine,
+  RiStarLine,
+  RiStarFill,
 ]

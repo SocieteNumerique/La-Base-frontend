@@ -1,9 +1,9 @@
 <template>
-  <div :class="{ 'is-editing': isEditing }" class="content-container">
-    <div
-      class="toolbar fr-pt-1v fr-pr-2w fr-text--xs"
-      :class="isEditing ? 'has-border-left-grey' : null"
-    >
+  <div
+    :class="isEditing ? 'is-editing fr-mt-5w' : null"
+    class="content-container"
+  >
+    <div v-if="!isEditing" class="toolbar fr-pt-1v fr-pr-2w fr-text--xs">
       <div>
         <button
           class="content-drag-handle"
@@ -34,6 +34,7 @@
         v-if="isEditing"
         v-model="content"
         @exit="$emit('exit-edition')"
+        @delete="$emit('delete')"
       />
       <ContentDisplay v-else :content="content" :is-editing-view="true" />
     </div>

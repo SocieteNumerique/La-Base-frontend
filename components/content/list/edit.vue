@@ -23,12 +23,15 @@
           >
             <template v-if="section.isFoldable">
               <div v-if="showToolbarSection" class="toolbar-section">
-                <button class="section-drag-handle">
+                <button
+                  class="section-drag-handle"
+                  style="position: relative; right: 14px"
+                >
                   <img src="~/assets/svg/dragHandle.svg" />
                 </button>
                 <div>
                   <button
-                    class="btn-tab-activable fr-btn--tertiary-no-outline"
+                    class="btn-tab-activable fr-btn--tertiary-no-outline fr-mr-2w"
                     @click="currentEditingSectionId = section.id"
                   >
                     <VIcon name="ri-edit-line" />
@@ -112,14 +115,16 @@
       <ContentInputChooseType
         @new-content="$emit('new-solo-content', $event)"
       />
-      <button
-        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-        @click="$emit('new-section', 'Nouvelle section')"
-      >
-        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
-        <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
-        Créer une section
-      </button>
+      <IntroTooltip slug="ADD_CONTENT_SECTION">
+        <button
+          class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
+          @click="$emit('new-section', 'Nouvelle section')"
+        >
+          <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+          <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
+          Créer une section
+        </button>
+      </IntroTooltip>
     </div>
   </div>
 </template>

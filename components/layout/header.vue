@@ -3,28 +3,43 @@
     <div class="fr-header__body">
       <div class="fr-container">
         <div class="fr-header__body-row fr-py-2w">
-          <LayoutLogo class="fr-ml-3w" />
+          <LayoutLogo />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
-                <li v-if="userStore.isLoggedIn" class="selector">
+                <li style="align-items: center">
+                  <button
+                    class="fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
+                    title="Afficher le didacticiel"
+                    aria-label="Afficher le didacticiel"
+                    @click="introStore.showAllInPage"
+                  >
+                    <VIcon name="ri-question-line" scale="0.85" />
+                  </button>
+                </li>
+                <li
+                  v-if="userStore.isLoggedIn"
+                  id="header-bases-list"
+                  class="selector"
+                >
                   <template v-if="baseStore.hasBases">
-                    <button
-                      :class="{ '-active': showBasesList }"
-                      class="fr-link btn-tab-activable"
-                      @click="showBasesList = !showBasesList"
-                    >
-                      Mes bases
-                      <VIcon
-                        :name="`ri-arrow-${
-                          showBasesList ? 'up' : 'down'
-                        }-s-line`"
-                        class="fr-ml-3v"
-                      />
-                    </button>
+                    <IntroTooltip slug="INDEX_MY_BASES">
+                      <button
+                        :class="{ '-active': showBasesList }"
+                        class="fr-link btn-tab-activable"
+                        @click="showBasesList = !showBasesList"
+                      >
+                        Mes bases
+                        <VIcon
+                          :name="`ri-arrow-${
+                            showBasesList ? 'up' : 'down'
+                          }-s-line`"
+                          class="fr-ml-3v"
+                        />
+                      </button>
+                    </IntroTooltip>
                     <div
                       v-show="showBasesList"
-                      id="header-bases-list"
                       class="selector__menu fr-px-2w fr-text--xs over-sticky"
                     >
                       <NuxtLink
@@ -32,6 +47,7 @@
                         :key="base.id"
                         :to="`/base/${base.id}`"
                         class="item"
+                        style="width: 100%"
                       >
                         <BaseLabel :base="base" />
                       </NuxtLink>
@@ -44,37 +60,41 @@
                     </div>
                   </template>
                   <template v-else>
-                    <button class="fr-link" @click="showAddBaseModal = true">
-                      Créer une base
-                    </button>
+                    <IntroTooltip slug="CREATE_BASES">
+                      <button class="fr-link" @click="showAddBaseModal = true">
+                        Créer une base
+                      </button>
+                    </IntroTooltip>
                   </template>
                 </li>
                 <li v-if="!userStore.isLoggedIn">
                   <button
-                    class="fr-link"
+                    class="fr-link no-after"
                     @click="userStore.showSignUpModal = true"
                   >
                     S'inscrire
                   </button>
                 </li>
-                <li class="selector">
+                <li id="profile-menu" class="selector">
                   <template v-if="userStore.isLoggedIn">
-                    <button
-                      :class="{ '-active': showProfileMenu }"
-                      class="fr-link btn-tab-activable"
-                      @click="showProfileMenu = !showProfileMenu"
-                    >
-                      Mon profil
-                      <VIcon
-                        :name="`ri-arrow-${
-                          showBasesList ? 'up' : 'down'
-                        }-s-line`"
-                        class="fr-ml-3v"
-                      />
-                    </button>
+                    <IntroTooltip slug="INDEX_MY_PROFILE">
+                      <button
+                        :class="{ '-active': showProfileMenu }"
+                        class="fr-link btn-tab-activable"
+                        @click="showProfileMenu = !showProfileMenu"
+                      >
+                        Mon profil
+                        <VIcon
+                          :name="`ri-arrow-${
+                            showProfileMenu ? 'up' : 'down'
+                          }-s-line`"
+                          class="fr-ml-3v"
+                        />
+                      </button>
+                    </IntroTooltip>
+
                     <div
                       v-show="showProfileMenu"
-                      id="profile-menu"
                       class="selector__menu fr-px-2w fr-text--xs over-sticky"
                       style="overflow-x: hidden; overflow-y: auto"
                     >
@@ -173,6 +193,24 @@
               </li>
             </template>
           </ul>
+          <ul
+            v-if="userStore.isLoggedIn"
+            class="fr-links-group"
+            style="justify-content: flex-end"
+          >
+            <li>
+              <NuxtLink to="/favoris">
+                <button class="fr-text--sm">
+                  <VIcon
+                    name="ri-star-line"
+                    scale="0.90"
+                    style="margin-right: 6px; position: relative; top: 1px"
+                  />
+                  Mes bases favorites
+                </button>
+              </NuxtLink>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -195,11 +233,13 @@ import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
 import { computed } from "vue"
 import { usePageStore } from "~/stores/pageStore"
+import { useIntroStore } from "~/stores/introStore"
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
 const pageStore = usePageStore()
 const router = useRouter()
+const introStore = useIntroStore()
 
 const showAddBaseModal = ref(false)
 const showLoginModal = ref(false)
@@ -235,4 +275,19 @@ const pages = computed(() => pageStore.pages)
 
 .over-sticky
   z-index: 12
+
+.fr-links-group
+  a
+    font-size: 14px
+    button
+      line-height: 1.5rem
+
+.fr-header__tools
+  li+li
+    box-shadow: -5px 0px 0px -4px var(--border-default-grey)
+  li
+    padding: 0 4px
+
+.fr-link.no-after::after
+    display: none !important
 </style>

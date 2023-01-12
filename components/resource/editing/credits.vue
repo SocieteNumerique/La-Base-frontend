@@ -24,11 +24,15 @@
             <DsfrButton
               label="Modifier"
               secondary
-              class="btn--no-border"
+              class="btn--no-border fr-btn--sm"
               icon="ri-edit-line"
               @click="showOwnBaseModal = true"
             />
           </div>
+
+          <ResourceEditingExternalProducers
+            v-if="resourceStore.current?.producerState === 'me'"
+          />
 
           <!-- i know the producer -->
           <div class="fr-radio-group" @click="selectProducer('know')">
@@ -42,38 +46,10 @@
               >Je sais qui a produit la ressource
             </label>
           </div>
-          <div>
-            <div
-              v-for="producer of resourceStore.current?.externalProducers || []"
-              :key="producer.emailContact"
-              class="has-children-space-between"
-              style="align-items: center"
-            >
-              <div>{{ producer.name }}</div>
-              <div>
-                <DsfrButton
-                  label="Supprimer"
-                  secondary
-                  class="btn--no-border"
-                  icon="ri-delete-bin-line"
-                  @click="removeProducer(producer.emailContact)"
-                />
-              </div>
-            </div>
-            <div
-              v-if="resourceStore.current?.producerState === 'know'"
-              class="fr-mt-2w"
-            >
-              <DsfrButton
-                label="Ajouter un producteur"
-                secondary
-                class="fr-btn--sm"
-                icon="ri-add-circle-line"
-                @click="showExternalProducersModal = true"
-              />
-              <hr class="fr-mt-3w" />
-            </div>
-          </div>
+
+          <ResourceEditingExternalProducers
+            v-if="resourceStore.current?.producerState === 'know'"
+          />
 
           <!-- i don't know the producer -->
           <div class="fr-radio-group" @click="selectProducer('dont-know')">
@@ -98,129 +74,27 @@
       >
         <BaseSelector v-model="ownSelectedBase" label="Créditer la base" />
       </DsfrModal>
-      <DsfrModal
-        v-if="showExternalProducersModal"
-        opened
-        :actions="addExternalProducerActions"
-        title="Ajouter un producteur"
-        @close="onNewExternalProducerModalClose"
-      >
-        <DsfrInputGroup
-          v-model="newExternalProducer.name"
-          hint="Le nom du producteur sera visible sur la ressource"
-          label="Nom du producteur"
-          :label-visible="true"
-          placeholder="Hakim Dupont"
-        />
-        <DsfrInputGroup
-          v-model="newExternalProducer.websiteUrl"
-          hint="Si le producteur possède un site internet, vous pouvez le renseigner ici"
-          label="Site internet"
-          :label-visible="true"
-          placeholder="http://site-internet.fr"
-        />
-        <!--        <div class="fr-mt-3w">-->
-        <!--          <DsfrInput-->
-        <!--            :model-value="newExternalProducer.emailContact"-->
-        <!--            label="Contact mail"-->
-        <!--            :hint="externalProducerHint"-->
-        <!--            type="email"-->
-        <!--            :label-visible="true"-->
-        <!--            @update:model-value="onNewExternalProducerEmailContact"-->
-        <!--          />-->
-        <!--        </div>-->
-
-        <TagSelector
-          v-if="tagStore.categoryBySlug('externalProducer_00occupation')"
-          class="fr-mt-3w"
-          :category="tagStore.categoryBySlug('externalProducer_00occupation')"
-          :is-focused="true"
-          @change="onNewExternalProducerTagChange"
-        />
-      </DsfrModal>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { useBaseStore } from "~/stores/baseStore"
 import { useResourceStore } from "~/stores/resourceStore"
-import { ExternalProducer, Tag } from "~/composables/types"
-import { useTagStore } from "~/stores/tagStore"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const resourceStore = useResourceStore()
-const tagStore = useTagStore()
 
 const showOwnBaseModal = ref(false)
-const showExternalProducersModal = ref(false)
 const ownSelectedBase = ref(-1)
-const newExternalProducer = ref<ExternalProducer>({
-  name: "",
-  emailContact: "",
-  occupation: undefined,
-  websiteUrl: "",
-})
-
-const isAddExternalProducerDisabled = computed(() => {
-  newExternalProducer.value.name
-  newExternalProducer.value.occupation
-  const extProd = newExternalProducer.value
-  return !extProd.name || !extProd.occupation
-})
-
-const removeProducer = (producerEmail: string) => {
-  console.log(
-    "### remove producer",
-    producerEmail,
-    resourceStore.current?.externalProducers
-  )
-  let producers = resourceStore.current?.externalProducers || []
-  producers = producers.filter(
-    (producer: ExternalProducer) => producer.emailContact !== producerEmail
-  )
-  resourceStore.resourcesById[resourceStore.currentId!].externalProducers =
-    producers
-  resourceStore.markDirty()
-}
-
 const onOwnBaseChose = () => {
   showOwnBaseModal.value = false
-  resourceStore.resourcesById[resourceStore.currentId!].creator =
-    ownSelectedBase.value
+  resourceStore.resourcesById[resourceStore.currentId!].creatorBases = [
+    ownSelectedBase.value,
+  ]
   resourceStore.markDirty()
   console.log("### selected", ownSelectedBase)
 }
-const onExternalProducersAdd = () => {
-  console.log("### added")
-  if (
-    resourceStore.resourcesById[resourceStore.currentId!].externalProducers ==
-    null
-  ) {
-    resourceStore.resourcesById[resourceStore.currentId!].externalProducers = []
-  }
-  // @ts-ignore
-  resourceStore.resourcesById[resourceStore.currentId!].externalProducers.push({
-    ...newExternalProducer.value,
-  })
-  resourceStore.markDirty()
-  showExternalProducersModal.value = false
-}
-const ownBaseModalActions = [
-  {
-    label: "Valider",
-    onClick: onOwnBaseChose,
-  },
-]
-const addExternalProducerActions = computed(() => {
-  return [
-    {
-      label: "Valider",
-      onClick: onExternalProducersAdd,
-      disabled: isAddExternalProducerDisabled.value,
-    },
-  ]
-})
 
 const selectProducer = (producer: string) => {
   console.log(
@@ -234,44 +108,21 @@ const selectProducer = (producer: string) => {
   if (producer === "me") {
     showOwnBaseModal.value = true
   }
-  if (producer === "know") {
-    showExternalProducersModal.value = true
-  }
 
   // reset values if we've changed something
   if (producer != "me") {
     ownSelectedBase.value = -1
     resourceStore.resourcesById[resourceStore.currentId!].creator = undefined
   }
-  if (producer != "know") {
+  if (producer === "dont-know") {
     resourceStore.resourcesById[resourceStore.currentId!].externalProducers = []
   }
 }
 
-const onNewExternalProducerEmailContact = (value: string) => {
-  newExternalProducer.value.emailContact = value
-  // isAddExternalProducerDisabled.value
-}
-const onNewExternalProducerTagChange = (value: Tag[]) => {
-  if (value.length) {
-    newExternalProducer.value.occupation = value[0].id
-  } else {
-    newExternalProducer.value.occupation = undefined
-  }
-  console.log(
-    "### onNewExternalProducerTagChange",
-    newExternalProducer.value.occupation
-  )
-  // isAddExternalProducerDisabled.value
-}
-
-const onNewExternalProducerModalClose = () => {
-  if (!resourceStore.current?.externalProducers?.length) {
-    resourceStore.resourcesById[resourceStore.currentId!].producerState = ""
-  }
-  showExternalProducersModal.value = false
-}
-
-// const externalProducerHint = "Si le producteur possède déjà un compte sur la plateforme, il sera directement crédité sur la ressource. Sinon, il sera invité à créer son compte."
-const externalProducerHint = ""
+const ownBaseModalActions = [
+  {
+    label: "Valider",
+    onClick: onOwnBaseChose,
+  },
+]
 </script>

@@ -13,6 +13,7 @@
         autofocus
         :hint="`${tempCollection.name?.length || 0} / 50 caractères`"
         label="Nom de la collection"
+        placeholder="Nom"
         maxlength="50"
         @input="isDirty = true"
       />
@@ -22,6 +23,7 @@
         autofocus
         :hint="`${tempCollection.description?.length || 0} / 100 caractères`"
         label="Description de la collection"
+        placeholder="Description"
         maxlength="100"
       />
 

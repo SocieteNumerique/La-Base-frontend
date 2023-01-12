@@ -4,7 +4,7 @@
       v-model="section.title"
       :label-visible="true"
       label="Titre"
-      hint="max 25 caractères"
+      :hint="`${section.title.length} / 25 caractères`"
       placeholder="Titre"
       maxlength="25"
     />

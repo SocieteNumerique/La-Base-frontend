@@ -1,5 +1,5 @@
 <template>
-  <label class="fr-label fr-pt-3w">Licence et accès</label>
+  <label class="fr-label fr-pt-1w">Licence et accès</label>
   <p class="fr-hint-text">
     Si cet élément dispose d’accès ou d’une licence qui lui sont spécifique
     merci de le renseigner.
@@ -8,6 +8,7 @@
     v-model="content.useResourceLicenseAndAccess"
     label="Utiliser les conditions d'accès générales de la ressource"
     name="use-resource-licence"
+    class="fr-checkbox-group--sm"
     @update="updateCheckbox"
   />
   <DsfrButton

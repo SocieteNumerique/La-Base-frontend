@@ -14,10 +14,16 @@
         }}</span>
         <span>{{ pluralize(["ressource"], base?.stats.visitCount) }}</span>
       </div>
+      <div class="stat">
+        <span class="fr-text--xl fr-text--bold"
+          >{{ base?.stats.bookmarkedCount }}x</span
+        >
+        <span>{{ pluralize(["favori"], base?.stats.bookmarkedCount) }}</span>
+      </div>
     </div>
     <div class="fr-grid-row">
       <div
-        class="fr-col-md-7"
+        class="fr-col-md-7 no-margin-bottom-on-last-p"
         style="
           border-right: 1px solid var(--border-default-grey);
           margin-right: 62px;
@@ -74,8 +80,7 @@
         </div>
       </div>
     </div>
-    <hr class="fr-pb-4w fr-mt-7w" />
-    <div class="fr-grid-row fr-grid-row--gutters">
+    <div class="fr-grid-row fr-grid-row--gutters fr-mt-5w">
       <div class="fr-col-sm-6">
         <button
           class="fr-btn select-type-btn"
@@ -97,18 +102,48 @@
         </button>
       </div>
     </div>
-    <template v-if="latestResources.length">
-      <hr class="fr-pb-7w fr-mt-4w" />
+
+    <hr class="fr-pb-4w fr-mt-4w" />
+
+    <div
+      v-if="base?.canWrite"
+      style="display: flex; justify-content: flex-end"
+      class="fr-mb-3v"
+    >
+      <IntroTooltip slug="NEW_BASE_SECTIONS">
+        <DsfrButton
+          label="Rubriques à la une"
+          secondary
+          icon="ri-add-line"
+          class="fr-btn--sm"
+          @click="showBaseSection = true"
+        />
+      </IntroTooltip>
+    </div>
+
+    <template v-if="base.showLatestAdditions && base.latestAdditions.length">
       <h2 class="fr-h3 fr-mb-5w">Derniers ajouts</h2>
       <div class="resource-grid">
-        <ResourceMiniature
-          v-for="resource of latestResources"
-          :key="resource.id"
-          v-model="resource.pinnedInBases"
-          :resource="resource"
+        <ResourceMiniatureById
+          v-for="resourceId of base.latestAdditions"
+          :key="resourceId"
+          :resource-id="resourceId"
         />
       </div>
     </template>
+
+    <template v-if="base.sections?.length">
+      <BaseSection
+        v-for="sectionId in base.sections"
+        :key="sectionId"
+        :section="baseSectionStore.baseSectionsById[sectionId]"
+      />
+    </template>
+    <BaseEditSection
+      v-if="showBaseSection"
+      @close="showBaseSection = false"
+      @save="updateBase"
+    />
   </div>
 </template>
 
@@ -117,11 +152,15 @@ import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 import { useRouter } from "vue-router"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
+import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
+const baseSectionStore = useBaseSectionStore()
 const tagStore = useTagStore()
 const router = useRouter()
 const route = useRoute()
+const showBaseSection = ref(false)
 
 const base = computed(() => {
   return baseStore.current
@@ -138,12 +177,6 @@ const currentTab = computed<"presentation" | "resources" | "collections">({
     "presentation",
   set: (type: "presentation" | "resources" | "collections") =>
     router.push({ query: { ...route.query, tab: type } }),
-})
-const latestResources = computed(() => {
-  if (base.value && !base.value.isShort) {
-    return base.value!.resources!.results.slice(0, 3)
-  }
-  return []
 })
 const territory = computed<string>(() =>
   (
@@ -176,6 +209,12 @@ const socialMediaLinks = computed<{ link: string; iconName: string }[]>(() => {
   }
   return links
 })
+async function updateBase(data: any) {
+  const { error } = await baseStore.update(data)
+  if (!error.value) {
+    showBaseSection.value = false
+  }
+}
 </script>
 
 <style scoped>

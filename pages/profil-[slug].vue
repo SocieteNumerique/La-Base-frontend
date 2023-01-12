@@ -1,22 +1,25 @@
 <template>
   <div>
     <div class="fr-container fr-mt-4w">
-      <div class="fr-grid-row fr-mb-10w">
+      <div class="fr-grid-row fr-mb-8w">
         <div class="fr-col-3 fr-pr-3w"></div>
         <div class="fr-col-6 fr-pr-3w">
-          <h1>{{ userDataState.firstName }} {{ userDataState.lastName }}</h1>
+          <h1 class="fr-mb-0 fr-h2">
+            {{ userDataState.firstName }} {{ userDataState.lastName }}
+          </h1>
         </div>
       </div>
 
       <div class="fr-mb-15w">
         <div class="fr-grid-row">
-          <div class="fr-col-3 fr-pr-3w">
+          <div class="fr-col-3 fr-pr-3w" style="margin-top: -12px">
             <DsfrSideMenu heading-title="" :menu-items="leftMenuItems" />
           </div>
 
           <div class="fr-col-6 fr-pr-3w">
             <template v-if="activeSlug === 'informations'">
               <div class="">
+                <h2 class="fr-h6">Informations</h2>
                 <DsfrInputGroup
                   v-model="v$.firstName.$model"
                   :error-message="
@@ -68,7 +71,7 @@
               </div>
             </template>
             <template v-if="activeSlug === 'suppression'">
-              <h2>Supprimer le compte utilisateur</h2>
+              <h2 class="fr-h6">Supprimer le compte utilisateur</h2>
               <DsfrHighlight :text="deleteText" />
               <div style="display: flex; justify-content: flex-end">
                 <DsfrButton
@@ -93,7 +96,7 @@
             </template>
 
             <template v-if="activeSlug == 'mot-de-passe'">
-              <h2>Modifier le mot de passe</h2>
+              <h2 class="fr-h6">Modifier le mot de passe</h2>
               <DsfrInputGroup
                 v-model="vPass$.oldPassword.$model"
                 :error-message="
@@ -275,12 +278,12 @@ const deleteText =
 
 const deleteConfirmationActions = [
   {
-    label: "Oui",
+    label: "Supprimer",
     onClick: deleteUser,
     class: "fr-background-flat--error",
   },
   {
-    label: "Non",
+    label: "Annuler",
     secondary: true,
     onClick: () => (showDeleteConfirmation.value = false),
   },

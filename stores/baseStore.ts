@@ -2,14 +2,19 @@ import { defineStore } from "pinia"
 import {
   Base,
   BaseCreate,
+  BaseSection,
   BaseWithDetailedResources,
   Collection,
 } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useCollectionStore } from "~/stores/collectionStore"
 import { useApiGet, useApiPatch } from "~/composables/api"
+import { useBaseSectionStore } from "~/stores/baseSectionStore"
 
-function saveInOtherStores(instancesInStore: any, instancesSrc: any[]) {
+function saveInOtherStores(instancesInStore: any, instancesSrc?: any[]) {
+  if (!instancesSrc) {
+    return
+  }
   for (const instance of instancesSrc) {
     if (
       !instancesInStore[instance.id] ||
@@ -37,10 +42,16 @@ function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
     })
   }
   saveInOtherStores(useCollectionStore().collectionsById, newCollections)
+  saveInOtherStores(useBaseSectionStore().baseSectionsById, base.sections)
+  saveInOtherStores(resourceStore.resourcesById, base.sectionResources)
+  saveInOtherStores(resourceStore.resourcesById, base.latestAdditions)
 
   baseStore.basesById[base.id] = {
     ...base,
     collections: newCollections.map((collection) => collection.id),
+    sections: base.sections?.map((section) => section.id!),
+    latestAdditions:
+      base.latestAdditions?.map((latestAddition) => latestAddition.id!) || [],
   }
 }
 
@@ -61,6 +72,23 @@ export const useBaseStore = defineStore("base", {
         : base?.coverImage?.image?.base64 || base?.profileImage?.image?.base64
         ? "Chargement de l'image"
         : false
+    },
+    async toggleBookmark(baseId: number) {
+      const bookmark = !this.basesById[baseId].bookmarked
+      const urlEnd = bookmark ? "bookmark" : "remove_bookmark"
+      const message = bookmark
+        ? "La base a bien été enregistrée en favoris"
+        : "La base a bien été retirée des favoris"
+      const { data, error } = await useApiGet<Base>(
+        `bases/${baseId}/${urlEnd}/`,
+        {},
+        message,
+        true
+      )
+      if (!error.value) {
+        this.basesById[baseId].bookmarked = bookmark
+      }
+      return { data, error }
     },
     async createBase(base: BaseCreate) {
       const { data, error } = await useApiPost<Base>(
@@ -139,28 +167,39 @@ export const useBaseStore = defineStore("base", {
     addCollectionIdToBase(collection: Collection) {
       this.basesById[collection.base].collections?.push(collection.id)
     },
+    removeSectionIdFromBase(sectionId: number) {
+      this.basesById[this.currentId!].sections = this.current.sections?.filter(
+        (section) => section != sectionId
+      )
+    },
+    addSectionIdToBase(section: BaseSection) {
+      this.basesById[section.base].sections?.push(section.id!)
+    },
+    updateSectionIdsFromBase(baseId: number, sections: BaseSection[]) {
+      saveInOtherStores(useBaseSectionStore().baseSectionsById, sections)
+      this.basesById[baseId].sections = sections.map((section) => section.id!)
+    },
   },
   getters: {
     bases: (state) => {
       return state.basesOrder.map((baseId) => state.basesById[baseId])
     },
-    baseOptions: (state) => {
+    baseOptions: (state): Base[] => {
       return state.basesOrder
         .map((baseId) => state.basesById[baseId])
         .filter((base) => base?.canWrite || base?.canAddResources)
-        .map((base) => {
-          return {
-            title: base.title,
-            id: base.id,
-            profileImage: base.profileImage,
-          }
-        })
+    },
+    bookmarks: (state) => {
+      return state.basesOrder
+        .map((baseId) => state.basesById[baseId])
+        .filter((base) => base.bookmarked)
     },
     current: (state): Base => {
       if (state.currentId) {
         return state.basesById[state.currentId]
       }
       return {
+        bookmarked: false,
         id: -1,
         title: "",
         owner: -1,

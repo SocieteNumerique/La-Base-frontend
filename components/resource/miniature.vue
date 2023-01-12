@@ -1,24 +1,25 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-p-2w toolbar">
-      <nuxt-link
-        v-if="resource?.canWrite"
-        :to="`/ressource/${resource.id}/edition`"
-        class="no-underline"
-      >
-        <button
-          class="fr-btn--tertiary-no-outline"
-          title="Éditer la fiche"
-          aria-label="Éditer la fiche"
+    <div v-if="props.showToolbar" class="fr-grid-row fr-p-2w toolbar">
+      <ShareButton
+        :link="link"
+        :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
+      />
+      <div class="is-flex fr-ml-auto" style="align-items: center">
+        <nuxt-link
+          v-if="resource?.canWrite"
+          :to="`/ressource/${resource.id}/edition`"
+          class="no-underline no-append-ico"
+          :target="targetLink"
         >
-          <VIcon name="ri-edit-line" />
-        </button>
-      </nuxt-link>
-      <div class="is-flex fr-ml-auto">
-        <ShareButton
-          :link="link"
-          :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
-        />
+          <button
+            class="fr-btn--tertiary-no-outline fr-mr-2w"
+            title="Éditer la fiche"
+            aria-label="Éditer la fiche"
+          >
+            <VIcon name="ri-edit-line" />
+          </button>
+        </nuxt-link>
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -28,7 +29,11 @@
         />
       </div>
     </div>
-    <NuxtLink :to="`/ressource/${resource?.id}`" class="no-underline">
+    <NuxtLink
+      :to="`/ressource/${resource?.id}`"
+      class="no-underline no-append-ico"
+      :target="targetLink"
+    >
       <div
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
         class="bordered fr-p-2w"
@@ -71,17 +76,15 @@
           class="stats-holder"
           :class="resource?.profileImage ? 'fr-mt-1w' : ''"
         >
-          <p class="fr-mb-0">
-            <span class="fr-text--lg fr-text--bold">
-              {{ resource?.stats.pinCount }}
-            </span>
-            {{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
-          </p>
           <p title="nombre de vues depuis le 9 septembre 2022" class="fr-mb-0">
             <span class="fr-text--lg fr-text--bold">
-              {{ resource?.stats.visitCount }}
-            </span>
-            {{ pluralize(["vue"], resource?.stats.visitCount) }}
+              {{ resource?.stats.visitCount }}</span
+            >{{ pluralize(["vue"], resource?.stats.visitCount) }}
+          </p>
+          <p class="fr-mb-0">
+            <span class="fr-text--lg fr-text--bold">
+              {{ resource?.stats.pinCount }}</span
+            >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
         </div>
       </div>
@@ -129,13 +132,19 @@ import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
 
 const props = defineProps({
+  showToolbar: { type: Boolean, default: true },
   resource: { type: Object as PropType<Resource>, required: true },
   modelValue: { type: Array as PropType<PinStatus[]>, required: true },
+  newTab: { type: Boolean, default: false },
 })
 
 const userStore = useUserStore()
 const pinnedInBases = useModel("modelValue", { type: "array" })
 const tagStore = useTagStore()
+
+const targetLink = computed<string>(() => {
+  return props.newTab ? "_blank" : "_self"
+})
 
 const supportTags = computed<{ label: string }[]>(
   () =>

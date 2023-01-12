@@ -27,11 +27,15 @@
           :key="user.id"
           class="item has-children-space-between"
         >
-          <div>{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="fr-text--sm fr-mb-0">
+            {{ user.firstName }} {{ user.lastName }}
+          </div>
           <button
-            class="fr-btn fr-btn--sm fr-btn--secondary fr-text-title--blue-france action"
+            class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-text-title--blue-france action"
+            style="font-size: 12px"
             @click="selectUser(user)"
           >
+            <VIcon name="ri-add-line" scale="0.70" />
             Ajouter
           </button>
         </li>

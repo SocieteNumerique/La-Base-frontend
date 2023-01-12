@@ -1,8 +1,9 @@
 <template>
   <div
-    :id="'tag-dropdown-' + props.category.id"
+    :id="rootId"
     class="tag-dropdown fr-text--sm fr-mb-2w"
     :class="isFocused ? '-active' : null"
+    style="position: relative"
   >
     <div
       class="cursor--pointer dropdown-title fr-text-label--blue-france"
@@ -19,7 +20,7 @@
     <div
       class="dropdown-tags"
       :class="isFocused ? 'with-border-top' : null"
-      :style="isFocused ? 'max-height: 300px' : 'max-height: 0'"
+      :style="dropdownStyle"
     >
       <template v-if="isFocused">
         <slot
@@ -42,25 +43,8 @@
 
 <script setup lang="ts">
 import { TagCategory } from "~/composables/types"
-import { PropType } from "vue"
+import { onMounted, PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
-
-const tagStore = useTagStore()
-
-const emit = defineEmits(["focus", "blur", "select", "change"])
-
-const onTitleClick = () => emit(props.isFocused ? "blur" : "focus")
-const possibleTags = computed(() =>
-  props.category.tags
-    .filter((tag) => props.selectedTags.indexOf(tag) === -1)
-    .map((tagId) => tagStore.tagsById[tagId])
-)
-const isTagEnabled = (tagId: number) => {
-  if (!props.enabledTags) {
-    return true
-  }
-  return props.enabledTags.indexOf(tagId) !== -1
-}
 
 const props = defineProps({
   category: {
@@ -80,6 +64,40 @@ const props = defineProps({
     default: undefined,
   },
 })
+
+const tagStore = useTagStore()
+
+const emit = defineEmits(["focus", "blur", "select", "change"])
+const isRightOfScreen = ref(false)
+
+// dropdown is aligned right when positioned on the right of the screen, else
+// aligned on the left
+const rootId = "tag-dropdown-" + props.category.id
+const dropdownStyle = computed(() => {
+  let toReturn = props.isFocused ? "max-height: 300px;" : "max-height: 0;"
+  toReturn += isRightOfScreen.value ? "right: 0" : "left: 8px"
+  return toReturn
+})
+// checking position on mounted
+onMounted(() => {
+  const el = document.getElementById(rootId)
+  if (el!.getBoundingClientRect().x > (2 / 3) * window.innerWidth) {
+    isRightOfScreen.value = true
+  }
+})
+
+const onTitleClick = () => emit(props.isFocused ? "blur" : "focus")
+const possibleTags = computed(() =>
+  props.category.tags
+    .filter((tag) => props.selectedTags.indexOf(tag) === -1)
+    .map((tagId) => tagStore.tagsById[tagId])
+)
+const isTagEnabled = (tagId: number) => {
+  if (!props.enabledTags) {
+    return true
+  }
+  return props.enabledTags.indexOf(tagId) !== -1
+}
 
 onFocusOut(
   () => emit("blur"),

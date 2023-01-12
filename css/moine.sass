@@ -11,6 +11,24 @@
 .is-flex
   display: flex
 
+.is-justify-center
+  justify-content: center
+
+.is-justify-flex-end
+  justify-content: flex-end
+
+.is-align-item-center
+  align-items: center
+
+.is-justify-content-space-between
+  justify-content: space-between
+
+.is-flex-grow
+  flex-grow: 1
+
+.is-no-flex-shrink
+  flex-shrink: 0
+
 .flex-center
   justify-content: center
   align-items: center
@@ -28,6 +46,8 @@
   display: flex
   justify-content: space-between
 
+.btn-tab-activable
+  border-bottom: 2px solid transparent
 .btn-tab-activable.-active
   border-bottom: 2px solid var(--text-action-high-blue-france)
 
@@ -186,9 +206,6 @@ a
   &:hover
     border-color: var(--text-title-blue-france)
 
-  .separator
-    border-top: 1px solid var(--grey-975-75-active)
-
 // custom callout
 .callout
   border-left: 4px solid var(--border-action-high-blue-france)
@@ -256,3 +273,40 @@ a
     margin-left: 16px
   p
     margin-bottom: 0
+    font-size: 0.75rem
+
+    span
+      margin-right: 6px
+
+.full-height
+  height: 100%
+
+.full-width
+  width: 100%
+
+.separator
+  border-top: 1px solid var(--grey-975-75-active)
+
+.is-none
+  display: none
+
+.fr-text-action-high-grey
+  color: var(--text-action-high-grey)
+
+.checkbox-without-margin
+  margin: 0 !important
+  label, label::before
+    margin: 0 !important
+
+.text-overflow-ellipsis
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+.checkbox-sm
+  transform: scale(0.6)
+
+
+.no-margin-bottom-on-last-p
+  p:last-child
+    margin-bottom: 0 !important

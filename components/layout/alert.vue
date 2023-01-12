@@ -6,6 +6,7 @@
     :type="alert.type"
     :small="small"
     closeable
+    role="alert"
     @close="$emit('close')"
   />
 </template>

@@ -1,51 +1,40 @@
 <template>
   <div id="resources">
-    <div class="is-flex flex-space-between fr-mb-4w">
+    <div
+      v-if="currentTab === 'collections'"
+      class="is-flex flex-space-between fr-mb-6w"
+    >
       <div style="display: flex; align-items: center">
-        <div v-if="currentTab === 'collections'">
-          {{ base?.collections.length }} collections
-        </div>
-      </div>
-      <div v-if="base?.canWrite && currentTab === 'resources'">
-        <div style="text-align: center; display: flex" class="fr-mb-6w">
-          <button
-            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
-            style="font-weight: 400"
-            :class="
-              showLiveResources
-                ? 'fr-btn--tertiary--active'
-                : 'fr-text--disabled'
-            "
-            @click="showLiveResources = true"
-          >
-            Fiches publiées
-          </button>
-          <div class="vertical-separator"></div>
-          <button
-            class="fr-btn fr-btn--tertiary-no-outline fr-px-1v"
-            style="font-weight: 400"
-            :class="
-              !showLiveResources
-                ? 'fr-btn--tertiary--active'
-                : 'fr-text--disabled'
-            "
-            @click="showLiveResources = false"
-          >
-            Brouillons
-          </button>
+        <div>
+          <template v-if="openCollectionId">
+            <h3 class="fr-h6 fr-mb-0">
+              <NuxtLink
+                :to="{ query: { tab: 'collections' } }"
+                class="no-underline fr-text-title--blue-france"
+              >
+                <VIcon class="fr-mr-4w fr-my-auto" name="ri-arrow-left-line" />
+              </NuxtLink>
+              {{ openCollection.name }}
+            </h3>
+          </template>
+          <template v-else>
+            {{ base?.collections.length }} collections
+          </template>
         </div>
       </div>
       <div v-if="base?.canWrite || base?.canAddResources">
+        <IntroTooltip slug="CREATE_COLLECTION" style="display: inline-block">
+          <DsfrButton
+            v-show="!openCollectionId"
+            icon="ri-add-line"
+            label="Ajouter une collection"
+            class="fr-btn--sm"
+            :secondary="true"
+            @click="onAddCollectionClick"
+          />
+        </IntroTooltip>
         <DsfrButton
-          v-show="currentTab === 'collections' && !openCollectionId"
-          icon="ri-add-line"
-          label="Ajouter une collection"
-          class="fr-btn--sm"
-          :secondary="true"
-          @click="onAddCollectionClick"
-        />
-        <DsfrButton
-          v-show="currentTab === 'collections' && openCollectionId"
+          v-show="openCollectionId"
           secondary
           label="Éditer la collection"
           icon="ri-edit-line"
@@ -53,7 +42,7 @@
           @click="editCollectionModalTab = 'general'"
         />
         <DsfrButton
-          v-show="currentTab === 'collections' && openCollectionId"
+          v-show="openCollectionId"
           label="Gérer les fiches"
           icon="ri-file-line"
           class="fr-btn--sm"
@@ -94,7 +83,6 @@
           display: flex;
           align-items: baseline;
           justify-content: space-between;
-          margin-top: -32px;
         "
         class="fr-mb-4w fr-container fr-p-0"
       >
@@ -149,17 +137,20 @@
     </template>
 
     <template v-if="currentTab === 'collections' && openCollection">
-      <h3 class="fr-h6 fr-mb-5w">
-        <NuxtLink
-          :to="{ query: { tab: 'collections' } }"
-          class="no-underline fr-text-title--blue-france"
-        >
-          <VIcon class="fr-mr-4w fr-my-auto" name="ri-arrow-left-line" />
-        </NuxtLink>
-        {{ openCollection.name }}
-      </h3>
-
-      <SearchOrderBy class="fr-mb-3w" />
+      <div
+        class="fr-mb-3w"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <SearchOrderBy class="fr-mt-n1w" />
+        <div>
+          {{ openCollectionSortedResource.length }}
+          {{ pluralize(["fiche"], openCollectionSortedResource.length) }}
+        </div>
+      </div>
 
       <div class="resource-grid">
         <ResourceMiniatureById

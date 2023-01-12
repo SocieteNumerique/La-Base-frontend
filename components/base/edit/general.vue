@@ -13,9 +13,9 @@
         :is-invalid="v$.title.$error"
         :label-visible="true"
         autofocus
-        hint="max 100 caractères"
         label="Nom de la base"
         maxlength="100"
+        :hint="`${v$.title.$model.length} / 100 caractères`"
         required="true"
       />
 
@@ -245,7 +245,6 @@ import { email, minLength, required, url } from "@vuelidate/validators"
 import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
-import { DsfrButton } from "@gouvminint/vue-dsfr"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()
@@ -432,17 +431,6 @@ const userDataRules = {
   contactState: {},
 }
 const v$ = useVuelidate(userDataRules, userDataState)
-
-const descriptionContent = computed({
-  get() {
-    return {
-      text: v$.value.description.$model,
-    }
-  },
-  set(newValue: any) {
-    v$.value.description.$model = newValue.text
-  },
-})
 
 onMounted(() => {
   setTimeout(() => {

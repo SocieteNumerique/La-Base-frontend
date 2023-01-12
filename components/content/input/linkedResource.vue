@@ -8,9 +8,9 @@
   />
   <DsfrInput
     v-model="content.title"
-    hint="max 50 caractères"
     :label-visible="true"
     maxlength="50"
+    :hint="`${content.title.length} / 50 caractères`"
     label="Titre alternatif de la ressource"
     placeholder="Titre alternatif de la ressource"
   />
@@ -18,6 +18,7 @@
     v-model="content.annotation"
     :is-textarea="true"
     :label-visible="true"
+    :hint="`${content.title.length} / 280 caractères`"
     label="Légende"
     placeholder="Légende"
     maxlength="280"

@@ -1,7 +1,11 @@
 <template>
   <div class="miniature-container fr-text--xs">
-    <div class="fr-grid-row fr-grid-row--right fr-p-2w toolbar">
+    <div
+      class="fr-grid-row fr-p-2w toolbar"
+      style="display: flex; justify-content: space-between"
+    >
       <ShareButton :link="link" />
+      <BaseBookmarkButton :base-id="base.id" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div class="banner">
@@ -38,16 +42,21 @@
             v-if="base.stats.visitCount != null"
             title="nombre de vues depuis le 9 septembre 2022"
           >
-            <span class="fr-text--lg fr-text--bold"
-              >{{ base.stats.visitCount }}
-            </span>
-            {{ pluralize(["vue"], base.stats.visitCount) }}
+            <span class="fr-text--lg fr-text--bold">{{
+              base.stats.visitCount
+            }}</span
+            >{{ pluralize(["vue"], base.stats.visitCount) }}
           </p>
-          <p v-if="base.stats.visitCount != null">
+          <p v-if="base.stats.resourceCount != null">
+            <span class="fr-text--lg fr-text--bold">{{
+              base.stats.resourceCount
+            }}</span
+            >{{ pluralize(["ressource"], base.stats.resourceCount) }}
+          </p>
+          <p v-if="base.stats.bookmarkedCount != null">
             <span class="fr-text--lg fr-text--bold"
-              >{{ base.stats.resourceCount }}
-            </span>
-            {{ pluralize(["ressource"], base.stats.resourceCount) }}
+              >{{ base.stats.bookmarkedCount }}x</span
+            >{{ pluralize(["favori"], base.stats.bookmarkedCount) }}
           </p>
         </div>
         <div
@@ -73,8 +82,12 @@ import { computed, PropType } from "vue"
 import { Base } from "~/composables/types"
 import { useTagStore } from "~/stores/tagStore"
 import { pluralize } from "~/composables/strUtils"
+import { useBaseStore } from "~/stores/baseStore"
+import { useUserStore } from "~/stores/userStore"
 
 const tagStore = useTagStore()
+const baseStore = useBaseStore()
+const userStore = useUserStore()
 
 const props = defineProps({
   base: { type: Object as PropType<Base>, required: true },
