@@ -116,7 +116,6 @@ const sendCreditsRequest = async () => {
       "warning"
     )
   }
-  console.log("### sendCreditsRequest", creditsRequestMessage.value)
   const { error } = await useApiPost(
     "credits",
     { id: resource.value.id, message: creditsRequestMessage.value },
