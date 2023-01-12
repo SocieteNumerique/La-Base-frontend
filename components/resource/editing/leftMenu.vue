@@ -133,7 +133,7 @@
               {{ duplicatedResourceIds.length }}
               {{
                 pluralize(
-                  ["doublon détécté", "doublons détéctés"],
+                  ["doublon détecté", "doublons détectés"],
                   duplicatedResourceIds.length
                 )
               }}
