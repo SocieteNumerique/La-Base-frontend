@@ -15,7 +15,7 @@
         autofocus
         label="Nom de la base"
         maxlength="100"
-        :hint="`${v$.title.$model.length} / 100 caractères`"
+        :hint="`${getLengthOrZero(v$.title.$model)} / 100 caractères`"
         required="true"
       />
 
@@ -245,6 +245,7 @@ import { email, minLength, required, url } from "@vuelidate/validators"
 import useVuelidate, { ValidationRuleWithParams } from "@vuelidate/core"
 import { useRoute } from "vue-router"
 import { validationMessageFromErrors } from "~/composables/validation"
+import { getLengthOrZero } from "~/composables/utils"
 
 const baseStore = useBaseStore()
 const tagStore = useTagStore()

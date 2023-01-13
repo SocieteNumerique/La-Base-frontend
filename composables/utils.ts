@@ -12,3 +12,7 @@ export function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
   newArray.splice(toIndex, 0, element)
   return newArray
 }
+
+export function getLengthOrZero(value: string): number {
+  return value?.length || 0
+}
