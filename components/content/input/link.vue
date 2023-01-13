@@ -26,7 +26,7 @@
     label="Légende"
     placeholder="Légende"
     maxlength="280"
-    :hint="`${getLengthOrZero(content.title)} / 280 caractères`"
+    :hint="`${getLengthOrZero(content.annotation)} / 280 caractères`"
   />
 </template>
 
