@@ -17,7 +17,7 @@
     label="Titre de lien"
     placeholder="Titre de lien"
     maxlength="50"
-    :hint="`${content.title.length} / 50 caractères`"
+    :hint="`${getLengthOrZero(content.title)} / 50 caractères`"
   />
   <DsfrInput
     v-model="content.annotation"
@@ -26,13 +26,14 @@
     label="Légende"
     placeholder="Légende"
     maxlength="280"
-    :hint="`${content.title.length} / 280 caractères`"
+    :hint="`${getLengthOrZero(content.title)} / 280 caractères`"
   />
 </template>
 
 <script lang="ts" setup>
 import { PropType } from "vue"
 import { LinkContent } from "~/composables/types"
+import { getLengthOrZero } from "~/composables/utils"
 
 defineProps({
   modelValue: { type: Object as PropType<LinkContent>, required: true },
