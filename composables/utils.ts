@@ -13,6 +13,6 @@ export function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
   return newArray
 }
 
-export function getLengthOrZero(value: string) {
+export function getLengthOrZero(value: string): number {
   return value?.length || 0
 }
