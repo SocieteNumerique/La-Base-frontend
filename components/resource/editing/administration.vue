@@ -8,6 +8,12 @@
       label="Base administratrice de la fiche ressource"
       @change="onBaseUpdate"
     />
+    <h3 class="fr-text--md fr-text--regular fr-mt-5w">
+      Transférer l’administration de la ressource
+    </h3>
+    <DsfrHighlight
+      text="Les droits d’administration de la fiche  peuvent être demandés directement via la fiche par d’autres utilisateurs. Vous recevrez alors un mail avec un lien et pourrez confirmer ou non le transfert des droits d’administration."
+    />
   </div>
 </template>
 <script setup lang="ts">
