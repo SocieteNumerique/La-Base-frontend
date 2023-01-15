@@ -40,9 +40,5 @@ defineProps({
   height: 44px
 
   .action
-    display: none
     margin-left: auto
-
-  &:hover .action
-    display: block
 </style>

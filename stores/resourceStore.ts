@@ -77,6 +77,12 @@ export const navigationMenus: Menu[] = [
         description:
           "Définir les droits d’administration de la fiche ressource.",
       },
+      {
+        key: "contributors",
+        name: "Contributeurs",
+        description:
+          "Les contributeurs ajoutés à cette fiche auront accès à l’ensemble des paramètres de la fiche. Notez que tous les contributeurs de la base dans laquelle est administrée la fiche sont d’ores-et-déjà contributeur de cette fiche.",
+      },
     ],
   },
 ]
