@@ -233,9 +233,11 @@ import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
 import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
+import { useCollectionStore } from "~/stores/collectionStore"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
+const collectionStore = useCollectionStore()
 const baseStore = useBaseStore()
 const router = useRouter()
 
@@ -256,8 +258,35 @@ onMounted(() => {
   verifyDuplicatedResource()
 })
 
-const save = () => {
-  resourceStore.save()
+const save = async () => {
+  const resourceCollections = resourceStore.current.collections
+  const currentResourceId = resourceStore.currentId!
+  const { error } = await resourceStore.save()
+
+  // update the collections where the resource was a member
+  if (!error.value && resourceCollections != null) {
+    const currentId = resourceStore.currentId
+    for (const collectionId of baseStore.basesById[
+      resourceStore.current.rootBase!
+    ].collections!) {
+      const collection = collectionStore.collectionsById[collectionId]
+      if (collection == null) {
+        // nothing to update
+        return
+      }
+      if (resourceCollections.indexOf(collectionId) === -1) {
+        // remove resource from collection
+        collection.resources = collection.resources!.filter(
+          (resourceId) => resourceId !== currentResourceId
+        )
+      } else {
+        // add resource to collection
+        if (collection.resources!.indexOf(currentResourceId) === -1) {
+          collection.resources!.push(currentResourceId)
+        }
+      }
+    }
+  }
 }
 const isMenuOpen = ref<{ [key: string]: boolean }>({ informations: true })
 const deleteResource = async () => {

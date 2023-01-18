@@ -40,6 +40,7 @@ export type Resource = {
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
   pinnedInBases?: number[]
+  collections?: number[]
   contents?: Content[]
   contributors?: User[]
   canWrite?: boolean
