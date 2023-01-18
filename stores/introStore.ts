@@ -163,6 +163,18 @@ export const useIntroStore = defineStore("intro", () => {
     return null
   })
 
+  const introsIndexSlugsFilteredOutWhenNotInHome = computed(() => {
+    // there is an exception for slug starting with INDEX_, only shown
+    // on the home page and search page (used in the header for example)
+    let toReturn = intros.value
+    const isIndex = ["index", "recherche"].indexOf(<string>route.name) !== -1
+    if (!isIndex) {
+      toReturn = toReturn.filter((intro) => !intro.slug.startsWith("INDEX_"))
+    }
+
+    return toReturn
+  })
+
   const availableIntros = computed<Intro[]>(() => {
     forceRecheckDom.value
     if (process.server) {
@@ -172,23 +184,16 @@ export const useIntroStore = defineStore("intro", () => {
       return []
     }
 
-    let toReturn = intros.value
+    const toReturn = introsIndexSlugsFilteredOutWhenNotInHome.value
       .filter((intro) => !seenSlugs.value[intro.slug])
       .filter((intro) => doesATooltipExistWithSlug(intro.slug))
-
-    // there is an exception for slug starting with INDEX_, only shown
-    // on the home page and search page (used in the header for example)
-    const isIndex = ["index", "recherche"].indexOf(<string>route.name) !== -1
-    if (!isIndex) {
-      toReturn = toReturn.filter((intro) => !intro.slug.startsWith("INDEX_"))
-    }
 
     return toReturn
   })
 
   const showAllInPage = () => {
     let shown = 0
-    for (const intro of intros.value) {
+    for (const intro of introsIndexSlugsFilteredOutWhenNotInHome.value) {
       if (doesATooltipExistWithSlug(intro.slug)) {
         seenSlugs.value[intro.slug] = false
         shown += 1

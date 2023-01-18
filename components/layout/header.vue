@@ -2,7 +2,7 @@
   <header class="fr-header" role="banner">
     <div class="fr-header__body">
       <div class="fr-container">
-        <div class="fr-header__body-row fr-py-2w">
+        <div class="fr-header__body-row fr-py-2w fr-pl-3v">
           <LayoutLogo />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">

@@ -23,9 +23,12 @@
         </div>
       </div>
       <div v-if="base?.canWrite || base?.canAddResources">
-        <IntroTooltip slug="CREATE_COLLECTION" style="display: inline-block">
+        <IntroTooltip
+          v-if="!openCollectionId"
+          slug="CREATE_COLLECTION"
+          style="display: inline-block"
+        >
           <DsfrButton
-            v-show="!openCollectionId"
             icon="ri-add-line"
             label="Ajouter une collection"
             class="fr-btn--sm"
@@ -34,7 +37,7 @@
           />
         </IntroTooltip>
         <DsfrButton
-          v-show="openCollectionId"
+          v-if="openCollectionId"
           secondary
           label="Éditer la collection"
           icon="ri-edit-line"
@@ -42,7 +45,7 @@
           @click="editCollectionModalTab = 'general'"
         />
         <DsfrButton
-          v-show="openCollectionId"
+          v-if="openCollectionId"
           label="Gérer les fiches"
           icon="ri-file-line"
           class="fr-btn--sm"

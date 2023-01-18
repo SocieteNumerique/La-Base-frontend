@@ -1,7 +1,7 @@
 <template>
   <div>
     <DsfrHighlight
-      text="Attention : Si la fiche est en statut “Brouillon”, les contributeurs ne pourront pas y accéder, à moins d’être contributeur de la base."
+      text="Attention : Si la fiche est en statut “Brouillon”, les contributeurs ne pourront pas y accéder via le moteur de recherche, à moins d’être contributeur de la base. Vous pouvez toutefois leur envoyer directement le lien vers cette fiche."
     />
     <template v-if="resourceStore.current">
       <UserSelector

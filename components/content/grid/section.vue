@@ -72,6 +72,7 @@ const contents = computed<Content[]>({
   height: min-content
   overflow-x: hidden
   overflow-y: visible
+  z-index: -1
 
   .grid
     height: 100%

@@ -9,7 +9,7 @@
     />
     <hr class="fr-mt-5w" style="margin-bottom: -32px" />
     <ContentListEdit
-      v-show="!(isGridView && isGridViewEnabled)"
+      v-if="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
       v-model:editing-content="currentlyEditingContentId"
       @delete-content="onDeleteContent"

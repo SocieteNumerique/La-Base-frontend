@@ -4,33 +4,31 @@
       <div>
         <button
           :class="{ '-active': !isGridView, '-inactive': isGridView }"
-          class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular"
-          @click="isGridView = false"
+          class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular fr-m-0"
+          @click="changeIsGridView(false)"
         >
           <VIcon class="fr-mr-2v" name="ri-align-left" />
           Vue en liste
         </button>
         <button
-          v-if="isEditingMode"
-          v-show="!isGridViewEnabled"
-          class="fr-btn fr-btn--tertiary-no-outline -inactive fr-text--regular"
+          v-if="isEditingMode && !isGridViewEnabled"
+          class="fr-btn fr-btn--tertiary-no-outline -inactive fr-text--regular fr-mb-0"
           @click="isGridViewEnabled = true"
         >
           <VIcon class="fr-mr-2v" name="ri-add-line" />
           Ajouter une vue en grille
         </button>
         <button
-          v-show="isGridViewEnabled"
+          v-if="isGridViewEnabled"
           :class="{ '-active': isGridView, '-inactive': !isGridView }"
-          class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular"
-          @click="isGridView = true"
+          class="fr-btn fr-btn--tertiary-no-outline btn-tab-activable fr-text--regular fr-mb-0"
+          @click="changeIsGridView(true)"
         >
           <VIcon class="fr-mr-2v" name="ri-grid-line" />
           Vue en grille
         </button>
         <button
-          v-if="isEditingMode"
-          v-show="isGridViewEnabled && isGridView"
+          v-if="isEditingMode && isGridViewEnabled && isGridView"
           class="fr-btn fr-btn--tertiary-no-outline fr-text--regular"
           @click="noGridViewAtAll"
         >
@@ -45,6 +43,7 @@
 <script lang="ts" setup>
 import { useModel } from "~/composables/modelWrapper"
 import { useResourceStore } from "~/stores/resourceStore"
+import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
 
 defineProps({
   modelValue: { type: Boolean, required: true },
@@ -52,6 +51,7 @@ defineProps({
 })
 
 const resourceStore = useResourceStore()
+const incrementRouterQuery = useIncrementRouterQuery()
 
 const isGridView = useModel<boolean>("modelValue")
 
@@ -63,6 +63,11 @@ const isGridViewEnabled = computed<boolean>({
     resourceStore.setGridViewActivation(value, resourceId)
   },
 })
+
+const changeIsGridView = (view: boolean) => {
+  incrementRouterQuery()
+  isGridView.value = view
+}
 
 function noGridViewAtAll() {
   isGridViewEnabled.value = false
