@@ -128,6 +128,10 @@ async function createContents(
     payload
   )
   section!.contents.push(...contents!)
+  if (contents.length === 1) {
+    currentlyEditingContentId.value = contents[0].id!
+  }
+
   return contents
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="content-edit">
+  <div ref="top" class="content-edit">
     <h4 class="title fr-h4">Éditer {{ labelType }}</h4>
     <slot />
     <div
@@ -21,11 +21,20 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted } from "vue"
+
 const props = defineProps({
   type: { type: String, required: true },
 })
+const top = ref<HTMLElement>()
 
 const emits = defineEmits(["exit", "save", "delete"])
+// on mount, scoll to top of edition
+onMounted(() => {
+  setTimeout(() => {
+    top.value?.scrollIntoView({ behavior: "smooth" })
+  }, 100)
+})
 
 const labelsByType: { [key: string]: string } = {
   text: "le texte",
