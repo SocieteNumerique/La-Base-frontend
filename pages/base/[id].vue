@@ -100,7 +100,7 @@
           <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
-                <IntroTooltip slug="PRESENTATION" style="display: flex">
+                <IntroTooltip slug="PRESENTATION" child-display="flex">
                   <NuxtLink
                     :aria-current="
                       currentTab === 'presentation' ? 'page' : null
