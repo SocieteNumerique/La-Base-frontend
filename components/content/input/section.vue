@@ -4,7 +4,7 @@
       v-model="section.title"
       :label-visible="true"
       label="Titre"
-      :hint="`${section.title.length} / 25 caractères`"
+      :hint="`${getLengthOrZero(section.title)} / 25 caractères`"
       placeholder="Titre"
       maxlength="25"
     />
@@ -14,6 +14,7 @@
 <script lang="ts" setup>
 import { PropType } from "vue"
 import { Section } from "~/composables/types"
+import { getLengthOrZero } from "~/composables/utils"
 
 defineEmits(["exit"])
 defineProps({

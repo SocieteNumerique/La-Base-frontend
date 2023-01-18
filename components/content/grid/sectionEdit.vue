@@ -250,6 +250,7 @@ if (!process.server) window.addEventListener("dragover", onDrag)
   height: min-content
   overflow-x: hidden
   overflow-y: visible
+  z-index: -1
 
   .grid
     height: 100%
@@ -268,7 +269,7 @@ if (!process.server) window.addEventListener("dragover", onDrag)
       height: 100%
 
       &.targeted
-        background-color: var(--background-alt-blue-france)
+        background-color: var(--background-action-low-blue-cumulus)
 
   .content-grid
     list-style-type: none

@@ -9,9 +9,9 @@
       :model-value="resourceStore.current?.title"
       label="Nom de la ressource"
       maxlength="100"
-      :hint="`Requis - ${
-        resourceStore.current?.title.length || 0
-      }/100 caractères`"
+      :hint="`Requis - ${getLengthOrZero(
+        resourceStore.current?.title
+      )}/100 caractères`"
       :label-visible="true"
       @update:model-value="onTitleUpdate"
     />
@@ -69,6 +69,7 @@
 <script setup lang="ts">
 import { useResourceStore } from "~/stores/resourceStore"
 import { useIntroStore } from "~/stores/introStore"
+import { getLengthOrZero } from "~/composables/utils"
 
 const resourceStore = useResourceStore()
 const introStore = useIntroStore()

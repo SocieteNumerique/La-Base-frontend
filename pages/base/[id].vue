@@ -66,12 +66,12 @@
                   @click="showReportModal = true"
                 />
               </IntroTooltip>
-              <IntroTooltip slug="BASE_CONTACT" style="display: inline-block">
-                <a
-                  v-show="base?.contact"
-                  :href="mailToHrefContact"
-                  class="no-underline"
-                >
+              <IntroTooltip
+                v-if="base?.contact"
+                slug="BASE_CONTACT"
+                style="display: inline-block"
+              >
+                <a :href="mailToHrefContact" class="no-underline">
                   <RoundButton icon="ri-mail-line" label="Contacter" />
                 </a>
               </IntroTooltip>

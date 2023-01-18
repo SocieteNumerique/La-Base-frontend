@@ -41,6 +41,7 @@ export type Resource = {
   authorizedUserTags?: number[]
   pinnedInBases?: number[]
   contents?: Content[]
+  contributors?: User[]
   canWrite?: boolean
   contentStats?: { links: number; files: number }
   created?: string

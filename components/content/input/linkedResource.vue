@@ -10,7 +10,7 @@
     v-model="content.title"
     :label-visible="true"
     maxlength="50"
-    :hint="`${content.title.length} / 50 caractères`"
+    :hint="`${getLengthOrZero(content.title)} / 50 caractères`"
     label="Titre alternatif de la ressource"
     placeholder="Titre alternatif de la ressource"
   />
@@ -18,7 +18,7 @@
     v-model="content.annotation"
     :is-textarea="true"
     :label-visible="true"
-    :hint="`${content.title.length} / 280 caractères`"
+    :hint="`${getLengthOrZero(content.title)} / 280 caractères`"
     label="Légende"
     placeholder="Légende"
     maxlength="280"
@@ -28,6 +28,7 @@
 <script lang="ts" setup>
 import { PropType } from "vue"
 import { LinkedResourceContent } from "~/composables/types"
+import { getLengthOrZero } from "~/composables/utils"
 
 defineProps({
   modelValue: {

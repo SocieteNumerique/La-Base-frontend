@@ -112,9 +112,9 @@
           </div>
         </div>
         <div class="bottom-button-holder fr-mt-7w">
-          <IntroTooltip slug="DUPLICATES_DETECTOR">
+          <IntroTooltip slug="DUPLICATES_DETECTOR" class="fr-mb-7v">
             <button
-              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
+              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0"
               :class="{
                 'fr-text-default--error': duplicatedResourceIds.length,
               }"

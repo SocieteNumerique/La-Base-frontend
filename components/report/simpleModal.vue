@@ -25,10 +25,10 @@
       <template #label>
         Votre texte ici
         <span class="fr-hint-text">
-          {{ report.description.length }}/280 caractères. Vous pouvez précisez
-          votre signalement ici. Pour envoyer un fichier, utilisez un service
-          externe comme fromsmash.com ou wetransfer.com et copiez-collez le lien
-          ici.
+          {{ getLengthOrZero(report.description) }}/280 caractères. Vous pouvez
+          précisez votre signalement ici. Pour envoyer un fichier, utilisez un
+          service externe comme fromsmash.com ou wetransfer.com et copiez-collez
+          le lien ici.
         </span>
       </template>
     </DsfrInput>
@@ -38,6 +38,7 @@
 <script lang="ts" setup>
 import { PropType } from "vue"
 import { useApiPost } from "~/composables/api"
+import { getLengthOrZero } from "~/composables/utils"
 
 type Report = {
   id: number

@@ -42,7 +42,7 @@ export const validationMessageFromError = (error: ErrorObject): string => {
   }
   if (error.$validator === "isTwitterUrl") {
     // @ts-ignore
-    return "Le champ doit commencer par https://www.twitter.com ou https://twitter.com"
+    return "Le champ doit commencer par https://www.twitter.com ou https://twitter.com ou https://mobile.twitter.com"
   }
   if (error.$validator === "resourceRequired") {
     return "Vous devez sélectionner au moins une fiche ressource"

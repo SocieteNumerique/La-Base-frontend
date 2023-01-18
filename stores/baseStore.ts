@@ -71,7 +71,7 @@ export const useBaseStore = defineStore("base", {
         ? "Chargement des images"
         : base?.coverImage?.image?.base64 || base?.profileImage?.image?.base64
         ? "Chargement de l'image"
-        : false
+        : "Mise à jour de la base"
     },
     async toggleBookmark(baseId: number) {
       const bookmark = !this.basesById[baseId].bookmarked

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="top">
     <div
       class="tooltip-container"
       :slug="props.slug"
@@ -78,12 +78,27 @@
 
 <script setup lang="ts">
 import { useIntroStore } from "~/stores/introStore"
-import { computed } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
 
 const introStore = useIntroStore()
+const top = ref<HTMLElement>()
 
 const isActive = computed(
   () => introStore.current && introStore.current.slug === props.slug
+)
+
+watch(
+  () => isActive.value,
+  () => {
+    if (isActive.value) {
+      console.log("### top", top.value)
+      if (top.value) {
+        const y =
+          top.value.getBoundingClientRect().top + window.pageYOffset - 30
+        window.scrollTo({ top: y, behavior: "smooth" })
+      }
+    }
+  }
 )
 
 const props = defineProps({

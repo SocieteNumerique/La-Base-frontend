@@ -1,7 +1,7 @@
 <template>
   <DsfrInputGroup
     v-model="content.title"
-    :hint="`${content.title?.length || 0} / 50 caractères`"
+    :hint="`${getLengthOrZero(content.title)} / 50 caractères`"
     maxlength="50"
     :label-visible="true"
     label="Titre"
@@ -13,7 +13,7 @@
     :label-visible="true"
     label="Légende"
     placeholder="Légende"
-    :hint="`${content.annotation?.length || 0} / 280 caractères`"
+    :hint="`${getLengthOrZero(content.annotation)} / 280 caractères`"
     maxlength="280"
   />
   <DsfrInput
@@ -56,6 +56,7 @@
 import { PropType } from "vue"
 import { FileContent } from "~/composables/types"
 import { useModel } from "~/composables/modelWrapper"
+import { getLengthOrZero } from "~/composables/utils"
 
 defineProps({
   modelValue: { type: Object as PropType<FileContent>, required: true },
