@@ -40,6 +40,8 @@ export const useIntroStore = defineStore("intro", () => {
     seenSlugs.value = {}
   }
 
+  // recheck which intros are in the dom when route.name has changed
+  // and reset the currentIndex to the first one
   watch(
     () => route.name,
     (value) => {
@@ -187,6 +189,8 @@ export const useIntroStore = defineStore("intro", () => {
     const toReturn = introsIndexSlugsFilteredOutWhenNotInHome.value
       .filter((intro) => !seenSlugs.value[intro.slug])
       .filter((intro) => doesATooltipExistWithSlug(intro.slug))
+
+    console.log("### available intros", toReturn)
 
     return toReturn
   })
