@@ -32,6 +32,17 @@
     v-model="content.file"
     label="Remplacer le fichier"
   />
+  <DsfrInput
+    v-if="isImage"
+    v-model="content.imageAlt"
+    :label-visible="true"
+    label="Texte alternatif de l'image"
+    :hint="`Texte descriptif pour les non-voyants, ${
+      (content.imageAlt || '').length
+    }/100 caractères ; laisser vide pour une image purement décorative`"
+    placeholder="Texte alternatif"
+    maxlength="100"
+  />
   <DsfrCheckbox
     v-if="isImage"
     v-model="content.withPreview"

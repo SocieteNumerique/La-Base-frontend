@@ -300,6 +300,7 @@ export type ResizableImage = {
 }
 
 export interface FileContent extends BaseContent {
+  imageAlt?: string
   file?: FullFile
   withPreview?: boolean
 }

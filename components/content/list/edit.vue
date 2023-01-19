@@ -27,7 +27,10 @@
                   class="section-drag-handle"
                   style="position: relative; right: 14px"
                 >
-                  <img src="~/assets/svg/dragHandle.svg" />
+                  <img
+                    src="~/assets/svg/dragHandle.svg"
+                    alt="Curseur pour déplacer l'élément par glisser-déposer"
+                  />
                 </button>
                 <div>
                   <button
@@ -120,7 +123,12 @@
           class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-m-0"
           @click="$emit('new-section', 'Nouvelle section')"
         >
-          <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+          <img
+            class="fr-mr-2v"
+            src="~/assets/svg/sectionIcon.svg"
+            width="20"
+            alt=""
+          />
           <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
           Créer une section
         </button>
@@ -289,12 +297,4 @@ li:not(:last-child) .content-in-section, .section-container:not(:last-child)
 
 li:not(:last-child) .content-in-section
   padding-bottom: 16px
-
-.section-container
-  &.is-editing, &:hover
-    .toolbar-section
-      opacity: 1
-
-  .toolbar-section
-    opacity: 0
 </style>

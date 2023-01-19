@@ -6,20 +6,16 @@
         :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
       />
       <div class="is-flex fr-ml-auto" style="align-items: center">
-        <nuxt-link
+        <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
           class="no-underline no-append-ico"
           :target="targetLink"
+          title="Éditer la fiche"
+          aria-label="Éditer la fiche"
         >
-          <button
-            class="fr-btn--tertiary-no-outline fr-mr-2w"
-            title="Éditer la fiche"
-            aria-label="Éditer la fiche"
-          >
-            <VIcon name="ri-edit-line" />
-          </button>
-        </nuxt-link>
+          <VIcon name="ri-edit-line" />
+        </NuxtLink>
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -33,6 +29,7 @@
       :to="`/ressource/${resource?.id}`"
       class="no-underline no-append-ico"
       :target="targetLink"
+      style="outline-style: revert"
     >
       <div
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
@@ -76,6 +73,11 @@
           class="stats-holder"
           :class="resource?.profileImage ? 'fr-mt-1w' : ''"
         >
+          <p class="fr-mb-0">
+            <span class="fr-text--lg fr-text--bold">
+              {{ resource?.stats.pinCount }}</span
+            >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
+          </p>
           <p title="nombre de vues depuis le 9 septembre 2022" class="fr-mb-0">
             <span class="fr-text--lg fr-text--bold">
               {{ resource?.stats.visitCount }}</span
