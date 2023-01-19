@@ -4,6 +4,7 @@
       <button
         :disabled="disabled"
         class="fr-m-0 cursor--pointer fr-text--sm"
+        style="text-align: left"
         :title="props.tag.name"
         @click="onTagNameClick"
       >
