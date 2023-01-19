@@ -9,12 +9,15 @@
         <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="no-underline no-append-ico"
+          class="no-underline no-append-ico fr-px-1w fr-mr-3v"
           :target="targetLink"
           title="Éditer la fiche"
           aria-label="Éditer la fiche"
         >
-          <VIcon name="ri-edit-line" />
+          <VIcon
+            style="color: var(--text-action-high-blue-france)"
+            name="ri-edit-line"
+          />
         </NuxtLink>
         <PinMenu
           v-model="pinnedInBases"
