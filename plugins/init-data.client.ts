@@ -4,6 +4,7 @@ import { useTagStore } from "~/stores/tagStore"
 import { usePageStore } from "~/stores/pageStore"
 import { useTextBlockStore } from "~/stores/textBlockStore"
 import { useUserSearchStore } from "~/stores/userSearchStore"
+import { useEvaluationStore } from "~/stores/evaluationStore"
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook("app:mounted", () => {
@@ -13,6 +14,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     const baseStore = useBaseStore()
     if (!baseStore.basesOrder.length) {
       baseStore.refreshBases()
+    }
+
+    const evaluationStore = useEvaluationStore()
+    if (!Object.keys(evaluationStore.criterionBySlug).length) {
+      evaluationStore.getCriteria()
     }
 
     const tagStore = useTagStore()

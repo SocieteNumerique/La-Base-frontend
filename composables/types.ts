@@ -447,3 +447,35 @@ export type UserSearch = {
   name: string
   query: UserSearchQuery
 }
+
+export type Criterion = {
+  description: string
+  name: string
+  order: number
+  slug: string
+}
+
+export type Evaluation = {
+  date?: string
+  evaluation: number | undefined
+  comment: string
+  resource?: number
+  user?: string
+  userTags?: number[]
+}
+
+export type Recommendation = {
+  date?: string
+  isPositive: boolean | undefined
+  comment: string
+  resource?: number
+  user?: string
+  userTags?: number[]
+}
+
+export type EvaluationStep =
+  | "choice"
+  | "recommend"
+  | "recommendationConfirmation"
+  | "evaluate"
+  | "evaluationConfirmation"

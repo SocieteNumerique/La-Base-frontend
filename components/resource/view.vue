@@ -111,6 +111,11 @@
               label="Contribuer"
               @click="showContributeModal = true"
             />
+            <RoundButton
+              icon="ri-edit-box-line"
+              label="Evaluer"
+              @click="showEvaluationModal = true"
+            />
 
             <!-- TODO re-add these -->
             <template v-if="false">
@@ -252,6 +257,10 @@
       :id="resource.id"
       @close="showContributeModal = false"
     />
+    <EvaluationModal
+      v-if="showEvaluationModal"
+      @close="showEvaluationModal = false"
+    />
   </div>
 </template>
 
@@ -274,6 +283,7 @@ const route = useRoute()
 const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
 const showContributeModal = ref<boolean>(false)
+const showEvaluationModal = ref<boolean>(true)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
@@ -295,24 +305,6 @@ const navigationMenus = [
     name: "Informations",
   },
 ]
-
-const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-  // take entry that is the upper-most one amongst those with max intersectionRatio
-  const ratios = entries.map((entry) => entry.intersectionRatio)
-  const maxRatio = Math.max(...ratios)
-  const entriesWithMaxRatio = entries.filter(
-    (entry) => entry.intersectionRatio == maxRatio
-  )
-  // select the top-most one
-  const distancesFromTop = entriesWithMaxRatio.map(
-    (entry) => entry.intersectionRect.y
-  )
-  const indexOfMinDistanceFromTop = distancesFromTop.indexOf(
-    Math.max(...distancesFromTop)
-  )
-
-  activeMenu.value = entriesWithMaxRatio[indexOfMinDistanceFromTop].target.id
-}
 
 const resource = computed(() => {
   return resourceStore.current
