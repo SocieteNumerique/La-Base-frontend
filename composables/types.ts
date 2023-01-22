@@ -48,6 +48,7 @@ export type Resource = {
   creator?: Creator
   creatorBases?: number[]
   dirty?: boolean
+  evaluations: Evaluation[]
   hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
@@ -65,6 +66,7 @@ export type Resource = {
   modified: string
   profileImage?: ResizableImage
   producerState: string
+  recommendations: Recommendation[]
   resourceCreatedOn: string
   rootBase?: number
   rootBaseTitle?: string

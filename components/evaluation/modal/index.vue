@@ -160,7 +160,7 @@ const nextStep = () => {
       evaluationStore.currentStep = "recommend"
       evaluationStore.currentCriterionSlug = "recommend"
     } else {
-      evaluationStore.currentStep = "evaluate"
+      selectNextCriterion()
     }
     return
   }
@@ -170,7 +170,10 @@ const nextStep = () => {
     evaluationStore.currentStep = "evaluationConfirmation"
     return
   }
-  // select next criteria (we come from either evaluationConfirmation or recommendation)
+  // select next criterion (we come from either evaluationConfirmation or recommendation)
+  selectNextCriterion()
+}
+const selectNextCriterion = () => {
   const currentEvaluationIndex = evaluationStore.selectedCriteria.indexOf(
     evaluationStore.currentCriterionSlug
   )

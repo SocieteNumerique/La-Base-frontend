@@ -81,9 +81,18 @@ const deleteRecommendation = async () => {
   if (!props.recommendation.resource) {
     return
   }
-  const { error } = await evaluationStore.removeRecommendation(
-    props.recommendation.resource
-  )
+  let error: any
+  if (isEvaluation) {
+    error = await evaluationStore.removeEvaluation(
+      props.recommendation.resource,
+      props.recommendation.criterion
+    )
+  } else {
+    error = await evaluationStore.removeRecommendation(
+      props.recommendation.resource
+    )
+  }
+
   if (!error.value) {
     showDeleteConfirmation.value = false
     emit("delete")

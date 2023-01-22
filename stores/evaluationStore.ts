@@ -71,6 +71,15 @@ export const useEvaluationStore = defineStore("collection", {
       )
       return { data, error }
     },
+    async removeEvaluation(resourceId: number, criterionSlug: string) {
+      const { data, error } = await useApiDelete<Recommendation>(
+        `evaluations/${resourceId}-${criterionSlug}/`,
+        {},
+        "L'évaluation a bien été supprimée",
+        true
+      )
+      return { data, error }
+    },
     resetEvaluationInput() {
       this.recommendation = {
         isPositive: undefined,
