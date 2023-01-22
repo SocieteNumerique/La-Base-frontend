@@ -9,10 +9,10 @@
       :recommendation="recommendation"
       @delete="evaluationStore.currentStep = 'choice'"
     />
-    <EvaluationModalEvaluation
+    <EvaluationModalEvaluate
       v-if="evaluationStore.currentStep === 'evaluate'"
     />
-    <EvaluationModalEvaluationConfirmation
+    <EvaluationModalEvaluateConfirm
       v-if="evaluationStore.currentStep === 'evaluationConfirmation'"
       :evaluation="evaluation"
       @delete="evaluationStore.currentStep = 'choice'"
@@ -82,9 +82,62 @@ const actions = computed(() => {
     ]
   }
 
+  if (evaluationStore.currentStep === "evaluate") {
+    return [
+      {
+        label: "Publier",
+        onClick: evaluate,
+        disabled:
+          evaluationStore.evaluation.evaluation == null ||
+          evaluationStore.evaluation.comment.length < 30,
+      },
+    ]
+  }
+
+  if (evaluationStore.currentStep === "evaluationConfirmation") {
+    // if there is another criterion, go to this one
+    if (
+      evaluationStore.selectedCriteria.indexOf(
+        evaluationStore.currentCriterionSlug
+      ) <
+      evaluationStore.selectedCriteria.length - 1
+    ) {
+      return [
+        {
+          label: "Critère suivant",
+          onClick: nextStep,
+        },
+        {
+          label: "Terminer",
+          onClick: close,
+          secondary: true,
+        },
+      ]
+    }
+    // if there is nothing else to evaluate
+    return [
+      {
+        label: "Terminer",
+        onClick: close,
+      },
+    ]
+  }
+
   return []
 })
 
+const evaluate = async () => {
+  const { data, error } = await evaluationStore.evaluate({
+    resource: resourceStore.currentId,
+    criterion: evaluationStore.currentCriterionSlug,
+    ...evaluationStore.evaluation,
+  })
+  if (error.value) {
+    return
+  }
+  evaluation.value = data.value!
+  evaluationStore.currentStep = "evaluationConfirmation"
+}
 const recommend = async () => {
   const { data, error } = await evaluationStore.recommend({
     resource: resourceStore.currentId,
@@ -124,6 +177,7 @@ const nextStep = () => {
   evaluationStore.currentStep = "evaluate"
   evaluationStore.currentCriterionSlug =
     evaluationStore.selectedCriteria[currentEvaluationIndex + 1]
+  evaluationStore.resetEvaluationInput()
 }
 
 const title = computed<string>(() => {
@@ -136,7 +190,7 @@ const title = computed<string>(() => {
 })
 
 const close = () => {
-  evaluationStore.resetRecommendation()
+  evaluationStore.reset()
   emit("close")
 }
 </script>

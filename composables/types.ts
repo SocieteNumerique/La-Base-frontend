@@ -456,6 +456,7 @@ export type Criterion = {
 }
 
 export type Evaluation = {
+  criterion?: string
   date?: string
   evaluation: number | undefined
   comment: string

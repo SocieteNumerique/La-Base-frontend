@@ -1,10 +1,8 @@
 <template>
   <div
-    style="
-      color: var(--text-title-grey);
-      border-top: 1px solid var(--border-default-grey);
-    "
+    style="color: var(--text-title-grey)"
     class="fr-py-3w"
+    :style="borderTop ? 'border-top: 1px solid var(--border-default-grey)' : ''"
   >
     <div style="display: flex; justify-content: space-between" class="fr-mb-1w">
       <div class="fr-text--sm fr-m-0">{{ recommendation.user }}</div>
@@ -17,17 +15,13 @@
     </div>
     <div class="fr-mb-3v" style="display: flex; justify-content: space-between">
       <div :style="canDelete ? 'padding-top: 3px' : ''">
-        <VIcon
-          :name="recommendation.isPositive ? 'recommended' : 'not-recommended'"
-          class="fr-mr-2v"
-        />
-        {{ recommendation.isPositive ? "Recommandée" : "Non recommandée" }}
+        <RecommendationEvaluationLabel :recommendation="recommendation" />
       </div>
       <div v-if="props.canDelete">
         <div class="fr-btns-group--xs">
           <button
             class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
-            @click="deleteRecommendation"
+            @click="confirmDelete"
           >
             <VIcon :scale="0.8" class="fr-mr-1v" name="ri-delete-bin-line" />
             Supprimer
@@ -41,20 +35,41 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Recommendation } from "~/composables/types"
+import { Evaluation, Recommendation } from "~/composables/types"
 import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useEvaluationStore } from "~/stores/evaluationStore"
+import { useConfirm } from "~/composables/useConfirm"
+import { doNothing } from "~/composables/utils"
 
 const evaluationStore = useEvaluationStore()
 const tagStore = useTagStore()
 
 const emit = defineEmits(["delete"])
+const confirm = useConfirm()
 
 const props = defineProps({
-  recommendation: { type: Object as PropType<Recommendation>, required: true },
+  borderTop: {
+    type: Boolean,
+    default: false,
+  },
+  recommendation: {
+    type: Object as PropType<Recommendation | Evaluation>,
+    required: true,
+  },
   canDelete: { type: Boolean, default: false },
 })
+const isEvaluation = props.recommendation.isPositive == null
+const confirmDelete = () => {
+  confirm(
+    "Êtes-vous sûr de vouloir supprimer votre recommandation ? Cette action est irréversible.",
+    `Supprimer ${isEvaluation ? "l'évaluation" : "la recommandation"}`,
+    "Supprimer",
+    deleteRecommendation,
+    doNothing
+  )
+}
+const showDeleteConfirmation = ref(false)
 let tags = []
 if (props.recommendation.userTags?.length) {
   tags = props.recommendation.userTags
@@ -70,6 +85,7 @@ const deleteRecommendation = async () => {
     props.recommendation.resource
   )
   if (!error.value) {
+    showDeleteConfirmation.value = false
     emit("delete")
   }
 }

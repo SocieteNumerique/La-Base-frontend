@@ -16,3 +16,7 @@ export function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
 export function getLengthOrZero(value: string): number {
   return value?.length || 0
 }
+
+export const doNothing = (): void => {
+  // do nothing
+}

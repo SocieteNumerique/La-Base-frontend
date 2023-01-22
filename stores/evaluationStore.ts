@@ -35,6 +35,15 @@ export const useEvaluationStore = defineStore("collection", {
       selectedCriteriaInput: [],
     },
   actions: {
+    async evaluate(evaluation: Evaluation) {
+      const { data, error } = await useApiPost<Evaluation>(
+        "evaluations/",
+        evaluation,
+        {},
+        "L'évaluation a bien été publiée"
+      )
+      return { data, error }
+    },
     async getCriteria() {
       const { data, error } = await useApiGet<Criterion[]>("criteria/")
       if (!error.value) {
@@ -62,11 +71,21 @@ export const useEvaluationStore = defineStore("collection", {
       )
       return { data, error }
     },
-    resetRecommendation() {
+    resetEvaluationInput() {
       this.recommendation = {
         isPositive: undefined,
         comment: "",
       }
+      this.evaluation = {
+        evaluation: undefined,
+        comment: "",
+      }
+    },
+    reset() {
+      this.currentStep = "choice"
+      this.currentCriterionSlug = ""
+
+      this.selectedCriteriaInput = []
     },
   },
   getters: {
@@ -79,7 +98,13 @@ export const useEvaluationStore = defineStore("collection", {
       return state.criterionBySlug[state.currentCriterionSlug]
     },
     selectedCriteria: (state) => {
-      return Object.values(state.selectedCriteriaInput)
+      let toReturn = Object.values(state.selectedCriteriaInput)
+      if (toReturn.filter((criteria) => criteria === "all").length > 1) {
+        toReturn = toReturn.filter(
+          (criteria, index) => index === 0 || criteria != "all"
+        )
+      }
+      return toReturn
     },
   },
 })
