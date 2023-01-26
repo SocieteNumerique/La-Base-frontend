@@ -207,7 +207,7 @@
             </nav>
           </div>
           <div class="fr-col-9">
-            <div v-if="activeMenu == 'informations'" id="informations">
+            <div v-if="activeMenu === 'informations'" id="informations">
               <h2
                 v-if="resource?.resourceCreatedOn"
                 class="fr-text--bold fr-mb-3v fr-text--md"
@@ -223,7 +223,7 @@
                 :element="resource"
               />
             </div>
-            <div v-if="activeMenu == 'resource'" id="resource">
+            <div v-if="activeMenu === 'resource'" id="resource">
               <div class="fr-grid-row">
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
@@ -242,6 +242,7 @@
                 </div>
               </div>
             </div>
+            <ResourceEvaluationsView v-if="activeMenu === 'evaluations'" />
           </div>
         </div>
       </div>
@@ -280,10 +281,10 @@ const props = defineProps({
 const resourceStore = useResourceStore()
 const route = useRoute()
 
-const activeMenu = ref("resource")
+const activeMenu = ref("evaluations")
 const showReportModal = ref<boolean>(false)
 const showContributeModal = ref<boolean>(false)
-const showEvaluationModal = ref<boolean>(true)
+const showEvaluationModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
@@ -303,6 +304,10 @@ const navigationMenus = [
   {
     key: "informations",
     name: "Informations",
+  },
+  {
+    key: "evaluations",
+    name: "Évaluations",
   },
 ]
 

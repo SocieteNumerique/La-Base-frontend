@@ -66,7 +66,7 @@ export const useEvaluationStore = defineStore("evaluation", {
     },
   },
   getters: {
-    criteria: (state) => {
+    criteria: (state): Criterion[] => {
       return Object.values(state.criterionBySlug).sort(
         (criterionA, criterionB) => criterionA.order - criterionB.order
       )
