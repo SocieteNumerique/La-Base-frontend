@@ -53,24 +53,6 @@ export const useEvaluationStore = defineStore("collection", {
         }
       }
     },
-    async recommend(recommendation: Recommendation) {
-      const { data, error } = await useApiPost<Recommendation>(
-        "recommendations/",
-        recommendation,
-        {},
-        "La recommendation a bien été publiée"
-      )
-      return { data, error }
-    },
-    async removeRecommendation(resourceId: number) {
-      const { data, error } = await useApiDelete<Recommendation>(
-        `recommendations/${resourceId}/`,
-        {},
-        "La recommendation a bien été supprimée",
-        true
-      )
-      return { data, error }
-    },
     async removeEvaluation(resourceId: number, criterionSlug: string) {
       const { data, error } = await useApiDelete<Recommendation>(
         `evaluations/${resourceId}-${criterionSlug}/`,

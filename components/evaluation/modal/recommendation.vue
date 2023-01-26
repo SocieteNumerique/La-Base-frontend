@@ -7,14 +7,14 @@
       pour ça.
     </p>
     <DsfrRadioButtonSet
-      v-model="evaluationStore.recommendation.isPositive"
+      v-model="evaluationStore.evaluation.evaluation"
       name="recommendation-is-positive"
       :options="options"
       required
       legend="Recommandez-vous la ressource ?"
     />
     <DsfrInputGroup
-      v-model="evaluationStore.recommendation.comment"
+      v-model="evaluationStore.evaluation.comment"
       :required="true"
       :is-textarea="true"
       label="Commentaire"
@@ -29,8 +29,8 @@ import { useEvaluationStore } from "~/stores/evaluationStore"
 import { DsfrInputGroup } from "@gouvminint/vue-dsfr"
 
 const options = [
-  { label: "Oui", value: true },
-  { label: "Non", value: false },
+  { label: "Oui", value: "1" },
+  { label: "Non", value: "0" },
 ]
 const evaluationStore = useEvaluationStore()
 </script>

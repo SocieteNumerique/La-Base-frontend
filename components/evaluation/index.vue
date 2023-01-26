@@ -5,17 +5,17 @@
     :style="borderTop ? 'border-top: 1px solid var(--border-default-grey)' : ''"
   >
     <div style="display: flex; justify-content: space-between" class="fr-mb-1w">
-      <div class="fr-text--sm fr-m-0">{{ recommendation.user }}</div>
+      <div class="fr-text--sm fr-m-0">{{ evaluation.user }}</div>
       <div class="fr-text--xs fr-m-0 fr-text-default--grey">
-        {{ recommendation.date }}
+        {{ evaluation.date }}
       </div>
     </div>
-    <div v-if="recommendation.userTags?.length">
+    <div v-if="evaluation.userTags?.length">
       <DsfrTags :tags="tags" class="fr-tags-group--sm" />
     </div>
     <div class="fr-mb-3v" style="display: flex; justify-content: space-between">
       <div :style="canDelete ? 'padding-top: 3px' : ''">
-        <RecommendationEvaluationLabel :recommendation="recommendation" />
+        <EvaluationLabel :evaluation="evaluation" />
       </div>
       <div v-if="props.canDelete">
         <div class="fr-btns-group--xs">
@@ -30,12 +30,12 @@
       </div>
     </div>
     <p class="fr-text--sm fr-m-0">
-      {{ recommendation.comment }}
+      {{ evaluation.comment }}
     </p>
   </div>
 </template>
 <script setup lang="ts">
-import { Evaluation, Recommendation } from "~/composables/types"
+import { Evaluation } from "~/composables/types"
 import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useEvaluationStore } from "~/stores/evaluationStore"
@@ -53,45 +53,40 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  recommendation: {
-    type: Object as PropType<Recommendation | Evaluation>,
+  evaluation: {
+    type: Object as PropType<Evaluation>,
     required: true,
   },
   canDelete: { type: Boolean, default: false },
 })
-const isEvaluation = props.recommendation.isPositive == null
+const isEvaluation = props.evaluation.criterion !== "_recommendation"
 const confirmDelete = () => {
   confirm(
-    "Êtes-vous sûr de vouloir supprimer votre recommandation ? Cette action est irréversible.",
+    `Êtes-vous sûr de vouloir supprimer votre ${
+      isEvaluation ? "évaluation" : "recommandation"
+    } ? Cette action est irréversible.`,
     `Supprimer ${isEvaluation ? "l'évaluation" : "la recommandation"}`,
     "Supprimer",
-    deleteRecommendation,
+    deleteEvaluation,
     doNothing
   )
 }
 const showDeleteConfirmation = ref(false)
 let tags = []
-if (props.recommendation.userTags?.length) {
-  tags = props.recommendation.userTags
+if (props.evaluation.userTags?.length) {
+  tags = props.evaluation.userTags
     .map((tagId) => tagStore.tagsById[tagId])
     .map((tag) => ({ label: tag.name }))
 }
 
-const deleteRecommendation = async () => {
-  if (!props.recommendation.resource) {
+const deleteEvaluation = async () => {
+  if (!props.evaluation.resource) {
     return
   }
-  let error: any
-  if (isEvaluation) {
-    error = await evaluationStore.removeEvaluation(
-      props.recommendation.resource,
-      props.recommendation.criterion
-    )
-  } else {
-    error = await evaluationStore.removeRecommendation(
-      props.recommendation.resource
-    )
-  }
+  const { error } = await evaluationStore.removeEvaluation(
+    props.evaluation.resource,
+    props.evaluation.criterion!
+  )
 
   if (!error.value) {
     showDeleteConfirmation.value = false

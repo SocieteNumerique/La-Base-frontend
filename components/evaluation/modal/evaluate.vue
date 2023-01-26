@@ -25,11 +25,11 @@
 import { useEvaluationStore } from "~/stores/evaluationStore"
 
 const options = [
-  { label: "⭐ Très abouti", value: "4" },
-  { label: "🟢 Abouti", value: "3" },
-  { label: "⚪ Moyennement abouti", value: "2" },
-  { label: "🟡 Peu abouti", value: "1" },
-  { label: "🟠 Pas abouti", value: "0" },
+  { label: "Très abouti", value: "4" },
+  { label: "Abouti", value: "3" },
+  { label: "Moyennement abouti", value: "2" },
+  { label: "Peu abouti", value: "1" },
+  { label: "Pas abouti", value: "0" },
 ]
 const evaluationStore = useEvaluationStore()
 </script>

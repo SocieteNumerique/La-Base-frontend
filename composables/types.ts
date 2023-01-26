@@ -467,15 +467,6 @@ export type Evaluation = {
   userTags?: number[]
 }
 
-export type Recommendation = {
-  date?: string
-  isPositive: boolean | undefined
-  comment: string
-  resource?: number
-  user?: string
-  userTags?: number[]
-}
-
 export type EvaluationStep =
   | "choice"
   | "recommend"
