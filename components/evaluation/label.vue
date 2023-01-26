@@ -2,14 +2,14 @@
   <div>
     <div style="display: inline-block">
       <div
-        v-if="recommendation.criterion"
-        class="recommendation-dot fr-mr-1w"
-        :style="`background: ${evaluationColors[recommendation.evaluation]}`"
+        v-if="evaluation.criterion !== RECOMMENDATION_CRITERION"
+        class="evaluation-dot fr-mr-1w"
+        :style="`background: ${evaluationColors[evaluation.evaluation]}`"
         style="display: inline-block"
       ></div>
       <VIcon
         v-else
-        :name="recommendation.isPositive ? 'recommended' : 'not-recommended'"
+        :name="evaluation.evaluation === 0 ? 'not-recommended' : 'recommended'"
         class="fr-mr-2v"
       />
     </div>
@@ -20,25 +20,26 @@
 <script setup lang="ts">
 import { evaluationGrades } from "~/composables/constants"
 import { PropType } from "vue"
-import { Evaluation, Recommendation } from "~/composables/types"
+import { Evaluation } from "~/composables/types"
 import { evaluationColors } from "~/composables/constants"
+import { RECOMMENDATION_CRITERION } from "~/composables/constants"
 
 const props = defineProps({
-  recommendation: {
-    type: Object as PropType<Recommendation | Evaluation>,
+  evaluation: {
+    type: Object as PropType<Evaluation>,
     required: true,
   },
 })
 let label = ""
-if (props.recommendation.criterion) {
-  label = evaluationGrades[props.recommendation.evaluation]
+if (props.evaluation.criterion !== RECOMMENDATION_CRITERION) {
+  label = evaluationGrades[props.evaluation.evaluation]
 } else {
-  label = props.recommendation.isPositive ? "Recommandée" : "Non recommandée"
+  label = props.evaluation.evaluation === 0 ? "Non recommandée" : "recommandée"
 }
 </script>
 
 <style>
-.recommendation-dot {
+.evaluation-dot {
   width: 18px;
   height: 18px;
   border-radius: 18px;

@@ -20,7 +20,6 @@ const resultsAsCheckboxOptions = computed<
   { label: string; id: string; name: string }[]
 >(() => [
   { label: "Tous les critères", id: "all", name: "all" },
-  { label: "Recommandation", id: "recommend", name: "recommend" },
   ...evaluationStore.criteria.map((criterion) => {
     return { label: criterion.name, id: criterion.slug, name: criterion.slug }
   }),
@@ -36,7 +35,6 @@ const onInput = ($event: any) => {
       // select all
       evaluationStore.selectedCriteriaInput = [
         "all",
-        "recommend",
         ...evaluationStore.criteria.map((criterion) => criterion.slug),
       ]
     } else {

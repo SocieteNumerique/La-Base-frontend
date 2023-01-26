@@ -1,10 +1,7 @@
 <template>
   <div>
     <p>
-      Voici une petite légende de quelques caractères afin de présenter
-      rapidement mon fichier mais l’idée c’est que ça ne soit pas trop trop
-      long, il s’agit d’une légende et non d’un roman, l’outil texte est à dispo
-      pour ça.
+      {{ evaluationStore.currentCriterion.description }}
     </p>
     <DsfrRadioButtonSet
       v-model="evaluationStore.evaluation.evaluation"

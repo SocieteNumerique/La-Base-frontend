@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Recommendation
-      :recommendation="evaluation"
+    <Evaluation
+      :evaluation="evaluation"
       :can-delete="true"
       @delete="$emit('delete')"
     />

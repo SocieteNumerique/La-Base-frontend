@@ -1,10 +1,5 @@
 import { defineStore } from "pinia"
-import {
-  Criterion,
-  Evaluation,
-  EvaluationStep,
-  Recommendation,
-} from "~/composables/types"
+import { Criterion, Evaluation, EvaluationStep } from "~/composables/types"
 import { useApiDelete, useApiGet, useApiPost } from "~/composables/api"
 
 type EvaluationState = {
@@ -13,25 +8,20 @@ type EvaluationState = {
   currentCriterionSlug: string
   currentStep: EvaluationStep
   evaluation: Evaluation
-  recommendation: Recommendation
   selectedCriteriaInput: string[]
 }
 
-export const useEvaluationStore = defineStore("collection", {
+export const useEvaluationStore = defineStore("evaluation", {
   state: () =>
     <EvaluationState>{
       criterionBySlug: {},
       currentCriterionSlug: "",
       currentStep: "choice",
       evaluation: {
-        evaluation: undefined,
+        evaluation: -1,
         comment: "",
       },
       isEvaluating: true,
-      recommendation: {
-        isPositive: undefined,
-        comment: "",
-      },
       selectedCriteriaInput: [],
     },
   actions: {
@@ -54,7 +44,7 @@ export const useEvaluationStore = defineStore("collection", {
       }
     },
     async removeEvaluation(resourceId: number, criterionSlug: string) {
-      const { data, error } = await useApiDelete<Recommendation>(
+      const { data, error } = await useApiDelete(
         `evaluations/${resourceId}-${criterionSlug}/`,
         {},
         "L'évaluation a bien été supprimée",
@@ -63,10 +53,6 @@ export const useEvaluationStore = defineStore("collection", {
       return { data, error }
     },
     resetEvaluationInput() {
-      this.recommendation = {
-        isPositive: undefined,
-        comment: "",
-      }
       this.evaluation = {
         evaluation: undefined,
         comment: "",
@@ -89,13 +75,9 @@ export const useEvaluationStore = defineStore("collection", {
       return state.criterionBySlug[state.currentCriterionSlug]
     },
     selectedCriteria: (state) => {
-      let toReturn = Object.values(state.selectedCriteriaInput)
-      if (toReturn.filter((criteria) => criteria === "all").length > 1) {
-        toReturn = toReturn.filter(
-          (criteria, index) => index === 0 || criteria != "all"
-        )
-      }
-      return toReturn
+      return Object.values(state.selectedCriteriaInput).filter(
+        (criteria) => criteria !== "all"
+      )
     },
   },
 })

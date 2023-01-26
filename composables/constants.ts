@@ -18,3 +18,4 @@ export const evaluationColors: Record<number, string> = {
   1: "#FCCB86",
   0: "#F99389",
 }
+export const RECOMMENDATION_CRITERION = "_recommendation"

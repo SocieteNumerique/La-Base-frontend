@@ -2,20 +2,21 @@
   <DsfrModal :opened="true" :title="title" :actions="actions" @close="close">
     <EvaluationModalChoice v-if="evaluationStore.currentStep === 'choice'" />
     <EvaluationModalRecommendation
-      v-if="evaluationStore.currentStep === 'recommend'"
-    />
-    <EvaluationModalRecommendationConfirmation
-      v-if="evaluationStore.currentStep === 'recommendationConfirmation'"
-      :recommendation="recommendation"
-      @delete="evaluationStore.currentStep = 'choice'"
+      v-if="
+        evaluationStore.currentStep === 'evaluate' &&
+        evaluationStore.currentCriterion?.slug === RECOMMENDATION_CRITERION
+      "
     />
     <EvaluationModalEvaluate
-      v-if="evaluationStore.currentStep === 'evaluate'"
+      v-if="
+        evaluationStore.currentStep === 'evaluate' &&
+        evaluationStore.currentCriterion?.slug !== RECOMMENDATION_CRITERION
+      "
     />
     <EvaluationModalEvaluateConfirm
       v-if="evaluationStore.currentStep === 'evaluationConfirmation'"
       :evaluation="evaluation"
-      @delete="evaluationStore.currentStep = 'choice'"
+      @delete="onEvaluationDelete"
     />
   </DsfrModal>
 </template>
@@ -23,16 +24,20 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import { useEvaluationStore } from "~/stores/evaluationStore"
-import { Evaluation, EvaluationStep, Recommendation } from "~/composables/types"
+import { Evaluation, EvaluationStep } from "~/composables/types"
 import { useResourceStore } from "~/stores/resourceStore"
+import { RECOMMENDATION_CRITERION } from "~/composables/constants"
 
 const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
-const recommendation = ref<Recommendation>()
 const evaluation = ref<Evaluation>()
 
 const emit = defineEmits(["close"])
 
+const onEvaluationDelete = () => {
+  evaluationStore.currentStep = "choice"
+  evaluationStore.currentCriterionSlug = ""
+}
 const actions = computed(() => {
   if (evaluationStore.currentStep === "choice") {
     return [
@@ -42,42 +47,6 @@ const actions = computed(() => {
         iconRight: true,
         onClick: nextStep,
         disabled: !evaluationStore.selectedCriteria.length,
-      },
-    ]
-  }
-
-  if (evaluationStore.currentStep === "recommend") {
-    return [
-      {
-        label: "Publier",
-        onClick: recommend,
-        disabled:
-          evaluationStore.recommendation.isPositive == null ||
-          evaluationStore.recommendation.comment.length < 30,
-      },
-    ]
-  }
-
-  if (evaluationStore.currentStep === "recommendationConfirmation") {
-    // if there is another criterion, go to this one
-    if (evaluationStore.selectedCriteria.length >= 2) {
-      return [
-        {
-          label: "Critère suivant",
-          onClick: nextStep,
-        },
-        {
-          label: "Terminer",
-          onClick: close,
-          secondary: true,
-        },
-      ]
-    }
-    // if there is nothing else to evaluate
-    return [
-      {
-        label: "Terminer",
-        onClick: close,
       },
     ]
   }
@@ -138,17 +107,6 @@ const evaluate = async () => {
   evaluation.value = data.value!
   evaluationStore.currentStep = "evaluationConfirmation"
 }
-const recommend = async () => {
-  const { data, error } = await evaluationStore.recommend({
-    resource: resourceStore.currentId,
-    ...evaluationStore.recommendation,
-  })
-  if (error.value) {
-    return
-  }
-  recommendation.value = data.value!
-  evaluationStore.currentStep = "recommendationConfirmation"
-}
 const nextStep = () => {
   console.log(
     "### currentEvaluationIndex",
@@ -156,12 +114,7 @@ const nextStep = () => {
     evaluationStore.selectedCriteria
   )
   if (evaluationStore.currentStep === "choice") {
-    if (evaluationStore.selectedCriteria.indexOf("recommend") !== -1) {
-      evaluationStore.currentStep = "recommend"
-      evaluationStore.currentCriterionSlug = "recommend"
-    } else {
-      selectNextCriterion()
-    }
+    selectNextCriterion()
     return
   }
 
@@ -174,8 +127,14 @@ const nextStep = () => {
   selectNextCriterion()
 }
 const selectNextCriterion = () => {
-  const currentEvaluationIndex = evaluationStore.selectedCriteria.indexOf(
+  let currentEvaluationIndex = evaluationStore.selectedCriteria.indexOf(
     evaluationStore.currentCriterionSlug
+  )
+  console.log(
+    "### select nextcriterion, current index",
+    currentEvaluationIndex,
+    "selected",
+    evaluationStore.selectedCriteria
   )
   evaluationStore.currentStep = "evaluate"
   evaluationStore.currentCriterionSlug =
