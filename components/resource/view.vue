@@ -288,7 +288,7 @@ const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
 const route = useRoute()
 
-const activeMenu = ref("evaluations")
+const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
 const showContributeModal = ref<boolean>(false)
 const showEvaluationModal = ref<boolean>(false)

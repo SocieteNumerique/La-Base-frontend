@@ -13,8 +13,8 @@
 
       <div v-if="isReco">
         <DsfrBadge
-          type="success"
-          label="très recommandée"
+          :type="recommendationBadge.type"
+          :label="recommendationBadge.label"
           :no-icon="true"
           :small="true"
         />
@@ -49,7 +49,7 @@
             <VIcon name="ri-check-line" class="fr-ml-1w" />
           </span>
           <DsfrButton
-            :label="`voir ${isReco ? 'ma recommandation' : 'mon évaluation'}`"
+            :label="`Voir ${isReco ? 'ma recommandation' : 'mon évaluation'}`"
             class="fr-btn--tertiary-no-outline fr-btn--sm fr-ml-1w"
             icon="ri-arrow-right-line"
             :icon-right="true"
@@ -115,12 +115,12 @@
       <Evaluation
         v-if="showOnlyOwnEvaluation"
         :evaluation="ownEvaluation"
-        @delete="refresh"
+        @delete="onEvaluationDelete"
       />
       <template v-else>
         <template v-for="(evaluation, ix) of evaluations" :key="ix">
           <hr />
-          <Evaluation :evaluation="evaluation" @delete="refresh" />
+          <Evaluation :evaluation="evaluation" @delete="onEvaluationDelete" />
         </template>
       </template>
     </DsfrModal>
@@ -137,11 +137,10 @@ const props = defineProps({
   evaluations: { type: Array as PropType<EvaluationType[]>, required: true },
   criterion: { type: Object as PropType<Criterion>, required: true },
 })
-const emit = defineEmits(["refresh", "recommend", "not-recommend", "evaluate"])
+const emit = defineEmits(["recommend", "not-recommend", "evaluate"])
 
-const refresh = () => {
+const onEvaluationDelete = () => {
   resetModal()
-  emit("refresh")
 }
 const showEvaluationsModal = ref(false)
 const showOnlyOwnEvaluation = ref(false)
@@ -160,6 +159,24 @@ const pct = (grade: string) => {
 
 const recommendPct = computed(() => {
   return Math.round((props.grades["1"] / props.evaluations.length) * 100)
+})
+const recommendationBadge = computed<{ label: string; type: string }>(() => {
+  if (!isReco.value) {
+    return { type: "success", label: "Très recommandée" }
+  }
+  if (recommendPct.value > 80) {
+    return { type: "success", label: "Très recommandée" }
+  }
+  if (recommendPct.value > 60) {
+    return { type: "new", label: "Recommandée" }
+  }
+  if (recommendPct.value > 40) {
+    return { type: "new", label: "Moyennement recommandée" }
+  }
+  if (recommendPct.value > 20) {
+    return { type: "warning", label: "Peu recommandée" }
+  }
+  return { type: "error", label: "Pas recommandée" }
 })
 const evaluationsLabel = computed(() => {
   return `Voir
@@ -181,8 +198,4 @@ const currentUserHasEvaluated = computed(() => {
 const ownEvaluation = computed(() => {
   return props.evaluations.filter((evaluation) => evaluation.isOwner)[0]
 })
-const recommendButtons = [
-  { label: "Oui", icon: "recommend" },
-  { label: "Non", icon: "not-recommend", secondary: true },
-]
 </script>

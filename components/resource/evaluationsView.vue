@@ -4,11 +4,14 @@
     <p>
       Définition de ce que c’est pour nous que l’évaluation, bonnes pratiques
     </p>
-    <div v-if="isReady">
+    <div v-if="resourceStore.current?.canEvaluate === false">
+      Les évaluations sont désactivées pour cette ressource.
+    </div>
+    <div v-if="isReady && resourceStore.current?.canEvaluate">
       <div v-for="criterion of evaluationStore.criteria" :key="criterion.slug">
         <hr />
         <div class="fr-grid-row">
-          <div class="fr-col-md-6 fr-pr-8w">
+          <div class="fr-col-md-6" style="padding-right: 120px">
             <h3 class="fr-text--lg fr-text--regular fr-mb-4w">
               {{ criterion.name }}
             </h3>
@@ -23,7 +26,6 @@
                 evaluationsPerCriterion[criterion.slug]?.evaluations
               "
               :criterion="criterion"
-              @refresh="refresh"
               @evaluate="emit('evaluate', criterion.slug)"
               @recommend="emit('recommend', criterion.slug)"
               @not-recommend="emit('not-recommend', criterion.slug)"
@@ -50,6 +52,15 @@ const emit = defineEmits(["recommend", "not-recommend", "evaluate"])
 onMounted(async () => {
   await refresh()
 })
+
+watch(
+  () => evaluationStore.nUpdates,
+  () => {
+    console.log("### evaluation store updated")
+    refresh()
+  }
+)
+
 const refresh = async () => {
   evaluationsPerCriterion.value = await evaluationStore.getEvaluations(
     resourceStore.currentId!

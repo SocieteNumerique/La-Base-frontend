@@ -104,6 +104,7 @@ const evaluate = async () => {
   if (error.value) {
     return
   }
+  evaluationStore.resetEvaluationInput()
   evaluation.value = data.value!
   evaluationStore.currentStep = "evaluationConfirmation"
 }
