@@ -99,6 +99,11 @@
                 />
               </ShareButton>
             </IntroTooltip>
+            <RoundButton
+              icon="ri-equalizer-line"
+              label="Évaluer"
+              @click="showEvaluationModal = true"
+            />
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
               <RoundButton
                 icon="ri-alert-line"
@@ -110,11 +115,6 @@
               icon="ri-edit-box-line"
               label="Contribuer"
               @click="showContributeModal = true"
-            />
-            <RoundButton
-              icon="ri-edit-box-line"
-              label="Evaluer"
-              @click="showEvaluationModal = true"
             />
 
             <!-- TODO re-add these -->
@@ -242,7 +242,12 @@
                 </div>
               </div>
             </div>
-            <ResourceEvaluationsView v-if="activeMenu === 'evaluations'" />
+            <ResourceEvaluationsView
+              v-if="activeMenu === 'evaluations'"
+              @evaluate="onEvaluation"
+              @recommend="onRecommend"
+              @not-recommend="onNotRecommend"
+            />
           </div>
         </div>
       </div>
@@ -274,10 +279,12 @@ import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 import { pluralize } from "~/composables/strUtils"
 import { stateLabel } from "~/composables/constants"
+import { useEvaluationStore } from "~/stores/evaluationStore"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
 })
+const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
 const route = useRoute()
 
@@ -323,6 +330,25 @@ onBeforeMount(async () => {
     await getResourceIfNotExists()
   }
 })
+
+const onEvaluation = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = -1
+  showEvaluationModal.value = true
+}
+const onRecommend = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = "1"
+  showEvaluationModal.value = true
+}
+const onNotRecommend = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = "0"
+  showEvaluationModal.value = true
+}
 </script>
 
 <style>

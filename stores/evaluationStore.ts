@@ -1,5 +1,10 @@
 import { defineStore } from "pinia"
-import { Criterion, Evaluation, EvaluationStep } from "~/composables/types"
+import {
+  Criterion,
+  Evaluation,
+  EvaluationForCriterion,
+  EvaluationStep,
+} from "~/composables/types"
 import { useApiDelete, useApiGet, useApiPost } from "~/composables/api"
 
 type EvaluationState = {
@@ -8,6 +13,7 @@ type EvaluationState = {
   currentCriterionSlug: string
   currentStep: EvaluationStep
   evaluation: Evaluation
+  nUpdates: number
   selectedCriteriaInput: string[]
 }
 
@@ -21,6 +27,8 @@ export const useEvaluationStore = defineStore("evaluation", {
         evaluation: -1,
         comment: "",
       },
+      // is listened to by ressources view to update when there is a change
+      nUpdates: 0,
       isEvaluating: true,
       selectedCriteriaInput: [],
     },
@@ -32,6 +40,9 @@ export const useEvaluationStore = defineStore("evaluation", {
         {},
         "L'évaluation a bien été publiée"
       )
+      if (!error.value) {
+        this.nUpdates += 1
+      }
       return { data, error }
     },
     async getCriteria() {
@@ -43,6 +54,21 @@ export const useEvaluationStore = defineStore("evaluation", {
         }
       }
     },
+    async getEvaluations(resourceId: number) {
+      const { data, error } = await useApiGet<
+        Record<string, EvaluationForCriterion>
+      >(
+        `resources/${resourceId}/evaluations/`,
+        {},
+        null,
+        "Impossible de récupérer la liste des évaluations pour cette ressource"
+      )
+      if (!error.value) {
+        return data.value!
+      } else {
+        return {}
+      }
+    },
     async removeEvaluation(resourceId: number, criterionSlug: string) {
       const { data, error } = await useApiDelete(
         `evaluations/${resourceId}-${criterionSlug}/`,
@@ -50,11 +76,14 @@ export const useEvaluationStore = defineStore("evaluation", {
         "L'évaluation a bien été supprimée",
         true
       )
+      if (!error.value) {
+        this.nUpdates += 1
+      }
       return { data, error }
     },
     resetEvaluationInput() {
       this.evaluation = {
-        evaluation: undefined,
+        evaluation: -1,
         comment: "",
       }
     },

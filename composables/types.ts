@@ -458,10 +458,11 @@ export type Criterion = {
 }
 
 export type Evaluation = {
+  comment: string
   criterion?: string
   date?: string
   evaluation: number
-  comment: string
+  isOwner?: boolean
   resource?: number
   user?: string
   userTags?: number[]
@@ -473,3 +474,11 @@ export type EvaluationStep =
   | "recommendationConfirmation"
   | "evaluate"
   | "evaluationConfirmation"
+
+export type EvaluationForCriterion = {
+  evaluations: Evaluation[]
+  stats: {
+    grades: Record<string, number>
+    count: number
+  }
+}

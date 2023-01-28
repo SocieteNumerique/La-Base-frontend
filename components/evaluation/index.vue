@@ -14,10 +14,10 @@
       <DsfrTags :tags="tags" class="fr-tags-group--sm" />
     </div>
     <div class="fr-mb-3v" style="display: flex; justify-content: space-between">
-      <div :style="canDelete ? 'padding-top: 3px' : ''">
+      <div :style="evaluation.isOwner ? 'padding-top: 3px' : ''">
         <EvaluationLabel :evaluation="evaluation" />
       </div>
-      <div v-if="props.canDelete">
+      <div v-if="evaluation.isOwner">
         <div class="fr-btns-group--xs">
           <button
             class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
@@ -41,6 +41,7 @@ import { useTagStore } from "~/stores/tagStore"
 import { useEvaluationStore } from "~/stores/evaluationStore"
 import { useConfirm } from "~/composables/useConfirm"
 import { doNothing } from "~/composables/utils"
+import { RECOMMENDATION_CRITERION } from "~/composables/constants"
 
 const evaluationStore = useEvaluationStore()
 const tagStore = useTagStore()
@@ -57,9 +58,8 @@ const props = defineProps({
     type: Object as PropType<Evaluation>,
     required: true,
   },
-  canDelete: { type: Boolean, default: false },
 })
-const isEvaluation = props.evaluation.criterion !== "_recommendation"
+const isEvaluation = props.evaluation.criterion !== RECOMMENDATION_CRITERION
 const confirmDelete = () => {
   confirm(
     `Êtes-vous sûr de vouloir supprimer votre ${
