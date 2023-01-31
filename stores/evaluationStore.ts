@@ -38,7 +38,11 @@ export const useEvaluationStore = defineStore("evaluation", {
         "evaluations/",
         evaluation,
         {},
-        "L'évaluation a bien été publiée"
+        "L'évaluation a bien été publiée",
+        {
+          title: "Impossible de publier l'évaluation",
+          text: "_responseBody",
+        }
       )
       if (!error.value) {
         this.nUpdates += 1

@@ -100,7 +100,7 @@
               </ShareButton>
             </IntroTooltip>
             <RoundButton
-              v-if="resource?.canEvaluate"
+              v-if="resource?.canEvaluate && userStore.isLoggedIn"
               icon="ri-equalizer-line"
               label="Évaluer"
               @click="showEvaluationModal = true"
@@ -281,12 +281,14 @@ import { DsfrButton } from "@gouvminint/vue-dsfr"
 import { pluralize } from "~/composables/strUtils"
 import { stateLabel } from "~/composables/constants"
 import { useEvaluationStore } from "~/stores/evaluationStore"
+import { useUserStore } from "~/stores/userStore"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
 })
 const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
+const userStore = useUserStore()
 const route = useRoute()
 
 const activeMenu = ref("resource")
