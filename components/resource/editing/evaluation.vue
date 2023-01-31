@@ -3,7 +3,6 @@
     <DsfrToggleSwitch
       v-model="canEvaluate"
       label="Activer les évaluations"
-      hint="### texte d'aide si besoin"
       @change="onCanEvaluateUpdate"
     />
   </div>
