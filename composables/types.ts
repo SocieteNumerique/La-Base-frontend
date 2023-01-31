@@ -67,12 +67,17 @@ export type Resource = {
   modified: string
   profileImage?: ResizableImage
   producerState: string
-  recommendations: Recommendation[]
   resourceCreatedOn: string
   rootBase?: number
   rootBaseTitle?: string
   state: string
-  stats?: { publicPinCount: number; visitCount: number; pinCount: number }
+  stats?: {
+    publicPinCount: number
+    visitCount: number
+    pinCount: number
+    recommendationCount: number
+    recommendationMean: number
+  }
   supportTags?: number[]
   tags?: number[]
   title: string
@@ -472,7 +477,6 @@ export type Evaluation = {
 export type EvaluationStep =
   | "choice"
   | "recommend"
-  | "recommendationConfirmation"
   | "evaluate"
   | "evaluationConfirmation"
 

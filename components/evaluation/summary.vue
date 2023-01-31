@@ -13,8 +13,8 @@
 
       <div v-if="isReco">
         <DsfrBadge
-          :type="recommendationBadge.type"
-          :label="recommendationBadge.label"
+          :type="recoBadge.type"
+          :label="recoBadge.label"
           :no-icon="true"
           :small="true"
         />
@@ -131,6 +131,7 @@ import { PropType } from "vue"
 import { Criterion, Evaluation as EvaluationType } from "~/composables/types"
 import { RECOMMENDATION_CRITERION } from "~/composables/constants"
 import { pluralize } from "~/composables/strUtils"
+import { recommendationBadge } from "~/composables/utils"
 
 const props = defineProps({
   grades: { type: Object as PropType<Record<string, number>>, required: true },
@@ -160,23 +161,11 @@ const pct = (grade: string) => {
 const recommendPct = computed(() => {
   return Math.round((props.grades["1"] / props.evaluations.length) * 100)
 })
-const recommendationBadge = computed<{ label: string; type: string }>(() => {
+const recoBadge = computed<{ label: string; type: string }>(() => {
   if (!isReco.value) {
-    return { type: "success", label: "Très recommandée" }
+    return recommendationBadge(100)
   }
-  if (recommendPct.value > 80) {
-    return { type: "success", label: "Très recommandée" }
-  }
-  if (recommendPct.value > 60) {
-    return { type: "new", label: "Recommandée" }
-  }
-  if (recommendPct.value > 40) {
-    return { type: "new", label: "Moyennement recommandée" }
-  }
-  if (recommendPct.value > 20) {
-    return { type: "warning", label: "Peu recommandée" }
-  }
-  return { type: "error", label: "Pas recommandée" }
+  return recommendationBadge(recommendPct.value)
 })
 const evaluationsLabel = computed(() => {
   return `Voir

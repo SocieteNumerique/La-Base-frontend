@@ -20,3 +20,22 @@ export function getLengthOrZero(value: string): number {
 export const doNothing = (): void => {
   // do nothing
 }
+
+export const recommendationBadge = (recommendPct: number) => {
+  {
+    const pct = Math.round(recommendPct)
+    if (recommendPct > 80) {
+      return { type: "success", label: "Très recommandée", pct }
+    }
+    if (recommendPct > 60) {
+      return { type: "new", label: "Recommandée", pct }
+    }
+    if (recommendPct > 40) {
+      return { type: "new", label: "Moyennement recommandée", pct }
+    }
+    if (recommendPct > 20) {
+      return { type: "warning", label: "Peu recommandée", pct }
+    }
+    return { type: "error", label: "Pas recommandée", pct }
+  }
+}
