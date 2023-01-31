@@ -44,6 +44,14 @@
     </div>
 
     <LayoutFooter />
+    <DsfrModal
+      v-if="mainStore.confirmation.title"
+      :title="mainStore.confirmation.title"
+      :opened="true"
+      :actions="confirmActions"
+    >
+      {{ mainStore.confirmation.text }}
+    </DsfrModal>
   </div>
 </template>
 
@@ -58,6 +66,19 @@ const loadingStore = useLoadingStore()
 
 const route = useRoute()
 
+const confirmActions = computed(() => {
+  if (!mainStore.confirmation.title) {
+    return []
+  }
+  return [
+    { label: "Confirmer", onClick: mainStore.confirmation.onConfirm },
+    {
+      label: "Annuler",
+      onClick: mainStore.confirmation.onCancel,
+      secondary: true,
+    },
+  ]
+})
 const links = [
   {
     id: "content",

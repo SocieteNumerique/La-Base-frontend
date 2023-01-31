@@ -40,6 +40,7 @@ export type Resource = {
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
   pinnedInBases?: number[]
+  canEvaluate?: boolean
   contents?: Content[]
   contributors?: User[]
   canWrite?: boolean
@@ -48,6 +49,7 @@ export type Resource = {
   creator?: Creator
   creatorBases?: number[]
   dirty?: boolean
+  evaluations: Evaluation[]
   hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
@@ -69,7 +71,13 @@ export type Resource = {
   rootBase?: number
   rootBaseTitle?: string
   state: string
-  stats?: { publicPinCount: number; visitCount: number; pinCount: number }
+  stats?: {
+    publicPinCount: number
+    visitCount: number
+    pinCount: number
+    recommendationCount: number
+    recommendationMean: number
+  }
   supportTags?: number[]
   tags?: number[]
   title: string
@@ -446,4 +454,36 @@ export type UserSearch = {
   id: number
   name: string
   query: UserSearchQuery
+}
+
+export type Criterion = {
+  description: string
+  name: string
+  order: number
+  slug: string
+}
+
+export type Evaluation = {
+  comment: string
+  criterion?: string
+  date?: string
+  evaluation: number
+  isOwner?: boolean
+  resource?: number
+  user?: string
+  userTags?: number[]
+}
+
+export type EvaluationStep =
+  | "choice"
+  | "recommend"
+  | "evaluate"
+  | "evaluationConfirmation"
+
+export type EvaluationForCriterion = {
+  evaluations: Evaluation[]
+  stats: {
+    grades: Record<string, number>
+    count: number
+  }
 }

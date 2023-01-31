@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { useUserSearchStore } from "~/stores/userSearchStore"
-import { computed, defineEmits } from "vue"
+import { computed } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 
 const props = defineProps({

@@ -92,7 +92,24 @@
             >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
         </div>
+        <template v-if="resource?.stats.recommendationCount">
+          <div class="separator fr-my-1w" />
+          <div class="fr-pt-1v">
+            <DsfrBadge
+              :type="recoBadge.type"
+              :label="recoBadge.label"
+              :no-icon="true"
+              :small="true"
+              class="fr-mr-3v"
+            />
+            <span>
+              {{ recoBadge.pct }}% sur
+              {{ resource?.stats.recommendationCount }} évaluations
+            </span>
+          </div>
+        </template>
       </div>
+
       <div class="fr-p-2w">
         <template v-if="resource?.description">
           <div class="description-text">{{ resource?.description }}</div>
@@ -135,6 +152,7 @@ import { PinStatus, Resource } from "~/composables/types"
 import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
+import { DsfrBadge } from "@gouvminint/vue-dsfr"
 
 const props = defineProps({
   showToolbar: { type: Boolean, default: true },
@@ -165,6 +183,13 @@ const link = computed(
       params: { id: props.resource.id },
     }).href
 )
+const recoBadge = computed<{ label: string; type: string }>(() => {
+  const mean =
+    props.resource?.stats?.recommendationMean == null
+      ? 1
+      : props.resource?.stats?.recommendationMean
+  return recommendationBadge(mean * 100)
+})
 </script>
 
 <style lang="sass" scoped>
