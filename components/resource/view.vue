@@ -100,6 +100,7 @@
               </ShareButton>
             </IntroTooltip>
             <RoundButton
+              v-if="resource?.canEvaluate"
               icon="ri-equalizer-line"
               label="Évaluer"
               @click="showEvaluationModal = true"

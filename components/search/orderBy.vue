@@ -40,6 +40,14 @@ const orderByOptions = computed(() => {
     toReturn = toReturn.concat([
       { text: "Du plus enregistré au moins enregistré", value: "-pin_count" },
       { text: "Du moins enregistré au plus enregistré", value: "pin_count" },
+      {
+        text: "Du plus recommandé au moins recommandé",
+        value: "-recommendation_mean",
+      },
+      {
+        text: "Du moins recommandé au plus recommandé",
+        value: "recommendation_mean",
+      },
     ])
   }
   if (dataType.value == "bases") {
