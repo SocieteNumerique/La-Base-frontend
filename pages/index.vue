@@ -10,11 +10,17 @@
           <h1 class="fr-h1 fr-mb-7w" style="max-width: 750px">
             Bienvenue sur La Base
           </h1>
-          <div class="fr-grid-row" style="justify-content: space-between">
-            <div class="fr-col-6" style="color: var(--text-action-high-grey)">
+          <div
+            class="fr-grid-row fr-grid-row--gutters"
+            style="justify-content: space-between"
+          >
+            <div
+              class="fr-col-md-4 fr-pr-5w"
+              style="color: var(--text-action-high-grey)"
+            >
               <TextBlock slug="homeIntroLeft" />
             </div>
-            <div class="fr-col-5">
+            <div class="fr-col-md-4 fr-pr-5w">
               <TextBlock slug="homeIntroRight" />
               <NuxtLink to="/page/a-propos" class="fr-btn fr-mt-2w">
                 <VIcon
@@ -24,6 +30,17 @@
                 />
                 En savoir plus
               </NuxtLink>
+            </div>
+            <div class="fr-col-md-4">
+              <DsfrHighlight>
+                Pour découvrir les fonctionnalités de La Base, suivez le
+                didactitiel page par page en appuyant sur le bouton
+                <span style="color: var(--text-action-high-blue-france)"
+                  ><VIcon name="ri-question-line" scale="0.85"
+                /></span>
+
+                en haut à droite du site.
+              </DsfrHighlight>
             </div>
           </div>
         </div>
