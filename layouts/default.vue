@@ -49,6 +49,7 @@
       :title="mainStore.confirmation.title"
       :opened="true"
       :actions="confirmActions"
+      @close="mainStore.confirmation.onCancel"
     >
       {{ mainStore.confirmation.text }}
     </DsfrModal>
@@ -71,7 +72,10 @@ const confirmActions = computed(() => {
     return []
   }
   return [
-    { label: "Confirmer", onClick: mainStore.confirmation.onConfirm },
+    {
+      label: mainStore.confirmation.confirmationLabel,
+      onClick: mainStore.confirmation.onConfirm,
+    },
     {
       label: "Annuler",
       onClick: mainStore.confirmation.onCancel,
