@@ -83,6 +83,11 @@ export const navigationMenus: Menu[] = [
           "Définir les droits d’administration de la fiche ressource.",
       },
       {
+        key: "evaluation",
+        name: "Évaluation",
+        description: "Texte à compléter pour les évaluations.",
+      },
+      {
         key: "contributors",
         name: "Contributeurs",
         description:

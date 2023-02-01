@@ -34,6 +34,9 @@
     <ResourceEditingAdministration
       v-if="resourceStore.isSubMenuActive('administration')"
     />
+    <ResourceEditingEvaluation
+      v-if="resourceStore.isSubMenuActive('evaluation')"
+    />
     <ResourceEditingLabel v-if="resourceStore.isSubMenuActive('label')" />
   </div>
 </template>

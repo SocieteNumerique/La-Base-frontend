@@ -2,6 +2,7 @@
   <NuxtLayout name="default">
     <template #header>
       <div
+        id="content"
         style="background: var(--background-alt-blue-france)"
         class="fr-py-8w"
       >
@@ -79,6 +80,7 @@ import { useRoute } from "vue-router"
 import { useAlertStore } from "~/stores/alertStore"
 import { useUserStore } from "~/stores/userStore"
 import { useFullWidth } from "~/composables/useFullWidth"
+import { useHasHeader } from "~/composables/useHasHeader"
 
 definePageMeta({
   middleware: ["home"],
@@ -89,6 +91,7 @@ definePageMeta({
 const userStore = useUserStore()
 
 useFullWidth()
+useHasHeader()
 
 onMounted(() => {
   // display email confirmation when appropriate

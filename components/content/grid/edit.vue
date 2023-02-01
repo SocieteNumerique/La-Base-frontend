@@ -29,7 +29,12 @@
         style="z-index: -1"
         @click="$emit('new-section', 'Nouvelle section')"
       >
-        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+        <img
+          class="fr-mr-2v"
+          src="~/assets/svg/sectionIcon.svg"
+          width="20"
+          alt=""
+        />
         <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
         Créer une section
       </button>

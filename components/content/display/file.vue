@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-if="content.withPreview && isImage" class="file-preview">
-      <img alt="" :src="imageLink" crossorigin />
+      <img
+        :alt="content.imageAlt ? content.imageAlt : ''"
+        :src="imageLink"
+        crossorigin
+      />
     </div>
     <div v-if="isEditingView">
       <a

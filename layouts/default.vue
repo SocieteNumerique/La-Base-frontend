@@ -1,5 +1,6 @@
 <template>
   <div class="nuxt-body" data-fr-theme style="position: relative">
+    <DsfrSkipLinks :links="links" />
     <LayoutHeader />
     <div class="fr-container alert-container" style="height: 0">
       <LayoutAlert
@@ -22,20 +23,35 @@
     </DsfrModal>
 
     <slot name="header">
-      <div v-if="route.meta.title" class="fr-container fr-mt-4w">
+      <div
+        v-if="route.meta.title"
+        :id="mainStore.hasHeader ? 'content' : null"
+        class="fr-container fr-mt-4w"
+      >
         <div class="fr-grid-row">
           <h1>{{ route.meta.title }}</h1>
         </div>
       </div>
     </slot>
 
-    <div :class="mainStore.useFullWidthLayout ? null : 'fr-container fr-mt-4w'">
+    <div
+      :id="mainStore.hasHeader ? null : 'content'"
+      :class="mainStore.useFullWidthLayout ? null : 'fr-container fr-mt-4w'"
+    >
       <div :class="mainStore.useFullWidthLayout ? null : 'fr-mb-11v'">
         <slot />
       </div>
     </div>
 
     <LayoutFooter />
+    <DsfrModal
+      v-if="mainStore.confirmation.title"
+      :title="mainStore.confirmation.title"
+      :opened="true"
+      :actions="confirmActions"
+    >
+      {{ mainStore.confirmation.text }}
+    </DsfrModal>
   </div>
 </template>
 
@@ -43,14 +59,36 @@
 import { useAlertStore } from "~/stores/alertStore"
 import { useMainStore } from "~/stores/mainStore"
 import { useLoadingStore } from "~/stores/loadingStore"
-import { useIntroStore } from "~/stores/introStore"
 
 const alertStore = useAlertStore()
-const introStore = useIntroStore()
 const mainStore = useMainStore()
 const loadingStore = useLoadingStore()
 
 const route = useRoute()
+
+const confirmActions = computed(() => {
+  if (!mainStore.confirmation.title) {
+    return []
+  }
+  return [
+    { label: "Confirmer", onClick: mainStore.confirmation.onConfirm },
+    {
+      label: "Annuler",
+      onClick: mainStore.confirmation.onCancel,
+      secondary: true,
+    },
+  ]
+})
+const links = [
+  {
+    id: "content",
+    text: "Aller au contenu",
+  },
+  {
+    id: "footer",
+    text: "Aller au pied de page",
+  },
+]
 
 const closeAlert = (alertId: string) => {
   alertStore.removeAlert(alertId)

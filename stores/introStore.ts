@@ -22,7 +22,7 @@ export const useIntroStore = defineStore("intro", () => {
 
   const intros = ref<Intro[]>([])
   const seenSlugs = ref<{ [key: string]: boolean }>({})
-  const currentIndex = ref(0)
+  const currentIndex = ref(-1)
   const forceRecheckDom = ref(0)
   const ready = ref(false)
 
@@ -40,6 +40,8 @@ export const useIntroStore = defineStore("intro", () => {
     seenSlugs.value = {}
   }
 
+  // recheck which intros are in the dom when route.name has changed
+  // and reset the currentIndex to the first one
   watch(
     () => route.name,
     (value) => {
@@ -157,7 +159,10 @@ export const useIntroStore = defineStore("intro", () => {
   }
 
   const current = computed<Intro | null>(() => {
-    if (currentIndex.value < availableIntros.value.length) {
+    if (
+      currentIndex.value !== -1 &&
+      currentIndex.value < availableIntros.value.length
+    ) {
       return availableIntros.value[currentIndex.value]
     }
     return null
@@ -188,11 +193,14 @@ export const useIntroStore = defineStore("intro", () => {
       .filter((intro) => !seenSlugs.value[intro.slug])
       .filter((intro) => doesATooltipExistWithSlug(intro.slug))
 
+    console.log("### available intros", toReturn)
+
     return toReturn
   })
 
   const showAllInPage = () => {
     let shown = 0
+    currentIndex.value = 0
     for (const intro of introsIndexSlugsFilteredOutWhenNotInHome.value) {
       if (doesATooltipExistWithSlug(intro.slug)) {
         seenSlugs.value[intro.slug] = false
@@ -222,7 +230,9 @@ export const useIntroStore = defineStore("intro", () => {
       if (!userStore.isLoggedIn) {
         loadLocallySeen()
       }
+      console.log("### is now ready")
       ready.value = true
+      console.log("### is now ready", availableIntros.value)
     }, 500)
   }
 

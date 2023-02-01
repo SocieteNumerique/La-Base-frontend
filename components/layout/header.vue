@@ -1,5 +1,5 @@
 <template>
-  <header class="fr-header" role="banner">
+  <header id="header" class="fr-header" role="banner">
     <div class="fr-header__body">
       <div class="fr-container">
         <div class="fr-header__body-row fr-py-2w fr-pl-3v">
@@ -147,17 +147,17 @@
           <ul class="fr-links-group">
             <li>
               <NuxtLink to="/">
-                <button>Accueil</button>
+                <button tabindex="-1">Accueil</button>
               </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/recherche">
-                <button>Recherche</button>
+                <button tabindex="-1">Recherche</button>
               </NuxtLink>
             </li>
             <li v-for="page of pages" :key="page.slug">
               <NuxtLink :to="'/page/' + page.slug">
-                <button>
+                <button tabindex="-1">
                   {{ page.title }}
                   <VIcon v-if="page.icon" class="fr-ml-1w" :name="page.icon" />
                 </button>
@@ -167,9 +167,9 @@
             <template v-if="userStore.isCnfs">
               <li class="fr-ml-auto">
                 <NuxtLink to="/base/3">
-                  <button>
+                  <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"
@@ -180,9 +180,9 @@
               </li>
               <li>
                 <NuxtLink to="/base/34">
-                  <button>
+                  <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"
@@ -200,7 +200,7 @@
           >
             <li>
               <NuxtLink to="/favoris">
-                <button class="fr-text--sm">
+                <button tabindex="-1" class="fr-text--sm">
                   <VIcon
                     name="ri-star-line"
                     scale="0.90"

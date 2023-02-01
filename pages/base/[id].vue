@@ -170,7 +170,6 @@ import RoundButton from "~/components/roundButton.vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useAlertStore } from "~/stores/alertStore"
-import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
 import { mobileOrTabletCheck } from "~/composables/mobileCheck"
@@ -187,7 +186,6 @@ useFullWidth()
 const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
-const tagStore = useTagStore()
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },

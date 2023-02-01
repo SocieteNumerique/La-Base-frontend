@@ -6,20 +6,19 @@
         :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
       />
       <div class="is-flex fr-ml-auto" style="align-items: center">
-        <nuxt-link
+        <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="no-underline no-append-ico"
+          class="no-underline no-append-ico fr-px-1w fr-mr-3v"
           :target="targetLink"
+          title="Éditer la fiche"
+          aria-label="Éditer la fiche"
         >
-          <button
-            class="fr-btn--tertiary-no-outline fr-mr-2w"
-            title="Éditer la fiche"
-            aria-label="Éditer la fiche"
-          >
-            <VIcon name="ri-edit-line" />
-          </button>
-        </nuxt-link>
+          <VIcon
+            style="color: var(--text-action-high-blue-france)"
+            name="ri-edit-line"
+          />
+        </NuxtLink>
         <PinMenu
           v-model="pinnedInBases"
           :instance-id="resource?.id"
@@ -33,6 +32,7 @@
       :to="`/ressource/${resource?.id}`"
       class="no-underline no-append-ico"
       :target="targetLink"
+      style="outline-style: revert"
     >
       <div
         :class="resource?.isLabeled ? 'green-bg' : 'grey-bg'"
@@ -76,6 +76,11 @@
           class="stats-holder"
           :class="resource?.profileImage ? 'fr-mt-1w' : ''"
         >
+          <p class="fr-mb-0">
+            <span class="fr-text--lg fr-text--bold">
+              {{ resource?.stats.pinCount }}</span
+            >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
+          </p>
           <p title="nombre de vues depuis le 9 septembre 2022" class="fr-mb-0">
             <span class="fr-text--lg fr-text--bold">
               {{ resource?.stats.visitCount }}</span
@@ -87,7 +92,24 @@
             >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
         </div>
+        <template v-if="resource?.stats.recommendationCount">
+          <div class="separator fr-my-1w" />
+          <div class="fr-pt-1v">
+            <DsfrBadge
+              :type="recoBadge.type"
+              :label="recoBadge.label"
+              :no-icon="true"
+              :small="true"
+              class="fr-mr-3v"
+            />
+            <span>
+              {{ recoBadge.pct }}% sur
+              {{ resource?.stats.recommendationCount }} évaluations
+            </span>
+          </div>
+        </template>
       </div>
+
       <div class="fr-p-2w">
         <template v-if="resource?.description">
           <div class="description-text">{{ resource?.description }}</div>
@@ -130,6 +152,7 @@ import { PinStatus, Resource } from "~/composables/types"
 import { PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
 import { useUserStore } from "~/stores/userStore"
+import { DsfrBadge } from "@gouvminint/vue-dsfr"
 
 const props = defineProps({
   showToolbar: { type: Boolean, default: true },
@@ -160,6 +183,13 @@ const link = computed(
       params: { id: props.resource.id },
     }).href
 )
+const recoBadge = computed<{ label: string; type: string }>(() => {
+  const mean =
+    props.resource?.stats?.recommendationMean == null
+      ? 1
+      : props.resource?.stats?.recommendationMean
+  return recommendationBadge(mean * 100)
+})
 </script>
 
 <style lang="sass" scoped>
