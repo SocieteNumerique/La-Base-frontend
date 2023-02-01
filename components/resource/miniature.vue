@@ -50,10 +50,7 @@
         <div class="credits-grid">
           <div>Publiée dans</div>
           <div>
-            <NuxtLink
-              :to="`/base/${resource?.rootBase}`"
-              class="blue-link no-underline underlined-on-hover"
-            >
+            <NuxtLink :to="`/base/${resource?.rootBase}`" class="blue-link">
               {{ resource?.rootBaseTitle }}
             </NuxtLink>
           </div>

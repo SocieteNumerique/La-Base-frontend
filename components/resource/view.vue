@@ -33,7 +33,7 @@
                     Fiche publiée dans
                     <NuxtLink
                       :to="'/base/' + resource?.rootBase"
-                      class="fr-text-label--blue-france no-underline underlined-on-hover"
+                      class="fr-text-label--blue-france"
                     >
                       {{ resource?.rootBaseTitle }}
                     </NuxtLink>

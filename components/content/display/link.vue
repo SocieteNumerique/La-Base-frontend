@@ -39,7 +39,7 @@
     <VIcon class="fr-mr-1w" scale="0.8" name="ri-link" />
     <a
       :href="content.link"
-      class="no-underline no-append-ico fr-text-title--blue-france fr-text--xs"
+      class="no-append-ico fr-text-title--blue-france fr-text--xs"
       rel="noopener noreferrer"
       target="_blank"
       style="word-break: break-all"
