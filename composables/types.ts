@@ -36,7 +36,6 @@ export type Creator = {
 }
 
 export type Resource = {
-  accessRequiresUserAccount?: boolean
   authorizedUsers?: User[]
   authorizedUserTags?: number[]
   pinnedInBases?: number[]
@@ -82,8 +81,6 @@ export type Resource = {
   supportTags?: number[]
   tags?: number[]
   title: string
-  url?: string
-  zipCode?: number
 }
 
 export type ResourceCreate = {

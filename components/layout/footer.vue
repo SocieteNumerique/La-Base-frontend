@@ -16,7 +16,7 @@
         <div class="fr-footer__content">
           <p class="fr-footer__content-desc">
             La Base regroupe les ressources des professionnels du numérique
-            d’intérêt général dont l’inclusion et la médiation numériques.
+            d’intérêt général.
           </p>
           <ul class="fr-footer__content-list">
             <li class="fr-footer__content-item">

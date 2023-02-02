@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         hid: "description", // not sure what's this
-        name: "La Base regroupe les ressources des professionnels du numérique d’intérêt général dont l’inclusion et la médiation numériques.",
+        name: "La Base regroupe les ressources des professionnels du numérique d’intérêt général.",
         content: "my website description",
       },
     ],

@@ -42,7 +42,7 @@ const description = computed<string>(() => {
   ) {
     return resourceStore.current.description
   }
-  return "La Base regroupe les ressources des professionnels du numérique d’intérêt général dont l’inclusion et la médiation numériques."
+  return "La Base regroupe les ressources des professionnels du numérique d’intérêt général."
 })
 
 const title = computed<string>(() => {
