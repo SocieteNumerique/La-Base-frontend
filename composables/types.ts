@@ -49,7 +49,7 @@ export type Resource = {
   creator?: Creator
   creatorBases?: number[]
   dirty?: boolean
-  evaluations: Evaluation[]
+  evaluations?: Evaluation[]
   hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]

@@ -18,7 +18,7 @@ export async function getResourceContentsBySection(resourceId: number) {
     sections: SectionWithContent[]
   }>(`resources/${resourceId}/contents/`)
   if (!error.value) {
-    return data.value.sections
+    return data.value!.sections
   }
 }
 
