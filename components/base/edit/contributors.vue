@@ -6,8 +6,9 @@
     @close="$emit('close')"
   >
     <p>
-      Les contributeurs ont un droit d’édition sur l’ensemble des fiches et
-      collections de la Base.
+      Les contributeurs peuvent créer et éditer des fiches dans la base. Ils ne
+      peuvent cependant pas accéder à tous les paramètres comme les
+      administrateurs.
     </p>
     <UserSelector
       v-model="contributors"
