@@ -27,7 +27,7 @@
       <button
         class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-m-0"
         style="z-index: -1"
-        @click="$emit('new-section', 'Nouvelle section')"
+        @click="$emit('new-section', '')"
       >
         <img
           class="fr-mr-2v"

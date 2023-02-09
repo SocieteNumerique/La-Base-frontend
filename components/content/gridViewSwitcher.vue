@@ -29,7 +29,7 @@
         </button>
         <button
           v-if="isEditingMode && isGridViewEnabled && isGridView"
-          class="fr-btn fr-btn--tertiary-no-outline fr-text--regular"
+          class="fr-btn fr-btn--tertiary-no-outline fr-text--regular fr-ml-n3v"
           @click="noGridViewAtAll"
         >
           <VIcon name="ri-close-line" />
@@ -44,6 +44,8 @@
 import { useModel } from "~/composables/modelWrapper"
 import { useResourceStore } from "~/stores/resourceStore"
 import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
+import { useConfirm } from "~/composables/useConfirm"
+import { doNothing } from "~/composables/utils"
 
 defineProps({
   modelValue: { type: Boolean, required: true },
@@ -52,6 +54,7 @@ defineProps({
 
 const resourceStore = useResourceStore()
 const incrementRouterQuery = useIncrementRouterQuery()
+const confirm = useConfirm()
 
 const isGridView = useModel<boolean>("modelValue")
 
@@ -70,8 +73,16 @@ const changeIsGridView = (view: boolean) => {
 }
 
 function noGridViewAtAll() {
-  isGridViewEnabled.value = false
-  isGridView.value = false
+  confirm(
+    `Êtes-vous sûr de vouloir supprimer la vue en grille ? Vous perdrez la configuration.`,
+    `Supprimer la vue en grille`,
+    "Supprimer",
+    () => {
+      isGridViewEnabled.value = false
+      isGridView.value = false
+    },
+    doNothing
+  )
 }
 </script>
 

@@ -242,7 +242,7 @@ export async function addSection(
     resource: resourceId,
     order,
   }
-  if (sectionTitle) {
+  if (sectionTitle || sectionTitle === "") {
     section.title = sectionTitle
     section.isFoldable = true
   }

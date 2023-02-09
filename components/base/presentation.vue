@@ -1,7 +1,10 @@
 <template>
   <div class="fr-container">
     <h2 class="fr-h3 fr-mb-3w">Présentation</h2>
-    <div class="is-flex fr-mb-3w" style="align-items: center">
+    <div
+      class="is-flex fr-mb-3w"
+      style="align-items: center; margin-left: 12px"
+    >
       <div class="stat">
         <span class="fr-text--xl fr-text--bold">{{
           base?.stats.visitCount

@@ -272,15 +272,6 @@ const mailToHrefContact = computed(() => {
 </script>
 
 <style lang="sass" scoped>
-.stat
-  margin-left: -12px
-
-.stat + .stat
-  margin-left: 12px
-
-.stat *
-  margin-left: 12px
-
 .fr-links-group
   a
     font-size: 14px

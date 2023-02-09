@@ -356,14 +356,14 @@ const onNotRecommend = (criterionSlug: string) => {
 
 <style>
 .stat {
-  margin-left: -12px;
+  margin-left: -18px;
 }
 
 .stat + .stat {
-  margin-left: 12px;
+  margin-left: 18px;
 }
 
 .stat * {
-  margin-left: 12px;
+  margin-left: 6px;
 }
 </style>

@@ -438,6 +438,7 @@ export type RichTextToolbarItem = {
   onClick: () => void
   icon: string
   disabled: () => boolean
+  title: string
 }
 export type RichTextToolbar = RichTextToolbarItem[]
 

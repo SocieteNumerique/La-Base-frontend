@@ -121,7 +121,7 @@
       <IntroTooltip slug="ADD_CONTENT_SECTION">
         <button
           class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-m-0"
-          @click="$emit('new-section', 'Nouvelle section')"
+          @click="$emit('new-section', '')"
         >
           <img
             class="fr-mr-2v"

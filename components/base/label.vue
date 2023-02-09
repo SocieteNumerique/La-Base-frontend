@@ -15,7 +15,12 @@
         />
       </div>
       <slot>
-        {{ base.title }}
+        <span
+          style="color: var(--text-action-high-blue-france)"
+          class="underlined-on-hover"
+        >
+          {{ base.title }}
+        </span>
       </slot>
     </div>
     <div v-if="showStatus" class="admin-or-contributor">

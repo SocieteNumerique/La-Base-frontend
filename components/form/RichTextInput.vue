@@ -27,6 +27,7 @@
           v-for="(button, index) of toolbar"
           :key="index"
           :class="{ 'is-active': button.testActive() }"
+          :title="button.title"
           @click="button.onClick"
         >
           <VIcon :name="button.icon" />
@@ -126,6 +127,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => onClickHeading(1),
     icon: "ri-h-1",
     disabled: () => false,
+    title: "Titre de niveau 1",
   },
   {
     name: Heading.H2,
@@ -133,6 +135,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => onClickHeading(2),
     icon: "ri-h-2",
     disabled: () => false,
+    title: "Titre de niveau 2",
   },
   {
     name: Heading.H3,
@@ -140,6 +143,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => onClickHeading(3),
     icon: "ri-h-3",
     disabled: () => false,
+    title: "Titre de niveau 3",
   },
   {
     name: OtherRichTextActions.BOLD,
@@ -147,6 +151,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => editor.value!.chain().focus().toggleBold().run(),
     icon: "ri-bold",
     disabled: () => false,
+    title: "Text gras",
   },
   {
     name: OtherRichTextActions.ITALIC,
@@ -154,6 +159,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => editor.value?.chain().focus().toggleItalic().run(),
     icon: "ri-italic",
     disabled: () => false,
+    title: "Texte italique",
   },
   {
     name: OtherRichTextActions.LIST_ORDERED,
@@ -161,6 +167,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => editor.value?.chain().focus().toggleOrderedList().run(),
     icon: "ri-list-ordered",
     disabled: () => false,
+    title: "List numérotée",
   },
   {
     name: OtherRichTextActions.LIST_UNORDERED,
@@ -168,6 +175,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => editor.value?.chain().focus().toggleBulletList().run(),
     icon: "ri-list-unordered",
     disabled: () => false,
+    title: "Liste à puce",
   },
   {
     name: OtherRichTextActions.LINK,
@@ -175,6 +183,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => openLinkModal(),
     icon: "ri-link",
     disabled: () => false,
+    title: "Créer un hyperlien",
   },
   {
     name: OtherRichTextActions.LINK_UNLINK,
@@ -182,6 +191,7 @@ const defaultToolbar = (): RichTextToolbar => [
     onClick: () => editor.value?.chain().focus().unsetLink().run(),
     icon: "ri-link-unlink",
     disabled: () => !editor.value?.isActive("link"),
+    title: "Retier l'hyperlien",
   },
 ]
 

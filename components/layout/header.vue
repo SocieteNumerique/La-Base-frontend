@@ -8,14 +8,21 @@
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
                 <li style="align-items: center">
-                  <button
-                    class="fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
-                    title="Afficher le didacticiel"
-                    aria-label="Afficher le didacticiel"
-                    @click="introStore.showAllInPage"
-                  >
-                    <VIcon name="ri-question-line" scale="0.85" />
-                  </button>
+                  <div>
+                    <button
+                      class="fr-btn fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
+                      title="Activer le didacticiel de la page"
+                      aria-label="Activer le didacticiel de la page"
+                      @click="introStore.showAllInPage"
+                    >
+                      Didacticiel
+                      <VIcon
+                        name="ri-question-line"
+                        scale="0.85"
+                        class="fr-ml-1w"
+                      />
+                    </button>
+                  </div>
                 </li>
                 <li
                   v-if="userStore.isLoggedIn"

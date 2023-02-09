@@ -239,7 +239,7 @@
               {{ nResults }} {{ pluralize(["résultat"], nResults) }}
             </div>
             <div
-              v-if="userStore.isLoggedIn"
+              v-if="userStore.isLoggedIn && !isInBaseIndex"
               style="display: flex; align-items: flex-end"
             >
               <DsfrButton

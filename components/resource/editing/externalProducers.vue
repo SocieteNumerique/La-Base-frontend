@@ -114,7 +114,7 @@ const isAddExternalProducerDisabled = computed(() => {
   newExternalProducer.value.name
   newExternalProducer.value.occupation
   const extProd = newExternalProducer.value
-  return !extProd.name || !extProd.occupation
+  return !extProd.name
 })
 
 const resetNewProducer = () => {
