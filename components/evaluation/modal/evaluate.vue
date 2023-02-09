@@ -16,7 +16,7 @@
       :is-textarea="true"
       label="Commentaire"
       :label-visible="true"
-      hint="Écrivez au minimum 30 caractères"
+      placeholder="Écrivez votre commentaire"
     />
   </div>
 </template>

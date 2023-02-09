@@ -22,7 +22,7 @@
           <VIcon class="fr-mr-2w" style="color: black" name="recommended" />
           Recommandée à {{ recommendPct }} %
         </div>
-        <div class="fr-mt-2w">
+        <div class="fr-mt-3v">
           <VIcon class="fr-mr-2w" style="color: black" name="not-recommended" />
           Non recommandée à {{ 100 - recommendPct }} %
         </div>
@@ -119,7 +119,7 @@
       />
       <template v-else>
         <template v-for="(evaluation, ix) of evaluations" :key="ix">
-          <hr />
+          <hr class="fr-mt-3w fr-pb-3w" />
           <Evaluation :evaluation="evaluation" @delete="onEvaluationDelete" />
         </template>
       </template>
@@ -172,7 +172,7 @@ const evaluationsLabel = computed(() => {
   ${pluralize(["la", "les"], props.evaluations.length)}
   ${props.evaluations.length}
   ${pluralize(
-    [isReco.value ? "recommendation" : "évaluation"],
+    [isReco.value ? "recommandation" : "évaluation"],
     props.evaluations.length
   )}
   ${pluralize(["commentée"], props.evaluations.length)}`

@@ -58,7 +58,7 @@ const actions = computed(() => {
         onClick: evaluate,
         disabled:
           evaluationStore.evaluation.evaluation == null ||
-          evaluationStore.evaluation.comment.length < 30,
+          evaluationStore.evaluation.comment.length == 0,
       },
     ]
   }

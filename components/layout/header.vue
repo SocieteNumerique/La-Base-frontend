@@ -13,6 +13,7 @@
                       class="fr-btn fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
                       title="Activer le didacticiel de la page"
                       aria-label="Activer le didacticiel de la page"
+                      style="padding: 0.25rem 0.75rem; min-height: 2rem"
                       @click="introStore.showAllInPage"
                     >
                       Didacticiel

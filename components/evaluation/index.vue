@@ -1,7 +1,6 @@
 <template>
   <div
     style="color: var(--text-title-grey)"
-    class="fr-py-3w"
     :style="borderTop ? 'border-top: 1px solid var(--border-default-grey)' : ''"
   >
     <div style="display: flex; justify-content: space-between" class="fr-mb-1w">
