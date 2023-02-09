@@ -84,7 +84,9 @@
             >{{ pluralize(["enregistrement"], resource?.stats.pinCount) }}
           </p>
         </div>
-        <template v-if="resource?.stats.recommendationCount">
+        <template
+          v-if="resource?.stats.recommendationCount && resource?.canEvaluate"
+        >
           <div class="separator fr-my-1w" />
           <div class="fr-pt-1v">
             <DsfrBadge
