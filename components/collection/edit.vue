@@ -11,10 +11,10 @@
         v-model="tempCollection.name"
         :label-visible="true"
         autofocus
-        :hint="`${tempCollection.name?.length || 0} / 50 caractères`"
+        :hint="`${tempCollection.name?.length || 0} / 100 caractères`"
         label="Nom de la collection"
         placeholder="Nom"
-        maxlength="50"
+        maxlength="100"
         @input="isDirty = true"
       />
       <DsfrInputGroup

@@ -4,9 +4,9 @@
       v-model="section.title"
       :label-visible="true"
       label="Titre"
-      :hint="`${getLengthOrZero(section.title)} / 25 caractères`"
+      :hint="`${getLengthOrZero(section.title)} / 100 caractères`"
       placeholder="Titre"
-      maxlength="25"
+      maxlength="100"
     />
   </ContentInputBase>
 </template>

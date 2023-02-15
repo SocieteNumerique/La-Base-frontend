@@ -36,21 +36,32 @@
             @click="onAddCollectionClick"
           />
         </IntroTooltip>
-        <DsfrButton
-          v-if="openCollectionId"
-          secondary
-          label="Éditer la collection"
-          icon="ri-edit-line"
-          class="fr-mr-3w fr-btn--sm"
-          @click="editCollectionModalTab = 'general'"
-        />
-        <DsfrButton
-          v-if="openCollectionId"
-          label="Gérer les fiches"
-          icon="ri-file-line"
-          class="fr-btn--sm"
-          @click="editCollectionModalTab = 'resources'"
-        />
+        <IntroTooltip
+          slug="EDIT_COLLECTION"
+          style="display: inline-block"
+          class="fr-mr-3w"
+        >
+          <DsfrButton
+            v-if="openCollectionId"
+            secondary
+            label="Éditer la collection"
+            icon="ri-edit-line"
+            class="fr-btn--sm"
+            @click="editCollectionModalTab = 'general'"
+          />
+        </IntroTooltip>
+        <IntroTooltip
+          slug="EDIT_COLLECTION_RESOURCES"
+          style="display: inline-block"
+        >
+          <DsfrButton
+            v-if="openCollectionId"
+            label="Gérer les fiches"
+            icon="ri-file-line"
+            class="fr-btn--sm"
+            @click="editCollectionModalTab = 'resources'"
+          />
+        </IntroTooltip>
         <CollectionNew
           v-if="showAddCollectionModal"
           @close="showAddCollectionModal = false"

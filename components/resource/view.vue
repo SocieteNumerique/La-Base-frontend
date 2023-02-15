@@ -99,12 +99,17 @@
                 />
               </ShareButton>
             </IntroTooltip>
-            <RoundButton
-              v-if="resource?.canEvaluate && userStore.isLoggedIn"
-              icon="ri-equalizer-line"
-              label="Évaluer"
-              @click="showEvaluationModal = true"
-            />
+            <IntroTooltip
+              slug="RESOURCE_EVALUATE"
+              style="display: inline-block"
+            >
+              <RoundButton
+                v-if="resource?.canEvaluate && userStore.isLoggedIn"
+                icon="ri-equalizer-line"
+                label="Évaluer"
+                @click="showEvaluationModal = true"
+              />
+            </IntroTooltip>
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
               <RoundButton
                 icon="ri-alert-line"
@@ -112,22 +117,16 @@
                 @click="showReportModal = true"
               />
             </IntroTooltip>
-            <RoundButton
-              icon="ri-edit-box-line"
-              label="Contribuer"
-              @click="showContributeModal = true"
-            />
-
-            <!-- TODO re-add these -->
-            <template v-if="false">
-              <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
+            <IntroTooltip
+              slug="RESOURCE_CONTRIBUTE"
+              style="display: inline-block"
+            >
               <RoundButton
-                icon="ri-download-line"
-                label="Télécharger"
-                disabled
+                icon="ri-edit-box-line"
+                label="Contribuer"
+                @click="showContributeModal = true"
               />
-              <RoundButton icon="ri-share-line" label="Signaler" disabled />
-            </template>
+            </IntroTooltip>
           </div>
 
           <div
@@ -150,14 +149,15 @@
                 </NuxtLink>
               </IntroTooltip>
 
-              <PinMenu
-                v-if="resource"
-                v-model="resource.pinnedInBases"
-                :instance-id="resource?.id"
-                :root-base-id="resource?.rootBase"
-                class="fr-ml-2w"
-                instance-type="resource"
-              />
+              <IntroTooltip slug="SAVE_IN_BASE" class="fr-ml-2w">
+                <PinMenu
+                  v-if="resource"
+                  v-model="resource.pinnedInBases"
+                  :instance-id="resource?.id"
+                  :root-base-id="resource?.rootBase"
+                  instance-type="resource"
+                />
+              </IntroTooltip>
             </div>
           </div>
         </div>

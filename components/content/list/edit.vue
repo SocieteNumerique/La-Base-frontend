@@ -115,9 +115,11 @@
       class="fr-btns-group fr-btns-group--inline"
       style="align-items: flex-start"
     >
-      <ContentInputChooseType
-        @new-content="$emit('new-solo-content', $event)"
-      />
+      <IntroTooltip slug="ADD_CONTENT">
+        <ContentInputChooseType
+          @new-content="$emit('new-solo-content', $event)"
+        />
+      </IntroTooltip>
       <IntroTooltip slug="ADD_CONTENT_SECTION">
         <button
           class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-m-0"
