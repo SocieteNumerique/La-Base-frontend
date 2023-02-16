@@ -73,15 +73,17 @@ export const useIntroStore = defineStore("intro", () => {
     if (!error.value && data.value!) {
       saveIntros(data.value!)
     } else if (pending.value) {
+      // this hack should not be necessary after `await`
       setTimeout(() => {
         if (!error.value && data.value!) {
           saveIntros(data.value!)
         }
-      }, 200)
+      }, 400)
     }
   }
 
   const saveIntros = (introsList: Intro[]) => {
+    console.log("### saving intros", introsList)
     intros.value = introsList
     for (const intro of introsList) {
       if (intro.seen) {
@@ -218,7 +220,7 @@ export const useIntroStore = defineStore("intro", () => {
 
   const done = () => {
     markSeen()
-    currentIndex.value = 0
+    currentIndex.value = -1
   }
 
   // load intros the first time, only in client to avoid SSR bugs
