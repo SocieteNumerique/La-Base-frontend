@@ -117,13 +117,14 @@ export type Collection = {
 }
 
 export type Tag = {
+  baseCount?: number
   category: number
-  count?: number
   definition?: string
   id: number
   isDraft: boolean
   isFree: boolean
   name: string
+  resourceCount?: number
   slug?: string
 }
 

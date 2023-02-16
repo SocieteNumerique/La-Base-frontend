@@ -200,6 +200,7 @@
               :is-focused="focusedCategory === category.id"
               :selected-tags="selectedTags"
               :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+              :count-origin="dataType === 'resources' ? 'resource' : 'base'"
               @focus="focusedCategory = category.id"
               @blur="focusedCategory = 0"
               @select="onSelect"

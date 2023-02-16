@@ -29,7 +29,11 @@
 
         <span v-else class="no-information">·</span>
         <span class="tag-count" title="nombre d'occurences">
-          {{ props.tag?.count || 0 }}
+          {{
+            props.countOrigin === "base"
+              ? tag?.baseCount
+              : tag?.resourceCount || 0
+          }}
         </span>
         <VIcon
           v-if="!props.tag.isFree"
@@ -51,6 +55,7 @@ import { Tag } from "composables/types"
 import { PropType } from "vue"
 
 const props = defineProps({
+  countOrigin: { type: String, default: "resource" },
   tag: { type: Object as PropType<Tag>, required: true },
   disabled: { type: Boolean, default: false },
 })

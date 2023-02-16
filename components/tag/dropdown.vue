@@ -33,6 +33,7 @@
             :key="tag.id"
             :tag="tag"
             :disabled="!isTagEnabled(tag.id)"
+            :count-origin="countOrigin"
             @select="selectTag(tag.id)"
           />
         </slot>
@@ -64,6 +65,7 @@ const props = defineProps({
     type: Array as PropType<number[]>,
     default: undefined,
   },
+  countOrigin: { type: String, default: "resource" },
 })
 
 const tagStore = useTagStore()
