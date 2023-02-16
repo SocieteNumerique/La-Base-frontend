@@ -45,7 +45,7 @@ export const useIntroStore = defineStore("intro", () => {
   watch(
     () => route.name,
     (value) => {
-      currentIndex.value = 0
+      currentIndex.value = -1
       // we re-check later when DOM has initialised
       setTimeout(() => {
         forceRecheckDom.value += 1
