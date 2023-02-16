@@ -37,12 +37,12 @@
           />
         </IntroTooltip>
         <IntroTooltip
+          v-if="openCollectionId"
           slug="EDIT_COLLECTION"
           style="display: inline-block"
           class="fr-mr-3w"
         >
           <DsfrButton
-            v-if="openCollectionId"
             secondary
             label="Éditer la collection"
             icon="ri-edit-line"
@@ -51,11 +51,11 @@
           />
         </IntroTooltip>
         <IntroTooltip
+          v-if="openCollectionId"
           slug="EDIT_COLLECTION_RESOURCES"
           style="display: inline-block"
         >
           <DsfrButton
-            v-if="openCollectionId"
             label="Gérer les fiches"
             icon="ri-file-line"
             class="fr-btn--sm"

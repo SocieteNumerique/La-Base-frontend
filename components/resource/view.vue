@@ -100,11 +100,11 @@
               </ShareButton>
             </IntroTooltip>
             <IntroTooltip
+              v-if="resource?.canEvaluate && userStore.isLoggedIn"
               slug="RESOURCE_EVALUATE"
               style="display: inline-block"
             >
               <RoundButton
-                v-if="resource?.canEvaluate && userStore.isLoggedIn"
                 icon="ri-equalizer-line"
                 label="Évaluer"
                 @click="showEvaluationModal = true"
@@ -118,6 +118,7 @@
               />
             </IntroTooltip>
             <IntroTooltip
+              v-if="userStore.isLoggedIn"
               slug="RESOURCE_CONTRIBUTE"
               style="display: inline-block"
             >
