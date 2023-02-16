@@ -67,7 +67,7 @@
         }}
       </p>
     </div>
-    <div class="fr-mb-3w">
+    <div v-if="!currentUserHasEvaluated" class="fr-mb-3w">
       <template v-if="isReco">
         <div>Recommandez-vous cette ressource ?</div>
         <div style="display: flex" class="fr-mt-2w">
