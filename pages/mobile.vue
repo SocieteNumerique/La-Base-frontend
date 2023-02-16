@@ -7,7 +7,7 @@
   <div class="fr-container fr-mt-4w">
     <p>
       La Base regroupe les ressources des professionnels du numérique d’intérêt
-      général dont l’inclusion et la médiation numériques.<br />
+      général.<br />
       Vous pouvez naviguer au travers des bases des différents acteurs qui
       partagent leurs ressources et créer votre propre base.
     </p>

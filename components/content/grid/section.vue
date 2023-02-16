@@ -22,6 +22,7 @@
     <div
       :class="section.isFoldable && isFolded ? '-folded' : ''"
       class="grid-container hide-if-folded"
+      :style="introStore.current ? 'z-index: -1' : ''"
     >
       <ul ref="blockGridRef" class="grid content-grid">
         <li
@@ -41,12 +42,14 @@
 import { Content, SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
+import { useIntroStore } from "~/stores/introStore"
 
 defineProps({
   modelValue: { type: Object as PropType<SectionWithContent>, required: true },
   editingContent: { type: Number, default: undefined },
 })
 
+const introStore = useIntroStore()
 const section = useModel<SectionWithContent>("modelValue", { type: "object" })
 const isFolded = ref<boolean>(true)
 

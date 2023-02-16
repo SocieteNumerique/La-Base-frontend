@@ -19,14 +19,22 @@
     />
 
     <div class="fr-btns-group fr-btns-group--inline">
-      <ContentInputChooseType
-        @new-content="$emit('new-solo-content', $event)"
-      />
+      <IntroTooltip slug="ADD_CONTENT">
+        <ContentInputChooseType
+          @new-content="$emit('new-solo-content', $event)"
+        />
+      </IntroTooltip>
       <button
-        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-        @click="$emit('new-section', 'Nouvelle section')"
+        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-m-0"
+        style="z-index: -1"
+        @click="$emit('new-section', '')"
       >
-        <img class="fr-mr-2v" src="~/assets/svg/sectionIcon.svg" width="20" />
+        <img
+          class="fr-mr-2v"
+          src="~/assets/svg/sectionIcon.svg"
+          width="20"
+          alt=""
+        />
         <!-- <VIcon class="fr-mr-2v" name="ri-folder-add-line" /> -->
         Créer une section
       </button>

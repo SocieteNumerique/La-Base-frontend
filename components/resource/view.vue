@@ -33,7 +33,7 @@
                     Fiche publiée dans
                     <NuxtLink
                       :to="'/base/' + resource?.rootBase"
-                      class="fr-text-label--blue-france no-underline underlined-on-hover"
+                      class="fr-text-label--blue-france"
                     >
                       {{ resource?.rootBaseTitle }}
                     </NuxtLink>
@@ -99,6 +99,17 @@
                 />
               </ShareButton>
             </IntroTooltip>
+            <IntroTooltip
+              v-if="resource?.canEvaluate && userStore.isLoggedIn"
+              slug="RESOURCE_EVALUATE"
+              style="display: inline-block"
+            >
+              <RoundButton
+                icon="ri-equalizer-line"
+                label="Évaluer"
+                @click="showEvaluationModal = true"
+              />
+            </IntroTooltip>
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
               <RoundButton
                 icon="ri-alert-line"
@@ -106,24 +117,17 @@
                 @click="showReportModal = true"
               />
             </IntroTooltip>
-
-            <ReportSimpleModal
-              v-if="showReportModal"
-              :id="resource.id"
-              instance-type="Resource"
-              @close="showReportModal = false"
-            />
-
-            <!-- TODO re-add these -->
-            <template v-if="false">
-              <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />
+            <IntroTooltip
+              v-if="userStore.isLoggedIn"
+              slug="RESOURCE_CONTRIBUTE"
+              style="display: inline-block"
+            >
               <RoundButton
-                icon="ri-download-line"
-                label="Télécharger"
-                disabled
+                icon="ri-edit-box-line"
+                label="Contribuer"
+                @click="showContributeModal = true"
               />
-              <RoundButton icon="ri-share-line" label="Signaler" disabled />
-            </template>
+            </IntroTooltip>
           </div>
 
           <div
@@ -146,14 +150,15 @@
                 </NuxtLink>
               </IntroTooltip>
 
-              <PinMenu
-                v-if="resource"
-                v-model="resource.pinnedInBases"
-                :instance-id="resource?.id"
-                :root-base-id="resource?.rootBase"
-                class="fr-ml-2w"
-                instance-type="resource"
-              />
+              <IntroTooltip slug="SAVE_IN_BASE" class="fr-ml-2w">
+                <PinMenu
+                  v-if="resource"
+                  v-model="resource.pinnedInBases"
+                  :instance-id="resource?.id"
+                  :root-base-id="resource?.rootBase"
+                  instance-type="resource"
+                />
+              </IntroTooltip>
             </div>
           </div>
         </div>
@@ -204,7 +209,7 @@
             </nav>
           </div>
           <div class="fr-col-9">
-            <div v-if="activeMenu == 'informations'" id="informations">
+            <div v-if="activeMenu === 'informations'" id="informations">
               <h2
                 v-if="resource?.resourceCreatedOn"
                 class="fr-text--bold fr-mb-3v fr-text--md"
@@ -220,7 +225,7 @@
                 :element="resource"
               />
             </div>
-            <div v-if="activeMenu == 'resource'" id="resource">
+            <div v-if="activeMenu === 'resource'" id="resource">
               <div class="fr-grid-row">
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
@@ -239,10 +244,31 @@
                 </div>
               </div>
             </div>
+            <ResourceEvaluationsView
+              v-if="activeMenu === 'evaluations'"
+              @evaluate="onEvaluation"
+              @recommend="onRecommend"
+              @not-recommend="onNotRecommend"
+            />
           </div>
         </div>
       </div>
     </div>
+    <ReportSimpleModal
+      v-if="showReportModal"
+      :id="resource.id"
+      instance-type="Resource"
+      @close="showReportModal = false"
+    />
+    <ResourceContributeModal
+      v-if="showContributeModal"
+      :id="resource.id"
+      @close="showContributeModal = false"
+    />
+    <EvaluationModal
+      v-if="showEvaluationModal"
+      @close="showEvaluationModal = false"
+    />
   </div>
 </template>
 
@@ -255,15 +281,21 @@ import { getResourceIfNotExists } from "~/composables/resource"
 import { DsfrButton } from "@gouvminint/vue-dsfr"
 import { pluralize } from "~/composables/strUtils"
 import { stateLabel } from "~/composables/constants"
+import { useEvaluationStore } from "~/stores/evaluationStore"
+import { useUserStore } from "~/stores/userStore"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
 })
+const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
+const userStore = useUserStore()
 const route = useRoute()
 
 const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
+const showContributeModal = ref<boolean>(false)
+const showEvaluationModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
@@ -284,25 +316,11 @@ const navigationMenus = [
     key: "informations",
     name: "Informations",
   },
+  {
+    key: "evaluations",
+    name: "Évaluations",
+  },
 ]
-
-const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-  // take entry that is the upper-most one amongst those with max intersectionRatio
-  const ratios = entries.map((entry) => entry.intersectionRatio)
-  const maxRatio = Math.max(...ratios)
-  const entriesWithMaxRatio = entries.filter(
-    (entry) => entry.intersectionRatio == maxRatio
-  )
-  // select the top-most one
-  const distancesFromTop = entriesWithMaxRatio.map(
-    (entry) => entry.intersectionRect.y
-  )
-  const indexOfMinDistanceFromTop = distancesFromTop.indexOf(
-    Math.max(...distancesFromTop)
-  )
-
-  activeMenu.value = entriesWithMaxRatio[indexOfMinDistanceFromTop].target.id
-}
 
 const resource = computed(() => {
   return resourceStore.current
@@ -316,18 +334,37 @@ onBeforeMount(async () => {
     await getResourceIfNotExists()
   }
 })
+
+const onEvaluation = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = -1
+  showEvaluationModal.value = true
+}
+const onRecommend = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = "1"
+  showEvaluationModal.value = true
+}
+const onNotRecommend = (criterionSlug: string) => {
+  evaluationStore.currentStep = "evaluate"
+  evaluationStore.currentCriterionSlug = criterionSlug
+  evaluationStore.evaluation.evaluation = "0"
+  showEvaluationModal.value = true
+}
 </script>
 
 <style>
 .stat {
-  margin-left: -12px;
+  margin-left: -18px;
 }
 
 .stat + .stat {
-  margin-left: 12px;
+  margin-left: 18px;
 }
 
 .stat * {
-  margin-left: 12px;
+  margin-left: 6px;
 }
 </style>

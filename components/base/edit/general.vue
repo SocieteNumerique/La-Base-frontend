@@ -362,7 +362,8 @@ const actions = computed(() => [
 const isOfWebsite = (baseUrl: string) => {
   return (input: string) =>
     input.startsWith(`https://www.${baseUrl}`) ||
-    input.startsWith(`https://${baseUrl}`)
+    input.startsWith(`https://${baseUrl}`) ||
+    input.startsWith(`https://mobile.${baseUrl}`)
 }
 const isNationalCartographyWebsite = isOfWebsite(
   "cartographie.societenumerique.gouv.fr"

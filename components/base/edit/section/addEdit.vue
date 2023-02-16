@@ -20,7 +20,7 @@
       v-model="v$.description.$model"
       label="Description de la rubrique"
       placeholder="Description de la rubrique"
-      :hint="`Requis: ${v$.description.$model.length}/240 caractères`"
+      :hint="`${v$.description.$model.length}/240 caractères`"
       :label-visible="true"
       :is-textarea="true"
       :required="false"

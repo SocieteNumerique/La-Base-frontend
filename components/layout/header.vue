@@ -1,21 +1,29 @@
 <template>
-  <header class="fr-header" role="banner">
+  <header id="header" class="fr-header" role="banner">
     <div class="fr-header__body">
       <div class="fr-container">
-        <div class="fr-header__body-row fr-py-2w">
+        <div class="fr-header__body-row fr-py-2w fr-pl-3v">
           <LayoutLogo />
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
                 <li style="align-items: center">
-                  <button
-                    class="fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
-                    title="Afficher le didacticiel"
-                    aria-label="Afficher le didacticiel"
-                    @click="introStore.showAllInPage"
-                  >
-                    <VIcon name="ri-question-line" scale="0.85" />
-                  </button>
+                  <div>
+                    <button
+                      class="fr-btn fr-btn--tertiary-no-outline fr-text--sm fr-mr-1v"
+                      title="Activer le didacticiel de la page"
+                      aria-label="Activer le didacticiel de la page"
+                      style="padding: 0.25rem 0.75rem; min-height: 2rem"
+                      @click="introStore.showAllInPage"
+                    >
+                      Didacticiel
+                      <VIcon
+                        name="ri-question-line"
+                        scale="0.85"
+                        class="fr-ml-1w"
+                      />
+                    </button>
+                  </div>
                 </li>
                 <li
                   v-if="userStore.isLoggedIn"
@@ -147,17 +155,17 @@
           <ul class="fr-links-group">
             <li>
               <NuxtLink to="/">
-                <button>Accueil</button>
+                <button tabindex="-1">Accueil</button>
               </NuxtLink>
             </li>
             <li>
               <NuxtLink to="/recherche">
-                <button>Recherche</button>
+                <button tabindex="-1">Recherche</button>
               </NuxtLink>
             </li>
             <li v-for="page of pages" :key="page.slug">
               <NuxtLink :to="'/page/' + page.slug">
-                <button>
+                <button tabindex="-1">
                   {{ page.title }}
                   <VIcon v-if="page.icon" class="fr-ml-1w" :name="page.icon" />
                 </button>
@@ -167,9 +175,9 @@
             <template v-if="userStore.isCnfs">
               <li class="fr-ml-auto">
                 <NuxtLink to="/base/3">
-                  <button>
+                  <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"
@@ -180,9 +188,9 @@
               </li>
               <li>
                 <NuxtLink to="/base/34">
-                  <button>
+                  <button tabindex="-1">
                     <img
-                      alt="icone CNFS"
+                      alt=""
                       class="fr-mr-1w fr-mb-n1v"
                       src="/logos/cnfs.png"
                       height="19"
@@ -200,7 +208,7 @@
           >
             <li>
               <NuxtLink to="/favoris">
-                <button class="fr-text--sm">
+                <button tabindex="-1" class="fr-text--sm">
                   <VIcon
                     name="ri-star-line"
                     scale="0.90"

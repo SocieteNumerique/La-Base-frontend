@@ -19,14 +19,17 @@
 
 <script setup lang="ts">
 import { useUserSearchStore } from "~/stores/userSearchStore"
-import { computed, defineEmits } from "vue"
+import { computed } from "vue"
 import { useTagStore } from "~/stores/tagStore"
+import { useConfirm } from "~/composables/useConfirm"
+import { doNothing } from "~/composables/utils"
 
 const props = defineProps({
   active: { type: Boolean, default: false },
   id: { type: Number, required: true },
 })
 const emit = defineEmits(["select"])
+const confirm = useConfirm()
 
 const userSearchStore = useUserSearchStore()
 const tagStore = useTagStore()
@@ -34,7 +37,13 @@ const userSearch = computed(() => {
   return userSearchStore.userSearchById[props.id]
 })
 const deleteSearch = () => {
-  userSearchStore.deleteUserSearch(props.id)
+  confirm(
+    `Vous êtes sur le point de supprimer votre recherche enregistrée ${userSearch.value?.name}. Êtes-vous sûr ? Cette action est irréversible.`,
+    `Supprimer ${userSearch.value?.name} ?`,
+    "Oui",
+    () => userSearchStore.deleteUserSearch(props.id),
+    doNothing
+  )
 }
 const selectSearch = () => {
   emit("select")

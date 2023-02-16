@@ -12,7 +12,6 @@ import {
   useApiPatch,
   useApiPost,
 } from "~/composables/api"
-import { useBaseStore } from "~/stores/baseStore"
 import { useTagStore } from "~/stores/tagStore"
 
 export const navigationMenus: Menu[] = [
@@ -72,10 +71,27 @@ export const navigationMenus: Menu[] = [
           "Paramétrer les droits de consultation de la fiche.<br />Vous pouvez modifier ces droits à tout moment.",
       },
       {
+        key: "collections",
+        name: "Collections",
+        description:
+          "Une collection permet de regrouper les fiches ressources de votre base.",
+      },
+      {
         key: "administration",
         name: "Administration",
         description:
           "Définir les droits d’administration de la fiche ressource.",
+      },
+      {
+        key: "evaluation",
+        name: "Évaluation",
+        description: "Texte à compléter pour les évaluations.",
+      },
+      {
+        key: "contributors",
+        name: "Contributeurs",
+        description:
+          "Les contributeurs ajoutés à cette fiche auront accès à l’ensemble des paramètres de la fiche. Notez que tous les contributeurs de la base dans laquelle est administrée la fiche sont d’ores-et-déjà contributeur de cette fiche.",
       },
     ],
   },
@@ -125,7 +141,6 @@ export const useResourceStore = defineStore("resource", {
     },
   actions: {
     async createResource(resource: ResourceCreate) {
-      const baseStore = useBaseStore()
       const { data, error } = await useApiPost<Resource>("resources/", resource)
       if (!error.value) {
         this.resourcesById[data.value!.id!] = data.value!
@@ -274,7 +289,6 @@ export const useResourceStore = defineStore("resource", {
           : resource?.licenseText?.file?.base64
           ? "Chargement du texte de license"
           : false
-      console.log("### save", resource)
       const { data, error } = await useApiPatch<Resource>(
         `resources/${resourceId}/`,
         resource,
@@ -286,6 +300,7 @@ export const useResourceStore = defineStore("resource", {
       if (!error.value) {
         this.resourcesById[data.value!.id!] = data.value!
       }
+      return { data, error }
     },
     setCurrentId(resourceId: number) {
       this.currentId = resourceId

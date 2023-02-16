@@ -25,8 +25,17 @@
     <ResourceEditingCredits v-if="resourceStore.isSubMenuActive('credits')" />
     <ResourceEditingLicense v-if="resourceStore.isSubMenuActive('license')" />
     <ResourceEditingState v-if="resourceStore.isSubMenuActive('state')" />
+    <ResourceEditingCollections
+      v-if="resourceStore.isSubMenuActive('collections')"
+    />
+    <ResourceEditingContributors
+      v-if="resourceStore.isSubMenuActive('contributors')"
+    />
     <ResourceEditingAdministration
       v-if="resourceStore.isSubMenuActive('administration')"
+    />
+    <ResourceEditingEvaluation
+      v-if="resourceStore.isSubMenuActive('evaluation')"
     />
     <ResourceEditingLabel v-if="resourceStore.isSubMenuActive('label')" />
   </div>

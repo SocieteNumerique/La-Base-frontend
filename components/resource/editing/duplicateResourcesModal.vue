@@ -31,16 +31,11 @@
         >
           <div class="fr-text--sm">
             Si votre fiche ressemble trop à celle-ci, nous vous invitons à ne
-            pas publier de nouvelle fiche doublon.
-            <br />
-            <br />
-            Si votre fiche est très similaire, nous vous invitons à abandonner
-            la création.
-            <br />
-            <br />
-            Vous pouvez contacter l’auteur de la fiche doublon via sa base si
-            vous souhaitez lui faire des suggestions à propos de la fiche
-            ressource.
+            pas publier de doublon.
+            <br /><br />
+            Si vous souhaitez faire des suggestions, contribuer ou récupérer
+            l’administration de la fiche, cliquez sur le bouton “contribuer”
+            dans la fiche en question.
           </div>
         </ResourceEditingDuplicateCancelMessageBlock>
         <div

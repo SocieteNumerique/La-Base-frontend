@@ -47,7 +47,10 @@
           />
           <div class="has-children-space-between">
             <div>
-              <IntroTooltip slug="BASE_SHARE" style="display: inline-block">
+              <IntroTooltip
+                :slug="showIntro ? 'BASE_SHARE' : null"
+                style="display: inline-block"
+              >
                 <ShareButton :link="route.fullPath">
                   <RoundButton
                     icon="ri-share-line"
@@ -59,25 +62,31 @@
               <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
               <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
               <!-- TODO should show the report modal on click-->
-              <IntroTooltip slug="REPORT_BASE" style="display: inline-block">
+              <IntroTooltip
+                :slug="showIntro ? 'REPORT_BASE' : null"
+                style="display: inline-block"
+              >
                 <RoundButton
                   icon="ri-alert-line"
                   label="Signaler"
                   @click="showReportModal = true"
                 />
               </IntroTooltip>
-              <IntroTooltip slug="BASE_CONTACT" style="display: inline-block">
-                <a
-                  v-show="base?.contact"
-                  :href="mailToHrefContact"
-                  class="no-underline"
-                >
+              <IntroTooltip
+                v-if="base?.contact"
+                :slug="showIntro ? 'BASE_CONTACT' : null"
+                style="display: inline-block"
+              >
+                <a :href="mailToHrefContact" class="no-underline">
                   <RoundButton icon="ri-mail-line" label="Contacter" />
                 </a>
               </IntroTooltip>
             </div>
             <div style="padding-top: 7px; display: flex">
-              <IntroTooltip v-if="base?.canWrite" slug="CREATE_FICHE">
+              <IntroTooltip
+                v-if="base?.canWrite"
+                :slug="showIntro ? 'CREATE_FICHE' : null"
+              >
                 <DsfrButton
                   icon="ri-add-line"
                   label="Ajouter une fiche"
@@ -100,7 +109,10 @@
           <div class="fr-header__body-row" style="padding-left: 6px">
             <ul class="fr-links-group">
               <li>
-                <IntroTooltip slug="PRESENTATION" child-display="flex">
+                <IntroTooltip
+                  :slug="showIntro ? 'PRESENTATION' : null"
+                  child-display="flex"
+                >
                   <NuxtLink
                     :aria-current="
                       currentTab === 'presentation' ? 'page' : null
@@ -112,7 +124,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip slug="TAB_FICHES">
+                <IntroTooltip :slug="showIntro ? 'TAB_FICHES' : null">
                   <NuxtLink
                     :aria-current="currentTab === 'resources' ? 'page' : null"
                     style="height: 100%; display: inline-block"
@@ -123,7 +135,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip slug="TAB_COLLECTIONS">
+                <IntroTooltip :slug="showIntro ? 'TAB_COLLECTIONS' : null">
                   <NuxtLink
                     :aria-current="currentTab === 'collections' ? 'page' : null"
                     style="height: 100%; display: inline-block"
@@ -170,7 +182,6 @@ import RoundButton from "~/components/roundButton.vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useUserStore } from "~/stores/userStore"
 import { useAlertStore } from "~/stores/alertStore"
-import { useTagStore } from "~/stores/tagStore"
 import { useRegisterVisit } from "~/composables/visits"
 import { Resource, SearchResult } from "~/composables/types"
 import { mobileOrTabletCheck } from "~/composables/mobileCheck"
@@ -187,7 +198,6 @@ useFullWidth()
 const route = useRoute()
 const router = useRouter()
 const baseStore = useBaseStore()
-const tagStore = useTagStore()
 const resourcesResult = ref<SearchResult<Resource>>({
   count: 0,
   results: { objects: [], possibleTags: [], dataType: "resources", text: "" },
@@ -199,6 +209,10 @@ const currentTab = computed<"presentation" | "resources" | "collections">({
     "presentation",
   set: (type: "presentation" | "resources" | "collections") =>
     router.push({ query: { ...route.query, tab: type } }),
+})
+
+const showIntro = computed(() => {
+  return currentTab.value === "presentation"
 })
 
 const base = computed(() => {
@@ -274,15 +288,6 @@ const mailToHrefContact = computed(() => {
 </script>
 
 <style lang="sass" scoped>
-.stat
-  margin-left: -12px
-
-.stat + .stat
-  margin-left: 12px
-
-.stat *
-  margin-left: 12px
-
 .fr-links-group
   a
     font-size: 14px

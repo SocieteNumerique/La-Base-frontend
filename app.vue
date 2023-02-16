@@ -1,5 +1,6 @@
 <template>
-  <Html>
+  <!DOCTYPE html>
+  <Html lang="fr">
     <Head>
       <Title>{{ title }}</Title>
       <Meta name="description" :content="description" />
@@ -41,7 +42,7 @@ const description = computed<string>(() => {
   ) {
     return resourceStore.current.description
   }
-  return "La Base regroupe les ressources des professionnels du numérique d’intérêt général dont l’inclusion et la médiation numériques."
+  return "La Base regroupe les ressources des professionnels du numérique d’intérêt général."
 })
 
 const title = computed<string>(() => {
@@ -53,6 +54,12 @@ const title = computed<string>(() => {
   }
   if (route.path.startsWith("/page/") && pageStore.current?.title) {
     return pageStore.current.title
+  }
+  if (route.name == "recherche") {
+    return "Moteur de recherche"
+  }
+  if (route.name == "favoris") {
+    return "Mes bases favorites"
   }
   return ""
 })

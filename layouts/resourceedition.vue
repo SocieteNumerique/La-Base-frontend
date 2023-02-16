@@ -5,7 +5,7 @@
         <div class="fr-grid-row fr-mt-2w">
           <div class="fr-col-3 fr-pr-3w fr-text--xs">
             <div
-              class="cursor--pointer fr-text-label--blue-france underlined-on-hover"
+              class="cursor--pointer fr-text-label--blue-france"
               @click="goToState"
             >
               Statut : {{ stateLabel[resourceStore.current?.state] }}
@@ -76,7 +76,6 @@ import { computed } from "vue"
 const resourceStore = useResourceStore()
 
 const goToState = () => {
-  console.log("### go to state")
   resourceStore.navigation.activeMenu = "parameters"
   resourceStore.navigation.activeSubMenu = "state"
 }

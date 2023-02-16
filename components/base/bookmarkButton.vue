@@ -1,15 +1,17 @@
 <template>
-  <DsfrButton
-    v-if="userStore.isLoggedIn"
-    class="fr-btn--sm fr-btn--tertiary-no-outline"
-    :title="title"
-    :aria-pressed="isBookmared"
-    :aria-label="ariaLabel"
-    style="padding: 5px"
-    @click="toggleBookmark"
-  >
-    <VIcon :name="icon" scale="1.25" />
-  </DsfrButton>
+  <IntroTooltip slug="BASE_ADD_TO_BOOKMARKS" style="display: inline-block">
+    <DsfrButton
+      v-if="userStore.isLoggedIn"
+      class="fr-btn--sm fr-btn--tertiary-no-outline"
+      :title="title"
+      :aria-pressed="isBookmared"
+      :aria-label="ariaLabel"
+      style="padding: 5px"
+      @click="toggleBookmark"
+    >
+      <VIcon :name="icon" scale="1.25" />
+    </DsfrButton>
+  </IntroTooltip>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +36,7 @@ const title = computed<string>(() => {
 })
 const ariaLabel = computed<string>(() => {
   return isBookmared.value
-    ? "Cliquer pour ajouter la base aux favoris"
-    : "Cliquer pour retirer la base des favoris"
+    ? "Cliquer pour retirer la base aux favoris"
+    : "Cliquer pour ajouter la base des favoris"
 })
 </script>

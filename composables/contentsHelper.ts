@@ -18,7 +18,7 @@ export async function getResourceContentsBySection(resourceId: number) {
     sections: SectionWithContent[]
   }>(`resources/${resourceId}/contents/`)
   if (!error.value) {
-    return data.value.sections
+    return data.value!.sections
   }
 }
 
@@ -242,7 +242,7 @@ export async function addSection(
     resource: resourceId,
     order,
   }
-  if (sectionTitle) {
+  if (sectionTitle || sectionTitle === "") {
     section.title = sectionTitle
     section.isFoldable = true
   }

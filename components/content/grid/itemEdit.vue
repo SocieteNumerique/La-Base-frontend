@@ -100,8 +100,4 @@ function endDrag() {
 
   .resize-image
     color: #000091
-    opacity: 0
-
-  &:hover .resize-image
-    opacity: 1
 </style>

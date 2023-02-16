@@ -116,12 +116,13 @@ const licenseText = computed<LicenseText | null>({
 
 const hasGlobalLicense = computed<string | undefined>({
   get() {
-    if (resourceStore.current?.hasGlobalLicense === undefined) return
+    console.log("### get", resourceStore.current?.hasGlobalLicense)
+    if (resourceStore.current?.hasGlobalLicense === undefined) return "1"
     return resourceStore.current.hasGlobalLicense ? "1" : "0"
   },
   set(value) {
     resourceStore.current.hasGlobalLicense =
-      value === undefined ? undefined : !!parseInt(value)
+      value === undefined ? 1 : !!parseInt(value)
   },
 })
 

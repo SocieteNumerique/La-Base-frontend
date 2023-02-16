@@ -36,6 +36,7 @@
         :base-id="rootBaseId"
         :is-root-base="true"
         :instance-id="instanceId"
+        :instance-type="props.instanceType"
       />
 
       <PinMenuLine
@@ -44,6 +45,7 @@
         :model-value="pinStatus.isPinned"
         :base-id="pinStatus.id"
         :instance-id="instanceId"
+        :instance-type="props.instanceType"
         @update:model-value="togglePin(pinStatus)"
       />
       <div class="item" @click="showAddBaseModal = true">

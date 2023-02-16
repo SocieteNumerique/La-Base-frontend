@@ -22,7 +22,7 @@ export const useIntroStore = defineStore("intro", () => {
 
   const intros = ref<Intro[]>([])
   const seenSlugs = ref<{ [key: string]: boolean }>({})
-  const currentIndex = ref(0)
+  const currentIndex = ref(-1)
   const forceRecheckDom = ref(0)
   const ready = ref(false)
 
@@ -40,10 +40,12 @@ export const useIntroStore = defineStore("intro", () => {
     seenSlugs.value = {}
   }
 
+  // recheck which intros are in the dom when route.name has changed
+  // and reset the currentIndex to the first one
   watch(
     () => route.name,
     (value) => {
-      currentIndex.value = 0
+      currentIndex.value = -1
       // we re-check later when DOM has initialised
       setTimeout(() => {
         forceRecheckDom.value += 1
@@ -71,15 +73,17 @@ export const useIntroStore = defineStore("intro", () => {
     if (!error.value && data.value!) {
       saveIntros(data.value!)
     } else if (pending.value) {
+      // this hack should not be necessary after `await`
       setTimeout(() => {
         if (!error.value && data.value!) {
           saveIntros(data.value!)
         }
-      }, 200)
+      }, 400)
     }
   }
 
   const saveIntros = (introsList: Intro[]) => {
+    console.log("### saving intros", introsList)
     intros.value = introsList
     for (const intro of introsList) {
       if (intro.seen) {
@@ -157,10 +161,25 @@ export const useIntroStore = defineStore("intro", () => {
   }
 
   const current = computed<Intro | null>(() => {
-    if (currentIndex.value < availableIntros.value.length) {
+    if (
+      currentIndex.value !== -1 &&
+      currentIndex.value < availableIntros.value.length
+    ) {
       return availableIntros.value[currentIndex.value]
     }
     return null
+  })
+
+  const introsIndexSlugsFilteredOutWhenNotInHome = computed(() => {
+    // there is an exception for slug starting with INDEX_, only shown
+    // on the home page and search page (used in the header for example)
+    let toReturn = intros.value
+    const isIndex = ["index", "recherche"].indexOf(<string>route.name) !== -1
+    if (!isIndex) {
+      toReturn = toReturn.filter((intro) => !intro.slug.startsWith("INDEX_"))
+    }
+
+    return toReturn
   })
 
   const availableIntros = computed<Intro[]>(() => {
@@ -172,23 +191,19 @@ export const useIntroStore = defineStore("intro", () => {
       return []
     }
 
-    let toReturn = intros.value
+    const toReturn = introsIndexSlugsFilteredOutWhenNotInHome.value
       .filter((intro) => !seenSlugs.value[intro.slug])
       .filter((intro) => doesATooltipExistWithSlug(intro.slug))
 
-    // there is an exception for slug starting with INDEX_, only shown
-    // on the home page and search page (used in the header for example)
-    const isIndex = ["index", "recherche"].indexOf(<string>route.name) !== -1
-    if (!isIndex) {
-      toReturn = toReturn.filter((intro) => !intro.slug.startsWith("INDEX_"))
-    }
+    console.log("### available intros", toReturn)
 
     return toReturn
   })
 
   const showAllInPage = () => {
     let shown = 0
-    for (const intro of intros.value) {
+    currentIndex.value = 0
+    for (const intro of introsIndexSlugsFilteredOutWhenNotInHome.value) {
       if (doesATooltipExistWithSlug(intro.slug)) {
         seenSlugs.value[intro.slug] = false
         shown += 1
@@ -205,7 +220,7 @@ export const useIntroStore = defineStore("intro", () => {
 
   const done = () => {
     markSeen()
-    currentIndex.value = 0
+    currentIndex.value = -1
   }
 
   // load intros the first time, only in client to avoid SSR bugs
@@ -217,7 +232,9 @@ export const useIntroStore = defineStore("intro", () => {
       if (!userStore.isLoggedIn) {
         loadLocallySeen()
       }
+      console.log("### is now ready")
       ready.value = true
+      console.log("### is now ready", availableIntros.value)
     }, 500)
   }
 

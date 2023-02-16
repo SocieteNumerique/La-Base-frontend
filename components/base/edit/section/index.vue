@@ -7,7 +7,7 @@
     @close="$emit('close')"
   >
     <p>
-      Les galeries vous permettent de mettre en avant certaines ressources et
+      Les rubriques vous permettent de mettre en avant certaines ressources et
       collections dès l’accueil de votre base.
     </p>
     <div class="separator fr-my-4w" />
@@ -184,7 +184,7 @@ const buttons = computed(() =>
     {
       label: ordering.value
         ? "Arreter le changement d'ordre"
-        : "Changer l'ordre des sections",
+        : "Changer l'ordre des rubriques",
       secondary: true,
       onClick: onOrderSection,
       active: base.value.sections.length,

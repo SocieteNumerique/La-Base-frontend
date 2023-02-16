@@ -1,16 +1,14 @@
 <template>
   <div class="pin-base-selector" @focusout="isMenuShown = false">
-    <IntroTooltip slug="ADD_CONTENT">
-      <button
-        class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v"
-        @click="isMenuShown = !isMenuShown"
-      >
-        <VIcon class="fr-mr-2v" name="ri-add-circle-line" />
-        <span>
-          <slot>Ajouter un contenu</slot>
-        </span>
-      </button>
-    </IntroTooltip>
+    <button
+      class="fr-btn fr-btn--tertiary fr-btn--sm fr-px-2v fr-mb-0"
+      @click="isMenuShown = !isMenuShown"
+    >
+      <VIcon class="fr-mr-2v" name="ri-add-circle-line" />
+      <span>
+        <slot>Ajouter un contenu</slot>
+      </span>
+    </button>
     <div v-show="isMenuShown" class="selector__menu fr-px-2w">
       <div
         class="item"

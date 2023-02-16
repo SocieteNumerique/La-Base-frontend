@@ -57,6 +57,7 @@
     <div
       :class="isFolded ? '-folded' : ''"
       class="grid-container hide-if-folded"
+      :style="introStore.current ? 'z-index: -1' : ''"
     >
       <div ref="gridUnderlayRef" class="grid grid-underlay">
         <div v-for="index in 6" :key="index" class="grid-block" />
@@ -102,11 +103,14 @@ import {
   updateContent,
   updateContentOrder,
 } from "~/composables/contentsHelper"
+import { useIntroStore } from "~/stores/introStore"
 
 defineProps({
   modelValue: { type: Object as PropType<SectionWithContent>, required: true },
   editingContent: { type: Number, default: undefined },
 })
+
+const introStore = useIntroStore()
 
 const emits = defineEmits([
   "new-content",
@@ -268,7 +272,7 @@ if (!process.server) window.addEventListener("dragover", onDrag)
       height: 100%
 
       &.targeted
-        background-color: var(--background-alt-blue-france)
+        background-color: var(--background-action-low-blue-cumulus)
 
   .content-grid
     list-style-type: none

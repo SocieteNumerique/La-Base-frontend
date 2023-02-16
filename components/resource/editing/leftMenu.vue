@@ -38,7 +38,11 @@
                 "
               >
                 <template v-if="menu.subMenus.length">
-                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                  <IntroTooltip
+                    :slug="
+                      showIntros ? `LEFT_MENU_${menu.key.toUpperCase()}` : null
+                    "
+                  >
                     <button
                       class="fr-sidemenu__btn"
                       :aria-expanded="
@@ -95,7 +99,11 @@
                   </div>
                 </template>
                 <template v-else>
-                  <IntroTooltip :slug="`LEFT_MENU_${menu.key.toUpperCase()}`">
+                  <IntroTooltip
+                    :slug="
+                      showIntros ? `LEFT_MENU_${menu.key.toUpperCase()}` : null
+                    "
+                  >
                     <button
                       :aria-current="
                         resourceStore.isMenuActive(menu.key) ? 'page' : null
@@ -112,9 +120,12 @@
           </div>
         </div>
         <div class="bottom-button-holder fr-mt-7w">
-          <IntroTooltip slug="DUPLICATES_DETECTOR">
+          <IntroTooltip
+            :slug="showIntros ? 'DUPLICATES_DETECTOR' : null"
+            class="fr-mb-7v"
+          >
             <button
-              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0 fr-mb-7v"
+              class="fr-btn fr-btn--icon-left fr-btn--tertiary-no-outline fr-btn--sm fr-px-0"
               :class="{
                 'fr-text-default--error': duplicatedResourceIds.length,
               }"
@@ -133,13 +144,16 @@
               {{ duplicatedResourceIds.length }}
               {{
                 pluralize(
-                  ["doublon détécté", "doublons détéctés"],
+                  ["doublon détecté", "doublons détectés"],
                   duplicatedResourceIds.length
                 )
               }}
             </button>
           </IntroTooltip>
-          <IntroTooltip slug="LEFT_MENU_PREVIEW" class="fr-mb-3v">
+          <IntroTooltip
+            :slug="showIntros ? 'LEFT_MENU_PREVIEW' : null"
+            class="fr-mb-3v"
+          >
             <DsfrButton
               :secondary="true"
               label="Pré-visualiser"
@@ -150,7 +164,10 @@
               @click="doShowPreview"
             />
           </IntroTooltip>
-          <IntroTooltip slug="LEFT_MENU_SAVE" class="fr-mb-3v">
+          <IntroTooltip
+            :slug="showIntros ? 'LEFT_MENU_SAVE' : null"
+            class="fr-mb-3v"
+          >
             <DsfrButton
               label="Sauvegarder"
               icon="ri-save-line"
@@ -233,13 +250,19 @@ import { computed } from "vue"
 import { useBaseStore } from "~/stores/baseStore"
 import { useRouter } from "vue-router"
 import { useIncrementRouterQuery } from "~/composables/incrementRouterQuery"
+import { useCollectionStore } from "~/stores/collectionStore"
 
 const showPreview = ref(false)
 const resourceStore = useResourceStore()
+const collectionStore = useCollectionStore()
 const baseStore = useBaseStore()
 const router = useRouter()
 
 const incrementRouterQuery = useIncrementRouterQuery()
+
+const showIntros = computed(() => {
+  return resourceStore.navigation.activeMenu == "informations"
+})
 
 let isClient = false
 if (process.client) {
@@ -256,8 +279,35 @@ onMounted(() => {
   verifyDuplicatedResource()
 })
 
-const save = () => {
-  resourceStore.save()
+const save = async () => {
+  const resourceCollections = resourceStore.current.collections
+  const currentResourceId = resourceStore.currentId!
+  const { error } = await resourceStore.save()
+
+  // update the collections where the resource was a member
+  if (!error.value && resourceCollections != null) {
+    const currentId = resourceStore.currentId
+    for (const collectionId of baseStore.basesById[
+      resourceStore.current.rootBase!
+    ].collections!) {
+      const collection = collectionStore.collectionsById[collectionId]
+      if (collection == null) {
+        // nothing to update
+        return
+      }
+      if (resourceCollections.indexOf(collectionId) === -1) {
+        // remove resource from collection
+        collection.resources = collection.resources!.filter(
+          (resourceId) => resourceId !== currentResourceId
+        )
+      } else {
+        // add resource to collection
+        if (collection.resources!.indexOf(currentResourceId) === -1) {
+          collection.resources!.push(currentResourceId)
+        }
+      }
+    }
+  }
 }
 const isMenuOpen = ref<{ [key: string]: boolean }>({ informations: true })
 const deleteResource = async () => {

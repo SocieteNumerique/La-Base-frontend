@@ -6,8 +6,9 @@
       class="fr-mb-3w"
     />
     <ContentList
-      v-show="!(isGridView && isGridViewEnabled)"
+      v-if="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
+      my-attr="my-attr"
     />
     <ContentGrid
       v-if="isGridView && isGridViewEnabled"

@@ -5,7 +5,7 @@
     :class="isFocused ? '-active' : null"
     style="position: relative"
   >
-    <div
+    <button
       class="cursor--pointer dropdown-title fr-text-label--blue-france"
       @click="onTitleClick"
     >
@@ -16,7 +16,7 @@
         style="padding-left: 4px; position: relative; top: 3px"
         name="ri-arrow-down-s-line"
       />
-    </div>
+    </button>
     <div
       class="dropdown-tags"
       :class="isFocused ? 'with-border-top' : null"
@@ -33,6 +33,7 @@
             :key="tag.id"
             :tag="tag"
             :disabled="!isTagEnabled(tag.id)"
+            :count-origin="countOrigin"
             @select="selectTag(tag.id)"
           />
         </slot>
@@ -45,6 +46,7 @@
 import { TagCategory } from "~/composables/types"
 import { onMounted, PropType } from "vue"
 import { useTagStore } from "~/stores/tagStore"
+import { onEscape } from "~/composables/onEscape"
 
 const props = defineProps({
   category: {
@@ -63,6 +65,7 @@ const props = defineProps({
     type: Array as PropType<number[]>,
     default: undefined,
   },
+  countOrigin: { type: String, default: "resource" },
 })
 
 const tagStore = useTagStore()
@@ -102,6 +105,10 @@ const isTagEnabled = (tagId: number) => {
 onFocusOut(
   () => emit("blur"),
   `tag-dropdown-${props.category.id}`,
+  () => props.isFocused
+)
+onEscape(
+  () => emit("blur"),
   () => props.isFocused
 )
 

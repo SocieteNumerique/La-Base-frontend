@@ -11,7 +11,7 @@
           <template v-if="producer.isExternalLink">
             <a
               :href="producer.href"
-              class="fr-text-label--blue-france no-underline underlined-on-hover"
+              class="fr-text-label--blue-france"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -21,7 +21,7 @@
           <template v-else>
             <NuxtLink
               :to="producer.href"
-              class="fr-text-label--blue-france no-underline underlined-on-hover"
+              class="fr-text-label--blue-france"
               :title="producer.href"
             >
               {{ producer.name }}
@@ -116,7 +116,6 @@ const sendCreditsRequest = async () => {
       "warning"
     )
   }
-  console.log("### sendCreditsRequest", creditsRequestMessage.value)
   const { error } = await useApiPost(
     "credits",
     { id: resource.value.id, message: creditsRequestMessage.value },

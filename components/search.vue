@@ -114,24 +114,29 @@
                     </span>
                   </button>
                 </IntroTooltip>
-                <div v-if="userStore.isLoggedIn">
-                  <button
-                    v-if="!isInBaseIndex"
-                    class="fr-btn fr-btn--secondary fr-ml-2w"
-                    @click="toggleUserSearch"
-                  >
-                    Mes recherches
-                    <span style="padding-left: 3px">
-                      <VIcon
-                        v-if="!showUserSearches"
-                        name="ri-arrow-down-s-line"
-                      />
-                      <VIcon
-                        v-if="showUserSearches"
-                        name="ri-arrow-up-s-line"
-                      />
-                    </span>
-                  </button>
+                <div
+                  v-if="!isInBaseIndex && userStore.isLoggedIn"
+                  class="fr-ml-2w"
+                >
+                  <IntroTooltip slug="SAVE_SEARCH">
+                    <button
+                      v-if="!isInBaseIndex"
+                      class="fr-btn fr-btn--secondary"
+                      @click="toggleUserSearch"
+                    >
+                      Mes recherches
+                      <span style="padding-left: 3px">
+                        <VIcon
+                          v-if="!showUserSearches"
+                          name="ri-arrow-down-s-line"
+                        />
+                        <VIcon
+                          v-if="showUserSearches"
+                          name="ri-arrow-up-s-line"
+                        />
+                      </span>
+                    </button>
+                  </IntroTooltip>
                 </div>
               </div>
             </div>
@@ -195,6 +200,7 @@
               :is-focused="focusedCategory === category.id"
               :selected-tags="selectedTags"
               :enabled-tags="tagOperatorInput === 'AND' ? possibleTags : null"
+              :count-origin="dataType === 'resources' ? 'resource' : 'base'"
               @focus="focusedCategory = category.id"
               @blur="focusedCategory = 0"
               @select="onSelect"
@@ -239,7 +245,7 @@
               {{ nResults }} {{ pluralize(["résultat"], nResults) }}
             </div>
             <div
-              v-if="userStore.isLoggedIn"
+              v-if="userStore.isLoggedIn && !isInBaseIndex"
               style="display: flex; align-items: flex-end"
             >
               <DsfrButton

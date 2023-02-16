@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>vue en liste</h2>
     <div
       v-for="section of contentsBySection"
       :key="section.id"
@@ -12,10 +13,10 @@
           class="fr-btn--tertiary-no-outline"
           @click="toggleIsSectionFoldedToggle(section.id)"
         >
-          <span v-show="!isSectionFoldedGetter(section.id)">
+          <span v-if="!isSectionFoldedGetter(section.id)">
             <VIcon name="ri-arrow-up-s-line" /> Fermer
           </span>
-          <span v-show="isSectionFoldedGetter(section.id)">
+          <span v-if="isSectionFoldedGetter(section.id)">
             <VIcon name="ri-arrow-down-s-line" /> Ouvrir
           </span>
         </button>

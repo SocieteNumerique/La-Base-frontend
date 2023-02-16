@@ -1,89 +1,115 @@
 <template>
-  <div>
-    <div
-      class="tooltip-container"
-      :slug="props.slug"
-      :class="isActive ? 'active' : ''"
-      :style="props.childDisplay ? `display: ${props.childDisplay}` : null"
-    >
-      <slot />
+  <div ref="top" @keydown.esc="introStore.done">
+    <FocusTrap v-model:active="isActive" :initial-focus="() => $refs.next">
       <div
-        v-if="isActive"
-        class="tooltip"
-        :class="introStore.current.position"
-        style="font-weight: normal"
+        :role="isActive ? 'dialog' : null"
+        class="tooltip-container"
+        :slug="props.slug"
+        :class="isActive ? 'active' : ''"
+        :style="props.childDisplay ? `display: ${props.childDisplay}` : null"
+        tabindex="-1"
       >
-        <VIcon
-          :scale="1.25"
-          name="ri-close-line"
-          style="position: absolute; right: 16px; top: 16px; cursor: pointer"
-          color="white"
-          @click="introStore.done"
-        />
-        <div class="header fr-py-2w fr-text--bold">
-          {{ introStore.current?.title }}
-        </div>
-        <img
-          v-if="introStore.current.image"
-          :src="introStore.current.image"
-          alt=""
-          style="
-            width: 100%;
-            border-bottom: 1px solid var(--background-action-high-blue-france);
-          "
-        />
+        <slot />
         <div
-          class="fr-p-2w html-content fr-text--sm fr-m-0"
-          style="text-align: left"
-          v-html="introStore.current?.htmlContent"
-        ></div>
-        <div
-          v-if="introStore.availableIntros.length > 1"
-          class="tooltip-footer fr-p-2w"
-          style="align-items: center"
+          v-if="isActive"
+          class="tooltip"
+          :class="introStore.current.position"
+          style="font-weight: normal"
         >
-          <div class="fr-text--sm fr-text--disabled fr-m-0">
-            {{ introStore.currentIndex + 1 }} sur
-            {{ introStore.availableIntros.length }}
+          <VIcon
+            role="button"
+            tabindex="0"
+            :scale="1.25"
+            name="ri-close-line"
+            style="position: absolute; right: 16px; top: 16px; cursor: pointer"
+            color="white"
+            @click="introStore.done"
+          />
+          <div
+            :id="isActive ? 'modal-title' : null"
+            class="header fr-py-2w fr-text--bold"
+          >
+            {{ introStore.current?.title }}
           </div>
-          <div class="fr-btns-group--sm">
-            <button
-              class="fr-btn fr-btn--secondary fr-mr-2w"
-              :disabled="!introStore.canGoPrevious"
-              @click="introStore.previous"
-            >
-              Précédent
-            </button>
-            <button
-              v-if="introStore.canGoNext"
-              class="fr-btn force-btn-colors"
-              @click="introStore.next"
-            >
-              Suivant
-            </button>
-            <button
-              v-else
-              class="fr-btn force-btn-colors"
-              @click="introStore.done"
-            >
-              Terminer
-            </button>
+          <img
+            v-if="introStore.current.image"
+            :src="introStore.current.image"
+            alt=""
+            style="
+              width: 100%;
+              border-bottom: 1px solid var(--background-action-high-blue-france);
+            "
+          />
+          <div
+            class="fr-p-2w html-content fr-text--sm fr-m-0"
+            style="text-align: left"
+            v-html="introStore.current?.htmlContent"
+          ></div>
+          <div
+            v-if="introStore.availableIntros.length > 1"
+            class="tooltip-footer fr-p-2w"
+            style="align-items: center"
+          >
+            <div class="fr-text--sm fr-text--disabled fr-m-0">
+              {{ introStore.currentIndex + 1 }} sur
+              {{ introStore.availableIntros.length }}
+            </div>
+            <div class="fr-btns-group--sm">
+              <button
+                class="fr-btn fr-btn--secondary fr-mr-2w"
+                :disabled="!introStore.canGoPrevious"
+                @click="introStore.previous"
+              >
+                Précédent
+              </button>
+              <button
+                v-if="introStore.canGoNext"
+                ref="next"
+                class="fr-btn force-btn-colors"
+                @click="introStore.next"
+              >
+                Suivant
+              </button>
+              <button
+                v-else
+                class="fr-btn force-btn-colors"
+                @click="introStore.done"
+              >
+                Terminer
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </FocusTrap>
     <div v-if="isActive" class="overlay"></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useIntroStore } from "~/stores/introStore"
-import { computed } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
+import { FocusTrap } from "focus-trap-vue"
 
 const introStore = useIntroStore()
+const top = ref<HTMLElement>()
 
 const isActive = computed(
   () => introStore.current && introStore.current.slug === props.slug
+)
+
+watch(
+  () => isActive.value,
+  () => {
+    if (isActive.value) {
+      console.log("### top", top.value)
+      if (top.value) {
+        const y =
+          top.value.getBoundingClientRect().top + window.pageYOffset - 30
+        window.scrollTo({ top: y, behavior: "smooth" })
+      }
+    }
+  }
 )
 
 const props = defineProps({

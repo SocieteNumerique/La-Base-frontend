@@ -50,7 +50,16 @@
       />
 
       <div class="text" style="overflow-x: hidden">
-        <h6 class="fr-mb-1v">{{ savedCollection.name }}</h6>
+        <h6 class="fr-mb-2w">{{ savedCollection.name }}</h6>
+        <div class="fr-text--sm fr-m-0">
+          Publiée dans
+          <NuxtLink
+            :to="'/base/' + rootBase.id"
+            class="fr-text-label--blue-france"
+          >
+            {{ rootBase.title }}
+          </NuxtLink>
+        </div>
         <p class="fr-m-0 fr-text--sm">
           <span class="fr-text--lg fr-text--bold fr-mr-1w">{{
             nbResources
@@ -67,7 +76,7 @@
 
 <script lang="ts" setup>
 import { useCollectionStore } from "~/stores/collectionStore"
-import { PinStatus, Collection } from "~/composables/types"
+import { PinStatus, Collection, Base } from "~/composables/types"
 import { pluralize } from "~/composables/strUtils"
 import { useBaseStore } from "~/stores/baseStore"
 
@@ -87,6 +96,13 @@ const link = computed(
       params: { id: baseStore.currentId },
       query: { ...route.query, collection: savedCollection.value.id },
     }).href
+)
+
+const rootBase = computed<Base>(
+  () =>
+    baseStore.basesById[
+      collectionStore.collectionsById[props.collectionId].base
+    ]
 )
 
 const savedCollection = computed<Collection>(

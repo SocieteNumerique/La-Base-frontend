@@ -1,6 +1,6 @@
 <template>
   <div :id="containerId" class="selector">
-    <IntroTooltip slug="BASES_SETTINGS">
+    <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : null">
       <button
         :class="{ '-active': isMenuShown }"
         class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
@@ -69,10 +69,16 @@
 
 <script lang="ts" setup>
 import { useBaseStore } from "~/stores/baseStore"
+import { useRoute } from "vue-router"
 
 const openStep = ref<string>("")
 const isMenuShown = ref<boolean>(false)
 const baseStore = useBaseStore()
+const route = useRoute()
+
+const showIntro = computed(() => {
+  return ((route.query.tab as string) || "presentation") === "presentation"
+})
 
 const containerId = "base-settings"
 onFocusOut(
