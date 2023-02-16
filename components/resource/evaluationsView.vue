@@ -2,7 +2,9 @@
   <div>
     <h2>Évaluations</h2>
     <p>
-      Définition de ce que c’est pour nous que l’évaluation, bonnes pratiques
+      Les évaluations permettront aux visiteurs de se faire un avis sur la
+      ressource, ainsi qu’aux producteurs de pouvoir l’améliorer. Pensez à être
+      constructifs et précis dans vos commentaires.
     </p>
     <div v-if="resourceStore.current?.canEvaluate === false">
       Les évaluations sont désactivées pour cette ressource.
