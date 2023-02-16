@@ -67,28 +67,31 @@
         }}
       </p>
     </div>
-    <template v-if="isReco">
-      <div>Recommandez-vous cette ressource ?</div>
-      <div style="display: flex" class="fr-mt-2w">
-        <button class="fr-btn fr-btn--sm fr-mr-2w" @click="emit('recommend')">
-          <VIcon name="recommended" class="fr-mr-1w" />
-          Oui
+    <div class="fr-mb-3w">
+      <template v-if="isReco">
+        <div>Recommandez-vous cette ressource ?</div>
+        <div style="display: flex" class="fr-mt-2w">
+          <button class="fr-btn fr-btn--sm fr-mr-2w" @click="emit('recommend')">
+            <VIcon name="recommended" class="fr-mr-1w" />
+            Oui
+          </button>
+          <button
+            class="fr-btn fr-btn--secondary fr-btn--sm"
+            @click="emit('not-recommend')"
+          >
+            <VIcon name="not-recommended" class="fr-mr-1w" />
+            Non
+          </button>
+        </div>
+      </template>
+      <template v-else>
+        <button class="fr-btn fr-btn--sm fr-mr-2w" @click="emit('evaluate')">
+          <VIcon name="ri-equalizer-line" class="fr-mr-1w" />
+          Évaluer
         </button>
-        <button
-          class="fr-btn fr-btn--secondary fr-btn--sm"
-          @click="emit('not-recommend')"
-        >
-          <VIcon name="not-recommended" class="fr-mr-1w" />
-          Non
-        </button>
-      </div>
-    </template>
-    <template v-else>
-      <button class="fr-btn fr-btn--sm fr-mr-2w" @click="emit('evaluate')">
-        <VIcon name="ri-equalizer-line" class="fr-mr-1w" />
-        Évaluer
-      </button>
-    </template>
+      </template>
+    </div>
+
     <DsfrModal
       v-if="showEvaluationsModal"
       :opened="true"
