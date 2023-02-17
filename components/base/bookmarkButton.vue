@@ -1,5 +1,8 @@
 <template>
-  <IntroTooltip slug="BASE_ADD_TO_BOOKMARKS" style="display: inline-block">
+  <IntroTooltip
+    :slug="showIntro ? 'BASE_ADD_TO_BOOKMARKS' : null"
+    style="display: inline-block"
+  >
     <DsfrButton
       v-if="userStore.isLoggedIn"
       class="fr-btn--sm fr-btn--tertiary-no-outline"
@@ -18,6 +21,7 @@
 import { useBaseStore } from "~/stores/baseStore"
 import { computed } from "vue"
 import { useUserStore } from "~/stores/userStore"
+import { useRoute } from "vue-router"
 
 const props = defineProps({
   baseId: { type: Number, required: true },
@@ -25,6 +29,14 @@ const props = defineProps({
 
 const userStore = useUserStore()
 const baseStore = useBaseStore()
+const route = useRoute()
+
+const showIntro = computed(() => {
+  return (
+    (route.name as string).startsWith("base") &&
+    ((route.query.tab as string) || "presentation") === "presentation"
+  )
+})
 
 const toggleBookmark = () => baseStore.toggleBookmark(props.baseId)
 const isBookmared = computed(() => baseStore.basesById[props.baseId].bookmarked)
