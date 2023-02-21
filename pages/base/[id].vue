@@ -46,7 +46,7 @@
             class="fr-my-2w"
           />
           <div class="has-children-space-between">
-            <div>
+            <div v-if="base">
               <IntroTooltip
                 :slug="showIntro ? 'BASE_SHARE' : null"
                 style="display: inline-block"
@@ -59,9 +59,6 @@
                   />
                 </ShareButton>
               </IntroTooltip>
-              <!-- <RoundButton icon="ri-equalizer-line" label="Évaluer" disabled />-->
-              <!-- <RoundButton icon="ri-download-line" label="Télécharger" disabled />-->
-              <!-- TODO should show the report modal on click-->
               <IntroTooltip
                 :slug="showIntro ? 'REPORT_BASE' : null"
                 style="display: inline-block"
