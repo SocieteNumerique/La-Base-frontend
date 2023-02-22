@@ -21,7 +21,7 @@
               "
             >
               <h1 style="max-width: 800px" class="fr-mb-0 fr-h3">
-                {{ resource?.title }}
+                {{ resource?.title }} - {{ isExporting }}
               </h1>
 
               <div>
@@ -88,7 +88,7 @@
             </div>
           </div>
         </div>
-        <div class="has-children-space-between fr-py-3v">
+        <div v-if="!isExporting" class="has-children-space-between fr-py-3v">
           <div>
             <IntroTooltip slug="RESOURCE_SHARE" style="display: inline-block">
               <ShareButton :link="route.fullPath">
@@ -107,7 +107,14 @@
               <RoundButton
                 icon="ri-equalizer-line"
                 label="Évaluer"
-                @click="showEvaluationModal = true"
+                @click="showExportModal = true"
+              />
+            </IntroTooltip>
+            <IntroTooltip slug="RESOURCE_EXPORT" style="display: inline-block">
+              <RoundButton
+                icon="ri-download-line"
+                label="Exporter"
+                @click="showContributeModal = true"
               />
             </IntroTooltip>
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
@@ -169,7 +176,7 @@
     <div class="fr-container fr-mt-5w">
       <div class="fr-mb-11v">
         <div class="fr-grid-row">
-          <div class="fr-col-3">
+          <div v-if="!isExporting" class="fr-col-3">
             <nav
               class="fr-sidemenu fr-sidemenu--sticky"
               role="navigation"
@@ -208,14 +215,15 @@
               </div>
             </nav>
           </div>
-          <div class="fr-col-9">
-            <div v-if="activeMenu === 'informations'" id="informations">
-              <h2
+          <div :class="isExporting ? 'print-col-12' : 'fr-col-9'">
+            <div v-if="showSection('informations')" id="informations">
+              <h2 class="only-print">Informations</h2>
+              <h3
                 v-if="resource?.resourceCreatedOn"
                 class="fr-text--bold fr-mb-3v fr-text--md"
               >
                 Date de création
-              </h2>
+              </h3>
               <p>{{ resource?.resourceCreatedOn }}</p>
               <hr class="fr-mt-3w fr-pb-3w" />
               <ResourceCredits />
@@ -225,11 +233,11 @@
                 :element="resource"
               />
             </div>
-            <div v-if="activeMenu === 'resource'" id="resource">
+            <div v-if="showSection('resource')" id="resource">
               <div class="fr-grid-row">
                 <div class="fr-col-md-8">
                   <template v-if="resource?.description">
-                    <h2 class="fr-text--md fr-text--bold">Description</h2>
+                    <h3 class="fr-text--md fr-text--bold">Description</h3>
                     <div class="fr-col-11" style="white-space: pre-line">
                       {{ resource?.description }}
                     </div>
@@ -245,7 +253,7 @@
               </div>
             </div>
             <ResourceEvaluationsView
-              v-if="activeMenu === 'evaluations'"
+              v-if="showSection('evaluations')"
               @evaluate="onEvaluation"
               @recommend="onRecommend"
               @not-recommend="onNotRecommend"
@@ -269,6 +277,10 @@
       v-if="showEvaluationModal"
       @close="showEvaluationModal = false"
     />
+    <ResourceExportModal
+      v-if="showExportModal"
+      @close="showExportModal = false"
+    />
   </div>
 </template>
 
@@ -283,6 +295,7 @@ import { pluralize } from "~/composables/strUtils"
 import { stateLabel } from "~/composables/constants"
 import { useEvaluationStore } from "~/stores/evaluationStore"
 import { useUserStore } from "~/stores/userStore"
+import { useExportState } from "~/composables/exportState"
 
 const props = defineProps({
   isPreview: { type: Boolean, default: false },
@@ -291,11 +304,13 @@ const evaluationStore = useEvaluationStore()
 const resourceStore = useResourceStore()
 const userStore = useUserStore()
 const route = useRoute()
+const { isExporting, selectedExport } = useExportState()
 
 const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
 const showContributeModal = ref<boolean>(false)
 const showEvaluationModal = ref<boolean>(false)
+const showExportModal = ref<boolean>(true)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
@@ -321,6 +336,14 @@ const navigationMenus = [
     name: "Évaluations",
   },
 ]
+
+const showSection = computed(() => (key: string) => {
+  if (isExporting) {
+    return selectedExport.value.indexOf(key) !== -1
+  } else {
+    return activeMenu.value === key
+  }
+})
 
 const resource = computed(() => {
   return resourceStore.current

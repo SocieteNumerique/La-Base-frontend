@@ -18,7 +18,7 @@
             La Base regroupe les ressources des professionnels du numérique
             d’intérêt général.
           </p>
-          <ul class="fr-footer__content-list">
+          <ul class="fr-footer__content-list no-print">
             <li class="fr-footer__content-item">
               <a
                 class="fr-footer__content-link"
@@ -46,7 +46,7 @@
           </ul>
         </div>
       </div>
-      <div class="fr-footer__bottom">
+      <div class="fr-footer__bottom no-print">
         <ul class="fr-footer__bottom-list">
           <!--          <li class="fr-footer__bottom-item">-->
           <!--            <a class="fr-footer__bottom-link" href="#">Plan du site</a>-->
