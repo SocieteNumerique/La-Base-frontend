@@ -7,16 +7,34 @@ export const useExportState = () => {
   const isExporting = computed<boolean>({
     get: () => (<"1" | "0">route.query.export || "0") === "1",
     set: (state: boolean) => {
-      router.push({ query: { ...route.query, export: state ? "1" : "0" } })
+      if (state) {
+        router.push({ query: { ...route.query, export: state ? "1" : "0" } })
+      } else {
+        const query = { ...route.query }
+        delete query.export
+        router.push({ query })
+      }
     },
   })
 
   const selectedExport = computed<string[]>({
-    get: () => (<string>route.query.exportSections || "").split(","),
+    get: () => {
+      const toReturn = (<string>route.query.exportSections || "").split(",")
+      if (toReturn.length && toReturn[0] === "") {
+        return []
+      }
+      return toReturn
+    },
     set: (select: string[]) => {
-      router.push({
-        query: { ...route.query, exportSections: select.join(",") },
-      })
+      if (select.length) {
+        router.push({
+          query: { ...route.query, exportSections: select.join(",") },
+        })
+      } else {
+        const query = { ...route.query }
+        delete query.exportSections
+        router.push({ query })
+      }
     },
   })
 

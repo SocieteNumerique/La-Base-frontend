@@ -11,7 +11,10 @@
               default-image="resource"
             />
           </div>
-          <div class="fr-col-md-9" style="display: flex">
+          <div
+            class="fr-col-md-9 resource-title"
+            style="display: flex; width: 100%"
+          >
             <div
               style="
                 display: flex;
@@ -21,7 +24,7 @@
               "
             >
               <h1 style="max-width: 800px" class="fr-mb-0 fr-h3">
-                {{ resource?.title }} - {{ isExporting }}
+                {{ resource?.title }}
               </h1>
 
               <div>
@@ -54,7 +57,7 @@
                 </div>
                 <hr class="fr-pb-2w" />
                 <div class="has-children-space-between">
-                  <div class="is-flex">
+                  <div class="is-flex" style="margin-left: 18px">
                     <div class="stat">
                       <span class="fr-h6">{{
                         resource?.stats.visitCount
@@ -75,15 +78,16 @@
                     style="align-items: flex-end"
                   >
                     <div>Fiche créée le {{ $date(resource?.created) }}</div>
-                    <div class="fr-ml-4w">
+                    <div class="fr-ml-2w">
                       Fiche modifiée le {{ $date(resource?.modified) }}
                     </div>
-                    <div class="fr-ml-4w">
+                    <div class="fr-ml-2w">
                       Statut : {{ stateLabel[resource?.state] }}
                     </div>
                   </div>
                 </div>
-                <hr style="padding-bottom: 1px" class="fr-mt-2w" />
+                <div class="only-print fr-mt-2w"></div>
+                <hr style="padding-bottom: 1px" class="fr-mt-2w no-print" />
               </div>
             </div>
           </div>
@@ -107,14 +111,14 @@
               <RoundButton
                 icon="ri-equalizer-line"
                 label="Évaluer"
-                @click="showExportModal = true"
+                @click="showEvaluationModal = true"
               />
             </IntroTooltip>
             <IntroTooltip slug="RESOURCE_EXPORT" style="display: inline-block">
               <RoundButton
                 icon="ri-download-line"
                 label="Exporter"
-                @click="showContributeModal = true"
+                @click="showExportModal = true"
               />
             </IntroTooltip>
             <IntroTooltip slug="REPORT_RESOURCE" style="display: inline-block">
@@ -216,6 +220,22 @@
             </nav>
           </div>
           <div :class="isExporting ? 'print-col-12' : 'fr-col-9'">
+            <div v-if="isExporting" class="no-print fr-mb-2w print-wrapper">
+              <DsfrButton
+                label="Quitter le mode impression"
+                icon="ri-arrow-left-line"
+                class="fr-btn--lg fr-mr-4w"
+                style="background: white"
+                secondary
+                @click="exitPrintMode"
+              />
+              <DsfrButton
+                label="Impression (pdf)"
+                icon="ri-printer-line"
+                class="fr-btn--lg"
+                @click="print"
+              />
+            </div>
             <div v-if="showSection('informations')" id="informations">
               <h2 class="only-print">Informations</h2>
               <h3
@@ -310,7 +330,7 @@ const activeMenu = ref("resource")
 const showReportModal = ref<boolean>(false)
 const showContributeModal = ref<boolean>(false)
 const showEvaluationModal = ref<boolean>(false)
-const showExportModal = ref<boolean>(true)
+const showExportModal = ref<boolean>(false)
 const editionLink = computed(
   () => `/ressource/${resourceStore.currentId}/edition`
 )
@@ -338,7 +358,7 @@ const navigationMenus = [
 ]
 
 const showSection = computed(() => (key: string) => {
-  if (isExporting) {
+  if (isExporting.value) {
     return selectedExport.value.indexOf(key) !== -1
   } else {
     return activeMenu.value === key
@@ -376,9 +396,25 @@ const onNotRecommend = (criterionSlug: string) => {
   evaluationStore.evaluation.evaluation = "0"
   showEvaluationModal.value = true
 }
+const print = () => {
+  window.print()
+}
+const exitPrintMode = () => {
+  isExporting.value = false
+  // need timeout because otherwise the second query param change will
+  // overwrite the first
+  setTimeout(() => {
+    selectedExport.value = []
+  }, 200)
+}
 </script>
 
 <style>
+@media (max-width: 991px) {
+  .resource-title {
+    margin-top: 30px;
+  }
+}
 .stat {
   margin-left: -18px;
 }
@@ -389,5 +425,11 @@ const onNotRecommend = (criterionSlug: string) => {
 
 .stat * {
   margin-left: 6px;
+}
+.print-wrapper {
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+  text-align: center;
 }
 </style>

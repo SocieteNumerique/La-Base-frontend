@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Évaluations</h2>
+    <h2 class="page-break">Évaluations</h2>
     <p>
       Les évaluations permettront aux visiteurs de se faire un avis sur la
       ressource, ainsi qu’aux producteurs de pouvoir l’améliorer. Pensez à être

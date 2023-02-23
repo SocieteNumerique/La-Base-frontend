@@ -62,7 +62,7 @@ const getHeaders = (includeCsrf = false): MyHeaders => {
   return headers
 }
 
-export const BASE_URL = base_url
+export const BASE_API_URL = base_url
 
 export async function useApiRequest<Type>(
   method: string,
@@ -82,7 +82,7 @@ export async function useApiRequest<Type>(
   const { data, error, pending } = await useAsyncData<Type>(
     key,
     () =>
-      $fetch(BASE_URL + "/api/" + path, {
+      $fetch(BASE_API_URL + "/api/" + path, {
         method: method,
         body: payload,
         credentials: "include",
