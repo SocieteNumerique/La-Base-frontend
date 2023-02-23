@@ -4,7 +4,7 @@
       <div class="fr-container">
         <div class="fr-header__body-row fr-py-2w fr-pl-3v">
           <LayoutLogo />
-          <div class="fr-header__tools">
+          <div class="fr-header__tools no-print">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
                 <li style="align-items: center">
@@ -149,7 +149,7 @@
         </div>
       </div>
     </div>
-    <div class="fr-header__body fr-header__nav">
+    <div class="fr-header__body fr-header__nav no-print">
       <div class="fr-container">
         <div class="fr-header__body-row">
           <ul class="fr-links-group">

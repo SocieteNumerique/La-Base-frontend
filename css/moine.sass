@@ -306,3 +306,22 @@ a
 .no-margin-bottom-on-last-p
   p:last-child
     margin-bottom: 0 !important
+
+
+// PRINT
+@media print
+  .page-break
+    page-break-before: always
+  .no-print
+    display: none !important
+  .print-col-12
+    flex: 0 0 100%
+    max-width: 100%
+    width: 100%
+  .only-print
+    display: block !important
+.only-print
+  display: none
+body // https://stackoverflow.com/a/14784655/3218806
+  -webkit-print-color-adjust: (exact !important)
+  print-color-adjust: (exact !important)
