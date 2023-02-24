@@ -56,7 +56,7 @@
           rel="noopener noreferrer"
         />
         <button
-          v-if="fileExtension === '.pdf'"
+          v-if="fileExtension === '.pdf' || isImage"
           class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
           @click="showPreviewModal = true"
         >
@@ -84,7 +84,16 @@
       class="modal-1200"
       @close="showPreviewModal = false"
     >
+      <div v-if="isImage" style="text-align: center">
+        <img
+          :alt="content.imageAlt ? content.imageAlt : ''"
+          :src="imageLink"
+          crossorigin
+          style="max-width: 100%; max-height: 500px"
+        />
+      </div>
       <embed
+        v-else
         style="min-height: 600px"
         :src="content.file?.link"
         type="application/pdf"

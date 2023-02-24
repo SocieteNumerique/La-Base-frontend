@@ -83,7 +83,7 @@ export const mediaTypeToSvgPath: Record<string, string> = {
   archive: "/icons/business/archive-line.svg",
   video: "/icons/media/film-line.svg",
   ebook: "/icons/document/book-2-line.svg",
-  image: "/icons/meida/image-line.svg",
+  image: "/icons/media/image-line.svg",
   code: "/icons/development/code-box-line.svg",
   tableur: "remix:ri-table-line",
   document: "/icons/document/file-text-line.svg",
