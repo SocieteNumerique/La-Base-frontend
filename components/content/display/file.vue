@@ -85,6 +85,7 @@
       @close="showPreviewModal = false"
     >
       <embed
+        style="min-height: 600px"
         :src="content.file?.link"
         type="application/pdf"
         frameBorder="0"
