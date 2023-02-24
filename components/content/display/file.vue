@@ -125,8 +125,7 @@ const isImage = computed<boolean>(
 )
 
 const imageLink = computed<string | undefined>(() => {
-  if (isImage.value && props.content.withPreview)
-    return props.content.file?.link
+  if (isImage.value) return props.content.file?.link
 })
 const fileExtension = computed<string>(() => {
   const name = props.content.file?.name
