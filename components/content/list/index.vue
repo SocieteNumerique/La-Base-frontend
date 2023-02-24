@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>vue en liste</h2>
+    <h2 class="page-break">Vue en liste</h2>
     <div
       v-for="section of contentsBySection"
       :key="section.id"

@@ -67,7 +67,7 @@
         }}
       </p>
     </div>
-    <div v-if="!currentUserHasEvaluated" class="fr-mb-3w">
+    <div v-if="!currentUserHasEvaluated && !isExporting" class="fr-mb-3w">
       <template v-if="isReco">
         <div>Recommandez-vous cette ressource ?</div>
         <div style="display: flex" class="fr-mt-2w">
@@ -121,6 +121,7 @@ import { Criterion, Evaluation as EvaluationType } from "~/composables/types"
 import { RECOMMENDATION_CRITERION } from "~/composables/constants"
 import { pluralize } from "~/composables/strUtils"
 import { recommendationBadge } from "~/composables/utils"
+import { useExportState } from "~/composables/exportState"
 
 const props = defineProps({
   grades: { type: Object as PropType<Record<string, number>>, required: true },
@@ -128,6 +129,8 @@ const props = defineProps({
   criterion: { type: Object as PropType<Criterion>, required: true },
 })
 const emit = defineEmits(["recommend", "not-recommend", "evaluate"])
+
+const { isExporting } = useExportState()
 
 const onEvaluationDelete = () => {
   resetModal()
