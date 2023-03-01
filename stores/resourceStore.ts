@@ -85,7 +85,7 @@ export const navigationMenus: Menu[] = [
       {
         key: "evaluation",
         name: "Évaluation",
-        description: "Texte à compléter pour les évaluations.",
+        description: "Activer la fonction “évaluation” sur la fiche.",
       },
       {
         key: "contributors",

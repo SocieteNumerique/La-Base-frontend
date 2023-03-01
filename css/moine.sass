@@ -176,13 +176,16 @@ a
 
     .item
       border-bottom: 1px solid var(--border-default-grey)
-      padding: 12px 0
+      padding: 12px 16px
       cursor: pointer
       display: flex
       align-items: center
       width: 100%
       min-height: var(--item-height)
       text-align: left
+
+    .item:hover
+      background: var(--background-elevated-grey-hover)
 
 .selector
   .selector__menu
@@ -306,6 +309,17 @@ a
 .no-margin-bottom-on-last-p
   p:last-child
     margin-bottom: 0 !important
+
+
+.round-button
+  border: 1px solid var(--text-action-high-blue-france)
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 100%
+  width: 32px
+  height: 32px
+  padding-top: 1px
 
 
 // PRINT

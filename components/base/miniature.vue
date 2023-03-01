@@ -4,8 +4,8 @@
       class="fr-grid-row fr-p-2w toolbar"
       style="display: flex; justify-content: space-between"
     >
-      <ShareButton :link="link" />
       <BaseBookmarkButton :base-id="base.id" />
+      <ShareButton :link="link" />
     </div>
     <NuxtLink :to="link" class="no-underline link-container">
       <div class="banner">

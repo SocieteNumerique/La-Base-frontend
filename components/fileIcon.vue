@@ -4,10 +4,10 @@
       v-if="isRemix"
       :name="path"
       aria-hidden="true"
-      scale="2.64"
+      scale="1.32"
       color="black"
     />
-    <img v-else :src="path" alt="" style="width: 50px" />
+    <img v-else :src="path" alt="" style="width: 25px" />
   </div>
 </template>
 <script setup lang="ts">

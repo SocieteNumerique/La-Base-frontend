@@ -6,7 +6,7 @@
     <div v-else>
       <DsfrCheckboxSet
         v-model="collections"
-        legend="Mes collections"
+        legend="Ajouter la fiche aux collections :"
         :options="options"
       />
     </div>

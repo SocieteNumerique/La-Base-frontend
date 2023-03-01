@@ -28,7 +28,7 @@
     </button>
     <div
       v-if="isMenuShown && pinStatuses"
-      class="selector__menu fr-px-2w fr-text-title--blue-france fr-text--xs"
+      class="selector__menu fr-text-title--blue-france fr-text--xs"
     >
       <PinMenuLine
         v-if="iControlRootBase"

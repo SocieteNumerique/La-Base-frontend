@@ -1,7 +1,7 @@
 <template>
   <div class="form-with-margins">
     <div style="display: flex; align-items: baseline">
-      <h2 class="fr-h6">Informations générales</h2>
+      <h2 class="fr-h6">Général</h2>
     </div>
     <p>Vous pouvez ré-éditer ces informations à tout moment.</p>
 

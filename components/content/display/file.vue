@@ -32,7 +32,7 @@
       <FileIcon
         v-if="isRecognizedFileExtension"
         :extension="fileExtension"
-        class="fr-mr-2w"
+        class="fr-mr-1w"
       />
       <VIcon v-else name="ri-file-line" scale="0.8" class="fr-mr-1w" />{{
         content.file?.name
@@ -41,7 +41,7 @@
 
     <!-- ACTIONS (open, download) -->
     <div v-if="!isEditingView">
-      <div class="fr-btns-group--xs">
+      <div class="fr-btns-group--xs fr-ml-2w fr-mt-1w">
         <button
           class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
           @click="download"
@@ -63,18 +63,6 @@
           <VIcon :scale="0.8" class="fr-mr-2v" name="ri-eye-line" />
           <span v-if="!isGridView">Ouvrir</span>
         </button>
-        <a
-          v-else
-          :href="content.file?.link"
-          class="no-underline no-append-ico"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <button class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w">
-            <VIcon :scale="0.8" class="fr-mr-2v" name="ri-eye-line" />
-            <span v-if="!isGridView">Ouvrir</span>
-          </button>
-        </a>
       </div>
     </div>
     <DsfrModal
@@ -94,7 +82,7 @@
       </div>
       <embed
         v-else
-        style="min-height: 600px"
+        style="min-height: calc(80vh - 190px)"
         :src="content.file?.link"
         type="application/pdf"
         frameBorder="0"
@@ -132,11 +120,12 @@ const fileExtension = computed<string>(() => {
   if (!name) {
     return ""
   }
-  const split = name.split(".")
+  let nonNullName: string = name!
+  const split: string[] = nonNullName.split(".")
   if (split.length < 2) {
     return ""
   }
-  return "." + split[split.length - 1]
+  return "." + split[split.length - 1].toLowerCase()
 })
 const isRecognizedFileExtension = computed<boolean>(() => {
   return !!fileExtensionToMediaType[fileExtension.value]

@@ -48,7 +48,7 @@
                     </IntroTooltip>
                     <div
                       v-show="showBasesList"
-                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
+                      class="selector__menu fr-text--xs over-sticky"
                     >
                       <NuxtLink
                         v-for="base of baseStore.baseOptions"
@@ -63,6 +63,11 @@
                         class="item fr-text-title--blue-france"
                         @click="showAddBaseModal = true"
                       >
+                        <VIcon
+                          scale="0.8"
+                          name="ri-add-circle-line"
+                          class="fr-mr-2v"
+                        />
                         Créer une base
                       </div>
                     </div>
@@ -103,7 +108,7 @@
 
                     <div
                       v-show="showProfileMenu"
-                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
+                      class="selector__menu fr-text--xs over-sticky"
                       style="overflow-x: hidden; overflow-y: auto"
                     >
                       <div

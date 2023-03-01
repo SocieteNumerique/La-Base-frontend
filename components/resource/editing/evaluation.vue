@@ -3,6 +3,7 @@
     <DsfrToggleSwitch
       v-model="canEvaluate"
       label="Activer les évaluations"
+      hint="Les visiteurs de la fiche peuvent publier des évaluations. Si vous désactivez les évaluations, celles qui ont été déjà été publiées n’apparaitrons plus mais pourront être réactivées"
       @change="onCanEvaluateUpdate"
     />
   </div>
