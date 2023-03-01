@@ -60,6 +60,15 @@
                 </ShareButton>
               </IntroTooltip>
               <IntroTooltip
+                v-if="base?.contact"
+                :slug="showIntro ? 'BASE_CONTACT' : null"
+                style="display: inline-block"
+              >
+                <a :href="mailToHrefContact" class="no-underline">
+                  <RoundButton icon="ri-mail-line" label="Contacter" />
+                </a>
+              </IntroTooltip>
+              <IntroTooltip
                 :slug="showIntro ? 'REPORT_BASE' : null"
                 style="display: inline-block"
               >
@@ -68,15 +77,6 @@
                   label="Signaler"
                   @click="showReportModal = true"
                 />
-              </IntroTooltip>
-              <IntroTooltip
-                v-if="base?.contact"
-                :slug="showIntro ? 'BASE_CONTACT' : null"
-                style="display: inline-block"
-              >
-                <a :href="mailToHrefContact" class="no-underline">
-                  <RoundButton icon="ri-mail-line" label="Contacter" />
-                </a>
               </IntroTooltip>
             </div>
             <div style="padding-top: 7px; display: flex">

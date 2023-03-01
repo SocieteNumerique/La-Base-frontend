@@ -57,6 +57,7 @@ import {
   RiQuestionLine,
   RiStarLine,
   RiStarFill,
+  RiTableLine,
   RiPrinterLine,
 } from "oh-vue-icons/icons"
 
@@ -187,6 +188,7 @@ export const icons = [
   RiFileTextLine,
   RiStarLine,
   RiStarFill,
+  RiTableLine,
   RiPrinterLine,
   Recommended,
   NotRecommended,

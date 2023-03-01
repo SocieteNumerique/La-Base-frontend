@@ -32,8 +32,10 @@ import { useExportState } from "~/composables/exportState"
 import { downloadFromUrl } from "~/composables/utils"
 import { useResourceStore } from "~/stores/resourceStore"
 import { BASE_API_URL } from "~/composables/api"
+import { useAlertStore } from "~/stores/alertStore"
 
 const resourceStore = useResourceStore()
+const alertStore = useAlertStore()
 
 type StepChoice = "choice" | "print" | "JSON" | "files"
 
@@ -111,7 +113,13 @@ const actions = computed(() => {
               `${BASE_API_URL}/api/resources/${resourceStore.currentId}/`,
               `${resourceStore.current.id} - ${resourceStore.current.title}.json`
             )
+            emit("close")
           } else if (selectedStepInput.value === "files") {
+            alertStore.alert(
+              "Téléchargement en cours",
+              "Le fichier s'affichera bientôt dans vos téléchargements",
+              "success"
+            )
             downloadFromUrl(
               `${BASE_API_URL}/api/resources/${resourceStore.currentId}/files/`,
               `${resourceStore.current.title} - fichiers.zip`

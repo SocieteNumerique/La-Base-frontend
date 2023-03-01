@@ -3,7 +3,7 @@
     <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : null">
       <button
         :class="{ '-active': isMenuShown }"
-        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
+        class="fr-btn fr-btn--sm fr-btn--secondary btn-tab-activable"
         @click="isMenuShown = !isMenuShown"
       >
         <VIcon
@@ -16,7 +16,7 @@
 
     <div
       v-show="isMenuShown"
-      class="selector__menu fr-px-2w fr-text--xs"
+      class="selector__menu fr-text--xs"
       style="z-index: 13; width: 200px"
     >
       <div

@@ -114,6 +114,17 @@
                 @click="showEvaluationModal = true"
               />
             </IntroTooltip>
+            <IntroTooltip
+              v-if="userStore.isLoggedIn"
+              slug="RESOURCE_CONTRIBUTE"
+              style="display: inline-block"
+            >
+              <RoundButton
+                icon="ri-edit-box-line"
+                label="Contribuer"
+                @click="showContributeModal = true"
+              />
+            </IntroTooltip>
             <IntroTooltip slug="RESOURCE_EXPORT" style="display: inline-block">
               <RoundButton
                 icon="ri-download-line"
@@ -126,17 +137,6 @@
                 icon="ri-alert-line"
                 label="Signaler"
                 @click="showReportModal = true"
-              />
-            </IntroTooltip>
-            <IntroTooltip
-              v-if="userStore.isLoggedIn"
-              slug="RESOURCE_CONTRIBUTE"
-              style="display: inline-block"
-            >
-              <RoundButton
-                icon="ri-edit-box-line"
-                label="Contribuer"
-                @click="showContributeModal = true"
               />
             </IntroTooltip>
           </div>
