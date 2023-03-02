@@ -64,6 +64,7 @@
       @save="updateBase"
     />
     <BaseEditDelete v-if="openStep === 'delete'" @close="openStep = ''" />
+    <BaseExportModal v-if="openStep === 'export'" @close="openStep = ''" />
   </div>
 </template>
 
@@ -125,6 +126,10 @@ const menuOptions = [
   {
     label: "Certifier la base",
     step: "certification",
+  },
+  {
+    label: "Exporter la base",
+    step: "export",
   },
   {
     label: "Supprimer la base",

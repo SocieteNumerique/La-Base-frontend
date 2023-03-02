@@ -2,6 +2,29 @@
   <div>
     <div class="fr-pt-5w" style="background: var(--background-alt-grey)">
       <div class="fr-container">
+        <div
+          v-if="resource?.stats.recommendationCount && resource?.canEvaluate"
+          class="fr-pt-1v"
+        >
+          <div>
+            <DsfrBadge
+              :type="recoBadge.type"
+              :label="recoBadge.label"
+              :no-icon="true"
+              :small="true"
+              class="fr-mr-3v"
+            />
+            <span class="fr-text--sm fr-m">
+              <span class="fr-text--bold">{{ recoBadge.pct }}%</span> de
+              recommandation sur
+              <span class="fr-text--bold">{{
+                resource?.stats.recommendationCount
+              }}</span>
+              évaluations
+            </span>
+          </div>
+          <hr class="fr-mt-2w" />
+        </div>
         <div class="fr-grid-row" style="align-items: stretch">
           <div class="fr-col-md-3 fr-pr-3w">
             <ImageResized
@@ -407,6 +430,14 @@ const exitPrintMode = () => {
     selectedExport.value = []
   }, 200)
 }
+
+const recoBadge = computed<{ label: string; type: string }>(() => {
+  const mean =
+    resource.value?.stats?.recommendationMean == null
+      ? 1
+      : resource.value?.stats?.recommendationMean
+  return recommendationBadge(mean * 100)
+})
 </script>
 
 <style>

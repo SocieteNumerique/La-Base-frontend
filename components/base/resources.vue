@@ -133,7 +133,7 @@
           />
         </div>
         <div v-else>
-          <template v-if="!base?.resources.count">
+          <template v-if="!base?.paginatedResources.count">
             Aucune fiche n'a encore été ajoutée.
           </template>
           <template v-else>Aucun résultat correspondant.</template>

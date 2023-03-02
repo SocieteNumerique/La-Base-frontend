@@ -198,6 +198,7 @@ export type Base = {
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]
+  collectionChoices?: Collection[]
   contact?: string
   contactState?: string
   contributors?: User[]
@@ -210,10 +211,9 @@ export type Base = {
   isShort?: boolean
   nationalCartographyWebsite?: string
   owner: User | number
+  paginatedResources?: ResourcesWithPagination
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
-  collectionChoices?: Collection[]
-  resources?: ResourcesWithPagination
   socialMediaFacebook?: string
   socialMediaLinkedin?: string
   socialMediaMastodon?: string
