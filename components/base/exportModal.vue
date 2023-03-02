@@ -5,8 +5,11 @@
     :actions="actions"
     @close="$emit('close')"
   >
-    Vous pouvez télécharger toutes les données de la base au format JSON. Plus
-    d’informations sur ce format ici.
+    <p>
+      Vous pouvez télécharger toutes les données de la base au format JSON. Ce
+      format est exploitable par des développeurs.
+    </p>
+    <p><a href="/swagger/">Plus d’informations sur l'API</a>.</p>
   </DsfrModal>
 </template>
 
@@ -21,8 +24,6 @@ const baseStore = useBaseStore()
 const alertStore = useAlertStore()
 const route = useRoute()
 
-console.log("### route params", route.params)
-
 const baseId = parseInt(<string>route.params.id)
 const baseName = baseStore.basesById[baseId].title
 
@@ -33,7 +34,6 @@ const actions = [
     label: "Télécharger",
     icon: "ri-download-line",
     onClick: () => {
-      console.log("### download", baseId, baseName)
       downloadFromUrl(
         `${BASE_API_URL}/api/bases/${baseId}/full/`,
         `${baseName}.json`
