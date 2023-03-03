@@ -239,7 +239,7 @@ export type BaseWithDetailedResources = {
   id: number
   isShort?: boolean
   owner: User | number
-  resources?: ResourcesWithPagination
+  paginatedResources?: ResourcesWithPagination
   title: string
   collections: CollectionWithDetailedResources[]
   sections?: BaseSection[]

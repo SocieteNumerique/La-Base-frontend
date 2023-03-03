@@ -27,16 +27,17 @@
     <div
       v-else-if="!content.withPreview || !isImage"
       class="file-no-preview fr-text-xs"
-      style="display: flex; align-items: center"
+      style="display: flex; align-items: flex-start"
     >
       <FileIcon
         v-if="isRecognizedFileExtension"
         :extension="fileExtension"
         class="fr-mr-1w"
       />
-      <VIcon v-else name="ri-file-line" scale="0.8" class="fr-mr-1w" />{{
-        content.file?.name
-      }}
+      <VIcon v-else name="ri-file-line" scale="0.8" class="fr-mr-1w" />
+      <div style="min-height: 2rem">
+        {{ content.file?.name }}
+      </div>
     </div>
 
     <!-- ACTIONS (open, download) -->
