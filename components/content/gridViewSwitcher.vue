@@ -1,6 +1,6 @@
 <template>
   <div class="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
-    <IntroTooltip :slug="isEditingMode ? 'VIEW_LIST-GRID' : null">
+    <IntroTooltip :slug="isEditingMode ? 'VIEW_LIST-GRID' : ''">
       <div>
         <button
           :class="{ '-active': !isGridView, '-inactive': isGridView }"

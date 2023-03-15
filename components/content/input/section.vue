@@ -16,13 +16,14 @@ import { PropType } from "vue"
 import { Section } from "~/composables/types"
 import { getLengthOrZero } from "~/composables/utils"
 
-defineEmits(["exit"])
+const emit = defineEmits(["exit"])
 defineProps({
   modelValue: { type: Object as PropType<Section>, required: true },
 })
 const section = useModel<Section>("modelValue", { type: "object" })
 
 async function saveSection() {
-  return updateSection(section.value)
+  await updateSection(section.value)
+  emit("exit")
 }
 </script>

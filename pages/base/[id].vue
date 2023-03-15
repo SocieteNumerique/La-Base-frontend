@@ -48,7 +48,7 @@
           <div class="has-children-space-between">
             <div v-if="base">
               <IntroTooltip
-                :slug="showIntro ? 'BASE_SHARE' : null"
+                :slug="showIntro ? 'BASE_SHARE' : ''"
                 style="display: inline-block"
               >
                 <ShareButton :link="route.fullPath">
@@ -61,7 +61,7 @@
               </IntroTooltip>
               <IntroTooltip
                 v-if="base?.contact"
-                :slug="showIntro ? 'BASE_CONTACT' : null"
+                :slug="showIntro ? 'BASE_CONTACT' : ''"
                 style="display: inline-block"
               >
                 <a :href="mailToHrefContact" class="no-underline">
@@ -69,7 +69,7 @@
                 </a>
               </IntroTooltip>
               <IntroTooltip
-                :slug="showIntro ? 'REPORT_BASE' : null"
+                :slug="showIntro ? 'REPORT_BASE' : ''"
                 style="display: inline-block"
               >
                 <RoundButton
@@ -82,7 +82,7 @@
             <div style="padding-top: 7px; display: flex">
               <IntroTooltip
                 v-if="base?.canWrite"
-                :slug="showIntro ? 'CREATE_FICHE' : null"
+                :slug="showIntro ? 'CREATE_FICHE' : ''"
               >
                 <DsfrButton
                   icon="ri-add-line"
@@ -107,7 +107,7 @@
             <ul class="fr-links-group">
               <li>
                 <IntroTooltip
-                  :slug="showIntro ? 'PRESENTATION' : null"
+                  :slug="showIntro ? 'PRESENTATION' : ''"
                   child-display="flex"
                 >
                   <NuxtLink
@@ -121,7 +121,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip :slug="showIntro ? 'TAB_FICHES' : null">
+                <IntroTooltip :slug="showIntro ? 'TAB_FICHES' : ''">
                   <NuxtLink
                     :aria-current="currentTab === 'resources' ? 'page' : null"
                     style="height: 100%; display: inline-block"
@@ -132,7 +132,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip :slug="showIntro ? 'TAB_COLLECTIONS' : null">
+                <IntroTooltip :slug="showIntro ? 'TAB_COLLECTIONS' : ''">
                   <NuxtLink
                     :aria-current="currentTab === 'collections' ? 'page' : null"
                     style="height: 100%; display: inline-block"

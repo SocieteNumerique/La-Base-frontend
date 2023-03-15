@@ -102,7 +102,7 @@ const section = ref<BaseSection>(
       }
 )
 
-const modalTitle = isEditing ? "Modifier une rubrique" : "Ajouter une rubrique"
+const modalTitle = isEditing ? "Modifier la rubrique" : "Ajouter une rubrique"
 
 const onClose = () => {
   emits("close")

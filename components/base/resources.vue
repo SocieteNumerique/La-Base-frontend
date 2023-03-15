@@ -2,7 +2,7 @@
   <div id="resources">
     <div
       v-if="currentTab === 'collections'"
-      class="is-flex flex-space-between fr-mb-6w"
+      class="is-flex flex-space-between fr-mb-4w"
     >
       <div style="display: flex; align-items: center">
         <div>

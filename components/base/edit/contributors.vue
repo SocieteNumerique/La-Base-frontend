@@ -21,7 +21,7 @@
       :category="tagStore.categoryBySlug(participantTypeCategoryName)"
       :init-tags="baseStore.current.contributorTags"
       :is-focused="focusedInput === 'tags'"
-      label="Ajouter des contributeurs par typologie d’acteurs"
+      label="Autoriser toute une typologie d’acteurs à contribuer"
       source="own"
       mode="filter"
       @blur="focusedInput = undefined"

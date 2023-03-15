@@ -9,6 +9,7 @@
       <div v-if="section.isFoldable" class="header-section">
         <h3>{{ section.title }}</h3>
         <button
+          v-if="!isExporting"
           class="fr-btn--tertiary-no-outline"
           @click="toggleIsSectionFoldedToggle(section.id)"
         >
@@ -49,6 +50,7 @@
 import { SectionWithContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useModel } from "~/composables/modelWrapper"
+import { useExportState } from "~/composables/exportState"
 
 defineProps({
   modelValue: {
@@ -57,12 +59,20 @@ defineProps({
   },
 })
 
+const { isExporting } = useExportState()
+
 const contentsBySection = useModel<SectionWithContent[]>("modelValue", {
   type: "array",
 })
 const isSectionFoldedById = ref<{ [key: number]: boolean }>({})
-const isSectionFoldedGetter = (id: number): boolean =>
-  isSectionFoldedById.value[id] == null ? true : !!isSectionFoldedById.value[id]
+const isSectionFoldedGetter = (id: number): boolean => {
+  if (isExporting.value) {
+    return false
+  }
+  return isSectionFoldedById.value[id] == null
+    ? true
+    : !!isSectionFoldedById.value[id]
+}
 const toggleIsSectionFoldedToggle = (id: number): boolean =>
   (isSectionFoldedById.value[id] = !isSectionFoldedGetter(id))
 </script>

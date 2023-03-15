@@ -1,5 +1,10 @@
 <template>
-  <div class="is-flex has-children-space-between flex-center">
+  <div
+    class="is-flex has-children-space-between flex-center"
+    :style="
+      largeImage ? 'flex-direction: column; align-items: baseline;' : null
+    "
+  >
     <FormFileUpload
       v-model="file.image"
       require-image
@@ -11,12 +16,10 @@
     <ImageResized
       :resizable-image="file"
       format="preview"
-      :dimensions="{
-        width: '100px',
-        height: `${Math.round(100 / desiredRatio)}px`,
-      }"
+      :dimensions="dimensions"
       :bordered="false"
       :circle="cropCircle"
+      :class="largeImage ? 'fr-mb-3v' : null"
     />
   </div>
   <div class="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
@@ -86,6 +89,7 @@ const props = defineProps({
   desiredRatio: { type: Number, default: null },
   hint: { type: String, default: "" },
   imageQualifier: { type: String, default: "" },
+  largeImage: { type: Boolean, default: false },
 })
 const emits = defineEmits(["update:modelValue"])
 
@@ -107,6 +111,18 @@ const stencilComponent = computed<Component>(() =>
   props.cropCircle ? CircleStencil : RectangleStencil
 )
 
+const dimensions = computed(() => {
+  if (props.largeImage) {
+    return {
+      width: "350px",
+      height: `${Math.round(350 / props.desiredRatio)}px`,
+    }
+  }
+  return {
+    width: "100px",
+    height: `${Math.round(100 / props.desiredRatio)}px`,
+  }
+})
 const confirm = () => {
   showResizeModal.value = false
   useAlertStore().alert(

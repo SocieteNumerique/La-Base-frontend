@@ -34,9 +34,8 @@
     <div class="tag-sub-input">
       <ul v-if="selectedTags.length" class="fr-px-2w fr-pt-1w fr-tags-group">
         <li v-for="tag in selectedTags" :key="tag.id">
-          <button class="fr-tag" @click="removeTag(tag.id)">
+          <button class="fr-tag fr-tag--dismiss" @click="removeTag(tag.id)">
             {{ tag.name }}
-            <VIcon name="ri-close-line" />
           </button>
         </li>
       </ul>

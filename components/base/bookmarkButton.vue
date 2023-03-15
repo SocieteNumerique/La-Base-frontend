@@ -1,6 +1,6 @@
 <template>
   <IntroTooltip
-    :slug="showIntro ? 'BASE_ADD_TO_BOOKMARKS' : null"
+    :slug="showIntro ? 'BASE_ADD_TO_BOOKMARKS' : ''"
     style="display: inline-block"
   >
     <DsfrButton

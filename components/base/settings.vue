@@ -1,6 +1,6 @@
 <template>
   <div :id="containerId" class="selector">
-    <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : null">
+    <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : ''">
       <button
         :class="{ '-active': isMenuShown }"
         class="fr-btn fr-btn--sm fr-btn--secondary btn-tab-activable"

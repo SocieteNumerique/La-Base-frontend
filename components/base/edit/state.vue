@@ -25,6 +25,7 @@
         v-model="authorizedUsers"
         label="Autoriser uniquement ces utilisateurs à consulter cette base"
       />
+      <p class="fr-my-2w">La base est visible pour</p>
       <UserList :users="authorizedUsers" @remove="removeUserId" />
 
       <TagSelector
