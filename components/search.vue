@@ -656,7 +656,7 @@ const isSaveSearchDisabled = computed(() => {
 
 onMounted(() => {
   setSearchHistory()
-  doSearch(false, 200)
+  doSearch()
 })
 </script>
 
