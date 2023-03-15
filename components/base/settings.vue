@@ -98,44 +98,52 @@ async function updateBase(data: any) {
   if (!error.value) openStep.value = ""
 }
 
-const menuOptions = [
-  {
-    label: "Informations",
-    step: "general",
-  },
-  {
-    label: "Images de profil",
-    step: "images",
-  },
-  {
-    label: "Administrateurs",
-    step: "admin",
-  },
-  {
-    label: "Contributeurs",
-    step: "contributors",
-  },
-  {
-    label: "Statut de la base",
-    step: "status",
-  },
-  {
-    label: "Rubriques à la une",
-    step: "section",
-  },
-  {
-    label: "Certifier la base",
-    step: "certification",
-  },
-  {
-    label: "Exporter la base",
-    step: "export",
-  },
-  {
-    label: "Supprimer la base",
-    step: "delete",
-  },
-]
+// contributors do not have write access and can only export the base
+const menuOptions = baseStore.current.canWrite
+  ? [
+      {
+        label: "Informations",
+        step: "general",
+      },
+      {
+        label: "Images de profil",
+        step: "images",
+      },
+      {
+        label: "Administrateurs",
+        step: "admin",
+      },
+      {
+        label: "Contributeurs",
+        step: "contributors",
+      },
+      {
+        label: "Statut de la base",
+        step: "status",
+      },
+      {
+        label: "Rubriques à la une",
+        step: "section",
+      },
+      {
+        label: "Certifier la base",
+        step: "certification",
+      },
+      {
+        label: "Exporter la base",
+        step: "export",
+      },
+      {
+        label: "Supprimer la base",
+        step: "delete",
+      },
+    ]
+  : [
+      {
+        label: "Exporter la base",
+        step: "export",
+      },
+    ]
 </script>
 
 <style lang="sass" scoped>

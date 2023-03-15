@@ -20,7 +20,7 @@
             />
           </div>
           <div
-            v-if="base?.canWrite"
+            v-if="base?.canWrite || base?.canAddResources"
             class="has-children-space-between fr-text--sm fr-mb-2v pre-header"
           >
             <div style="display: flex; align-items: center">
