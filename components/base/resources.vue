@@ -2,7 +2,7 @@
   <div id="resources">
     <div
       v-if="currentTab === 'collections'"
-      class="is-flex flex-space-between fr-mb-6w"
+      class="is-flex flex-space-between fr-mb-4w"
     >
       <div style="display: flex; align-items: center">
         <div>
@@ -133,7 +133,7 @@
           />
         </div>
         <div v-else>
-          <template v-if="!base?.resources.count">
+          <template v-if="!base?.paginatedResources.count">
             Aucune fiche n'a encore été ajoutée.
           </template>
           <template v-else>Aucun résultat correspondant.</template>

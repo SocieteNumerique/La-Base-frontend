@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- IMAGE PREVIEW -->
     <div v-if="content.withPreview && isImage" class="file-preview">
       <img
         :alt="content.imageAlt ? content.imageAlt : ''"
@@ -7,6 +8,8 @@
         crossorigin
       />
     </div>
+
+    <!-- EDIT VIEW -->
     <div v-if="isEditingView">
       <a
         :href="content.file?.link"
@@ -19,16 +22,27 @@
         }}
       </a>
     </div>
+
+    <!-- DISPLAY VIEW -->
     <div
       v-else-if="!content.withPreview || !isImage"
       class="file-no-preview fr-text-xs"
+      style="display: flex; align-items: flex-start"
     >
-      <VIcon name="ri-file-line" scale="0.8" class="fr-mr-1w" />{{
-        content.file?.name
-      }}
+      <FileIcon
+        v-if="isRecognizedFileExtension"
+        :extension="fileExtension"
+        class="fr-mr-1w"
+      />
+      <VIcon v-else name="ri-file-line" scale="0.8" class="fr-mr-1w" />
+      <div style="min-height: 2rem">
+        {{ content.file?.name }}
+      </div>
     </div>
+
+    <!-- ACTIONS (open, download) -->
     <div v-if="!isEditingView">
-      <div class="fr-btns-group--xs">
+      <div class="fr-btns-group--xs fr-ml-2w fr-mt-1w">
         <button
           class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
           @click="download"
@@ -42,19 +56,42 @@
           :href="blob"
           rel="noopener noreferrer"
         />
-        <a
-          :href="content.file?.link"
-          class="no-underline no-append-ico"
-          rel="noopener noreferrer"
-          target="_blank"
+        <button
+          v-if="fileExtension === '.pdf' || isImage"
+          class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w"
+          @click="showPreviewModal = true"
         >
-          <button class="fr-btn--tertiary-no-outline fr-py-1v fr-px-2w">
-            <VIcon :scale="0.8" class="fr-mr-2v" name="ri-eye-line" />
-            <span v-if="!isGridView">Ouvrir</span>
-          </button>
-        </a>
+          <VIcon :scale="0.8" class="fr-mr-2v" name="ri-eye-line" />
+          <span v-if="!isGridView">Ouvrir</span>
+        </button>
       </div>
     </div>
+    <DsfrModal
+      v-if="showPreviewModal"
+      :opened="true"
+      :title="content.title"
+      class="modal-1200"
+      @close="showPreviewModal = false"
+    >
+      <div v-if="isImage" style="text-align: center">
+        <img
+          :alt="content.imageAlt ? content.imageAlt : ''"
+          :src="imageLink"
+          crossorigin
+          style="max-width: 100%; max-height: 500px"
+        />
+      </div>
+      <embed
+        v-else
+        style="min-height: calc(80vh - 190px)"
+        :src="content.file?.link"
+        type="application/pdf"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%"
+      />
+    </DsfrModal>
   </div>
 </template>
 
@@ -62,20 +99,37 @@
 import { FileContent } from "~/composables/types"
 import { PropType } from "vue"
 import { useAlertStore } from "~/stores/alertStore"
+import { fileExtensionToMediaType } from "~/composables/constants"
+import DsfrModal from "~/components/DsfrResizableModal.vue"
 
 const props = defineProps({
   content: { type: Object as PropType<FileContent>, required: true },
   isEditingView: { type: Boolean, default: true },
   isGridView: { type: Boolean, default: false },
 })
+const showPreviewModal = ref(false)
 
 const isImage = computed<boolean>(
   () => props.content.file?.mimeType?.includes("image") || false
 )
 
 const imageLink = computed<string | undefined>(() => {
-  if (isImage.value && props.content.withPreview)
-    return props.content.file?.link
+  if (isImage.value) return props.content.file?.link
+})
+const fileExtension = computed<string>(() => {
+  const name = props.content.file?.name
+  if (!name) {
+    return ""
+  }
+  let nonNullName: string = name!
+  const split: string[] = nonNullName.split(".")
+  if (split.length < 2) {
+    return ""
+  }
+  return "." + split[split.length - 1].toLowerCase()
+})
+const isRecognizedFileExtension = computed<boolean>(() => {
+  return !!fileExtensionToMediaType[fileExtension.value]
 })
 
 const blob = ref<string>()
@@ -99,4 +153,12 @@ async function download() {
 .file-preview img
   max-width: 100%
   max-height: 350px
+</style>
+
+<style>
+.modal-1200 .fr-grid-row > * {
+  max-width: 1200px;
+  width: 95%;
+  flex: 0 0 95%;
+}
 </style>

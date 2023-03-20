@@ -62,7 +62,7 @@ const getHeaders = (includeCsrf = false): MyHeaders => {
   return headers
 }
 
-export const BASE_URL = base_url
+export const BASE_API_URL = base_url
 
 export async function useApiRequest<Type>(
   method: string,
@@ -72,17 +72,21 @@ export async function useApiRequest<Type>(
   onSuccess: Alert | string | null = null,
   // if onError is true, the alert title and message is built from API response
   onError: Alert | string | boolean = false,
-  spinnerMessage: boolean | string = false
+  spinnerMessage: boolean | string = false,
+  customKey = ""
 ) {
   const loadingStore = useLoadingStore()
   const alertStore = useAlertStore()
 
-  const key = makeLoadingKey(path)
+  let key = customKey
+  if (key === "") {
+    key = makeLoadingKey(path)
+  }
   loadingStore.markLoading(key, spinnerMessage)
   const { data, error, pending } = await useAsyncData<Type>(
     key,
     () =>
-      $fetch(BASE_URL + "/api/" + path, {
+      $fetch(BASE_API_URL + "/api/" + path, {
         method: method,
         body: payload,
         credentials: "include",
@@ -147,7 +151,8 @@ export async function useApiGet<Type>(
   params = {},
   onSuccess: Alert | string | null = null,
   onError: Alert | string | boolean = false,
-  spinnerMessage: boolean | string = false
+  spinnerMessage: boolean | string = false,
+  customKey = ""
 ) {
   return useApiRequest<Type>(
     "GET",
@@ -156,7 +161,8 @@ export async function useApiGet<Type>(
     params,
     onSuccess,
     onError,
-    spinnerMessage
+    spinnerMessage,
+    customKey
   )
 }
 
@@ -166,7 +172,8 @@ export async function useApiPost<Type>(
   params = {},
   onSuccess: Alert | string | null = null,
   onError: Alert | string | boolean = false,
-  spinnerMessage: boolean | string = false
+  spinnerMessage: boolean | string = false,
+  customKey = ""
 ) {
   return useApiRequest<Type>(
     "POST",
@@ -175,7 +182,8 @@ export async function useApiPost<Type>(
     params,
     onSuccess,
     onError,
-    spinnerMessage
+    spinnerMessage,
+    customKey
   )
 }
 
@@ -185,7 +193,8 @@ export async function useApiPatch<Type>(
   params = {},
   onSuccess: Alert | string | null = null,
   onError: Alert | string | boolean = false,
-  spinnerMessage: boolean | string = false
+  spinnerMessage: boolean | string = false,
+  customKey = ""
 ) {
   return useApiRequest<Type>(
     "PATCH",
@@ -194,7 +203,8 @@ export async function useApiPatch<Type>(
     params,
     onSuccess,
     onError,
-    spinnerMessage
+    spinnerMessage,
+    customKey
   )
 }
 
@@ -203,7 +213,8 @@ export async function useApiDelete<Type>(
   params = {},
   onSuccess: Alert | string | null = null,
   onError: Alert | string | boolean = false,
-  spinnerMessage: boolean | string = false
+  spinnerMessage: boolean | string = false,
+  customKey = ""
 ) {
   return useApiRequest<Type>(
     "DELETE",
@@ -212,6 +223,7 @@ export async function useApiDelete<Type>(
     params,
     onSuccess,
     onError,
-    spinnerMessage
+    spinnerMessage,
+    customKey
   )
 }

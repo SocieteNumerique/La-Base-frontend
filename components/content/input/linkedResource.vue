@@ -2,7 +2,7 @@
   <DsfrInput
     v-model="resourceLink"
     :label-visible="true"
-    label="Lien de la resource"
+    label="Lien de la ressource"
     placeholder="https://"
     type="url"
   />
@@ -18,7 +18,7 @@
     v-model="content.annotation"
     :is-textarea="true"
     :label-visible="true"
-    :hint="`${getLengthOrZero(content.title)} / 280 caractères`"
+    :hint="`${getLengthOrZero(content.annotation)} / 280 caractères`"
     label="Légende"
     placeholder="Légende"
     maxlength="280"

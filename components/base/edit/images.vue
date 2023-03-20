@@ -16,6 +16,7 @@
         v-model="base.coverImage"
         :label="`${coverActionWord}image de couverture pour la base`"
         :desired-ratio="4.8"
+        :large-image="true"
       />
     </div>
   </DsfrModal>

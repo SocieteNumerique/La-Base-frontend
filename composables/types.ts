@@ -48,8 +48,10 @@ export type Resource = {
   created?: string
   creator?: Creator
   creatorBases?: number[]
+  description?: string
   dirty?: boolean
   evaluations?: Evaluation[]
+  externalProducers?: ExternalProducer[]
   hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
@@ -58,8 +60,6 @@ export type Resource = {
   isLabeled?: boolean
   isLinkedToATerritory?: boolean
   isShort?: boolean
-  description?: string
-  externalProducers?: ExternalProducer[]
   labelDetails?: string
   labelState: string
   licenseText?: LicenseText | null
@@ -198,6 +198,7 @@ export type Base = {
   canAddResources?: boolean
   canWrite?: boolean
   collections?: number[]
+  collectionChoices?: Collection[]
   contact?: string
   contactState?: string
   contributors?: User[]
@@ -210,10 +211,9 @@ export type Base = {
   isShort?: boolean
   nationalCartographyWebsite?: string
   owner: User | number
+  paginatedResources?: ResourcesWithPagination
   participantTypeTags?: number[]
   resourceChoices?: Resource[]
-  collectionChoices?: Collection[]
-  resources?: ResourcesWithPagination
   socialMediaFacebook?: string
   socialMediaLinkedin?: string
   socialMediaMastodon?: string
@@ -239,7 +239,7 @@ export type BaseWithDetailedResources = {
   id: number
   isShort?: boolean
   owner: User | number
-  resources?: ResourcesWithPagination
+  paginatedResources?: ResourcesWithPagination
   title: string
   collections: CollectionWithDetailedResources[]
   sections?: BaseSection[]

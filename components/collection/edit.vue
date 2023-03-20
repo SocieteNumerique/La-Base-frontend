@@ -47,7 +47,7 @@
   <DsfrModal
     :actions="resourcesActions"
     :opened="step === 'resources'"
-    title="Ajouter des fiches à la collection"
+    title="Gérer les fiches de la collection"
     @close="onClose"
   >
     <p>
@@ -57,7 +57,7 @@
     <ResourceSelector
       v-model="tempCollection.resources"
       :base-id="collection.base"
-      label="Appliquer à"
+      label="Ajouter des fiches à la collection :"
       placeholder="Rechercher dans les ressources de la base"
       @update:model-value="isDirtyResources = true"
     />

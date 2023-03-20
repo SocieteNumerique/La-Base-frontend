@@ -101,11 +101,8 @@
 
 .section
   .hide-if-folded
-    transition: max-height 200ms ease-in-out
-
     &.-folded
-      max-height: 0
-      overflow: hidden
+      display: none
 
   h3
     color: var(--text-action-high-blue-france)
@@ -176,13 +173,16 @@ a
 
     .item
       border-bottom: 1px solid var(--border-default-grey)
-      padding: 12px 0
+      padding: 12px 16px
       cursor: pointer
       display: flex
       align-items: center
       width: 100%
       min-height: var(--item-height)
       text-align: left
+
+    .item:hover
+      background: var(--background-elevated-grey-hover)
 
 .selector
   .selector__menu
@@ -306,3 +306,47 @@ a
 .no-margin-bottom-on-last-p
   p:last-child
     margin-bottom: 0 !important
+
+
+.round-button
+  border: 1px solid var(--text-action-high-blue-france)
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 100%
+  width: 32px
+  height: 32px
+  padding-top: 1px
+
+
+// PRINT
+@media print
+  .page-break
+    page-break-before: always
+  .no-print
+    display: none !important
+  .print-col-12
+    flex: 0 0 100%
+    max-width: 100%
+    width: 100%
+  .only-print
+    display: block !important
+.only-print
+  display: none
+body // https://stackoverflow.com/a/14784655/3218806
+  -webkit-print-color-adjust: (exact !important)
+  print-color-adjust: (exact !important)
+
+// used for links and linkedResources preview
+.link-preview
+  border: 1px solid var(--border-default-grey)
+
+  .right-image
+    flex: 0 0 180px
+    min-height: 60px
+
+  .default-image
+    background: var(--background-open-blue-france)
+    display: flex
+    align-items: center
+    justify-content: center

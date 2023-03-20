@@ -1,6 +1,6 @@
 <template>
   <IntroTooltip
-    :slug="showIntro ? 'BASE_ADD_TO_BOOKMARKS' : null"
+    :slug="showIntro ? 'BASE_ADD_TO_BOOKMARKS' : ''"
     style="display: inline-block"
   >
     <DsfrButton
@@ -9,7 +9,7 @@
       :title="title"
       :aria-pressed="isBookmared"
       :aria-label="ariaLabel"
-      style="padding: 5px"
+      style="padding: 5px; line-height: 0"
       @click="toggleBookmark"
     >
       <VIcon :name="icon" scale="1.25" />

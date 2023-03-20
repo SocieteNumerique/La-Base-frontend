@@ -4,7 +4,7 @@
       <div class="fr-container">
         <div class="fr-header__body-row fr-py-2w fr-pl-3v">
           <LayoutLogo />
-          <div class="fr-header__tools">
+          <div class="fr-header__tools no-print">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
                 <li style="align-items: center">
@@ -48,7 +48,7 @@
                     </IntroTooltip>
                     <div
                       v-show="showBasesList"
-                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
+                      class="selector__menu fr-text--xs over-sticky"
                     >
                       <NuxtLink
                         v-for="base of baseStore.baseOptions"
@@ -63,6 +63,11 @@
                         class="item fr-text-title--blue-france"
                         @click="showAddBaseModal = true"
                       >
+                        <VIcon
+                          scale="0.8"
+                          name="ri-add-circle-line"
+                          class="fr-mr-2v"
+                        />
                         Créer une base
                       </div>
                     </div>
@@ -103,7 +108,7 @@
 
                     <div
                       v-show="showProfileMenu"
-                      class="selector__menu fr-px-2w fr-text--xs over-sticky"
+                      class="selector__menu fr-text--xs over-sticky"
                       style="overflow-x: hidden; overflow-y: auto"
                     >
                       <div
@@ -149,7 +154,7 @@
         </div>
       </div>
     </div>
-    <div class="fr-header__body fr-header__nav">
+    <div class="fr-header__body fr-header__nav no-print">
       <div class="fr-container">
         <div class="fr-header__body-row">
           <ul class="fr-links-group">

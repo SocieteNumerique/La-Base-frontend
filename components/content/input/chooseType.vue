@@ -9,7 +9,7 @@
         <slot>Ajouter un contenu</slot>
       </span>
     </button>
-    <div v-show="isMenuShown" class="selector__menu fr-px-2w">
+    <div v-show="isMenuShown" class="selector__menu">
       <div
         class="item"
         style="line-height: 1rem !important"
@@ -68,14 +68,17 @@ function addSimpleContent(type: string) {
     //position: absolute
     background-color: white
     z-index: 10
-    width: 170px
+    width: calc(100% - 15px)
     box-shadow: 0 16px 16px -16px rgba(0, 0, 0, 0.32), 0 8px 16px rgba(0, 0, 0, 0.1)
     border-top: 2px solid var(--background-action-high-blue-france)
 
     .item
       border-bottom: 1px solid var(--border-default-grey)
-      padding: 12px 0
+      padding: 12px 16px
       cursor: pointer
+
+    .item:hover
+      background: var(--background-elevated-grey-hover)
 
   .input-file
     display: none

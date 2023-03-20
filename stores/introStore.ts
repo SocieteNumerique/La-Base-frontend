@@ -232,9 +232,7 @@ export const useIntroStore = defineStore("intro", () => {
       if (!userStore.isLoggedIn) {
         loadLocallySeen()
       }
-      console.log("### is now ready")
       ready.value = true
-      console.log("### is now ready", availableIntros.value)
     }, 500)
   }
 

@@ -17,7 +17,7 @@ export function getLengthOrZero(value: string): number {
   return value?.length || 0
 }
 
-export const doNothing = (): void => {
+export function doNothing(): void {
   // do nothing
 }
 
@@ -38,4 +38,31 @@ export const recommendationBadge = (recommendPct: number) => {
     }
     return { type: "error", label: "Pas recommandée", pct }
   }
+}
+
+// https://stackoverflow.com/a/43956012/3218806
+export const downloadFromUrl = (url: string, filename: string) => {
+  const xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      const downloadUrl = URL.createObjectURL(xhttp.response)
+      const a = document.createElement("a")
+      document.body.appendChild(a)
+      a.setAttribute("style", "display: none")
+      a.href = downloadUrl
+      a.download = filename
+      a.click()
+    }
+  }
+  xhttp.withCredentials = true
+  xhttp.open("GET", url, true)
+  xhttp.responseType = "blob"
+  xhttp.send()
+}
+
+export const limitedDescription = (description: string) => {
+  if (description.length < 150) {
+    return description
+  }
+  return description.substring(0, 150) + "..."
 }

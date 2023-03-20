@@ -20,7 +20,7 @@
             />
           </div>
           <div
-            v-if="base?.canWrite"
+            v-if="base?.canWrite || base?.canAddResources"
             class="has-children-space-between fr-text--sm fr-mb-2v pre-header"
           >
             <div style="display: flex; align-items: center">
@@ -48,7 +48,7 @@
           <div class="has-children-space-between">
             <div v-if="base">
               <IntroTooltip
-                :slug="showIntro ? 'BASE_SHARE' : null"
+                :slug="showIntro ? 'BASE_SHARE' : ''"
                 style="display: inline-block"
               >
                 <ShareButton :link="route.fullPath">
@@ -60,7 +60,16 @@
                 </ShareButton>
               </IntroTooltip>
               <IntroTooltip
-                :slug="showIntro ? 'REPORT_BASE' : null"
+                v-if="base?.contact"
+                :slug="showIntro ? 'BASE_CONTACT' : ''"
+                style="display: inline-block"
+              >
+                <a :href="mailToHrefContact" class="no-underline">
+                  <RoundButton icon="ri-mail-line" label="Contacter" />
+                </a>
+              </IntroTooltip>
+              <IntroTooltip
+                :slug="showIntro ? 'REPORT_BASE' : ''"
                 style="display: inline-block"
               >
                 <RoundButton
@@ -69,20 +78,11 @@
                   @click="showReportModal = true"
                 />
               </IntroTooltip>
-              <IntroTooltip
-                v-if="base?.contact"
-                :slug="showIntro ? 'BASE_CONTACT' : null"
-                style="display: inline-block"
-              >
-                <a :href="mailToHrefContact" class="no-underline">
-                  <RoundButton icon="ri-mail-line" label="Contacter" />
-                </a>
-              </IntroTooltip>
             </div>
             <div style="padding-top: 7px; display: flex">
               <IntroTooltip
                 v-if="base?.canWrite"
-                :slug="showIntro ? 'CREATE_FICHE' : null"
+                :slug="showIntro ? 'CREATE_FICHE' : ''"
               >
                 <DsfrButton
                   icon="ri-add-line"
@@ -107,7 +107,7 @@
             <ul class="fr-links-group">
               <li>
                 <IntroTooltip
-                  :slug="showIntro ? 'PRESENTATION' : null"
+                  :slug="showIntro ? 'PRESENTATION' : ''"
                   child-display="flex"
                 >
                   <NuxtLink
@@ -121,7 +121,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip :slug="showIntro ? 'TAB_FICHES' : null">
+                <IntroTooltip :slug="showIntro ? 'TAB_FICHES' : ''">
                   <NuxtLink
                     :aria-current="currentTab === 'resources' ? 'page' : null"
                     style="height: 100%; display: inline-block"
@@ -132,7 +132,7 @@
                 </IntroTooltip>
               </li>
               <li>
-                <IntroTooltip :slug="showIntro ? 'TAB_COLLECTIONS' : null">
+                <IntroTooltip :slug="showIntro ? 'TAB_COLLECTIONS' : ''">
                   <NuxtLink
                     :aria-current="currentTab === 'collections' ? 'page' : null"
                     style="height: 100%; display: inline-block"

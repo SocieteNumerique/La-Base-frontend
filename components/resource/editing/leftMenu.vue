@@ -121,7 +121,7 @@
         </div>
         <div class="bottom-button-holder fr-mt-7w">
           <IntroTooltip
-            :slug="showIntros ? 'DUPLICATES_DETECTOR' : null"
+            :slug="showIntros ? 'DUPLICATES_DETECTOR' : ''"
             class="fr-mb-7v"
           >
             <button
@@ -151,7 +151,7 @@
             </button>
           </IntroTooltip>
           <IntroTooltip
-            :slug="showIntros ? 'LEFT_MENU_PREVIEW' : null"
+            :slug="showIntros ? 'LEFT_MENU_PREVIEW' : ''"
             class="fr-mb-3v"
           >
             <DsfrButton
@@ -165,7 +165,7 @@
             />
           </IntroTooltip>
           <IntroTooltip
-            :slug="showIntros ? 'LEFT_MENU_SAVE' : null"
+            :slug="showIntros ? 'LEFT_MENU_SAVE' : ''"
             class="fr-mb-3v"
           >
             <DsfrButton

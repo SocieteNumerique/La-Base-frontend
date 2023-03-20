@@ -5,7 +5,10 @@
     @save="saveContent"
   >
     <component :is="component" v-model="content" />
-    <ContentLicenseEdition v-model="content" />
+    <ContentLicenseEdition
+      v-if="content.type !== 'linkedResource'"
+      v-model="content"
+    />
   </ContentInputBase>
 </template>
 

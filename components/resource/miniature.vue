@@ -1,31 +1,32 @@
 <template>
   <div class="miniature-container fr-text--xs">
     <div v-if="props.showToolbar" class="fr-grid-row fr-p-2w toolbar">
-      <ShareButton
-        :link="link"
-        :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
+      <PinMenu
+        v-model="pinnedInBases"
+        :instance-id="resource?.id"
+        :root-base-id="resource?.rootBase"
+        instance-type="resource"
+        :small="true"
       />
       <div class="is-flex fr-ml-auto" style="align-items: center">
+        <ShareButton
+          :link="link"
+          :class="userStore.isLoggedIn ? 'fr-mr-3w' : ''"
+        />
         <NuxtLink
           v-if="resource?.canWrite"
           :to="`/ressource/${resource.id}/edition`"
-          class="no-underline no-append-ico fr-px-1w fr-mr-3v"
+          class="no-underline no-append-ico fr-px-1w fr-btn fr-btn--secondary btn--no-border fr-btn--sm fr-py-0 round-button"
           :target="targetLink"
           title="Éditer la fiche"
           aria-label="Éditer la fiche"
         >
           <VIcon
             style="color: var(--text-action-high-blue-france)"
+            scale="0.9"
             name="ri-edit-line"
           />
         </NuxtLink>
-        <PinMenu
-          v-model="pinnedInBases"
-          :instance-id="resource?.id"
-          :root-base-id="resource?.rootBase"
-          instance-type="resource"
-          :small="true"
-        />
       </div>
     </div>
     <NuxtLink

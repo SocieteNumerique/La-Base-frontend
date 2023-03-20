@@ -28,9 +28,12 @@ function saveInOtherStores(instancesInStore: any, instancesSrc?: any[]) {
 function saveRelatedBaseInfosAndSimplify(base: BaseWithDetailedResources) {
   const baseStore = useBaseStore()
   const resourceStore = useResourceStore()
-  saveInOtherStores(resourceStore.resourcesById, base.resources!.results)
-  baseStore.pageCount = base.resources!.pageCount
-  baseStore.resourceCount = base.resources!.count
+  saveInOtherStores(
+    resourceStore.resourcesById,
+    base.paginatedResources!.results
+  )
+  baseStore.pageCount = base.paginatedResources!.pageCount
+  baseStore.resourceCount = base.paginatedResources!.count
 
   // save collections with list of resourceIds
   const newCollections: Collection[] = []

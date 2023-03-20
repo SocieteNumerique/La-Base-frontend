@@ -7,33 +7,32 @@
       @exit="openedTab = null"
     />
     <div class="fr-p-2w has-children-space-between">
-      <ShareButton :link="link" class="fr-mr-3w" />
+      <PinMenu
+        v-model="pinnedInBases"
+        :instance-id="savedCollection?.id"
+        :root-base-id="savedCollection?.base"
+        instance-type="collection"
+      />
       <div class="is-flex">
         <template v-if="editable">
+          <ShareButton :link="link" class="fr-mr-3w" />
           <button
-            class="fr-btn--tertiary-no-outline fr-mr-3v"
+            class="fr-btn fr-btn--secondary btn--no-border fr-btn--sm fr-py-0 round-button fr-mr-3w"
             aria-label="Éditer la collection"
             title="Éditer la collection"
             @click="openedTab = 'general'"
           >
-            <VIcon :scale="1" name="ri-edit-line" />
+            <VIcon :scale="0.9" name="ri-edit-line" />
           </button>
           <button
-            class="fr-btn--tertiary-no-outline fr-mr-3v"
+            class="fr-btn fr-btn--secondary btn--no-border fr-btn--sm fr-py-0 round-button"
             aria-label="gérer les fiches"
             title="Gérer les fiches"
             @click="openedTab = 'resources'"
           >
-            <VIcon :scale="1" name="ri-file-line" />
+            <VIcon :scale="0.9" name="ri-file-line" />
           </button>
         </template>
-        <PinMenu
-          v-model="pinnedInBases"
-          :instance-id="savedCollection?.id"
-          :root-base-id="savedCollection?.base"
-          class="fr-ml-auto"
-          instance-type="collection"
-        />
       </div>
     </div>
     <NuxtLink

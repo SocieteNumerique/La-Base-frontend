@@ -10,10 +10,10 @@
         <div>{{ producer.name }}</div>
         <div>
           <DsfrButton
-            label="Supprimer"
+            label="Retirer"
             secondary
             class="btn--no-border fr-btn--sm"
-            icon="ri-delete-bin-line"
+            icon="ri-close-line"
             @click="removeProducer(producer.emailContact)"
           />
         </div>

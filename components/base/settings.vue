@@ -1,9 +1,9 @@
 <template>
   <div :id="containerId" class="selector">
-    <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : null">
+    <IntroTooltip :slug="showIntro ? 'BASES_SETTINGS' : ''">
       <button
         :class="{ '-active': isMenuShown }"
-        class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline btn-tab-activable"
+        class="fr-btn fr-btn--sm fr-btn--secondary btn-tab-activable"
         @click="isMenuShown = !isMenuShown"
       >
         <VIcon
@@ -16,7 +16,7 @@
 
     <div
       v-show="isMenuShown"
-      class="selector__menu fr-px-2w fr-text--xs"
+      class="selector__menu fr-text--xs"
       style="z-index: 13; width: 200px"
     >
       <div
@@ -64,6 +64,7 @@
       @save="updateBase"
     />
     <BaseEditDelete v-if="openStep === 'delete'" @close="openStep = ''" />
+    <BaseExportModal v-if="openStep === 'export'" @close="openStep = ''" />
   </div>
 </template>
 
@@ -97,40 +98,52 @@ async function updateBase(data: any) {
   if (!error.value) openStep.value = ""
 }
 
-const menuOptions = [
-  {
-    label: "Informations",
-    step: "general",
-  },
-  {
-    label: "Images de profil",
-    step: "images",
-  },
-  {
-    label: "Administrateurs",
-    step: "admin",
-  },
-  {
-    label: "Contributeurs",
-    step: "contributors",
-  },
-  {
-    label: "Statut de la base",
-    step: "status",
-  },
-  {
-    label: "Rubriques à la une",
-    step: "section",
-  },
-  {
-    label: "Certifier la base",
-    step: "certification",
-  },
-  {
-    label: "Supprimer la base",
-    step: "delete",
-  },
-]
+// contributors do not have write access and can only export the base
+const menuOptions = baseStore.current.canWrite
+  ? [
+      {
+        label: "Informations",
+        step: "general",
+      },
+      {
+        label: "Images de profil",
+        step: "images",
+      },
+      {
+        label: "Administrateurs",
+        step: "admin",
+      },
+      {
+        label: "Contributeurs",
+        step: "contributors",
+      },
+      {
+        label: "Statut de la base",
+        step: "status",
+      },
+      {
+        label: "Rubriques à la une",
+        step: "section",
+      },
+      {
+        label: "Certifier la base",
+        step: "certification",
+      },
+      {
+        label: "Exporter la base",
+        step: "export",
+      },
+      {
+        label: "Supprimer la base",
+        step: "delete",
+      },
+    ]
+  : [
+      {
+        label: "Exporter la base",
+        step: "export",
+      },
+    ]
 </script>
 
 <style lang="sass" scoped>

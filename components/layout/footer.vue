@@ -1,5 +1,5 @@
 <template>
-  <footer id="footer" class="fr-footer fr-mt-15w" role="contentinfo">
+  <footer id="footer" class="fr-footer fr-mt-15w no-print" role="contentinfo">
     <div class="fr-container">
       <div class="fr-footer__body">
         <img

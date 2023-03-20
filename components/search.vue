@@ -396,7 +396,6 @@ const currentPage = computed<number>({
 const tagOperator = computed<string>({
   get: () => <string>route.query.tagOperator || "AND",
   set(newTagOperator: string) {
-    console.log("### tag operator changed to", tagOperator.value)
     updateRouterQuery({ tagOperator: newTagOperator, page: 0 })
     resetActiveUserTag()
   },
@@ -541,28 +540,54 @@ const licenseTypeCategoryId = tagStore.tagCategoryIdsBySlug["license_01license"]
 const hiddenCategorySlugs = ["license_02free", "license_01license"]
 
 let searchTimeout: ReturnType<typeof setTimeout>
+let latestSearchLaunched: number = Date.now()
 const doSearch = (scrollToTop = false, debounceDelay = 0) => {
   if (searchTimeout) {
     clearTimeout(searchTimeout)
   }
-
+  const searchParams = {
+    text: textInput.value,
+    dataType: dataType.value,
+    tags: selectedTags.value,
+    tagOperator: tagOperator.value,
+    restrictToBase: (isInBaseIndex.value && route.params.id) || null,
+    live: isLiveResources.value,
+    orderBy: orderBy.value,
+    resourceBaseFilter: resourceBaseFilter.value,
+  }
   searchTimeout = setTimeout(async () => {
+    const launchedAt = Date.now()
+    latestSearchLaunched = launchedAt
+
+    // see comment on useApiPost parameters on why constructing custom key is necessary
+    const customKey = [
+      textInput.value,
+      dataType.value,
+      selectedTags.value.join(","),
+      tagOperator.value,
+      isLiveResources.value,
+      orderBy.value,
+    ].join("-")
+
     const { data, error } = await useApiPost<
       BasesSearchResult | ResourcesSearchResult
     >(
       "search/",
-      {
-        text: textInput.value,
-        dataType: dataType.value,
-        tags: selectedTags.value,
-        tagOperator: tagOperator.value,
-        restrictToBase: (isInBaseIndex.value && route.params.id) || null,
-        live: isLiveResources.value,
-        orderBy: orderBy.value,
-        resourceBaseFilter: resourceBaseFilter.value,
-      },
-      { page: currentPage.value + 1 }
+      searchParams,
+      { page: currentPage.value + 1 },
+      null,
+      false,
+      false,
+      // we pass a custom key because otherwise Nuxt might ignore duplicate requests
+      // (when they're actually not duplicates because of different params)
+      customKey
     )
+
+    if (launchedAt < latestSearchLaunched) {
+      // there has been another search in between the request and the response,
+      // we can ignore these results
+      return
+    }
 
     if (!error.value) {
       nResults.value = data.value!.count

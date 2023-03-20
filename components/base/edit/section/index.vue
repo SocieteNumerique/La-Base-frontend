@@ -179,15 +179,15 @@ const buttons = computed(() =>
       primary: true,
       icon: "ri-add-line",
       onClick: onAddSection,
-      active: true,
+      active: !ordering.value,
     },
     {
       label: ordering.value
-        ? "Arreter le changement d'ordre"
+        ? "Valider l'ordre"
         : "Changer l'ordre des rubriques",
-      secondary: true,
+      secondary: !ordering.value,
       onClick: onOrderSection,
-      active: base.value.sections.length,
+      active: base.value.sections?.length,
     },
   ].filter((button) => button.active)
 )

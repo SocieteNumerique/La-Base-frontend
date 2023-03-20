@@ -7,7 +7,14 @@
       :is-editing-mode="true"
       class="fr-mb-3w"
     />
-    <hr class="fr-mt-5w" style="margin-bottom: -32px" />
+    <hr
+      class="fr-mt-4w"
+      :style="
+        isGridView && isGridViewEnabled
+          ? 'margin-bottom: 16px'
+          : 'margin-bottom: -16px'
+      "
+    />
     <ContentListEdit
       v-if="!(isGridView && isGridViewEnabled)"
       v-model="contentsBySection"
