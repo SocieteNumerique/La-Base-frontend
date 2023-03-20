@@ -48,8 +48,10 @@ export type Resource = {
   created?: string
   creator?: Creator
   creatorBases?: number[]
+  description?: string
   dirty?: boolean
   evaluations?: Evaluation[]
+  externalProducers?: ExternalProducer[]
   hasGlobalLicense?: boolean
   id: number
   internalProducerIds?: number[]
@@ -58,8 +60,6 @@ export type Resource = {
   isLabeled?: boolean
   isLinkedToATerritory?: boolean
   isShort?: boolean
-  description?: string
-  externalProducers?: ExternalProducer[]
   labelDetails?: string
   labelState: string
   licenseText?: LicenseText | null

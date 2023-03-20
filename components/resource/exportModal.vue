@@ -19,7 +19,7 @@
     <template v-if="step === 'print'">
       <DsfrCheckboxSet
         v-model="exportInput"
-        legend="Sections à afficher"
+        legend="Sections à exporter"
         :options="printOptions"
         @change="onExportInput"
       />

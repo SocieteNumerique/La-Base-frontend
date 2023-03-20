@@ -52,33 +52,14 @@
 <script lang="ts" setup>
 import { LinkContent } from "~/composables/types"
 import { PropType } from "vue"
+import { limitedDescription } from "~/composables/utils"
 
 defineProps({
   content: { type: Object as PropType<LinkContent>, required: true },
 })
-
-const limitedDescription = (description: string) => {
-  if (description.length < 150) {
-    return description
-  }
-  return description.substring(0, 150) + "..."
-}
 </script>
 
 <style lang="sass" scoped>
-.link-preview
-  border: 1px solid var(--border-default-grey)
-
-.right-image
-  flex: 0 0 180px
-  min-height: 60px
-
-.default-image
-  background: var(--background-open-blue-france)
-  display: flex
-  align-items: center
-  justify-content: center
-
 .proper-image
   background-size: cover
   background-position: center

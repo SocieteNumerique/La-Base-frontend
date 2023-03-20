@@ -59,3 +59,10 @@ export const downloadFromUrl = (url: string, filename: string) => {
   xhttp.responseType = "blob"
   xhttp.send()
 }
+
+export const limitedDescription = (description: string) => {
+  if (description.length < 150) {
+    return description
+  }
+  return description.substring(0, 150) + "..."
+}
